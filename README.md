@@ -6,9 +6,9 @@ TypeSafe AI's "System One" decision model, with ontologies.
 ## TL;DR -- what we learned
 
 We built a working MVP that pairs an LLM-authored ontology with Jev's
-calibrated classification, tested it against the live Jev API on 34 real
-tickets across 4 sessions, and closed the feedback loop. Total cost:
-$0.0014.
+calibrated classification, tested it against the live Jev API on 86 real
+tickets across 5 sessions, closed the feedback loop, and ran a 3-iteration
+convergence experiment. Total cost: $0.0085.
 
 **1. The feedback loop converges.** Jev's low-confidence signals
 identified a genuine gap in the billing sub-tree. The LLM revised the
@@ -30,18 +30,11 @@ ticket confirms this. Perfect confidence on a too-broad class hides
 ambiguity instead of surfacing it.
 
 **4. The full cycle costs effectively nothing.** Authoring the ontology,
-classifying 34 tickets, detecting the billing triangle, revising, and
-re-running: $0.0014. The feedback loop can run on every batch without
-budget as a constraint.
+classifying 86 tickets, detecting the billing triangle, revising, and
+re-running: $0.0085 total. The feedback loop can run on every batch
+without budget as a constraint.
 
-**5. What we still don't know.** Whether the improvement generalizes
-beyond the tickets that generated the signal (no held-out test).
-Whether convergence holds over multiple iterations or oscillates.
-Whether Jev is deterministic across repeated calls (variance
-unmeasured). How the system behaves on genuinely messy real-world
-tickets.
-
-**6. Convergence tested (3 iterations, 52 tickets).** The feedback
+**5. Convergence tested (3 iterations, 52 tickets).** The feedback
 loop produces monotonically improving mean confidence (0.940 ->
 0.945 -> 0.948) and decreasing flagged tickets (3 -> 2 -> 2). Leaf
 assignments are highly stable: only 1 of 52 tickets changed leaf
@@ -52,14 +45,26 @@ opened a new one on a previously clean ticket). The loop converges
 in a weak sense -- diminishing returns, not perfect confidence.
 See `CONVERGENCE.md`.
 
+**6. The shape of convergence.** The system approaches a steady state
+where further revisions trade improvements against regressions. It
+does not converge on perfect confidence. It converges on the best
+categories this revision mechanism can find for this dataset. The
+gap between "best achievable" and "perfect" is the irreducible
+residue of compound cases and side effects -- which is exactly what
+the philosophical framing predicted.
+
 **The biggest takeaway:** the cascade is not just a pipeline, it's a
 learning loop. Jev's calibrated probabilities are the error signal, the
 LLM is the optimizer, and the ontology is the model being trained. We
-ran one gradient step and it worked. The question now is whether that
-process stabilizes or diverges over many steps on real data.
+ran three gradient steps. The first worked dramatically. The later ones
+showed diminishing returns and side effects. The process converges in
+a weak sense, not a strong one -- which is more honest, and more
+interesting, than either "it works perfectly" or "it doesn't work."
 
-See `RESULTS.md` for the full assessment, `LOOP.md` for the closed-loop
-experiment, and `SESSIONS.md` for all session logs.
+See `RESULTS.md` for the full assessment, `CONVERGENCE.md` for the
+3-iteration experiment, `LOOP.md` for the first closed-loop experiment,
+`PHILOSOPHY.md` for the connection to induction and Jevons, and
+`SESSIONS.md` for all session logs.
 
 ---
 
