@@ -238,8 +238,14 @@ What has been validated:
 - **Feedback loop is actionable.** Zero-traffic classes, low-margin
   decisions within the billing sub-tree, and the compound-ticket pattern
   all produce concrete signals for re-prompting the LLM.
+- **Feedback loop converges (closed loop).** The LLM revised the ontology
+  based on Jev's billing-triangle signals (added WrongfulCharge, sharpened
+  sibling definitions). Re-running the same tickets, all three hedged
+  tickets improved from 0.56-0.68 to 1.000 confidence (+0.377 mean
+  improvement). See `LOOP.md`.
 - **Cost is negligible.** 26 tickets through a 3-level ontology = 52 Jev
-  calls, ~25K input tokens, $0.001 total.
+  calls, ~25K input tokens, $0.001 total. The closed-loop re-run cost
+  $0.0004.
 
 What remains to build:
 - Beam search (currently greedy descent only; top-k branches per level
@@ -251,3 +257,7 @@ What remains to build:
   pre-generated; the script loads it from JSON).
 - Run-to-run variance measurement (Jev's determinism across repeated
   calls on the same input).
+- Multi-iteration convergence testing (one loop iteration confirmed;
+  convergence over many iterations on a larger dataset is untested).
+- Held-out evaluation (revise on a training set, measure on a held-out
+  set to confirm improvement generalizes).

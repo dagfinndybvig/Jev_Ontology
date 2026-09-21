@@ -54,15 +54,19 @@ Ontology/
                            most promising, plus caveats and current status
   RESULTS.md             -- signed assessment of the experiment: what
                            worked, what is unproven, and conclusions
+  LOOP.md                -- closed-loop experiment: ontology revised based
+                           on Jev feedback, re-run, confidence improved
   SESSIONS.md            -- authentic session logs from real Jev API calls:
                            a mixed batch, a billing-heavy batch, and an
                            edge-case/adversarial batch, with analysis
-  ontology.json          -- LLM-authored ontology (3 levels, 12 leaves)
-                           for SaaS customer support tickets, with _meta
-                           metadata (version, author, prompt used)
+  ontology.json          -- LLM-authored ontology v2.0 (3 levels, 12 leaves)
+  ontology_v3.json       -- revised ontology v3.0 (13 leaves, adds
+                           WrongfulCharge based on Jev feedback signals)
   mvp_jev_ontology.py    -- working MVP of the cascade: loads the ontology
                            from JSON, runs recursive Jev classification with
                            confidence gating and a feedback loop
+  close_loop.py          -- re-runs Session 2 tickets against v2.0 and v3.0
+                           for before/after comparison
   generate_sessions.py   -- script that runs the three session batches
                            against the real Jev API and prints results
   test_jev_api.py         -- standalone smoke test for the Jev API

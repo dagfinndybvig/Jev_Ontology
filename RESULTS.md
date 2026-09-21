@@ -179,16 +179,29 @@ confidence varies by +/- 0.10 across runs, the 0.5 threshold is less
 meaningful than it appears. This is the single most important unrun
 experiment.
 
-### 3. The feedback loop is open, not closed
+### 3. The feedback loop is now closed (see LOOP.md)
 
-The pipeline detects problems (zero-traffic classes, low-confidence
+~~The pipeline detects problems (zero-traffic classes, low-confidence
 items, low-margin decisions) and prints suggestions for re-prompting the
 LLM. But we have not actually re-prompted the LLM, revised the ontology,
-and re-run to see if confidence improves. Right now the feedback loop is
-a diagnostic, not a cycle. The experiment that would prove the concept
-end-to-end is: take the Session 2 billing-triangle signals, revise the
-billing sub-tree definitions, re-run the same tickets, and check whether
-the hedging decreases.
+and re-run to see if confidence improves.~~
+
+**Update 2026-09-21:** The loop has been closed. See `LOOP.md` for the
+full writeup. The LLM (Mistral Vibe) revised the billing sub-tree based
+on Session 2's feedback signals, adding a `WrongfulCharge` class and
+sharpening sibling definitions. Re-running the same 8 tickets against
+v3.0, all three hedged tickets improved from 0.56-0.68 to 1.000
+confidence. Mean confidence on the hedged tickets improved by +0.377.
+The previously clean tickets stayed clean (one dropped 0.04, within
+noise). Total cost of the closed loop: $0.0004.
+
+The full cycle is now demonstrated: **LLM authors -> Jev filters ->
+feedback signals -> LLM revises -> Jev re-filters -> confidence improves.**
+
+What remains unproven about the loop: convergence over multiple
+iterations, whether the 1.000 confidences are genuine or reflect an
+over-broad class definition, and whether the improvement generalizes
+to held-out tickets not used to generate the revision signals.
 
 ### 4. Adversarial robustness was tested with one ticket
 
