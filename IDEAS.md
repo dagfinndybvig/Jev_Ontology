@@ -243,9 +243,18 @@ What has been validated:
   sibling definitions). Re-running the same tickets, all three hedged
   tickets improved from 0.56-0.68 to 1.000 confidence (+0.377 mean
   improvement). See `LOOP.md`.
+- **Feedback loop converges (3-iteration test).** Ran 52 tickets through
+  3 iterations of the feedback loop (v3.0 -> v4.0 -> v5.0). Mean confidence
+  improved monotonically (0.940 -> 0.945 -> 0.948). Flagged tickets
+  decreased (3 -> 2 -> 2). Leaf assignments were highly stable: only 1
+  of 52 tickets changed leaf class across two revisions. The system has
+  a floor (genuinely compound tickets need multi-label, not better
+  definitions) and revisions have side effects (one fix opened a new
+  low-confidence case). See `CONVERGENCE.md`.
 - **Cost is negligible.** 26 tickets through a 3-level ontology = 52 Jev
   calls, ~25K input tokens, $0.001 total. The closed-loop re-run cost
-  $0.0004.
+  $0.0004. The 3-iteration convergence test on 52 tickets (312 Jev calls)
+  cost $0.0071.
 
 What remains to build:
 - Beam search (currently greedy descent only; top-k branches per level

@@ -1,0 +1,100 @@
+{
+  "_meta": {
+    "version": "v5.0",
+    "author": "Mistral Vibe (LLM-authored, feedback-driven revision)",
+    "domain": "Customer support tickets for a SaaS product",
+    "prompt": "Create an ontology for customer-support tickets for a SaaS product as JSON. Each class has id, label, definition, and optional children (sub-classes). Aim for 3 levels. Make definitions specific enough that a classifier can distinguish siblings.",
+    "revision_notes": "v5.0 revises based on iteration 2 convergence signals. One fix: the GDPR/compliance ticket was still routing to TechnicalAndProduct at level 1 because 'I need to know if you store data' sounds like a product question. The fix is at the top level: AccountAndAccess definition now explicitly mentions 'compliance, data handling, and privacy questions' so Jev routes these to AccountAndAccess -> SecurityConcern before they reach the technical branch. The BugReport/IntegrationProblem fix from v4.0 is retained."
+  },
+  "id": "SupportTicket",
+  "label": "Support Ticket",
+  "definition": "Any customer-initiated request or inquiry submitted through a support channel (email, chat, portal, in-app).",
+  "children": [
+    {
+      "id": "BillingAndPayments",
+      "label": "Billing and Payments",
+      "definition": "Issues related to money: charges, refunds, invoices, subscriptions, and payment methods.",
+      "children": [
+        {
+          "id": "PaymentFailure",
+          "label": "Payment Failure",
+          "definition": "A payment attempt was declined by the bank, failed to process due to a card error, or the card on file has expired. The customer's payment did not go through. Does not include successful charges that should not have been made."
+        },
+        {
+          "id": "WrongfulCharge",
+          "label": "Wrongful Charge",
+          "definition": "The customer was charged successfully but the charge should not have happened. Includes duplicate charges, charges after a subscription was cancelled, charges for a plan the customer already cancelled, and charges for services never used. The root cause is a billing system error, not a payment processing failure."
+        },
+        {
+          "id": "RefundRequest",
+          "label": "Refund Request",
+          "definition": "Customer proactively wants money returned for a charge that was processed correctly but they are unhappy with. Includes pro-rated refunds, goodwill refunds, and refunds for returned products. The charge itself was legitimate; the customer is requesting a reversal as a courtesy or policy exception. Does not include charges that were billing errors (use WrongfulCharge)."
+        },
+        {
+          "id": "SubscriptionChange",
+          "label": "Subscription Change",
+          "definition": "Customer wants to change their subscription plan going forward: upgrade, downgrade, pause, cancel, or switch billing cycle (monthly to annual). The request is about future billing, not about correcting a past charge."
+        },
+        {
+          "id": "InvoiceQuestion",
+          "label": "Invoice or Billing Question",
+          "definition": "Customer has a question about an invoice, charge, or billing statement that is not a payment failure, wrongful charge, refund, or subscription change. Includes tax questions, charge explanations, and billing detail requests."
+        }
+      ]
+    },
+    {
+      "id": "TechnicalAndProduct",
+      "label": "Technical and Product",
+      "definition": "Issues related to the product's functionality, bugs, integrations, feature gaps, and performance. Does not include questions about data handling, privacy, or compliance -- those belong under Account and Access.",
+      "children": [
+        {
+          "id": "BugReport",
+          "label": "Bug Report",
+          "definition": "Customer reports unexpected behavior, an error message, a crash, or something in the product itself not working as documented. The problem is internal to the product, not caused by a third-party service changing or disconnecting. If a third-party integration stopped working after an external change, use IntegrationProblem instead."
+        },
+        {
+          "id": "FeatureRequest",
+          "label": "Feature Request",
+          "definition": "Customer asks for a new feature, enhancement, or capability that does not currently exist in the product. Includes workflow improvements and feature suggestions. Does not include questions about how existing data features work (that is a product question, not a feature request)."
+        },
+        {
+          "id": "IntegrationProblem",
+          "label": "Integration or API Problem",
+          "definition": "Customer has difficulty connecting the product with a third-party service, API, webhook, or data sync. Includes authentication errors on the integration side, broken connections after external configuration changes, and third-party services that stopped sending or receiving data. If a previously working integration broke after the customer changed settings on the third-party side, this is an integration problem, not a product bug."
+        },
+        {
+          "id": "PerformanceIssue",
+          "label": "Performance Issue",
+          "definition": "Customer reports the product is slow, unresponsive, or lagging, but it is not crashing or producing errors. Includes timeout and load-time complaints."
+        }
+      ]
+    },
+    {
+      "id": "AccountAndAccess",
+      "label": "Account and Access",
+      "definition": "Issues related to account login, permissions, security, user management, and data handling. Includes compliance questions (GDPR, data residency), privacy inquiries, and any question about how customer data is stored or processed.",
+      "children": [
+        {
+          "id": "LoginProblem",
+          "label": "Login Problem",
+          "definition": "Customer cannot log in to their account. Includes incorrect password, expired session, MFA/2FA issues, SSO failures, and login redirect loops."
+        },
+        {
+          "id": "AccessRequest",
+          "label": "Access or Permission Request",
+          "definition": "Customer needs permissions, roles, or access to features, workspaces, or data they currently cannot reach. Includes seat additions, team member invitations, and role changes."
+        },
+        {
+          "id": "SecurityConcern",
+          "label": "Security Concern",
+          "definition": "Customer suspects unauthorized access, a breach, phishing related to the product, or has a security, data privacy, or compliance question. Includes GDPR and data residency questions, data storage location inquiries, and any concern about how customer data is handled. If the ticket is asking about data practices rather than reporting a breach, it still belongs here."
+        },
+        {
+          "id": "AccountManagement",
+          "label": "Account Management",
+          "definition": "Customer wants to change account settings that are not access, security, or login related. Includes profile updates, email address changes, company name changes, and account deletion requests."
+        }
+      ]
+    }
+  ]
+}

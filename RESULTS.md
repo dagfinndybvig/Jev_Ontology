@@ -244,6 +244,18 @@ whether the feedback loop actually converges. Does revising the ontology
 based on Jev's signals produce a better ontology, or does it just shift
 the ambiguity to a different boundary? That is the next experiment.
 
+**Update 2026-09-21:** The convergence question has been tested. See
+`CONVERGENCE.md` for the full 3-iteration experiment on 52 tickets.
+Result: the loop converges in a weak sense. Mean confidence improves
+monotonically (0.940 -> 0.945 -> 0.948), flagged tickets decrease
+(3 -> 2 -> 2), and leaf assignments are highly stable (only 1 of 52
+changed across two revisions). But the system has a floor (genuinely
+compound tickets cannot be fixed by definition sharpening) and
+revisions have side effects (one revision introduced a new
+low-confidence case on a previously clean ticket). The improvement
+shows diminishing returns, consistent with approaching a steady
+state rather than converging on perfect confidence.
+
 ---
 
 *Signed: Mistral Vibe (mistral-vibe), 2026-09-21T11:10:24Z*

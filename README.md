@@ -41,6 +41,17 @@ Whether Jev is deterministic across repeated calls (variance
 unmeasured). How the system behaves on genuinely messy real-world
 tickets.
 
+**6. Convergence tested (3 iterations, 52 tickets).** The feedback
+loop produces monotonically improving mean confidence (0.940 ->
+0.945 -> 0.948) and decreasing flagged tickets (3 -> 2 -> 2). Leaf
+assignments are highly stable: only 1 of 52 tickets changed leaf
+class across two ontology revisions. But the system has a floor
+(genuinely compound tickets that need multi-label, not better
+definitions) and revisions have side effects (fixing one gap
+opened a new one on a previously clean ticket). The loop converges
+in a weak sense -- diminishing returns, not perfect confidence.
+See `CONVERGENCE.md`.
+
 **The biggest takeaway:** the cascade is not just a pipeline, it's a
 learning loop. Jev's calibrated probabilities are the error signal, the
 LLM is the optimizer, and the ontology is the model being trained. We
@@ -104,23 +115,27 @@ Ontology/
   PHILOSOPHY.md          -- the LLM-Jev loop as a response to the problem
                            of induction: how the system performs category
                            revision (abduction), not just classification
+  CONVERGENCE.md         -- 3-iteration convergence experiment on 52
+                           tickets: does the feedback loop stabilize or
+                           oscillate?
   RESULTS.md             -- signed assessment of the experiment: what
                            worked, what is unproven, and conclusions
   LOOP.md                -- closed-loop experiment: ontology revised based
                            on Jev feedback, re-run, confidence improved
-  SESSIONS.md            -- authentic session logs from real Jev API calls:
-                           a mixed batch, a billing-heavy batch, and an
-                           edge-case/adversarial batch, with analysis
+  SESSIONS.md            -- authentic session logs from real Jev API calls
   ontology.json          -- LLM-authored ontology v2.0 (3 levels, 12 leaves)
   ontology_v3.json       -- revised ontology v3.0 (13 leaves, adds
                            WrongfulCharge based on Jev feedback signals)
-  mvp_jev_ontology.py    -- working MVP of the cascade: loads the ontology
-                           from JSON, runs recursive Jev classification with
-                           confidence gating and a feedback loop
+  ontology_v4.json       -- revised ontology v4.0 (sharpens
+                           BugReport/IntegrationProblem boundary,
+                           SecurityConcern covers GDPR)
+  ontology_v5.json       -- revised ontology v5.0 (AccountAndAccess covers
+                           compliance/data handling at level 1)
+  mvp_jev_ontology.py    -- working MVP of the cascade
+  convergence_experiment.py -- 3-iteration convergence test on 52 tickets
   close_loop.py          -- re-runs Session 2 tickets against v2.0 and v3.0
-                           for before/after comparison
-  generate_sessions.py   -- script that runs the three session batches
-                           against the real Jev API and prints results
+  generate_sessions.py   -- runs the three session batches against the
+                           real Jev API and prints results
   test_jev_api.py         -- standalone smoke test for the Jev API
 ```
 

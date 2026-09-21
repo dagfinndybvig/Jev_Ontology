@@ -1,0 +1,4297 @@
+{
+  "tickets": [
+    "My card keeps getting declined even though I know there's money on it.",
+    "payment failed??? i updated my card info 3 times already and it still says declined",
+    "The system won't accept my new credit card, it keeps erroring out on the payment page.",
+    "You guys charged me TWICE for the same month. I want this fixed NOW.",
+    "I cancelled my subscription in august but you still charged me in september. this is theft.",
+    "I see a charge for $49 on my card but I don't even have an active subscription anymore.",
+    "Why was I charged for the pro plan when I downgraded to basic last week?",
+    "Can I get my money back? The product didn't work for me so I cancelled.",
+    "I'd like to request a refund for the unused portion of my annual plan, I only used 2 months.",
+    "refunding my last payment would be great since the feature I needed isn't available",
+    "I want to upgrade from basic to pro, how do I do that?",
+    "Can I pause my subscription for 2 months while I'm on sabbatical?",
+    "I need to switch from monthly to annual billing.",
+    "Please cancel my subscription effective immediately.",
+    "My invoice shows a different amount than what we agreed on, can someone explain?",
+    "What is this 'platform fee' line item on my bill? It was never there before.",
+    "The tax calculation on my latest invoice looks wrong, I'm in Oregon so there should be no sales tax.",
+    "Can you send me a copy of all my invoices from last year for tax purposes?",
+    "The dashboard is completely blank when I log in, nothing loads at all.",
+    "Every time I try to export a report I get a 500 error.",
+    "The search function returns results that have nothing to do with what I typed.",
+    "Mobile app crashes on startup after the latest update, I'm on iOS 17.",
+    "when i click save it just spins forever and nothing gets saved",
+    "It would be amazing if you could add bulk import for CSV files.",
+    "I really need a way to schedule reports to run automatically every Monday.",
+    "Can you add SSO support for Azure AD? We can't use the product without it at our company.",
+    "Would be great to have a dark theme, the white background hurts my eyes.",
+    "Our Salesforce integration keeps dropping the connection every few hours.",
+    "The Slack notifications stopped working after we changed our workspace settings.",
+    "Webhooks are returning 200 but the data isn't reaching our endpoint.",
+    "Zapier integration says 'account not connected' even though I reconnected it twice.",
+    "The reports page takes 45+ seconds to load, it used to be instant.",
+    "Everything is really slow today, is there an outage? It's affecting our whole team.",
+    "The app becomes unresponsive when I try to filter a large dataset (>10000 rows).",
+    "I can't log in, it says my account is locked. I didn't do anything wrong.",
+    "2FA isn't working, I'm not getting the SMS code and I'm locked out.",
+    "every time i try to log in it redirects me back to the login page in a loop",
+    "My SSO through Okta stopped working this morning, it was fine yesterday.",
+    "I need admin access to the workspace, the previous admin left the company.",
+    "Can you add 3 more seats to our plan? We have new team members starting Monday.",
+    "I need to give my assistant read-only access to the reports section.",
+    "I think my account was hacked, there are logins from IPs I don't recognize.",
+    "We got a phishing email that looks like it's from your company, where do I report it?",
+    "I need to know if you store EU customer data in the US for GDPR compliance.",
+    "I need to change my email address from old@company.com to new@company.com.",
+    "How do I delete my account and all associated data?",
+    "Can you update the company name on our account from 'OldCo' to 'NewCo' after our rebrand?",
+    "Your API is so slow it's timing out and now we're being charged for failed requests on top of it. Fix this.",
+    "I cancelled my plan but I can still access the product, and I also got charged. What is going on?",
+    "The Stripe integration broke after your latest update and now payments aren't processing and customers are complaining.",
+    "Something is broken, help.",
+    "I was charged for something I didn't buy and now I can't log in to dispute it because of a 2FA issue."
+  ],
+  "iterations": [
+    {
+      "version": "v3.0",
+      "mean_confidence": 0.9403807692307692,
+      "high_count": 46,
+      "flagged_count": 3,
+      "flagged": [
+        {
+          "ticket": "The Slack notifications stopped working after we changed our workspace settings.",
+          "leaf": "IntegrationProblem",
+          "conf": 0.33
+        },
+        {
+          "ticket": "I need to know if you store EU customer data in the US for GDPR compliance.",
+          "leaf": "FeatureRequest",
+          "conf": 0.44
+        },
+        {
+          "ticket": "I was charged for something I didn't buy and now I can't log in to dispute it because of a 2FA issue.",
+          "leaf": "LoginProblem",
+          "conf": 0.3366
+        }
+      ],
+      "low_margin_count": 2,
+      "zero_traffic": [],
+      "leaf_counts": {
+        "PaymentFailure": 3,
+        "WrongfulCharge": 5,
+        "RefundRequest": 3,
+        "SubscriptionChange": 5,
+        "InvoiceQuestion": 4,
+        "BugReport": 6,
+        "FeatureRequest": 5,
+        "IntegrationProblem": 5,
+        "PerformanceIssue": 4,
+        "LoginProblem": 5,
+        "AccessRequest": 2,
+        "SecurityConcern": 2,
+        "AccountManagement": 3
+      },
+      "total_tokens": 53950,
+      "results": [
+        {
+          "ticket": "My card keeps getting declined even though I know there's money on it.",
+          "leaf": "PaymentFailure",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "PaymentFailure",
+              "confidence": 1.0,
+              "distribution": {
+                "InvoiceQuestion": 0.0,
+                "SubscriptionChange": 0.0,
+                "WrongfulCharge": 0.0,
+                "RefundRequest": 0.0,
+                "PaymentFailure": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "payment failed??? i updated my card info 3 times already and it still says declined",
+          "leaf": "PaymentFailure",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "PaymentFailure",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 1.0,
+                "InvoiceQuestion": 0.0,
+                "SubscriptionChange": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The system won't accept my new credit card, it keeps erroring out on the payment page.",
+          "leaf": "PaymentFailure",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "PaymentFailure",
+              "confidence": 1.0,
+              "distribution": {
+                "PaymentFailure": 1.0,
+                "InvoiceQuestion": 0.0,
+                "WrongfulCharge": 0.0,
+                "SubscriptionChange": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "You guys charged me TWICE for the same month. I want this fixed NOW.",
+          "leaf": "WrongfulCharge",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 1.0,
+                "InvoiceQuestion": 0.0,
+                "PaymentFailure": 0.0,
+                "RefundRequest": 0.0,
+                "SubscriptionChange": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I cancelled my subscription in august but you still charged me in september. this is theft.",
+          "leaf": "WrongfulCharge",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 1.0,
+              "distribution": {
+                "InvoiceQuestion": 0.0,
+                "WrongfulCharge": 1.0,
+                "RefundRequest": 0.0,
+                "SubscriptionChange": 0.0,
+                "PaymentFailure": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I see a charge for $49 on my card but I don't even have an active subscription anymore.",
+          "leaf": "WrongfulCharge",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 1.0,
+                "InvoiceQuestion": 0.0,
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Why was I charged for the pro plan when I downgraded to basic last week?",
+          "leaf": "WrongfulCharge",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 0.99,
+              "distribution": {
+                "RefundRequest": 0.0,
+                "WrongfulCharge": 1.0,
+                "InvoiceQuestion": 0.0,
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can I get my money back? The product didn't work for me so I cancelled.",
+          "leaf": "RefundRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "RefundRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "SubscriptionChange": 0.0,
+                "WrongfulCharge": 0.0,
+                "RefundRequest": 1.0,
+                "InvoiceQuestion": 0.0,
+                "PaymentFailure": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I'd like to request a refund for the unused portion of my annual plan, I only used 2 months.",
+          "leaf": "RefundRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "RefundRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "PaymentFailure": 0.0,
+                "InvoiceQuestion": 0.0,
+                "SubscriptionChange": 0.0,
+                "RefundRequest": 1.0,
+                "WrongfulCharge": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "refunding my last payment would be great since the feature I needed isn't available",
+          "leaf": "RefundRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "RefundRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "RefundRequest": 1.0,
+                "PaymentFailure": 0.0,
+                "InvoiceQuestion": 0.0,
+                "SubscriptionChange": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I want to upgrade from basic to pro, how do I do that?",
+          "leaf": "SubscriptionChange",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 0.99,
+              "distribution": {
+                "BillingAndPayments": 0.99,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.01
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "SubscriptionChange": 1.0,
+                "InvoiceQuestion": 0.0,
+                "RefundRequest": 0.0,
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can I pause my subscription for 2 months while I'm on sabbatical?",
+          "leaf": "SubscriptionChange",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "InvoiceQuestion": 0.0,
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 1.0,
+                "RefundRequest": 0.0,
+                "WrongfulCharge": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need to switch from monthly to annual billing.",
+          "leaf": "SubscriptionChange",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "SubscriptionChange": 1.0,
+                "InvoiceQuestion": 0.0,
+                "PaymentFailure": 0.0,
+                "WrongfulCharge": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Please cancel my subscription effective immediately.",
+          "leaf": "SubscriptionChange",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 0.0,
+                "RefundRequest": 0.0,
+                "SubscriptionChange": 1.0,
+                "InvoiceQuestion": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "My invoice shows a different amount than what we agreed on, can someone explain?",
+          "leaf": "InvoiceQuestion",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "InvoiceQuestion",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 0.0,
+                "RefundRequest": 0.0,
+                "InvoiceQuestion": 1.0,
+                "SubscriptionChange": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "What is this 'platform fee' line item on my bill? It was never there before.",
+          "leaf": "InvoiceQuestion",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "InvoiceQuestion",
+              "confidence": 1.0,
+              "distribution": {
+                "InvoiceQuestion": 1.0,
+                "SubscriptionChange": 0.0,
+                "PaymentFailure": 0.0,
+                "WrongfulCharge": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The tax calculation on my latest invoice looks wrong, I'm in Oregon so there should be no sales tax.",
+          "leaf": "InvoiceQuestion",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "InvoiceQuestion",
+              "confidence": 1.0,
+              "distribution": {
+                "InvoiceQuestion": 1.0,
+                "RefundRequest": 0.0,
+                "WrongfulCharge": 0.0,
+                "SubscriptionChange": 0.0,
+                "PaymentFailure": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can you send me a copy of all my invoices from last year for tax purposes?",
+          "leaf": "InvoiceQuestion",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "InvoiceQuestion",
+              "confidence": 1.0,
+              "distribution": {
+                "PaymentFailure": 0.0,
+                "RefundRequest": 0.0,
+                "WrongfulCharge": 0.0,
+                "SubscriptionChange": 0.0,
+                "InvoiceQuestion": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The dashboard is completely blank when I log in, nothing loads at all.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "BugReport": 1.0,
+                "PerformanceIssue": 0.0,
+                "IntegrationProblem": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Every time I try to export a report I get a 500 error.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "BugReport": 1.0,
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The search function returns results that have nothing to do with what I typed.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "BugReport": 1.0,
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Mobile app crashes on startup after the latest update, I'm on iOS 17.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "BugReport": 1.0,
+                "FeatureRequest": 0.0,
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "when i click save it just spins forever and nothing gets saved",
+          "leaf": "BugReport",
+          "conf": 0.93,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 0.93,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "PerformanceIssue": 0.05,
+                "IntegrationProblem": 0.0,
+                "BugReport": 0.95
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "It would be amazing if you could add bulk import for CSV files.",
+          "leaf": "FeatureRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0
+              }
+            },
+            {
+              "node": "FeatureRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "BugReport": 0.0,
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 0.0,
+                "FeatureRequest": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I really need a way to schedule reports to run automatically every Monday.",
+          "leaf": "FeatureRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "FeatureRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "BugReport": 0.0,
+                "FeatureRequest": 1.0,
+                "PerformanceIssue": 0.0,
+                "IntegrationProblem": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can you add SSO support for Azure AD? We can't use the product without it at our company.",
+          "leaf": "FeatureRequest",
+          "conf": 0.6732,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 0.68,
+              "distribution": {
+                "TechnicalAndProduct": 0.79,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.21
+              }
+            },
+            {
+              "node": "FeatureRequest",
+              "confidence": 0.99,
+              "distribution": {
+                "IntegrationProblem": 0.01,
+                "FeatureRequest": 0.99,
+                "PerformanceIssue": 0.0,
+                "BugReport": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Would be great to have a dark theme, the white background hurts my eyes.",
+          "leaf": "FeatureRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "FeatureRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 0.0,
+                "BugReport": 0.0,
+                "FeatureRequest": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Our Salesforce integration keeps dropping the connection every few hours.",
+          "leaf": "IntegrationProblem",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "IntegrationProblem": 1.0,
+                "BugReport": 0.0,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The Slack notifications stopped working after we changed our workspace settings.",
+          "leaf": "IntegrationProblem",
+          "conf": 0.33,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 0.33,
+              "distribution": {
+                "BugReport": 0.5,
+                "IntegrationProblem": 0.5,
+                "PerformanceIssue": 0.0,
+                "FeatureRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Webhooks are returning 200 but the data isn't reaching our endpoint.",
+          "leaf": "IntegrationProblem",
+          "conf": 0.96,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 0.96,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "BugReport": 0.03,
+                "IntegrationProblem": 0.97,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Zapier integration says 'account not connected' even though I reconnected it twice.",
+          "leaf": "IntegrationProblem",
+          "conf": 0.98,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 0.98,
+              "distribution": {
+                "AccountAndAccess": 0.01,
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.99
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "PerformanceIssue": 0.0,
+                "BugReport": 0.0,
+                "FeatureRequest": 0.0,
+                "IntegrationProblem": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The reports page takes 45+ seconds to load, it used to be instant.",
+          "leaf": "PerformanceIssue",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "PerformanceIssue",
+              "confidence": 1.0,
+              "distribution": {
+                "PerformanceIssue": 1.0,
+                "IntegrationProblem": 0.0,
+                "BugReport": 0.0,
+                "FeatureRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Everything is really slow today, is there an outage? It's affecting our whole team.",
+          "leaf": "PerformanceIssue",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "PerformanceIssue",
+              "confidence": 1.0,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "BugReport": 0.0,
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The app becomes unresponsive when I try to filter a large dataset (>10000 rows).",
+          "leaf": "PerformanceIssue",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "PerformanceIssue",
+              "confidence": 0.99,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "IntegrationProblem": 0.0,
+                "BugReport": 0.0,
+                "PerformanceIssue": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I can't log in, it says my account is locked. I didn't do anything wrong.",
+          "leaf": "LoginProblem",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 0.99,
+              "distribution": {
+                "SecurityConcern": 0.0,
+                "LoginProblem": 1.0,
+                "AccountManagement": 0.0,
+                "AccessRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "2FA isn't working, I'm not getting the SMS code and I'm locked out.",
+          "leaf": "LoginProblem",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 1.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountManagement": 0.0,
+                "SecurityConcern": 0.0,
+                "LoginProblem": 1.0,
+                "AccessRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "every time i try to log in it redirects me back to the login page in a loop",
+          "leaf": "LoginProblem",
+          "conf": 0.98,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 0.98,
+              "distribution": {
+                "AccountAndAccess": 0.98,
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.02
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "SecurityConcern": 0.0,
+                "LoginProblem": 1.0,
+                "AccountManagement": 0.0,
+                "AccessRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "My SSO through Okta stopped working this morning, it was fine yesterday.",
+          "leaf": "LoginProblem",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 0.99,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 1.0
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "AccessRequest": 0.0,
+                "AccountManagement": 0.0,
+                "LoginProblem": 1.0,
+                "SecurityConcern": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need admin access to the workspace, the previous admin left the company.",
+          "leaf": "AccessRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 1.0
+              }
+            },
+            {
+              "node": "AccessRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "SecurityConcern": 0.0,
+                "AccountManagement": 0.0,
+                "AccessRequest": 1.0,
+                "LoginProblem": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can you add 3 more seats to our plan? We have new team members starting Monday.",
+          "leaf": "SubscriptionChange",
+          "conf": 0.66,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 0.66,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.22,
+                "BillingAndPayments": 0.78
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "InvoiceQuestion": 0.0,
+                "RefundRequest": 0.0,
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 1.0,
+                "WrongfulCharge": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need to give my assistant read-only access to the reports section.",
+          "leaf": "AccessRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 1.0,
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "AccessRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "AccessRequest": 1.0,
+                "LoginProblem": 0.0,
+                "AccountManagement": 0.0,
+                "SecurityConcern": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I think my account was hacked, there are logins from IPs I don't recognize.",
+          "leaf": "SecurityConcern",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 1.0
+              }
+            },
+            {
+              "node": "SecurityConcern",
+              "confidence": 1.0,
+              "distribution": {
+                "SecurityConcern": 1.0,
+                "LoginProblem": 0.0,
+                "AccessRequest": 0.0,
+                "AccountManagement": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "We got a phishing email that looks like it's from your company, where do I report it?",
+          "leaf": "SecurityConcern",
+          "conf": 0.95,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 0.95,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.04,
+                "AccountAndAccess": 0.96
+              }
+            },
+            {
+              "node": "SecurityConcern",
+              "confidence": 1.0,
+              "distribution": {
+                "AccessRequest": 0.0,
+                "LoginProblem": 0.0,
+                "AccountManagement": 0.0,
+                "SecurityConcern": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need to know if you store EU customer data in the US for GDPR compliance.",
+          "leaf": "FeatureRequest",
+          "conf": 0.44,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 0.5,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.67,
+                "AccountAndAccess": 0.33
+              }
+            },
+            {
+              "node": "FeatureRequest",
+              "confidence": 0.88,
+              "distribution": {
+                "IntegrationProblem": 0.04,
+                "BugReport": 0.05,
+                "PerformanceIssue": 0.0,
+                "FeatureRequest": 0.91
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need to change my email address from old@company.com to new@company.com.",
+          "leaf": "AccountManagement",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 1.0
+              }
+            },
+            {
+              "node": "AccountManagement",
+              "confidence": 1.0,
+              "distribution": {
+                "SecurityConcern": 0.0,
+                "AccountManagement": 1.0,
+                "AccessRequest": 0.0,
+                "LoginProblem": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "How do I delete my account and all associated data?",
+          "leaf": "AccountManagement",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 1.0,
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "AccountManagement",
+              "confidence": 1.0,
+              "distribution": {
+                "LoginProblem": 0.0,
+                "AccessRequest": 0.0,
+                "SecurityConcern": 0.0,
+                "AccountManagement": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can you update the company name on our account from 'OldCo' to 'NewCo' after our rebrand?",
+          "leaf": "AccountManagement",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "AccountManagement",
+              "confidence": 1.0,
+              "distribution": {
+                "SecurityConcern": 0.0,
+                "AccessRequest": 0.0,
+                "LoginProblem": 0.0,
+                "AccountManagement": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Your API is so slow it's timing out and now we're being charged for failed requests on top of it. Fix this.",
+          "leaf": "PerformanceIssue",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "PerformanceIssue",
+              "confidence": 1.0,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "PerformanceIssue": 1.0,
+                "IntegrationProblem": 0.0,
+                "BugReport": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I cancelled my plan but I can still access the product, and I also got charged. What is going on?",
+          "leaf": "WrongfulCharge",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 0.99,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.01,
+                "BillingAndPayments": 0.99
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 1.0,
+              "distribution": {
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 0.0,
+                "WrongfulCharge": 1.0,
+                "RefundRequest": 0.0,
+                "InvoiceQuestion": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The Stripe integration broke after your latest update and now payments aren't processing and customers are complaining.",
+          "leaf": "IntegrationProblem",
+          "conf": 0.72,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 0.75,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 0.17,
+                "TechnicalAndProduct": 0.83
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 0.96,
+              "distribution": {
+                "IntegrationProblem": 0.97,
+                "FeatureRequest": 0.0,
+                "PerformanceIssue": 0.0,
+                "BugReport": 0.03
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Something is broken, help.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "BugReport": 1.0,
+                "FeatureRequest": 0.0,
+                "PerformanceIssue": 0.0,
+                "IntegrationProblem": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I was charged for something I didn't buy and now I can't log in to dispute it because of a 2FA issue.",
+          "leaf": "LoginProblem",
+          "conf": 0.3366,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 0.34,
+              "distribution": {
+                "BillingAndPayments": 0.44,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.56
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 0.99,
+              "distribution": {
+                "AccountManagement": 0.0,
+                "AccessRequest": 0.0,
+                "SecurityConcern": 0.01,
+                "LoginProblem": 0.99
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "version": "v4.0",
+      "mean_confidence": 0.9447173076923078,
+      "high_count": 46,
+      "flagged_count": 2,
+      "flagged": [
+        {
+          "ticket": "I need to know if you store EU customer data in the US for GDPR compliance.",
+          "leaf": "FeatureRequest",
+          "conf": 0.48760000000000003
+        },
+        {
+          "ticket": "I was charged for something I didn't buy and now I can't log in to dispute it because of a 2FA issue.",
+          "leaf": "LoginProblem",
+          "conf": 0.3465
+        }
+      ],
+      "low_margin_count": 1,
+      "zero_traffic": [],
+      "leaf_counts": {
+        "PaymentFailure": 3,
+        "WrongfulCharge": 5,
+        "RefundRequest": 3,
+        "SubscriptionChange": 5,
+        "InvoiceQuestion": 4,
+        "BugReport": 6,
+        "FeatureRequest": 5,
+        "IntegrationProblem": 5,
+        "PerformanceIssue": 4,
+        "LoginProblem": 5,
+        "AccessRequest": 2,
+        "SecurityConcern": 2,
+        "AccountManagement": 3
+      },
+      "total_tokens": 56330,
+      "results": [
+        {
+          "ticket": "My card keeps getting declined even though I know there's money on it.",
+          "leaf": "PaymentFailure",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "PaymentFailure",
+              "confidence": 1.0,
+              "distribution": {
+                "RefundRequest": 0.0,
+                "SubscriptionChange": 0.0,
+                "InvoiceQuestion": 0.0,
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "payment failed??? i updated my card info 3 times already and it still says declined",
+          "leaf": "PaymentFailure",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "PaymentFailure",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "RefundRequest": 0.0,
+                "InvoiceQuestion": 0.0,
+                "SubscriptionChange": 0.0,
+                "PaymentFailure": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The system won't accept my new credit card, it keeps erroring out on the payment page.",
+          "leaf": "PaymentFailure",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "PaymentFailure",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 1.0,
+                "RefundRequest": 0.0,
+                "SubscriptionChange": 0.0,
+                "InvoiceQuestion": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "You guys charged me TWICE for the same month. I want this fixed NOW.",
+          "leaf": "WrongfulCharge",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 1.0,
+              "distribution": {
+                "PaymentFailure": 0.0,
+                "InvoiceQuestion": 0.0,
+                "WrongfulCharge": 1.0,
+                "SubscriptionChange": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I cancelled my subscription in august but you still charged me in september. this is theft.",
+          "leaf": "WrongfulCharge",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 1.0,
+                "RefundRequest": 0.0,
+                "InvoiceQuestion": 0.0,
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I see a charge for $49 on my card but I don't even have an active subscription anymore.",
+          "leaf": "WrongfulCharge",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 1.0,
+              "distribution": {
+                "InvoiceQuestion": 0.0,
+                "RefundRequest": 0.0,
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 0.0,
+                "WrongfulCharge": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Why was I charged for the pro plan when I downgraded to basic last week?",
+          "leaf": "WrongfulCharge",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 0.99,
+              "distribution": {
+                "RefundRequest": 0.0,
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 0.0,
+                "WrongfulCharge": 1.0,
+                "InvoiceQuestion": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can I get my money back? The product didn't work for me so I cancelled.",
+          "leaf": "RefundRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "RefundRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "RefundRequest": 1.0,
+                "InvoiceQuestion": 0.0,
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I'd like to request a refund for the unused portion of my annual plan, I only used 2 months.",
+          "leaf": "RefundRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "RefundRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "SubscriptionChange": 0.0,
+                "RefundRequest": 1.0,
+                "PaymentFailure": 0.0,
+                "InvoiceQuestion": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "refunding my last payment would be great since the feature I needed isn't available",
+          "leaf": "RefundRequest",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 0.99,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "RefundRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 0.0,
+                "InvoiceQuestion": 0.0,
+                "WrongfulCharge": 0.0,
+                "RefundRequest": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I want to upgrade from basic to pro, how do I do that?",
+          "leaf": "SubscriptionChange",
+          "conf": 0.98,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 0.98,
+              "distribution": {
+                "BillingAndPayments": 0.98,
+                "AccountAndAccess": 0.01,
+                "TechnicalAndProduct": 0.01
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "SubscriptionChange": 1.0,
+                "InvoiceQuestion": 0.0,
+                "PaymentFailure": 0.0,
+                "WrongfulCharge": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can I pause my subscription for 2 months while I'm on sabbatical?",
+          "leaf": "SubscriptionChange",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "SubscriptionChange": 1.0,
+                "PaymentFailure": 0.0,
+                "WrongfulCharge": 0.0,
+                "RefundRequest": 0.0,
+                "InvoiceQuestion": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need to switch from monthly to annual billing.",
+          "leaf": "SubscriptionChange",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 0.0,
+                "InvoiceQuestion": 0.0,
+                "SubscriptionChange": 1.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Please cancel my subscription effective immediately.",
+          "leaf": "SubscriptionChange",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "SubscriptionChange": 1.0,
+                "InvoiceQuestion": 0.0,
+                "PaymentFailure": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "My invoice shows a different amount than what we agreed on, can someone explain?",
+          "leaf": "InvoiceQuestion",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "InvoiceQuestion",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "InvoiceQuestion": 1.0,
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "What is this 'platform fee' line item on my bill? It was never there before.",
+          "leaf": "InvoiceQuestion",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "InvoiceQuestion",
+              "confidence": 1.0,
+              "distribution": {
+                "RefundRequest": 0.0,
+                "SubscriptionChange": 0.0,
+                "PaymentFailure": 0.0,
+                "InvoiceQuestion": 1.0,
+                "WrongfulCharge": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The tax calculation on my latest invoice looks wrong, I'm in Oregon so there should be no sales tax.",
+          "leaf": "InvoiceQuestion",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "InvoiceQuestion",
+              "confidence": 0.99,
+              "distribution": {
+                "WrongfulCharge": 0.01,
+                "RefundRequest": 0.0,
+                "InvoiceQuestion": 0.99,
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can you send me a copy of all my invoices from last year for tax purposes?",
+          "leaf": "InvoiceQuestion",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "InvoiceQuestion",
+              "confidence": 1.0,
+              "distribution": {
+                "InvoiceQuestion": 1.0,
+                "WrongfulCharge": 0.0,
+                "RefundRequest": 0.0,
+                "SubscriptionChange": 0.0,
+                "PaymentFailure": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The dashboard is completely blank when I log in, nothing loads at all.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "PerformanceIssue": 0.0,
+                "IntegrationProblem": 0.0,
+                "BugReport": 1.0,
+                "FeatureRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Every time I try to export a report I get a 500 error.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "PerformanceIssue": 0.0,
+                "BugReport": 1.0,
+                "IntegrationProblem": 0.0,
+                "FeatureRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The search function returns results that have nothing to do with what I typed.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "BugReport": 1.0,
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Mobile app crashes on startup after the latest update, I'm on iOS 17.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "PerformanceIssue": 0.0,
+                "BugReport": 1.0,
+                "FeatureRequest": 0.0,
+                "IntegrationProblem": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "when i click save it just spins forever and nothing gets saved",
+          "leaf": "BugReport",
+          "conf": 0.92,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 0.92,
+              "distribution": {
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 0.06,
+                "FeatureRequest": 0.0,
+                "BugReport": 0.94
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "It would be amazing if you could add bulk import for CSV files.",
+          "leaf": "FeatureRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0
+              }
+            },
+            {
+              "node": "FeatureRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "IntegrationProblem": 0.0,
+                "FeatureRequest": 1.0,
+                "BugReport": 0.0,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I really need a way to schedule reports to run automatically every Monday.",
+          "leaf": "FeatureRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0
+              }
+            },
+            {
+              "node": "FeatureRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "IntegrationProblem": 0.0,
+                "BugReport": 0.0,
+                "PerformanceIssue": 0.0,
+                "FeatureRequest": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can you add SSO support for Azure AD? We can't use the product without it at our company.",
+          "leaf": "FeatureRequest",
+          "conf": 0.61,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 0.61,
+              "distribution": {
+                "TechnicalAndProduct": 0.74,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.26
+              }
+            },
+            {
+              "node": "FeatureRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "IntegrationProblem": 0.0,
+                "FeatureRequest": 1.0,
+                "BugReport": 0.0,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Would be great to have a dark theme, the white background hurts my eyes.",
+          "leaf": "FeatureRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "FeatureRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "FeatureRequest": 1.0,
+                "BugReport": 0.0,
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Our Salesforce integration keeps dropping the connection every few hours.",
+          "leaf": "IntegrationProblem",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "BugReport": 0.0,
+                "IntegrationProblem": 1.0,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The Slack notifications stopped working after we changed our workspace settings.",
+          "leaf": "IntegrationProblem",
+          "conf": 0.9,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 0.9,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "BugReport": 0.07,
+                "IntegrationProblem": 0.93,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Webhooks are returning 200 but the data isn't reaching our endpoint.",
+          "leaf": "IntegrationProblem",
+          "conf": 0.77,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 0.77,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "IntegrationProblem": 0.83,
+                "PerformanceIssue": 0.0,
+                "BugReport": 0.17
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Zapier integration says 'account not connected' even though I reconnected it twice.",
+          "leaf": "IntegrationProblem",
+          "conf": 0.9603999999999999,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 0.98,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.01,
+                "TechnicalAndProduct": 0.99
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 0.98,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "PerformanceIssue": 0.0,
+                "IntegrationProblem": 0.99,
+                "BugReport": 0.01
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The reports page takes 45+ seconds to load, it used to be instant.",
+          "leaf": "PerformanceIssue",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "PerformanceIssue",
+              "confidence": 1.0,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "BugReport": 0.0,
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Everything is really slow today, is there an outage? It's affecting our whole team.",
+          "leaf": "PerformanceIssue",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "PerformanceIssue",
+              "confidence": 1.0,
+              "distribution": {
+                "BugReport": 0.0,
+                "FeatureRequest": 0.0,
+                "PerformanceIssue": 1.0,
+                "IntegrationProblem": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The app becomes unresponsive when I try to filter a large dataset (>10000 rows).",
+          "leaf": "PerformanceIssue",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0
+              }
+            },
+            {
+              "node": "PerformanceIssue",
+              "confidence": 0.99,
+              "distribution": {
+                "IntegrationProblem": 0.0,
+                "BugReport": 0.01,
+                "PerformanceIssue": 0.99,
+                "FeatureRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I can't log in, it says my account is locked. I didn't do anything wrong.",
+          "leaf": "LoginProblem",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "SecurityConcern": 0.0,
+                "AccountManagement": 0.0,
+                "AccessRequest": 0.0,
+                "LoginProblem": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "2FA isn't working, I'm not getting the SMS code and I'm locked out.",
+          "leaf": "LoginProblem",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "AccessRequest": 0.0,
+                "AccountManagement": 0.0,
+                "SecurityConcern": 0.0,
+                "LoginProblem": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "every time i try to log in it redirects me back to the login page in a loop",
+          "leaf": "LoginProblem",
+          "conf": 0.97,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 0.97,
+              "distribution": {
+                "TechnicalAndProduct": 0.02,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.98
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "SecurityConcern": 0.0,
+                "LoginProblem": 1.0,
+                "AccessRequest": 0.0,
+                "AccountManagement": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "My SSO through Okta stopped working this morning, it was fine yesterday.",
+          "leaf": "LoginProblem",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 0.99,
+              "distribution": {
+                "AccountAndAccess": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountManagement": 0.0,
+                "SecurityConcern": 0.0,
+                "AccessRequest": 0.0,
+                "LoginProblem": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need admin access to the workspace, the previous admin left the company.",
+          "leaf": "AccessRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "AccessRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "LoginProblem": 0.0,
+                "AccountManagement": 0.0,
+                "AccessRequest": 1.0,
+                "SecurityConcern": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can you add 3 more seats to our plan? We have new team members starting Monday.",
+          "leaf": "SubscriptionChange",
+          "conf": 0.62,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 0.62,
+              "distribution": {
+                "BillingAndPayments": 0.74,
+                "AccountAndAccess": 0.25,
+                "TechnicalAndProduct": 0.01
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "SubscriptionChange": 1.0,
+                "InvoiceQuestion": 0.0,
+                "PaymentFailure": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need to give my assistant read-only access to the reports section.",
+          "leaf": "AccessRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 1.0
+              }
+            },
+            {
+              "node": "AccessRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountManagement": 0.0,
+                "LoginProblem": 0.0,
+                "AccessRequest": 1.0,
+                "SecurityConcern": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I think my account was hacked, there are logins from IPs I don't recognize.",
+          "leaf": "SecurityConcern",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "SecurityConcern",
+              "confidence": 1.0,
+              "distribution": {
+                "LoginProblem": 0.0,
+                "SecurityConcern": 1.0,
+                "AccessRequest": 0.0,
+                "AccountManagement": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "We got a phishing email that looks like it's from your company, where do I report it?",
+          "leaf": "SecurityConcern",
+          "conf": 0.96,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 0.96,
+              "distribution": {
+                "AccountAndAccess": 0.98,
+                "TechnicalAndProduct": 0.02,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "SecurityConcern",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountManagement": 0.0,
+                "LoginProblem": 0.0,
+                "AccessRequest": 0.0,
+                "SecurityConcern": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need to know if you store EU customer data in the US for GDPR compliance.",
+          "leaf": "FeatureRequest",
+          "conf": 0.48760000000000003,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 0.53,
+              "distribution": {
+                "AccountAndAccess": 0.31,
+                "TechnicalAndProduct": 0.69,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "FeatureRequest",
+              "confidence": 0.92,
+              "distribution": {
+                "FeatureRequest": 0.94,
+                "BugReport": 0.03,
+                "PerformanceIssue": 0.0,
+                "IntegrationProblem": 0.03
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need to change my email address from old@company.com to new@company.com.",
+          "leaf": "AccountManagement",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "AccountManagement",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountManagement": 1.0,
+                "AccessRequest": 0.0,
+                "LoginProblem": 0.0,
+                "SecurityConcern": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "How do I delete my account and all associated data?",
+          "leaf": "AccountManagement",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 1.0
+              }
+            },
+            {
+              "node": "AccountManagement",
+              "confidence": 1.0,
+              "distribution": {
+                "AccessRequest": 0.0,
+                "LoginProblem": 0.0,
+                "AccountManagement": 1.0,
+                "SecurityConcern": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can you update the company name on our account from 'OldCo' to 'NewCo' after our rebrand?",
+          "leaf": "AccountManagement",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 0.99,
+              "distribution": {
+                "AccountAndAccess": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "AccountManagement",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountManagement": 1.0,
+                "AccessRequest": 0.0,
+                "LoginProblem": 0.0,
+                "SecurityConcern": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Your API is so slow it's timing out and now we're being charged for failed requests on top of it. Fix this.",
+          "leaf": "PerformanceIssue",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "PerformanceIssue",
+              "confidence": 1.0,
+              "distribution": {
+                "IntegrationProblem": 0.0,
+                "BugReport": 0.0,
+                "PerformanceIssue": 1.0,
+                "FeatureRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I cancelled my plan but I can still access the product, and I also got charged. What is going on?",
+          "leaf": "WrongfulCharge",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 0.99,
+              "distribution": {
+                "BillingAndPayments": 0.99,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.01
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 1.0,
+                "InvoiceQuestion": 0.0,
+                "RefundRequest": 0.0,
+                "SubscriptionChange": 0.0,
+                "PaymentFailure": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The Stripe integration broke after your latest update and now payments aren't processing and customers are complaining.",
+          "leaf": "IntegrationProblem",
+          "conf": 0.6708000000000001,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 0.78,
+              "distribution": {
+                "TechnicalAndProduct": 0.85,
+                "BillingAndPayments": 0.15,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 0.86,
+              "distribution": {
+                "IntegrationProblem": 0.89,
+                "BugReport": 0.11,
+                "PerformanceIssue": 0.0,
+                "FeatureRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Something is broken, help.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "IntegrationProblem": 0.0,
+                "FeatureRequest": 0.0,
+                "BugReport": 1.0,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I was charged for something I didn't buy and now I can't log in to dispute it because of a 2FA issue.",
+          "leaf": "LoginProblem",
+          "conf": 0.3465,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 0.35,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.57,
+                "BillingAndPayments": 0.43
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 0.99,
+              "distribution": {
+                "LoginProblem": 0.99,
+                "SecurityConcern": 0.01,
+                "AccountManagement": 0.0,
+                "AccessRequest": 0.0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "version": "v5.0",
+      "mean_confidence": 0.9479346153846154,
+      "high_count": 46,
+      "flagged_count": 2,
+      "flagged": [
+        {
+          "ticket": "Can you add SSO support for Azure AD? We can't use the product without it at our company.",
+          "leaf": "FeatureRequest",
+          "conf": 0.3663
+        },
+        {
+          "ticket": "I was charged for something I didn't buy and now I can't log in to dispute it because of a 2FA issue.",
+          "leaf": "LoginProblem",
+          "conf": 0.3038
+        }
+      ],
+      "low_margin_count": 1,
+      "zero_traffic": [],
+      "leaf_counts": {
+        "PaymentFailure": 3,
+        "WrongfulCharge": 5,
+        "RefundRequest": 3,
+        "SubscriptionChange": 5,
+        "InvoiceQuestion": 4,
+        "BugReport": 6,
+        "FeatureRequest": 4,
+        "IntegrationProblem": 5,
+        "PerformanceIssue": 4,
+        "LoginProblem": 5,
+        "AccessRequest": 2,
+        "SecurityConcern": 3,
+        "AccountManagement": 3
+      },
+      "total_tokens": 59950,
+      "results": [
+        {
+          "ticket": "My card keeps getting declined even though I know there's money on it.",
+          "leaf": "PaymentFailure",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "PaymentFailure",
+              "confidence": 1.0,
+              "distribution": {
+                "RefundRequest": 0.0,
+                "SubscriptionChange": 0.0,
+                "PaymentFailure": 1.0,
+                "InvoiceQuestion": 0.0,
+                "WrongfulCharge": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "payment failed??? i updated my card info 3 times already and it still says declined",
+          "leaf": "PaymentFailure",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "PaymentFailure",
+              "confidence": 1.0,
+              "distribution": {
+                "InvoiceQuestion": 0.0,
+                "PaymentFailure": 1.0,
+                "RefundRequest": 0.0,
+                "WrongfulCharge": 0.0,
+                "SubscriptionChange": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The system won't accept my new credit card, it keeps erroring out on the payment page.",
+          "leaf": "PaymentFailure",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "PaymentFailure",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "SubscriptionChange": 0.0,
+                "RefundRequest": 0.0,
+                "PaymentFailure": 1.0,
+                "InvoiceQuestion": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "You guys charged me TWICE for the same month. I want this fixed NOW.",
+          "leaf": "WrongfulCharge",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 1.0,
+              "distribution": {
+                "SubscriptionChange": 0.0,
+                "PaymentFailure": 0.0,
+                "RefundRequest": 0.0,
+                "InvoiceQuestion": 0.0,
+                "WrongfulCharge": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I cancelled my subscription in august but you still charged me in september. this is theft.",
+          "leaf": "WrongfulCharge",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 1.0,
+              "distribution": {
+                "InvoiceQuestion": 0.0,
+                "WrongfulCharge": 1.0,
+                "RefundRequest": 0.0,
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I see a charge for $49 on my card but I don't even have an active subscription anymore.",
+          "leaf": "WrongfulCharge",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 1.0,
+                "InvoiceQuestion": 0.0,
+                "RefundRequest": 0.0,
+                "SubscriptionChange": 0.0,
+                "PaymentFailure": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Why was I charged for the pro plan when I downgraded to basic last week?",
+          "leaf": "WrongfulCharge",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 0.99,
+              "distribution": {
+                "PaymentFailure": 0.0,
+                "InvoiceQuestion": 0.0,
+                "WrongfulCharge": 1.0,
+                "SubscriptionChange": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can I get my money back? The product didn't work for me so I cancelled.",
+          "leaf": "RefundRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "RefundRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "SubscriptionChange": 0.0,
+                "InvoiceQuestion": 0.0,
+                "RefundRequest": 1.0,
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I'd like to request a refund for the unused portion of my annual plan, I only used 2 months.",
+          "leaf": "RefundRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "RefundRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 0.0,
+                "RefundRequest": 1.0,
+                "InvoiceQuestion": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "refunding my last payment would be great since the feature I needed isn't available",
+          "leaf": "RefundRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "RefundRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 0.0,
+                "RefundRequest": 1.0,
+                "SubscriptionChange": 0.0,
+                "InvoiceQuestion": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I want to upgrade from basic to pro, how do I do that?",
+          "leaf": "SubscriptionChange",
+          "conf": 0.97,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 0.97,
+              "distribution": {
+                "TechnicalAndProduct": 0.01,
+                "BillingAndPayments": 0.98,
+                "AccountAndAccess": 0.01
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "SubscriptionChange": 1.0,
+                "InvoiceQuestion": 0.0,
+                "RefundRequest": 0.0,
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can I pause my subscription for 2 months while I'm on sabbatical?",
+          "leaf": "SubscriptionChange",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "InvoiceQuestion": 0.0,
+                "RefundRequest": 0.0,
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 1.0,
+                "WrongfulCharge": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need to switch from monthly to annual billing.",
+          "leaf": "SubscriptionChange",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 1.0,
+                "InvoiceQuestion": 0.0,
+                "WrongfulCharge": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Please cancel my subscription effective immediately.",
+          "leaf": "SubscriptionChange",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 1.0,
+                "InvoiceQuestion": 0.0,
+                "WrongfulCharge": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "My invoice shows a different amount than what we agreed on, can someone explain?",
+          "leaf": "InvoiceQuestion",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "InvoiceQuestion",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "RefundRequest": 0.0,
+                "PaymentFailure": 0.0,
+                "SubscriptionChange": 0.0,
+                "InvoiceQuestion": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "What is this 'platform fee' line item on my bill? It was never there before.",
+          "leaf": "InvoiceQuestion",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "InvoiceQuestion",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "SubscriptionChange": 0.0,
+                "InvoiceQuestion": 1.0,
+                "PaymentFailure": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The tax calculation on my latest invoice looks wrong, I'm in Oregon so there should be no sales tax.",
+          "leaf": "InvoiceQuestion",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "InvoiceQuestion",
+              "confidence": 1.0,
+              "distribution": {
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 0.0,
+                "InvoiceQuestion": 1.0,
+                "RefundRequest": 0.0,
+                "SubscriptionChange": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can you send me a copy of all my invoices from last year for tax purposes?",
+          "leaf": "InvoiceQuestion",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 1.0
+              }
+            },
+            {
+              "node": "InvoiceQuestion",
+              "confidence": 1.0,
+              "distribution": {
+                "SubscriptionChange": 0.0,
+                "RefundRequest": 0.0,
+                "InvoiceQuestion": 1.0,
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The dashboard is completely blank when I log in, nothing loads at all.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "PerformanceIssue": 0.0,
+                "BugReport": 1.0,
+                "IntegrationProblem": 0.0,
+                "FeatureRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Every time I try to export a report I get a 500 error.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 0.0,
+                "BugReport": 1.0,
+                "FeatureRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The search function returns results that have nothing to do with what I typed.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "BugReport": 1.0,
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 0.0,
+                "FeatureRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Mobile app crashes on startup after the latest update, I'm on iOS 17.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "PerformanceIssue": 0.0,
+                "IntegrationProblem": 0.0,
+                "FeatureRequest": 0.0,
+                "BugReport": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "when i click save it just spins forever and nothing gets saved",
+          "leaf": "BugReport",
+          "conf": 0.91,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 0.91,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "PerformanceIssue": 0.07,
+                "IntegrationProblem": 0.0,
+                "BugReport": 0.93
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "It would be amazing if you could add bulk import for CSV files.",
+          "leaf": "FeatureRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0
+              }
+            },
+            {
+              "node": "FeatureRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "IntegrationProblem": 0.0,
+                "FeatureRequest": 1.0,
+                "BugReport": 0.0,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I really need a way to schedule reports to run automatically every Monday.",
+          "leaf": "FeatureRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "FeatureRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "IntegrationProblem": 0.0,
+                "BugReport": 0.0,
+                "PerformanceIssue": 0.0,
+                "FeatureRequest": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can you add SSO support for Azure AD? We can't use the product without it at our company.",
+          "leaf": "FeatureRequest",
+          "conf": 0.3663,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 0.37,
+              "distribution": {
+                "TechnicalAndProduct": 0.58,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.42
+              }
+            },
+            {
+              "node": "FeatureRequest",
+              "confidence": 0.99,
+              "distribution": {
+                "PerformanceIssue": 0.0,
+                "FeatureRequest": 1.0,
+                "BugReport": 0.0,
+                "IntegrationProblem": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Would be great to have a dark theme, the white background hurts my eyes.",
+          "leaf": "FeatureRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "FeatureRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "FeatureRequest": 1.0,
+                "BugReport": 0.0,
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Our Salesforce integration keeps dropping the connection every few hours.",
+          "leaf": "IntegrationProblem",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "BugReport": 0.0,
+                "IntegrationProblem": 1.0,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The Slack notifications stopped working after we changed our workspace settings.",
+          "leaf": "IntegrationProblem",
+          "conf": 0.8118,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 0.99,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 0.82,
+              "distribution": {
+                "PerformanceIssue": 0.0,
+                "BugReport": 0.13,
+                "FeatureRequest": 0.0,
+                "IntegrationProblem": 0.87
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Webhooks are returning 200 but the data isn't reaching our endpoint.",
+          "leaf": "IntegrationProblem",
+          "conf": 0.84,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 0.84,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "BugReport": 0.12,
+                "IntegrationProblem": 0.88,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Zapier integration says 'account not connected' even though I reconnected it twice.",
+          "leaf": "IntegrationProblem",
+          "conf": 0.9408,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 0.96,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.97,
+                "AccountAndAccess": 0.03
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 0.98,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "BugReport": 0.01,
+                "PerformanceIssue": 0.0,
+                "IntegrationProblem": 0.99
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The reports page takes 45+ seconds to load, it used to be instant.",
+          "leaf": "PerformanceIssue",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "PerformanceIssue",
+              "confidence": 1.0,
+              "distribution": {
+                "PerformanceIssue": 1.0,
+                "IntegrationProblem": 0.0,
+                "BugReport": 0.0,
+                "FeatureRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Everything is really slow today, is there an outage? It's affecting our whole team.",
+          "leaf": "PerformanceIssue",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "PerformanceIssue",
+              "confidence": 1.0,
+              "distribution": {
+                "IntegrationProblem": 0.0,
+                "BugReport": 0.0,
+                "PerformanceIssue": 1.0,
+                "FeatureRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The app becomes unresponsive when I try to filter a large dataset (>10000 rows).",
+          "leaf": "PerformanceIssue",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "PerformanceIssue",
+              "confidence": 0.99,
+              "distribution": {
+                "BugReport": 0.01,
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 0.99,
+                "FeatureRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I can't log in, it says my account is locked. I didn't do anything wrong.",
+          "leaf": "LoginProblem",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 1.0
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "SecurityConcern": 0.0,
+                "LoginProblem": 1.0,
+                "AccessRequest": 0.0,
+                "AccountManagement": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "2FA isn't working, I'm not getting the SMS code and I'm locked out.",
+          "leaf": "LoginProblem",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 1.0
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "LoginProblem": 1.0,
+                "AccountManagement": 0.0,
+                "AccessRequest": 0.0,
+                "SecurityConcern": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "every time i try to log in it redirects me back to the login page in a loop",
+          "leaf": "LoginProblem",
+          "conf": 0.94,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 0.94,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.04,
+                "AccountAndAccess": 0.96
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountManagement": 0.0,
+                "LoginProblem": 1.0,
+                "AccessRequest": 0.0,
+                "SecurityConcern": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "My SSO through Okta stopped working this morning, it was fine yesterday.",
+          "leaf": "LoginProblem",
+          "conf": 0.98,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 0.98,
+              "distribution": {
+                "AccountAndAccess": 0.99,
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.01
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 1.0,
+              "distribution": {
+                "LoginProblem": 1.0,
+                "SecurityConcern": 0.0,
+                "AccessRequest": 0.0,
+                "AccountManagement": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need admin access to the workspace, the previous admin left the company.",
+          "leaf": "AccessRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "AccessRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "LoginProblem": 0.0,
+                "AccessRequest": 1.0,
+                "SecurityConcern": 0.0,
+                "AccountManagement": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can you add 3 more seats to our plan? We have new team members starting Monday.",
+          "leaf": "SubscriptionChange",
+          "conf": 0.64,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 0.64,
+              "distribution": {
+                "TechnicalAndProduct": 0.01,
+                "AccountAndAccess": 0.23,
+                "BillingAndPayments": 0.76
+              }
+            },
+            {
+              "node": "SubscriptionChange",
+              "confidence": 1.0,
+              "distribution": {
+                "SubscriptionChange": 1.0,
+                "InvoiceQuestion": 0.0,
+                "WrongfulCharge": 0.0,
+                "PaymentFailure": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need to give my assistant read-only access to the reports section.",
+          "leaf": "AccessRequest",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 1.0
+              }
+            },
+            {
+              "node": "AccessRequest",
+              "confidence": 1.0,
+              "distribution": {
+                "AccessRequest": 1.0,
+                "AccountManagement": 0.0,
+                "SecurityConcern": 0.0,
+                "LoginProblem": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I think my account was hacked, there are logins from IPs I don't recognize.",
+          "leaf": "SecurityConcern",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 1.0,
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "SecurityConcern",
+              "confidence": 1.0,
+              "distribution": {
+                "AccessRequest": 0.0,
+                "AccountManagement": 0.0,
+                "LoginProblem": 0.0,
+                "SecurityConcern": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "We got a phishing email that looks like it's from your company, where do I report it?",
+          "leaf": "SecurityConcern",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 0.99,
+              "distribution": {
+                "AccountAndAccess": 0.99,
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.01
+              }
+            },
+            {
+              "node": "SecurityConcern",
+              "confidence": 1.0,
+              "distribution": {
+                "LoginProblem": 0.0,
+                "AccessRequest": 0.0,
+                "SecurityConcern": 1.0,
+                "AccountManagement": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need to know if you store EU customer data in the US for GDPR compliance.",
+          "leaf": "SecurityConcern",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "SecurityConcern",
+              "confidence": 1.0,
+              "distribution": {
+                "LoginProblem": 0.0,
+                "AccountManagement": 0.0,
+                "AccessRequest": 0.0,
+                "SecurityConcern": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I need to change my email address from old@company.com to new@company.com.",
+          "leaf": "AccountManagement",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 1.0,
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.0
+              }
+            },
+            {
+              "node": "AccountManagement",
+              "confidence": 1.0,
+              "distribution": {
+                "SecurityConcern": 0.0,
+                "AccountManagement": 1.0,
+                "AccessRequest": 0.0,
+                "LoginProblem": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "How do I delete my account and all associated data?",
+          "leaf": "AccountManagement",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "AccountAndAccess": 1.0,
+                "TechnicalAndProduct": 0.0,
+                "BillingAndPayments": 0.0
+              }
+            },
+            {
+              "node": "AccountManagement",
+              "confidence": 0.99,
+              "distribution": {
+                "LoginProblem": 0.0,
+                "SecurityConcern": 0.01,
+                "AccountManagement": 0.99,
+                "AccessRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Can you update the company name on our account from 'OldCo' to 'NewCo' after our rebrand?",
+          "leaf": "AccountManagement",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 1.0
+              }
+            },
+            {
+              "node": "AccountManagement",
+              "confidence": 1.0,
+              "distribution": {
+                "AccessRequest": 0.0,
+                "AccountManagement": 1.0,
+                "LoginProblem": 0.0,
+                "SecurityConcern": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Your API is so slow it's timing out and now we're being charged for failed requests on top of it. Fix this.",
+          "leaf": "PerformanceIssue",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "BillingAndPayments": 0.0,
+                "TechnicalAndProduct": 1.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "PerformanceIssue",
+              "confidence": 1.0,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "BugReport": 0.0,
+                "IntegrationProblem": 0.0,
+                "PerformanceIssue": 1.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I cancelled my plan but I can still access the product, and I also got charged. What is going on?",
+          "leaf": "WrongfulCharge",
+          "conf": 0.99,
+          "path": [
+            {
+              "node": "BillingAndPayments",
+              "confidence": 0.99,
+              "distribution": {
+                "BillingAndPayments": 0.99,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.01
+              }
+            },
+            {
+              "node": "WrongfulCharge",
+              "confidence": 1.0,
+              "distribution": {
+                "InvoiceQuestion": 0.0,
+                "SubscriptionChange": 0.0,
+                "WrongfulCharge": 1.0,
+                "PaymentFailure": 0.0,
+                "RefundRequest": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "The Stripe integration broke after your latest update and now payments aren't processing and customers are complaining.",
+          "leaf": "IntegrationProblem",
+          "conf": 0.6399,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 0.81,
+              "distribution": {
+                "BillingAndPayments": 0.13,
+                "TechnicalAndProduct": 0.87,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "IntegrationProblem",
+              "confidence": 0.79,
+              "distribution": {
+                "FeatureRequest": 0.0,
+                "PerformanceIssue": 0.0,
+                "IntegrationProblem": 0.84,
+                "BugReport": 0.16
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "Something is broken, help.",
+          "leaf": "BugReport",
+          "conf": 1.0,
+          "path": [
+            {
+              "node": "TechnicalAndProduct",
+              "confidence": 1.0,
+              "distribution": {
+                "TechnicalAndProduct": 1.0,
+                "BillingAndPayments": 0.0,
+                "AccountAndAccess": 0.0
+              }
+            },
+            {
+              "node": "BugReport",
+              "confidence": 1.0,
+              "distribution": {
+                "IntegrationProblem": 0.0,
+                "BugReport": 1.0,
+                "FeatureRequest": 0.0,
+                "PerformanceIssue": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "ticket": "I was charged for something I didn't buy and now I can't log in to dispute it because of a 2FA issue.",
+          "leaf": "LoginProblem",
+          "conf": 0.3038,
+          "path": [
+            {
+              "node": "AccountAndAccess",
+              "confidence": 0.31,
+              "distribution": {
+                "BillingAndPayments": 0.46,
+                "TechnicalAndProduct": 0.0,
+                "AccountAndAccess": 0.54
+              }
+            },
+            {
+              "node": "LoginProblem",
+              "confidence": 0.98,
+              "distribution": {
+                "AccountManagement": 0.0,
+                "LoginProblem": 0.99,
+                "AccessRequest": 0.0,
+                "SecurityConcern": 0.01
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "leaf_changes_1to2": 0,
+  "leaf_changes_2to3": 1,
+  "leaf_changes_1to3": 1,
+  "total_cost": 0.00714966
+}

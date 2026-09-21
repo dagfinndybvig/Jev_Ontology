@@ -376,3 +376,95 @@ signals -> LLM revises -> Jev re-filters -> confidence improves.
 | Closed loop | -- | -- | -- | Yes |
 
 **Total cost for all 34 tickets: $0.0014** (34,095 input tokens).
+
+---
+
+## Session 5: Convergence experiment (3 iterations, 52 tickets)
+
+The largest session: 52 tickets (with typos, vague descriptions,
+compound issues, and adversarial framing) classified through 3
+iterations of the LLM-Jev feedback loop. Captured from live Jev API
+calls on 2026-09-21.
+
+See `CONVERGENCE.md` for the full analysis and
+`convergence_experiment.py` for the script.
+
+### Aggregate metrics across iterations
+
+| Metric | Iter 1 (v3.0) | Iter 2 (v4.0) | Iter 3 (v5.0) |
+|---|---|---|---|
+| Mean confidence | 0.940 | 0.945 | 0.948 |
+| High-confidence (>=0.9) | 46 | 46 | 46 |
+| Flagged (<0.5) | 3 | 2 | 2 |
+| Low-margin decisions | 2 | 1 | 1 |
+| Zero-traffic leaves | 0 | 0 | 0 |
+| Cost | $0.0023 | $0.0024 | $0.0025 |
+
+### The three flagged tickets and their trajectories
+
+**Slack notifications (BugReport vs IntegrationProblem boundary)**
+```
+v3.0: IntegrationProblem (0.330)  -- flagged, 50/50 tie at level 2
+v4.0: IntegrationProblem (high confidence)  -- fixed by definition sharpening
+v5.0: IntegrationProblem (high confidence)  -- stable
+```
+
+**GDPR compliance (level-1 routing failure)**
+```
+v3.0: FeatureRequest (0.440)  -- flagged, wrong branch
+v4.0: FeatureRequest (0.488)  -- flagged, leaf fix didn't help
+v5.0: SecurityConcern (1.000)  -- fixed by level-1 definition change
+```
+
+**Triple compound (genuinely unresolvable)**
+```
+v3.0: LoginProblem (0.337)  -- flagged
+v4.0: LoginProblem (0.346)  -- flagged, flat
+v5.0: LoginProblem (0.304)  -- flagged, flat
+```
+
+### Oscillation signal
+
+A previously clean ticket became flagged in iteration 3:
+```
+"Can you add SSO support for Azure AD?"
+v3.0: FeatureRequest (high confidence)
+v4.0: FeatureRequest (high confidence)
+v5.0: FeatureRequest (0.366)  -- flagged (definition narrowed too much)
+```
+
+### Leaf stability
+
+| Transition | Leaf changes |
+|---|---|
+| Iter 1 -> 2 | 0 |
+| Iter 2 -> 3 | 1 |
+| Iter 1 -> 3 | 1 |
+
+### Key observation
+
+The loop converges in a weak sense: mean confidence improves
+monotonically, flagged tickets decrease, and leaf assignments are
+stable. But the system has a floor (compound tickets) and revisions
+have side effects. The improvement shows diminishing returns,
+consistent with approaching a steady state.
+
+**Total cost for Session 5: $0.0071** (170,230 input tokens, 312 Jev calls).
+
+---
+
+## Updated summary across all five sessions
+
+| Metric | S1 | S2 | S3 | S4 | S5 |
+|---|---|---|---|---|---|
+| Tickets | 12 | 8 | 6 | 8 | 52 |
+| Jev calls | 24 | 16 | 12 | 16 | 312 |
+| Input tokens | 11,566 | 7,688 | 5,817 | 9,024 | 170,230 |
+| Cost | $0.0005 | $0.0003 | $0.0002 | $0.0004 | $0.0071 |
+| High-conf (>=0.9) | 11 | 4 | 2 | 8 | 46 |
+| Flagged (<0.5) | 1 | 0 | 2 | 0 | 2-3 |
+| Ontology | v2.0 | v2.0 | v2.0 | v3.0 | v3.0-v5.0 |
+| Adversarial | -- | -- | Yes | -- | -- |
+| Closed loop | -- | -- | -- | Yes | Yes (3 iter) |
+
+**Total cost for all 86 tickets: $0.0085** (204,325 input tokens).
