@@ -101,6 +101,9 @@ Ontology/
   IDEAS.md               -- eight ideas for Jev + ontologies, with the
                            "LLM-authored, Jev-filtered" cascade marked as
                            most promising, plus caveats and current status
+  PHILOSOPHY.md          -- the LLM-Jev loop as a response to the problem
+                           of induction: how the system performs category
+                           revision (abduction), not just classification
   RESULTS.md             -- signed assessment of the experiment: what
                            worked, what is unproven, and conclusions
   LOOP.md                -- closed-loop experiment: ontology revised based
