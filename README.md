@@ -52,12 +52,17 @@ Ontology/
   IDEAS.md               -- eight ideas for Jev + ontologies, with the
                            "LLM-authored, Jev-filtered" cascade marked as
                            most promising, plus caveats
+  SESSIONS.md            -- authentic session logs from real Jev API calls:
+                           a mixed batch, a billing-heavy batch, and an
+                           edge-case/adversarial batch, with analysis
   ontology.json          -- LLM-authored ontology (3 levels, 12 leaves)
                            for SaaS customer support tickets, with _meta
                            metadata (version, author, prompt used)
   mvp_jev_ontology.py    -- working MVP of the cascade: loads the ontology
                            from JSON, runs recursive Jev classification with
                            confidence gating and a feedback loop
+  generate_sessions.py   -- script that runs the three session batches
+                           against the real Jev API and prints results
   test_jev_api.py         -- standalone smoke test for the Jev API
 ```
 
