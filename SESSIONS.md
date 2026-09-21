@@ -266,3 +266,113 @@ does not force a confident answer when the ticket spans two branches.
 5. **Cost is negligible.** Classifying 26 tickets through a 3-level, 12-leaf
    ontology cost one tenth of a cent. At this price, the feedback loop
    can run on every batch.
+
+---
+
+## Session 4: Closed-loop re-run (ontology v3.0, 8 tickets)
+
+Re-ran the Session 2 billing tickets against the revised ontology v3.0
+(`ontology_v3.json`), which adds a `WrongfulCharge` class and sharpens
+the billing sub-tree definitions based on Session 2's feedback signals.
+Captured from live Jev API calls on 2026-09-21.
+
+See `LOOP.md` for the full analysis and `close_loop.py` for the script.
+
+### Results
+
+| Ticket | v2.0 leaf | v2.0 conf | v3.0 leaf | v3.0 conf | Delta |
+|---|---|---|---|---|---|
+| My payment failed and I need to update my card details. | PaymentFailure | 1.000 | PaymentFailure | 1.000 | +0.000 |
+| I was charged for a plan I already cancelled last month. | RefundRequest | **0.560** | WrongfulCharge | **1.000** | **+0.440** |
+| Can I get a refund for the unused portion of my annual subscription? | RefundRequest | 1.000 | RefundRequest | 1.000 | +0.000 |
+| I see a charge on my statement I don't recognize, can you explain it? | InvoiceQuestion | 1.000 | InvoiceQuestion | 0.960 | -0.040 |
+| I want to switch from monthly to annual billing to save money. | SubscriptionChange | 1.000 | SubscriptionChange | 1.000 | +0.000 |
+| The invoice shows the wrong company name and address. | InvoiceQuestion | 1.000 | InvoiceQuestion | 1.000 | +0.000 |
+| You charged me twice for the same subscription period. | PaymentFailure | **0.680** | WrongfulCharge | **1.000** | **+0.320** |
+| I cancelled my subscription but you still charged my card. | RefundRequest | **0.630** | WrongfulCharge | **1.000** | **+0.370** |
+
+### The three previously hedged tickets in detail
+
+**"Charged for a plan I already cancelled"**
+```
+v2.0: RefundRequest (0.560)
+      [RefundRequest:0.67, InvoiceQuestion:0.22, SubscriptionChange:0.10, PaymentFailure:0.01]
+
+v3.0: WrongfulCharge (1.000)
+      [WrongfulCharge:1.00, PaymentFailure:0.00, RefundRequest:0.00, SubscriptionChange:0.00, InvoiceQuestion:0.00]
+```
+The hedging across four classes is gone. Jev recognizes this as a billing
+system error (charge for a cancelled plan), not a refund request or invoice
+question.
+
+**"Charged twice for the same subscription period"**
+```
+v2.0: PaymentFailure (0.680)
+      [PaymentFailure:0.76, RefundRequest:0.14, InvoiceQuestion:0.10, SubscriptionChange:0.00]
+
+v3.0: WrongfulCharge (1.000)
+      [WrongfulCharge:1.00, RefundRequest:0.00, SubscriptionChange:0.00, InvoiceQuestion:0.00, PaymentFailure:0.00]
+```
+Previously misclassified as PaymentFailure (payment didn't process) when
+the payment actually succeeded -- it just happened twice. The new class
+captures this distinction cleanly.
+
+**"Cancelled subscription but still charged"**
+```
+v2.0: RefundRequest (0.630)
+      [RefundRequest:0.73, SubscriptionChange:0.16, PaymentFailure:0.09, InvoiceQuestion:0.02]
+
+v3.0: WrongfulCharge (1.000)
+      [WrongfulCharge:1.00, RefundRequest:0.00, PaymentFailure:0.00, SubscriptionChange:0.00, InvoiceQuestion:0.00]
+```
+The 16% hedging toward SubscriptionChange (because "cancelled" sounds
+like a plan change) is gone. The sharpened SubscriptionChange definition
+now explicitly covers forward-looking plan changes, not past billing
+errors.
+
+### One minor side effect
+
+**"I see a charge on my statement I don't recognize"**
+```
+v2.0: InvoiceQuestion (1.000)
+v3.0: InvoiceQuestion (0.960)  [InvoiceQuestion:0.97, WrongfulCharge:0.03, ...]
+```
+3% shifted to WrongfulCharge. This is not wrong -- an unrecognized charge
+could be wrongful -- but it shows the new class definition is slightly
+broad enough to catch borderline cases. Worth monitoring on future
+batches.
+
+### Feedback signals
+
+- **Zero-traffic classes:** 9 of 13 leaves received no items (expected --
+  billing-only batch).
+- **Low-confidence items:** none (all 8 tickets above 0.95).
+- **Cost:** 9,024 input tokens across 16 Jev calls = **$0.0004**.
+
+### Key observation
+
+The feedback loop converged in one iteration. The three tickets that
+hedged at 0.56-0.68 in Session 2 all classify at 1.000 in Session 4 after
+a single ontology revision. No ticket got worse by more than 0.04. The
+mean confidence on the hedged tickets improved by +0.377.
+
+The full cycle is demonstrated: LLM authors -> Jev filters -> feedback
+signals -> LLM revises -> Jev re-filters -> confidence improves.
+
+---
+
+## Updated summary across all four sessions
+
+| Metric | Session 1 | Session 2 | Session 3 | Session 4 |
+|---|---|---|---|---|
+| Tickets | 12 | 8 | 6 | 8 |
+| Jev calls | 24 | 16 | 12 | 16 |
+| Input tokens | 11,566 | 7,688 | 5,817 | 9,024 |
+| Cost | $0.0005 | $0.0003 | $0.0002 | $0.0004 |
+| High-confidence (>0.9) | 11 | 4 | 2 | 8 |
+| Flagged (<0.5) | 1 | 0 | 2 | 0 |
+| Ontology version | v2.0 | v2.0 | v2.0 | v3.0 |
+| Adversarial resistance | -- | -- | Yes | -- |
+| Closed loop | -- | -- | -- | Yes |
+
+**Total cost for all 34 tickets: $0.0014** (34,095 input tokens).
