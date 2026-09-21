@@ -262,3 +262,10 @@ To reproduce: `python generate_sessions.py` and
 
 See `IDEAS.md` for the full list of eight approaches and a deeper
 discussion of the "most promising" cascade pattern.
+
+---
+
+## About
+
+This project was produced as a workshop between Dagfinn Dybvig and
+Mistral Vibe on 2026-09-21.
