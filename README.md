@@ -3,6 +3,55 @@
 Exploring how to pair [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev),
 TypeSafe AI's "System One" decision model, with ontologies.
 
+## TL;DR -- what we learned
+
+We built a working MVP that pairs an LLM-authored ontology with Jev's
+calibrated classification, tested it against the live Jev API on 34 real
+tickets across 4 sessions, and closed the feedback loop. Total cost:
+$0.0014.
+
+**1. The feedback loop converges.** Jev's low-confidence signals
+identified a genuine gap in the billing sub-tree. The LLM revised the
+ontology (added a WrongfulCharge class). Re-running the same tickets,
+all three hedged tickets improved from 0.56-0.68 to 1.000 confidence.
+One iteration, one revision, real improvement. No clean ticket got
+meaningfully worse.
+
+**2. Jev's calibration is a diagnostic tool, not just a classifier.**
+The 0.14 probability on RefundRequest for a duplicate-charge ticket
+wasn't noise -- it pointed at a real semantic gap. Adding the class
+that gap implied eliminated the hedging. The probabilities are a map of
+where the ontology is incomplete.
+
+**3. Perfect confidence is a double-edged signal.** The jump from 0.560
+to 1.000 after one revision is large enough that the new class may be
+slightly too broad. A 3% side effect on the "unrecognized charge"
+ticket confirms this. Perfect confidence on a too-broad class hides
+ambiguity instead of surfacing it.
+
+**4. The full cycle costs effectively nothing.** Authoring the ontology,
+classifying 34 tickets, detecting the billing triangle, revising, and
+re-running: $0.0014. The feedback loop can run on every batch without
+budget as a constraint.
+
+**5. What we still don't know.** Whether the improvement generalizes
+beyond the tickets that generated the signal (no held-out test).
+Whether convergence holds over multiple iterations or oscillates.
+Whether Jev is deterministic across repeated calls (variance
+unmeasured). How the system behaves on genuinely messy real-world
+tickets.
+
+**The biggest takeaway:** the cascade is not just a pipeline, it's a
+learning loop. Jev's calibrated probabilities are the error signal, the
+LLM is the optimizer, and the ontology is the model being trained. We
+ran one gradient step and it worked. The question now is whether that
+process stabilizes or diverges over many steps on real data.
+
+See `RESULTS.md` for the full assessment, `LOOP.md` for the closed-loop
+experiment, and `SESSIONS.md` for all session logs.
+
+---
+
 ## What is Jev?
 
 Jev is a model that returns **typed, probabilistic decisions** instead of
