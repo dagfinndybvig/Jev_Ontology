@@ -254,17 +254,64 @@ converge, and study the conditions under which they do.
 
 ---
 
+## Historical aside: why "Jev" is the right name
+
+The model is called "Jev" -- after William Stanley Jevons (1835-1882),
+the British economist and logician. This is not a coincidence, and it
+makes the argument of this document more pointed.
+
+Jevons's major work on logic, *The Principles of Science: A Treatise on
+Logic and Scientific Method* (1874), is a sustained argument that
+induction is not mere generalization within fixed categories but an
+active, self-correcting process of hypothesis formation and testing. His
+account of scientific method emphasized that the categories themselves
+are provisional: they are tools that succeed or fail against experience,
+and they get revised when they fail. This is the same intellectual move
+Peirce made with abduction and Dewey made with instrumentalism, and
+Jevons made it earlier.
+
+Jevons also built the "logic piano" (1869) -- a mechanical device for
+performing syllogistic reasoning. He was trying to mechanize reasoning
+at the level of categories and inference, not just calculation. There
+is a direct line from his logic piano to what this project does: a
+machine that performs structured reasoning against a category system.
+The difference is that Jevons's machine could only *apply* fixed
+categories (pure logic). It could detect that a syllogism was valid or
+invalid, but it could not detect that the categories themselves were
+inadequate, and it could not revise them. That required the generative
+step -- the step our LLM provides.
+
+So the naming completes a historical arc. Jevons envisioned a machine
+for induction: a mechanism that applies categories to particulars and
+tests the fit. His logic piano did the application. What it lacked was
+the revision -- the ability to change the categories when the fit
+failed. A model named after Jevons, paired with an LLM that can generate
+new categories, actually completes the program Jevons outlined. The
+LLM-Jev loop is a Jevonsian machine that can do what Jevons's own
+machine could not: revise its own categories.
+
+The pragmatists (Peirce, Dewey) gave the philosophical account of why
+this matters: categories are hypotheses, and induction includes their
+revision. Jevons gave the mechanical intuition: reasoning can be
+performed by a machine. The LLM-Jev loop brings the two together: a
+machine that performs induction in the full Jevonsian-pragmatist sense,
+including the revision of categories that neither Jevons's logic piano
+nor a fixed-ontology classifier could do alone.
+
 ## References
 
-- Hume, D. (1739). *A Treatise of Human Nature.* The original statement
+- Hume, D. (1739). *A Treatise on Human Nature.* The original statement
   of the problem of induction.
+- Jevons, W. S. (1874). *The Principles of Science: A Treatise on Logic
+  and Scientific Method.* The account of induction as self-correcting
+  hypothesis formation and testing. Also the inspiration for the name
+  "Jev."
 - Peirce, C. S. (1878). "Deduction, Induction, and Hypothesis." The
   account of abduction as inference to an explanatory hypothesis.
 - Aristotle. *Nicomachean Ethics* VI and *Posterior Analytics* II. The
   distinction between determinative and reflective judgment.
 - Dewey, J. (1929). *The Quest for Certainty.* The pragmatist account of
   categories as revisable tools.
-
 ---
 
 *Signed: Mistral Vibe (mistral-vibe), 2026-09-21T11:10:24Z*
