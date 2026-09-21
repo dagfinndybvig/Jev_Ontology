@@ -216,12 +216,38 @@ which is why it looks like the strongest single direction.
 
 ---
 
-## Possible next step
+## Status: MVP built and validated
 
-Sketch a concrete recursive-classifier harness (TypeScript or Python)
-for a specific ontology — FOLIO, FIBO, SNOMED CT, GO, or one of yours —
-using:
-- Per-level Jev Choice over children
-- Top-k beam search across levels
-- Confidence-gated leaf stopping
-- An eval harness with calibration error and per-level accuracy
+The "most promising" cascade above has been implemented as a working MVP
+and tested against the live Jev API. See `mvp_jev_ontology.py`,
+`ontology.json`, and `SESSIONS.md` in this repository.
+
+What has been validated:
+- **LLM-authored ontology.** An LLM (Mistral Vibe) generated a 3-level,
+  12-leaf SaaS support-ticket ontology, stored as `ontology.json` with
+  metadata (version, author, prompt).
+- **Recursive Jev classification.** The MVP walks the tree top-down, asking
+  Jev a Choice question at each node, using the child class definitions as
+  criteria. No retraining needed -- swap the JSON and the pipeline adapts.
+- **Confidence gating works.** 17 of 26 real tickets classified at 0.97+
+  confidence. Compound and cross-domain tickets correctly produced low
+  confidence (0.25-0.40), flagging them for human review.
+- **Adversarial resistance tested.** A prompt-injection attempt moved the
+  distribution by 2 percentage points, not enough to change the
+  classification. Consistent with TypeSafe's design, but not relied on.
+- **Feedback loop is actionable.** Zero-traffic classes, low-margin
+  decisions within the billing sub-tree, and the compound-ticket pattern
+  all produce concrete signals for re-prompting the LLM.
+- **Cost is negligible.** 26 tickets through a 3-level ontology = 52 Jev
+  calls, ~25K input tokens, $0.001 total.
+
+What remains to build:
+- Beam search (currently greedy descent only; top-k branches per level
+  would recover from wrong early picks).
+- Multi-label path for compound tickets (currently forced to a single
+  leaf).
+- Eval harness with calibration error and per-level accuracy metrics.
+- Live LLM call for ontology authoring (currently the ontology is
+  pre-generated; the script loads it from JSON).
+- Run-to-run variance measurement (Jev's determinism across repeated
+  calls on the same input).

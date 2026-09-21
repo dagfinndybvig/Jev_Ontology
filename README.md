@@ -118,16 +118,32 @@ Python 3.10+. No dependencies beyond the standard library.
 
 ```
 Ticket: I was charged twice and now I can't access my account.
-  Leaf: PaymentFailure  (confidence 0.247)
+  Leaf: LoginProblem  (confidence 0.257)
   Path:
-    -> BillingAndPayments (p=0.250)  [AccountAndAccess:0.50, BillingAndPayments:0.50, TechnicalAndProduct:0.00]
-    -> PaymentFailure (p=0.990)  [PaymentFailure:1.00, SubscriptionChange:0.00, InvoiceQuestion:0.00, RefundRequest:0.00]
+    -> AccountAndAccess (p=0.260)  [AccountAndAccess:0.51, BillingAndPayments:0.49, TechnicalAndProduct:0.00]
+    -> LoginProblem (p=0.990)  [LoginProblem:1.00, SecurityConcern:0.00, AccessRequest:0.00, AccountManagement:0.00]
 ```
 
-The dead tie at level 1 (0.50/0.50) and the resulting 0.25 cumulative
+The near-tie at level 1 (0.51/0.49) and the resulting 0.257 cumulative
 confidence is the signal that this ticket spans two sub-trees. The feedback
 loop catches it and suggests re-prompting the LLM to add a compound-issue
 class.
+
+## Results
+
+`SESSIONS.md` contains authentic session logs from three real Jev API runs
+(26 tickets total, 52 Jev calls, ~25K input tokens, $0.001 cost):
+
+- **Session 1: Mixed batch** (12 tickets) -- 11 classified at 0.99+
+  confidence, 1 compound ticket flagged at 0.257.
+- **Session 2: Billing-heavy** (8 tickets) -- reveals a "billing triangle"
+  where RefundRequest, PaymentFailure, and SubscriptionChange overlap,
+  with three tickets hedging at 0.56-0.68 confidence.
+- **Session 3: Edge cases** (6 tickets) -- a prompt-injection attempt Jev
+  resisted (2% shift), a vague ticket correctly routed to 0.300 confidence,
+  and two cross-domain tickets producing genuine low-confidence signals.
+
+To reproduce: `python generate_sessions.py` (requires `TYPESAFE_API_KEY`).
 
 ## Caveats
 
