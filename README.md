@@ -128,6 +128,8 @@ Ontology/
   LOOP.md                -- closed-loop experiment: ontology revised based
                            on Jev feedback, re-run, confidence improved
   SESSIONS.md            -- authentic session logs from real Jev API calls
+  TODO.md                -- next steps: multi-label, variance, held-out
+                           eval, beam search, adversarial suite, and more
   ontology.json          -- LLM-authored ontology v2.0 (3 levels, 12 leaves)
   ontology_v3.json       -- revised ontology v3.0 (13 leaves, adds
                            WrongfulCharge based on Jev feedback signals)
