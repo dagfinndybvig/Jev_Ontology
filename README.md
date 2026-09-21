@@ -51,7 +51,9 @@ margin decisions), which feeds back into re-prompting the LLM.
 Ontology/
   IDEAS.md               -- eight ideas for Jev + ontologies, with the
                            "LLM-authored, Jev-filtered" cascade marked as
-                           most promising, plus caveats
+                           most promising, plus caveats and current status
+  RESULTS.md             -- signed assessment of the experiment: what
+                           worked, what is unproven, and conclusions
   SESSIONS.md            -- authentic session logs from real Jev API calls:
                            a mixed batch, a billing-heavy batch, and an
                            edge-case/adversarial batch, with analysis
