@@ -5,6 +5,13 @@
 Exploring how to pair [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev),
 TypeSafe AI's "System One" decision model, with ontologies.
 
+> **Jev + LLM + Ontology = Abduction**
+>
+> Jev classifies items against an ontology. The LLM revises the ontology
+> when classification fails. The loop repeats. This is abduction --
+> Peirce's "forming an explanatory hypothesis to account for a surprising
+> fact" -- performed by a system. See `PHILOSOPHY.md`.
+
 ## TL;DR -- what we learned
 
 We built a working MVP that pairs an LLM-authored ontology with Jev's
@@ -213,19 +220,26 @@ class.
 
 ## Results
 
-`SESSIONS.md` contains authentic session logs from three real Jev API runs
-(26 tickets total, 52 Jev calls, ~25K input tokens, $0.001 cost):
+`SESSIONS.md` contains authentic session logs from five real Jev API runs
+(86 tickets total, 412 Jev calls, ~204K input tokens, $0.0085 cost):
 
-- **Session 1: Mixed batch** (12 tickets) -- 11 classified at 0.99+
-  confidence, 1 compound ticket flagged at 0.257.
+- **Session 1: Mixed batch** (12 tickets) -- 11 at 0.99+ confidence,
+  1 compound ticket flagged at 0.257.
 - **Session 2: Billing-heavy** (8 tickets) -- reveals a "billing triangle"
-  where RefundRequest, PaymentFailure, and SubscriptionChange overlap,
-  with three tickets hedging at 0.56-0.68 confidence.
-- **Session 3: Edge cases** (6 tickets) -- a prompt-injection attempt Jev
-  resisted (2% shift), a vague ticket correctly routed to 0.300 confidence,
-  and two cross-domain tickets producing genuine low-confidence signals.
+  where RefundRequest, PaymentFailure, and SubscriptionChange overlap.
+- **Session 3: Edge cases** (6 tickets) -- prompt-injection resisted (2%
+  shift), vague ticket routed to 0.300, cross-domain tickets flagged.
+- **Session 4: Closed loop** (8 tickets) -- ontology revised to v3.0,
+  all 3 hedged tickets improved from 0.56-0.68 to 1.000 confidence.
+- **Session 5: Convergence** (52 tickets, 3 iterations) -- mean confidence
+  0.940 -> 0.945 -> 0.948. Converges in a weak sense with diminishing
+  returns. See `CONVERGENCE.md`.
 
-To reproduce: `python generate_sessions.py` (requires `TYPESAFE_API_KEY`).
+See also `RESULTS.md` for the signed assessment and `LOOP.md` for the
+first closed-loop experiment.
+
+To reproduce: `python generate_sessions.py` and
+`python convergence_experiment.py` (require `TYPESAFE_API_KEY`).
 
 ## Caveats
 

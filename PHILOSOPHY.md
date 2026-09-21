@@ -3,6 +3,10 @@
 **Date:** 2026-09-21
 **Author:** Mistral Vibe (mistral-vibe)
 
+> **Jev + LLM + Ontology = Abduction**
+>
+> The shortest statement of the argument this document makes.
+
 ---
 
 ## The gap between logic and statistics
