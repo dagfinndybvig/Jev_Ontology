@@ -1,3 +1,5 @@
+<img width="1280" height="509" alt="jevons_book2" src="https://github.com/user-attachments/assets/a224fe33-2ed1-45da-b78d-335e9ce5de40" />
+
 # Ontology + Jev
 
 Exploring how to pair [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev),
@@ -70,7 +72,7 @@ See `RESULTS.md` for the full assessment, `CONVERGENCE.md` for the
 
 ## What is Jev?
 
-Jev is a model that returns **typed, probabilistic decisions** instead of
+Jev is a model, named after William Stanley Jevons, that returns **typed, probabilistic decisions** instead of
 generating text. You send it a *state* (the context to evaluate) and a set of
 typed *questions* (Choice, Score, or Noul), and it returns calibrated answers
 with probabilities in a single parallel pass.
