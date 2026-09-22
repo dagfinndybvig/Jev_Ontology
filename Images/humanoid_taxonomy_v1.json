@@ -1,0 +1,62 @@
+{
+  "_meta": {
+    "version": "humanoid_taxonomy_v1",
+    "date": "2026-09-22",
+    "author": "Mistral Vibe (mistral-vibe)",
+    "purpose": "Pilot taxonomy for the humanoid facet (LIBRARY.md Phases 1 and 4): re-classify the 215 existing image descriptions against a multi-question facet set, producing a first review queue.",
+    "design_notes": [
+      "Entity type and representation are separate facets: a statue of a human is a depiction of a human, not a third kind of entity. The 215-image run showed the ambiguity lives at exactly this boundary.",
+      "primary_subject includes 'multiple' because some images contain both a human and a robot (Buck and Twiki); a single-label taxonomy without it forces a wrong answer.",
+      "contains_human reuses the exact criteria from classify_images.py so the pilot doubles as a consistency check against the original run.",
+      "All questions use the proven Choice schema (yes/no as two criteria) rather than guessing the Noul wire format; one call carries all five questions in a single parallel pass."
+    ]
+  },
+  "facets": {
+    "contains_human": {
+      "type": "choice",
+      "instructions": "Does this image contain a human?",
+      "criteria": {
+        "yes": "The image contains one or more humans (people, faces, bodies)",
+        "no": "The image contains no humans"
+      }
+    },
+    "contains_robot": {
+      "type": "choice",
+      "instructions": "Does this image contain a robot or mechanical automaton?",
+      "criteria": {
+        "yes": "The image contains one or more robots: mechanical automatons, clearly manufactured machines with a body or face, whether photographed, illustrated, or rendered",
+        "no": "The image contains no robots or mechanical automatons"
+      }
+    },
+    "contains_android": {
+      "type": "choice",
+      "instructions": "Does this image contain an android: an artificial being that passes as human?",
+      "criteria": {
+        "yes": "The image contains one or more androids: artificial beings manufactured to pass as human, where the image or its context identifies them as artificial (e.g., labeled as AI, synthetic, or android)",
+        "no": "The image contains no androids: no artificial beings presented as human-passing"
+      }
+    },
+    "primary_subject": {
+      "type": "choice",
+      "instructions": "What is the primary humanoid subject of the image?",
+      "criteria": {
+        "human": "The main subject is one or more humans",
+        "robot": "The main subject is one or more robots or mechanical automatons",
+        "android": "The main subject is one or more androids: artificial beings that pass as human",
+        "multiple": "The image prominently contains more than one distinct kind of humanoid (e.g., a human together with a robot)",
+        "none": "The image contains no humanoid subject of any kind"
+      }
+    },
+    "representation": {
+      "type": "choice",
+      "instructions": "How is the subject represented?",
+      "criteria": {
+        "photograph": "A photograph of a real scene: actual people, objects, or places captured by a camera",
+        "illustration": "A drawing, cartoon, comic, painting, or digital illustration",
+        "statue_or_render": "A statue, figurine, sculpture, model, or 3D render of a subject",
+        "text_screenshot": "A screenshot or scan of text: the image shows words or code, not a scene",
+        "other": "None of the above: a diagram, chart, map, abstract image, or interface screenshot without a depicted subject"
+      }
+    }
+  }
+}

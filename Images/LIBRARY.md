@@ -253,3 +253,55 @@ with LLM assistance, not autonomous.
 Phases 0-3 are a realistic first milestone: a measured answer to
 "can this classify our collection," with a review queue a cataloger
 can actually use.
+
+---
+
+## Pilot run (2026-09-22): humanoid taxonomy v1
+
+`humanoid_taxonomy_v1.json` and `pilot_humanoid.py` implement
+Phases 1 and 4 on the existing 215 image descriptions: one Jev call
+per image carrying five questions (contains_human, contains_robot,
+contains_android, primary_subject, representation) in a single
+parallel pass. 215 calls, 0 errors, 194,193 input tokens, $0.0082.
+Per-image results are private (`humanoid_pilot_results.json`,
+gitignored).
+
+Aggregate:
+
+| Facet | Distribution |
+|---|---|
+| primary_subject | none 131, human 74, robot 7, multiple 3 |
+| representation | text/screenshot 66, photograph 60, illustration 54, other 26, statue/render 9 |
+| contains_robot | 10 yes / 205 no |
+| contains_android | 0 yes / 215 no |
+
+Findings:
+
+1. **Consistency: 215/215.** `contains_human` (same criteria as the
+   original run) agreed with the original single-question run on
+   every image, including the depiction cases. Two runs, two
+   question sets, same answers.
+2. **The compound class earns its keep.** All three `multiple`
+   images are human+robot scenes -- the exact case a single-label
+   taxonomy forces a wrong answer on.
+3. **Representation is the noisy facet.** 64 of the 79 review-queue
+   entries come from `representation` hedging, not from entity
+   questions. A five-way choice with subtle boundaries (screenshot
+   vs. interface vs. illustration) hedges more than yes/no
+   questions. Before deployment: sharpen those definitions, or
+   accept that representation drives the review burden.
+4. **The android criteria may be too strict.** 0/215, with two
+   images hedging hard on the question. Either the collection has
+   no androids (plausible) or the "identified as artificial in
+   context" requirement reads stricter than intended. Phase 0
+   ground truth would settle it.
+5. **Review burden at threshold 0.7: 79/215 (37%).** Higher than
+   the original single-question run's 13 flagged, as expected --
+   five questions means five chances to hedge, and the queue takes
+   the minimum. The burden-vs-threshold trade-off is exactly what
+   Phase 2 is designed to measure.
+
+The pilot validates the taxonomy-as-data pattern and the
+multi-question single-call pattern at library scale. What it does
+not do is measure accuracy: the 215 images still have no ground
+truth. Phase 0 remains the next dependency.

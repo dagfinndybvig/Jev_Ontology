@@ -5,3 +5,4 @@ __pycache__/
 # photo collection. See Images/README.md ("Privacy").
 Images/image_human_results.json
 Images/image_human_summary.txt
+Images/humanoid_pilot_results.json
