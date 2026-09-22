@@ -1,6 +1,6 @@
 """
 Convergence experiment: run 3 iterations of the LLM-Jev feedback loop
-on a 50-ticket set against the live Jev API.
+on a 52-ticket set against the live Jev API.
 
 At each iteration:
   1. Classify all tickets against the current ontology

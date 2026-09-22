@@ -142,14 +142,14 @@ def mock_jev_choice(item_text, children):
 
 
 # --------------------------------------------------------------------------- #
-# Step 3: Recursive classifier with beam search and confidence gating
+# Step 3: Recursive classifier with greedy descent
 # --------------------------------------------------------------------------- #
 
-def classify_item(item_text, ontology, confidence_threshold=0.7):
+def classify_item(item_text, ontology):
     """
     Walk the ontology tree top-down.
     At each node, ask Jev Choice over children. Descend the winner.
-    Stop at a leaf or when confidence clears the threshold.
+    Always continues to a leaf, accumulating confidence along the path.
     Returns the path, leaf, and cumulative confidence.
     """
     path = []

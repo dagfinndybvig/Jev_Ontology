@@ -2,7 +2,8 @@
 
 Pipeline: Mistral vision (Pixtral) describes each image -> Jev classifies the
 description as human / no-human. Results are saved incrementally to
-image_human_results.json so the run can be resumed.
+image_human_results.json so the run can be resumed. Errored records are
+retried on the next run.
 """
 import base64
 import json
@@ -115,7 +116,7 @@ def main():
     print(f"Total images: {len(files)}")
 
     results = load_results()
-    done = set(results.keys())
+    done = {name for name, rec in results.items() if rec.get("status") == "ok"}
     todo = [n for n in files if n not in done]
     print(f"Already done: {len(done)}, to process: {len(todo)}")
 

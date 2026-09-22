@@ -12,7 +12,7 @@
 ## Summary
 
 The task was to sort the images in the Pictures folder by whether they
-contain a human, using Jev. The result: 74 images contain a human, 141
+contain a human, using Jev. The result: 73 images contain a human, 142
 do not, with 0 errors. 188 of 215 (87%) were classified at 0.9+
 confidence.
 
@@ -51,7 +51,12 @@ placeholder, so Mistral's Pixtral was used for the vision step.)
 | No human | 142 | 0.959 | 127 | 9 | 3 | 3 |
 | **Total** | **215** | | **188** | **14** | **5** | **8** |
 
-0 errors. 188 of 215 (87%) classified at 0.9+ confidence.
+0 errors. 188 of 215 (87%) classified at 0.9+ confidence. The buckets
+above use each record's effective (post-correction) confidence, so the
+corrected `[redacted]` contributes a manual 1.0 to the
+no-human >=0.9 bucket; Jev's raw answer ("yes" at 1.000, preserved
+under the record's `jev` key in `image_human_results.json`) would place
+it in the contains-human >=0.9 bucket instead.
 
 > **Correction (2026-09-22):** `[redacted]` was initially classified
 > as "contains human" at 1.000, but it is actually a screenshot of *text*
@@ -106,7 +111,7 @@ effectively free.
 ## What is unproven
 
 1. **No ground truth.** We did not manually label the 215 images, so
-   accuracy is unmeasured. The 74/141 split is Jev's judgment, not a
+   accuracy is unmeasured. The 73/142 split is Jev's judgment, not a
    verified answer. A manual audit of a sample (especially the 13
    low-confidence cases) would establish real accuracy.
 2. **The vision model is the bottleneck.** Jev only sees the 25-word
