@@ -106,7 +106,9 @@ image_human_summary.txt (private)   -- clean sorted list, real filenames (gitign
 fix_false_positive.py               -- corrects one record, preserving raw output
 copy_humans.py                      -- copies human-classified images to a subfolder
 RESULTS.md                          -- writeup of the run and findings
-LIBRARY.md                         -- project plan for the library use-case
+LIBRARY.md                          -- project plan for the library use-case
+TODO.md                             -- outline of the fuller multi-question project
+STATUS.md                           -- session pickup notes: where we are, next steps
 humanoid_taxonomy_v1.json          -- pilot taxonomy: humanoid facets as data
 pilot_humanoid.py                  -- re-classifies the 215 descriptions against it
 humanoid_pilot_results.json (private) -- pilot per-image results (gitignored)

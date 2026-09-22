@@ -1,7 +1,7 @@
 # Status: Where We Are, Where to Pick Up
 
-**Last updated:** 2026-09-22 (end of session)
-**Repo state:** clean, in sync with `origin/main` at the humanoid-pilot commit.
+**Last updated:** 2026-09-22 (README sessions: image, alt text, caption, file list)
+**Repo state:** clean, in sync with `origin/main`.
 
 ---
 
