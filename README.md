@@ -1,4 +1,4 @@
-<img width="1280" height="509" alt="jevons_book2" src="https://github.com/user-attachments/assets/a224fe33-2ed1-45da-b78d-335e9ce5de40" />
+<img width="1280" height="509" alt="Buck Rogers and the robot Twiki" src="https://github.com/user-attachments/assets/a224fe33-2ed1-45da-b78d-335e9ce5de40" />
 
 # Ontology + Jev
 
