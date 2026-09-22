@@ -1,5 +1,9 @@
 # Images + Jev
 
+A visual ontology, Twiki. That is where we are going!
+
+Since I work in a university library, making a system for auto-classifying images according to some taxonomic scheme is a real use-case for me.
+
 Classifying images with [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev),
 TypeSafe AI's "System One" decision model.
 
