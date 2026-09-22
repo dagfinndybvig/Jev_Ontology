@@ -176,10 +176,10 @@ Ontology/
   close_loop.py          -- re-runs Session 2 tickets against v2.0 and v3.0
   generate_sessions.py   -- runs the three session batches against the
                            real Jev API and prints results
-  test_jev_api.py         -- standalone smoke test for the Jev API
-  heldout_experiment.py   -- held-out generalization test (36 train / 16
+  test_jev_api.py        -- standalone smoke test for the Jev API
+  heldout_experiment.py  -- held-out generalization test (36 train / 16
                            held-out; revision authored from train signals)
-  heldout_variance.py     -- measures Jev's run-to-run noise floor
+  heldout_variance.py    -- measures Jev's run-to-run noise floor
   run_iter1.py / run_iter2.py -- single-iteration signal dumps used to
                            author the v4.0 / v5.0 revisions
   convergence_results.json -- saved results of the 3-iteration run
