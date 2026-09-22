@@ -5,6 +5,8 @@ A visual ontology, Twiki. That is where we are going!
 Goal: a pipeline that auto-classifies digitized image collections
 against a revisable taxonomy, routing uncertain items to human review.
 
+See `LIBRARY.md` for the project plan for the library use-case.
+
 Since I work in a university library, making a system for auto-classifying images according to some taxonomic scheme is a real use-case for me.
 
 Classifying images with [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev),
@@ -104,6 +106,7 @@ image_human_summary.txt (private)   -- clean sorted list, real filenames (gitign
 fix_false_positive.py               -- corrects one record, preserving raw output
 copy_humans.py                      -- copies human-classified images to a subfolder
 RESULTS.md                          -- writeup of the run and findings
+LIBRARY.md                         -- project plan for the library use-case
 ```
 
 ## Running it
