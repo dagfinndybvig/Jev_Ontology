@@ -12,6 +12,18 @@ TypeSafe AI's "System One" decision model, with ontologies.
 > Peirce's "forming an explanatory hypothesis to account for a surprising
 > fact" -- performed by a system. See `PHILOSOPHY.md`.
 
+> **Status: work in progress.**
+>
+> This is an active research project, not a finished result. The
+> convergence findings below are **tentative and in-sample**: they
+> describe what the loop does on the tickets that drove the revisions.
+> A held-out generalization test (see `CONVERGENCE.md`) shows the
+> improvement does not transfer to unseen tickets beyond Jev's
+> run-to-run noise. Treat the claims here as observations about a fixed
+> dataset, not as general properties of the mechanism.
+>
+> Comments and suggestions are welcome -- open an issue or a PR.
+
 ## TL;DR -- what we learned
 
 We built a working MVP that pairs an LLM-authored ontology with Jev's
