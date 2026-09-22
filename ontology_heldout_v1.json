@@ -1,0 +1,95 @@
+{
+  "_meta": {
+    "version": "heldout_v1",
+    "author": "Mistral Vibe (LLM-authored, feedback-driven revision)",
+    "domain": "Customer support tickets for a SaaS product",
+    "prompt": "Create an ontology for customer-support tickets for a SaaS product as JSON. Each class has id, label, definition, and optional children (sub-classes). Aim for 3 levels. Make definitions specific enough that a classifier can distinguish siblings.",
+    "revision_notes": "heldout_v1 revises the TechnicalAndProduct sub-tree based ONLY on training-set feedback signals from the held-out experiment (baseline v2.0). The single actionable signal was a low-margin BugReport vs IntegrationProblem decision: 'The Slack notifications stopped working after we changed our workspace settings' routed to BugReport at 0.54 vs IntegrationProblem 0.46. The fix sharpens the boundary: BugReport is a defect internal to the product; IntegrationProblem is a connection to a third-party service that broke, including after a change on the third-party side. No other sub-tree was touched. The compound ticket (charged + login + 2FA) is a known irreducible floor and was not addressed."
+  },
+  "id": "SupportTicket",
+  "label": "Support Ticket",
+  "definition": "Any customer-initiated request or inquiry submitted through a support channel (email, chat, portal, in-app).",
+  "children": [
+    {
+      "id": "BillingAndPayments",
+      "label": "Billing and Payments",
+      "definition": "Issues related to money: charges, refunds, invoices, subscriptions, and payment methods.",
+      "children": [
+        {
+          "id": "PaymentFailure",
+          "label": "Payment Failure",
+          "definition": "A payment attempt was declined, failed to process, or the card on file has expired. Includes duplicate charges and transaction errors."
+        },
+        {
+          "id": "RefundRequest",
+          "label": "Refund Request",
+          "definition": "Customer wants money returned for a product, service, or charge they believe was in error. Includes pro-rated refunds and goodwill refunds."
+        },
+        {
+          "id": "SubscriptionChange",
+          "label": "Subscription Change",
+          "definition": "Customer wants to upgrade, downgrade, pause, or cancel their subscription plan, or switch billing cycle (monthly to annual)."
+        },
+        {
+          "id": "InvoiceQuestion",
+          "label": "Invoice or Billing Question",
+          "definition": "Customer has a question about an invoice, charge, or billing statement that is not a payment failure or refund request. Includes tax questions and charge explanations."
+        }
+      ]
+    },
+    {
+      "id": "TechnicalAndProduct",
+      "label": "Technical and Product",
+      "definition": "Issues related to the product's functionality, bugs, integrations, feature gaps, and performance.",
+      "children": [
+        {
+          "id": "BugReport",
+          "label": "Bug Report",
+          "definition": "Customer reports unexpected behavior, an error message, a crash, or something in the product itself not working as documented or expected. The problem is internal to the product's own code or behavior. If the issue is a broken connection to a third-party service (Slack, Salesforce, Zapier, webhooks, SSO provider), use IntegrationProblem instead."
+        },
+        {
+          "id": "FeatureRequest",
+          "label": "Feature Request",
+          "definition": "Customer asks for a new feature, enhancement, or capability that does not currently exist in the product. Includes workflow improvements."
+        },
+        {
+          "id": "IntegrationProblem",
+          "label": "Integration or API Problem",
+          "definition": "Customer has difficulty connecting the product with a third-party service, API, webhook, or data sync. Includes notifications or data that stopped flowing from a third-party service, broken connections after a change on the third-party side (e.g., workspace settings, tokens, permissions), and authentication errors on the integration side. If a previously working integration broke after the customer changed settings on the third-party service, this is an integration problem, not a product bug."
+        },
+        {
+          "id": "PerformanceIssue",
+          "label": "Performance Issue",
+          "definition": "Customer reports the product is slow, unresponsive, or lagging, but it is not crashing or producing errors. Includes timeout and load-time complaints."
+        }
+      ]
+    },
+    {
+      "id": "AccountAndAccess",
+      "label": "Account and Access",
+      "definition": "Issues related to account login, permissions, security, and user management.",
+      "children": [
+        {
+          "id": "LoginProblem",
+          "label": "Login Problem",
+          "definition": "Customer cannot log in to their account. Includes incorrect password, expired session, MFA/2FA issues, and SSO failures."
+        },
+        {
+          "id": "AccessRequest",
+          "label": "Access or Permission Request",
+          "definition": "Customer needs permissions, roles, or access to features, workspaces, or data they currently cannot reach. Includes seat additions and team member invitations."
+        },
+        {
+          "id": "SecurityConcern",
+          "label": "Security Concern",
+          "definition": "Customer suspects unauthorized access, a breach, phishing related to the product, or has a security question. Includes data privacy and GDPR requests."
+        },
+        {
+          "id": "AccountManagement",
+          "label": "Account Management",
+          "definition": "Customer wants to change account settings that are not access or security related. Includes profile updates, email address changes, and account deletion requests."
+        }
+      ]
+    }
+  ]
+}

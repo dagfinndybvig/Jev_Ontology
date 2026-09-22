@@ -306,11 +306,17 @@ running 10 iterations would cost roughly $0.025 -- still negligible.
 
 ---
 
-## What this proves and what it does not
+## What this suggests and what it does not
 
-**Proves:**
+The findings below are **tentative and in-sample**. They describe what
+the loop does on the 52 tickets that drove the revisions. The held-out
+test (next section) shows these gains do not transfer to unseen tickets
+beyond noise, so treat them as observations about a fixed dataset, not
+as general properties of the mechanism.
+
+**Tentative conclusions (in-sample):**
 - The feedback loop produces monotonically improving aggregate
-  confidence across multiple iterations.
+  confidence across multiple iterations on the training set.
 - Signal-driven ontology revisions fix specific classification
   problems and the fixes are stable across subsequent iterations.
 - Leaf assignments are highly stable -- revisions do not disrupt
@@ -321,7 +327,7 @@ running 10 iterations would cost roughly $0.025 -- still negligible.
 - Revisions have side effects: fixing one gap can open another,
   though the aggregate still improves.
 
-**Does not prove:**
+**Does not establish:**
 - Convergence on a larger or different dataset. 52 tickets is
   still small. A 1000-ticket dataset might reveal different
   patterns.
@@ -336,6 +342,92 @@ running 10 iterations would cost roughly $0.025 -- still negligible.
 - Generalization to a different domain. The ontology is for
   SaaS support tickets. A legal ontology (FOLIO) or a clinical
   ontology (SNOMED) might behave differently.
+- Generalization to held-out tickets. Tested 2026-09-22 (see the
+  held-out test below): the loop's improvement does not transfer to
+  unseen tickets beyond run-to-run noise.
+
+---
+
+## Held-out generalization test (2026-09-22)
+
+The convergence experiment above measures improvement on the same 52
+tickets that drive the revisions. That is in-sample: the revision
+signals and the evaluation come from the same tickets, so "improvement"
+can just be the ontology memorizing the eval set. This section reports a
+held-out test that fixes that.
+
+### Design
+
+1. Split the 52 tickets into **36 train / 16 held-out** (seeded, saved
+   to `heldout_split.json`).
+2. Classified both sets against the clean `v2.0` baseline (the original
+   LLM-authored ontology, uncontaminated by these tickets).
+3. Collected revision signals from **train only**.
+4. Authored a fresh revision (`ontology_heldout_v1.json`) from those
+   train signals alone. The held-out tickets never influenced it.
+5. Re-evaluated the held-out set against the revision.
+
+### Results
+
+| | Train (36) | Holdout (16) |
+|---|---|---|
+| v2.0 baseline | mean 0.901 | mean 0.928 |
+| heldout_v1 (train-only revision) | mean 0.914 | mean 0.932 |
+| Δ | **+0.013** | **+0.004** |
+
+The train set improved by +0.013. The held-out set improved by +0.004.
+
+### The noise floor
+
+To interpret the +0.004, I re-ran the **same** held-out set against the
+**same** `v2.0` ontology five times to measure Jev's run-to-run
+variance:
+
+```
+mean confidence: 0.9279 -> 0.9324, spread = 0.0045, std = 0.0015
+```
+
+The +0.004 holdout "improvement" is entirely inside the ±0.0045 noise
+floor. It is not signal.
+
+The per-ticket detail makes this unambiguous. The tickets that improved
+on holdout were in branches the revision never touched (billing: the
+$49 charge 0.750 -> 0.790, the "charged for pro plan" 0.330 -> 0.400).
+The one ticket in the branch the revision *did* touch -- the Stripe
+IntegrationProblem -- actually got **worse** (0.768 -> 0.739). The
+revision changed nothing in billing, so those "improvements" are pure
+sampling variance.
+
+### Verdict
+
+**The loop does not generalize.** The train improvement (+0.013) is real
+but in-sample -- the ontology is fitting the tickets that generated its
+revision signals. On held-out data the effect is indistinguishable from
+noise. This is the overfitting signature.
+
+Two reinforcing observations:
+
+- **Side effects, as predicted.** The revision introduced a *new*
+  low-confidence train ticket (the GDPR question, now routing to
+  FeatureRequest at 0.447) -- the "fix one gap, open another" pattern.
+- **The convergence numbers are suspect.** The headline 0.940 -> 0.945
+  -> 0.948 (+0.008) was measured in-sample on the same tickets that
+  drove the revisions. Given a noise floor of ~0.0045 on just 16
+  tickets, and that the convergence set was in-sample, that +0.008 is
+  not strong evidence of convergence.
+
+### What this means for the convergence claim
+
+The in-sample experiment showed the loop improves the ontology on the
+tickets it sees. The held-out test shows that improvement does not
+transfer to unseen tickets beyond noise. The loop is a reasonable
+*classifier-tuning* mechanism for a fixed dataset, but it is not yet
+demonstrated to be a *learning* mechanism that produces a better
+ontology in general.
+
+The single clean step in the original work (billing triangle ->
+WrongfulCharge -> 1.000) was one in-sample revision; the held-out test
+shows that kind of gain does not transfer.
 
 ---
 

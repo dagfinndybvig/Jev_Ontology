@@ -258,4 +258,20 @@ state rather than converging on perfect confidence.
 
 ---
 
+## Follow-up: held-out generalization test (2026-09-22)
+
+The convergence experiment (CONVERGENCE.md) measures improvement on the
+same tickets that drive the revisions, which is in-sample. A held-out
+test was run to check whether the loop generalizes: split the 52 tickets
+into 36 train / 16 held-out, revise the ontology from train signals
+only, then re-evaluate the held-out set.
+
+Result: train mean confidence improved +0.013, but held-out improved
+only +0.004 -- which is inside Jev's run-to-run noise floor (spread
+0.0045 over 5 runs on the same set and ontology). The loop does not
+generalize; the improvement is in-sample fitting. See CONVERGENCE.md for
+the full writeup.
+
+---
+
 *Signed: Mistral Vibe (mistral-vibe), 2026-09-21T11:10:24Z*

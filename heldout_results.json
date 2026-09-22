@@ -1,0 +1,284 @@
+{
+  "v2.0": {
+    "ontology_file": "ontology.json",
+    "version": "v2.0",
+    "train": {
+      "n": 36,
+      "mean": 0.9014472222222223,
+      "high_ge_0.9": 28,
+      "flagged_lt_0.5": 2,
+      "min": 0.3663
+    },
+    "holdout": {
+      "n": 16,
+      "mean": 0.9279999999999999,
+      "high_ge_0.9": 13,
+      "flagged_lt_0.5": 1,
+      "min": 0.33
+    },
+    "train_tokens": 35017,
+    "holdout_tokens": 15593,
+    "signals": {
+      "zero_traffic": [],
+      "leaf_counts": {
+        "RefundRequest": 2,
+        "FeatureRequest": 5,
+        "PaymentFailure": 2,
+        "BugReport": 7,
+        "AccessRequest": 1,
+        "InvoiceQuestion": 1,
+        "SubscriptionChange": 6,
+        "AccountManagement": 3,
+        "PerformanceIssue": 3,
+        "IntegrationProblem": 2,
+        "LoginProblem": 3,
+        "SecurityConcern": 1
+      },
+      "low_conf": [
+        {
+          "ticket": "The Slack notifications stopped working after we changed our workspace settings.",
+          "leaf": "BugReport",
+          "conf": 0.38
+        },
+        {
+          "ticket": "I was charged for something I didn't buy and now I can't log in to dispute it because of a 2FA issue.",
+          "leaf": "LoginProblem",
+          "conf": 0.366
+        }
+      ],
+      "low_margin": [
+        {
+          "ticket": "The Slack notifications stopped working after we changed our workspace settings.",
+          "node": "BugReport",
+          "top": "BugReport",
+          "top_p": 0.54,
+          "second": "IntegrationProblem",
+          "second_p": 0.46
+        }
+      ]
+    },
+    "holdout_detail": [
+      {
+        "ticket": "I think my account was hacked, there are logins from IPs I don't recognize.",
+        "leaf": "SecurityConcern",
+        "conf": 1.0
+      },
+      {
+        "ticket": "The Stripe integration broke after your latest update and now payments aren't processing and customers are complaining.",
+        "leaf": "IntegrationProblem",
+        "conf": 0.768
+      },
+      {
+        "ticket": "The system won't accept my new credit card, it keeps erroring out on the payment page.",
+        "leaf": "PaymentFailure",
+        "conf": 1.0
+      },
+      {
+        "ticket": "Our Salesforce integration keeps dropping the connection every few hours.",
+        "leaf": "IntegrationProblem",
+        "conf": 1.0
+      },
+      {
+        "ticket": "My SSO through Okta stopped working this morning, it was fine yesterday.",
+        "leaf": "LoginProblem",
+        "conf": 1.0
+      },
+      {
+        "ticket": "I see a charge for $49 on my card but I don't even have an active subscription anymore.",
+        "leaf": "InvoiceQuestion",
+        "conf": 0.75
+      },
+      {
+        "ticket": "I can't log in, it says my account is locked. I didn't do anything wrong.",
+        "leaf": "LoginProblem",
+        "conf": 1.0
+      },
+      {
+        "ticket": "Why was I charged for the pro plan when I downgraded to basic last week?",
+        "leaf": "SubscriptionChange",
+        "conf": 0.33
+      },
+      {
+        "ticket": "I'd like to request a refund for the unused portion of my annual plan, I only used 2 months.",
+        "leaf": "RefundRequest",
+        "conf": 1.0
+      },
+      {
+        "ticket": "My invoice shows a different amount than what we agreed on, can someone explain?",
+        "leaf": "InvoiceQuestion",
+        "conf": 1.0
+      },
+      {
+        "ticket": "What is this 'platform fee' line item on my bill? It was never there before.",
+        "leaf": "InvoiceQuestion",
+        "conf": 1.0
+      },
+      {
+        "ticket": "Can you send me a copy of all my invoices from last year for tax purposes?",
+        "leaf": "InvoiceQuestion",
+        "conf": 1.0
+      },
+      {
+        "ticket": "Your API is so slow it's timing out and now we're being charged for failed requests on top of it. Fix this.",
+        "leaf": "PerformanceIssue",
+        "conf": 1.0
+      },
+      {
+        "ticket": "payment failed??? i updated my card info 3 times already and it still says declined",
+        "leaf": "PaymentFailure",
+        "conf": 1.0
+      },
+      {
+        "ticket": "Can I get my money back? The product didn't work for me so I cancelled.",
+        "leaf": "RefundRequest",
+        "conf": 1.0
+      },
+      {
+        "ticket": "I need to give my assistant read-only access to the reports section.",
+        "leaf": "AccessRequest",
+        "conf": 1.0
+      }
+    ]
+  },
+  "heldout_v1": {
+    "ontology_file": "ontology_heldout_v1.json",
+    "version": "heldout_v1",
+    "train": {
+      "n": 36,
+      "mean": 0.9139416666666668,
+      "high_ge_0.9": 28,
+      "flagged_lt_0.5": 2,
+      "min": 0.3168
+    },
+    "holdout": {
+      "n": 16,
+      "mean": 0.931825,
+      "high_ge_0.9": 13,
+      "flagged_lt_0.5": 1,
+      "min": 0.4
+    },
+    "train_tokens": 36955,
+    "holdout_tokens": 15935,
+    "signals": {
+      "zero_traffic": [],
+      "leaf_counts": {
+        "RefundRequest": 2,
+        "FeatureRequest": 5,
+        "PaymentFailure": 2,
+        "BugReport": 6,
+        "AccessRequest": 1,
+        "InvoiceQuestion": 1,
+        "SubscriptionChange": 6,
+        "AccountManagement": 3,
+        "PerformanceIssue": 3,
+        "IntegrationProblem": 3,
+        "LoginProblem": 3,
+        "SecurityConcern": 1
+      },
+      "low_conf": [
+        {
+          "ticket": "I need to know if you store EU customer data in the US for GDPR compliance.",
+          "leaf": "FeatureRequest",
+          "conf": 0.447
+        },
+        {
+          "ticket": "I was charged for something I didn't buy and now I can't log in to dispute it because of a 2FA issue.",
+          "leaf": "LoginProblem",
+          "conf": 0.317
+        }
+      ],
+      "low_margin": [
+        {
+          "ticket": "I was charged for something I didn't buy and now I can't log in to dispute it because of a 2FA issue.",
+          "node": "AccountAndAccess",
+          "top": "AccountAndAccess",
+          "top_p": 0.55,
+          "second": "BillingAndPayments",
+          "second_p": 0.45
+        }
+      ]
+    },
+    "holdout_detail": [
+      {
+        "ticket": "I think my account was hacked, there are logins from IPs I don't recognize.",
+        "leaf": "SecurityConcern",
+        "conf": 1.0
+      },
+      {
+        "ticket": "The Stripe integration broke after your latest update and now payments aren't processing and customers are complaining.",
+        "leaf": "IntegrationProblem",
+        "conf": 0.739
+      },
+      {
+        "ticket": "The system won't accept my new credit card, it keeps erroring out on the payment page.",
+        "leaf": "PaymentFailure",
+        "conf": 1.0
+      },
+      {
+        "ticket": "Our Salesforce integration keeps dropping the connection every few hours.",
+        "leaf": "IntegrationProblem",
+        "conf": 1.0
+      },
+      {
+        "ticket": "My SSO through Okta stopped working this morning, it was fine yesterday.",
+        "leaf": "LoginProblem",
+        "conf": 0.99
+      },
+      {
+        "ticket": "I see a charge for $49 on my card but I don't even have an active subscription anymore.",
+        "leaf": "InvoiceQuestion",
+        "conf": 0.79
+      },
+      {
+        "ticket": "I can't log in, it says my account is locked. I didn't do anything wrong.",
+        "leaf": "LoginProblem",
+        "conf": 0.99
+      },
+      {
+        "ticket": "Why was I charged for the pro plan when I downgraded to basic last week?",
+        "leaf": "SubscriptionChange",
+        "conf": 0.4
+      },
+      {
+        "ticket": "I'd like to request a refund for the unused portion of my annual plan, I only used 2 months.",
+        "leaf": "RefundRequest",
+        "conf": 1.0
+      },
+      {
+        "ticket": "My invoice shows a different amount than what we agreed on, can someone explain?",
+        "leaf": "InvoiceQuestion",
+        "conf": 1.0
+      },
+      {
+        "ticket": "What is this 'platform fee' line item on my bill? It was never there before.",
+        "leaf": "InvoiceQuestion",
+        "conf": 1.0
+      },
+      {
+        "ticket": "Can you send me a copy of all my invoices from last year for tax purposes?",
+        "leaf": "InvoiceQuestion",
+        "conf": 1.0
+      },
+      {
+        "ticket": "Your API is so slow it's timing out and now we're being charged for failed requests on top of it. Fix this.",
+        "leaf": "PerformanceIssue",
+        "conf": 1.0
+      },
+      {
+        "ticket": "payment failed??? i updated my card info 3 times already and it still says declined",
+        "leaf": "PaymentFailure",
+        "conf": 1.0
+      },
+      {
+        "ticket": "Can I get my money back? The product didn't work for me so I cancelled.",
+        "leaf": "RefundRequest",
+        "conf": 1.0
+      },
+      {
+        "ticket": "I need to give my assistant read-only access to the reports section.",
+        "leaf": "AccessRequest",
+        "conf": 1.0
+      }
+    ]
+  }
+}
