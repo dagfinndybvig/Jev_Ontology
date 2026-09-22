@@ -42,3 +42,23 @@ for run in range(N):
 print(f"\nOntology {ver}, {N} runs, {len(holdout)} holdout tickets")
 print(f"mean confidence: min={min(means):.4f} max={max(means):.4f} "
       f"spread={max(means)-min(means):.4f} std={__import__('statistics').pstdev(means):.4f}")
+
+# Save the runs so the noise-floor numbers are backed by a committed artifact.
+out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "heldout_results.json")
+results_store = {}
+if os.path.exists(out_path):
+    with open(out_path, "r", encoding="utf-8") as f:
+        results_store = json.load(f)
+results_store[f"variance_{ver}_{N}runs"] = {
+    "ontology_file": onto_file,
+    "version": ver,
+    "runs": N,
+    "holdout_n": len(holdout),
+    "means": [round(m, 4) for m in means],
+    "mins": [round(m, 4) for m in mins],
+    "spread": round(max(means) - min(means), 4),
+    "std": round(__import__("statistics").pstdev(means), 4),
+}
+with open(out_path, "w", encoding="utf-8") as f:
+    json.dump(results_store, f, indent=2, ensure_ascii=False)
+print(f"\nSaved to {out_path}")

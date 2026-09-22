@@ -28,10 +28,15 @@ just descend. The output format changes from single-leaf to a list of
 
 ### 2. Run-to-run variance measurement
 
+**Status: Done (2026-09-22).** `heldout_variance.py` re-ran the 16-ticket
+held-out set 5 times against the same ontology (v2.0). Result: mean
+confidence spread 0.0045, std 0.0015. Jev is not deterministic, but the
+noise floor is small (~0.005 on a 16-ticket mean).
+
 **Why:** Every result in this project is from a single Jev call per
 ticket per level. We do not know whether Jev is deterministic. If the
 same ticket produces 1.000 on one call and 0.70 on the next, the
-confidence thresholds are less meaningful than they appear. This is
+confidence thresholds are less meaningful than they appear. This was
 the single most important unrun experiment.
 
 **What:** Pick 10 tickets (mix of high-confidence and flagged). Classify
@@ -44,6 +49,14 @@ each 10 times against the same ontology (v5.0). Measure:
 `jev_choice` function.
 
 ### 3. Held-out evaluation
+
+**Status: Done (2026-09-22).** `heldout_experiment.py` split the 52
+tickets 36 train / 16 held-out (seed 42, saved to
+`heldout_split.json`), authored `ontology_heldout_v1.json` from train
+signals only, and re-evaluated. Result: train mean confidence +0.013,
+holdout +0.004 -- inside the noise floor. The improvement is in-sample
+fitting, not generalization. See CONVERGENCE.md ("Held-out
+generalization test").
 
 **Why:** The convergence experiment revised the ontology on the same
 tickets it measured on. Improvement could be overfitting to those
@@ -215,8 +228,8 @@ call.
 | # | Item | Priority | Effort | Motivated by |
 |---|---|---|---|---|
 | 1 | Multi-label path for compound tickets | High | Moderate | Convergence floor |
-| 2 | Run-to-run variance measurement | High | Small | Unknown determinism |
-| 3 | Held-out evaluation | High | Small | Possible overfitting |
+| 2 | Run-to-run variance measurement (done) | High | Small | Unknown determinism |
+| 3 | Held-out evaluation (done) | High | Small | Possible overfitting |
 | 4 | Beam search | Medium | Moderate | Greedy descent risk |
 | 5 | Live LLM call for ontology revision | Medium | Moderate | Manual revision bottleneck |
 | 6 | Adversarial robustness suite | Medium | Small | One-ticket anecdote |

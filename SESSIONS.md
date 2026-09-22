@@ -236,7 +236,7 @@ does not force a confident answer when the ticket spans two branches.
 | Jev calls | 24 | 16 | 12 |
 | Input tokens | 11,566 | 7,688 | 5,817 |
 | Cost | $0.0005 | $0.0003 | $0.0002 |
-| High-confidence (>0.9) | 11 | 4 | 2 |
+| High-confidence (>0.9) | 11 | 5 | 2 |
 | Flagged (<0.5) | 1 | 0 | 2 |
 | Adversarial resistance | -- | -- | Yes |
 
@@ -344,7 +344,7 @@ batches.
 
 ### Feedback signals
 
-- **Zero-traffic classes:** 9 of 13 leaves received no items (expected --
+- **Zero-traffic classes:** 8 of 13 leaves received no items (expected --
   billing-only batch).
 - **Low-confidence items:** none (all 8 tickets above 0.95).
 - **Cost:** 9,024 input tokens across 16 Jev calls = **$0.0004**.
@@ -369,7 +369,7 @@ signals -> LLM revises -> Jev re-filters -> confidence improves.
 | Jev calls | 24 | 16 | 12 | 16 |
 | Input tokens | 11,566 | 7,688 | 5,817 | 9,024 |
 | Cost | $0.0005 | $0.0003 | $0.0002 | $0.0004 |
-| High-confidence (>0.9) | 11 | 4 | 2 | 8 |
+| High-confidence (>0.9) | 11 | 5 | 2 | 8 |
 | Flagged (<0.5) | 1 | 0 | 2 | 0 |
 | Ontology version | v2.0 | v2.0 | v2.0 | v3.0 |
 | Adversarial resistance | -- | -- | Yes | -- |
@@ -425,11 +425,12 @@ v5.0: LoginProblem (0.304)  -- flagged, flat
 
 ### Oscillation signal
 
-A previously clean ticket became flagged in iteration 3:
+A previously unflagged ticket became flagged in iteration 3 (its
+confidence had been declining monotonically all along):
 ```
 "Can you add SSO support for Azure AD?"
-v3.0: FeatureRequest (high confidence)
-v4.0: FeatureRequest (high confidence)
+v3.0: FeatureRequest (0.673)
+v4.0: FeatureRequest (0.610)
 v5.0: FeatureRequest (0.366)  -- flagged (definition narrowed too much)
 ```
 
@@ -461,7 +462,7 @@ consistent with approaching a steady state.
 | Jev calls | 24 | 16 | 12 | 16 | 312 |
 | Input tokens | 11,566 | 7,688 | 5,817 | 9,024 | 170,230 |
 | Cost | $0.0005 | $0.0003 | $0.0002 | $0.0004 | $0.0071 |
-| High-conf (>=0.9) | 11 | 4 | 2 | 8 | 46 |
+| High-conf (>=0.9) | 11 | 5 | 2 | 8 | 46 |
 | Flagged (<0.5) | 1 | 0 | 2 | 0 | 2-3 |
 | Ontology | v2.0 | v2.0 | v2.0 | v3.0 | v3.0-v5.0 |
 | Adversarial | -- | -- | Yes | -- | -- |

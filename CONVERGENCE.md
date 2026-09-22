@@ -190,13 +190,14 @@ compound tickets, not further definition sharpening.
 "Can you add SSO support for Azure AD? We can't use the product
  without it at our company."
 
-  v3.0: FeatureRequest (high confidence)  -- not flagged
-  v4.0: FeatureRequest (high confidence)  -- not flagged
+  v3.0: FeatureRequest (0.673)  -- not flagged
+  v4.0: FeatureRequest (0.610)  -- not flagged
   v5.0: FeatureRequest (0.366)  -- flagged
 ```
 
-This ticket was not flagged in iterations 1 or 2 but became
-flagged in iteration 3. The v5.0 FeatureRequest definition was
+This ticket was never high-confidence: it declined monotonically
+across all three iterations (0.673 -> 0.610 -> 0.366), crossing the
+flag threshold only in iteration 3. The v5.0 FeatureRequest definition was
 narrowed to exclude "questions about how existing data features
 work" (to help separate feature requests from product questions).
 This narrowing appears to have made the definition too tight,
@@ -213,12 +214,16 @@ worse, not better.
 
 | Transition | Improved | Worsened | Flat |
 |---|---|---|---|
-| Iter 1 -> 2 | 2 | 5 | 45 |
-| Iter 2 -> 3 | 4 | 6 | 42 |
+| Iter 1 -> 2 | 4 | 11 | 37 |
+| Iter 2 -> 3 | 7 | 10 | 35 |
 
+(A change counts as improved or worsened only when it exceeds 0.01.)
 The mean confidence increased, but individual tickets fluctuated.
-In iteration 2->3, 4 tickets improved and 6 worsened (by more than
-0.01). The SSO ticket above is one of the worsened ones. This
+In iteration 1->2, 4 tickets improved and 11 worsened; in
+iteration 2->3, 7 improved and 10 worsened. The aggregate still
+improves because the improvements are larger in magnitude than the
+regressions (e.g., Slack 0.330 -> 0.900). The SSO ticket above is
+one of the worsened ones. This
 suggests that while the aggregate is improving, the revisions
 have side effects on individual tickets.
 
@@ -253,8 +258,8 @@ have side effects on individual tickets.
 
 2. **Revisions have side effects.** The v5.0 FeatureRequest
    narrowing, intended to help GDPR routing, introduced a new
-   low-confidence case (SSO feature request). 6 of 52 tickets
-   worsened in iteration 2->3. The system is not monotonically
+   low-confidence case (SSO feature request). 10 of 52 tickets
+   worsened in iteration 2->3 (by more than 0.01). The system is not monotonically
    improving every ticket -- the aggregate improves while
    individual tickets can regress.
 

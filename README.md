@@ -27,8 +27,9 @@ TypeSafe AI's "System One" decision model, with ontologies.
 ## TL;DR -- what we learned
 
 We built a working MVP that pairs an LLM-authored ontology with Jev's
-calibrated classification, tested it against the live Jev API on 86 real
-tickets across 5 sessions, closed the feedback loop, and ran a 3-iteration
+calibrated classification, tested it against the live Jev API on 78 unique
+tickets across 5 sessions (86 classifications -- Session 4 re-runs Session
+2's eight tickets), closed the feedback loop, and ran a 3-iteration
 convergence experiment. Total cost: $0.0085.
 
 **1. The feedback loop converges.** Jev's low-confidence signals
@@ -51,7 +52,8 @@ ticket confirms this. Perfect confidence on a too-broad class hides
 ambiguity instead of surfacing it.
 
 **4. The full cycle costs effectively nothing.** Authoring the ontology,
-classifying 86 tickets, detecting the billing triangle, revising, and
+classifying 86 ticket classifications (78 unique tickets), detecting the
+billing triangle, revising, and
 re-running: $0.0085 total. The feedback loop can run on every batch
 without budget as a constraint.
 
@@ -159,12 +161,25 @@ Ontology/
                            SecurityConcern covers GDPR)
   ontology_v5.json       -- revised ontology v5.0 (AccountAndAccess covers
                            compliance/data handling at level 1)
+  ontology_heldout_v1.json -- train-only revision authored for the held-out
+                           generalization test (from v2.0 train signals)
   mvp_jev_ontology.py    -- working MVP of the cascade
   convergence_experiment.py -- 3-iteration convergence test on 52 tickets
   close_loop.py          -- re-runs Session 2 tickets against v2.0 and v3.0
   generate_sessions.py   -- runs the three session batches against the
                            real Jev API and prints results
   test_jev_api.py         -- standalone smoke test for the Jev API
+  heldout_experiment.py   -- held-out generalization test (36 train / 16
+                           held-out; revision authored from train signals)
+  heldout_variance.py     -- measures Jev's run-to-run noise floor
+  run_iter1.py / run_iter2.py -- single-iteration signal dumps used to
+                           author the v4.0 / v5.0 revisions
+  convergence_results.json -- saved results of the 3-iteration run
+  heldout_results.json    -- saved results of the held-out test
+  heldout_split.json      -- deterministic train/held-out split (seed 42)
+  Images/                 -- sub-project: sorting a photo folder by
+                           "contains a human" via Pixtral + Jev (see
+                           Images/README.md; per-image data is private)
 ```
 
 ## The MVP
@@ -233,7 +248,8 @@ class.
 ## Results
 
 `SESSIONS.md` contains authentic session logs from five real Jev API runs
-(86 tickets total, 412 Jev calls, ~204K input tokens, $0.0085 cost):
+(86 classifications of 78 unique tickets, 380 Jev calls,
+~204K input tokens, $0.0085 cost):
 
 - **Session 1: Mixed batch** (12 tickets) -- 11 at 0.99+ confidence,
   1 compound ticket flagged at 0.257.

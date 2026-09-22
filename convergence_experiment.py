@@ -181,7 +181,7 @@ def run_iteration(label, tickets, ontology_file):
 
 
 # --------------------------------------------------------------------------- #
-# 50 tickets: messier and more realistic than previous sessions
+# 52 tickets: messier and more realistic than previous sessions
 # --------------------------------------------------------------------------- #
 
 TICKETS = [
