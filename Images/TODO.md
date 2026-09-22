@@ -1,0 +1,194 @@
+# TODO: Image classification with Jev -- next steps
+
+The current pipeline (`classify_images.py`) is scaffolding: a vision
+model describes each image, Jev answers one yes/no question. The goal of
+this project is to **increase Jev's contribution** -- to make Jev do
+more of the meaningful decision work, not just a thin yes/no on a vision
+description.
+
+Items are grouped by priority. Each references the finding that
+motivates it.
+
+---
+
+## High priority -- make Jev do real classification work
+
+### 1. Multi-class taxonomy
+
+**Why:** The single yes/no "contains human" question underuses Jev. It
+asks Jev to make a trivial binary decision on a description that already
+contains the answer. A multi-class taxonomy makes Jev's Choice question
+do real work.
+
+**What:** Replace the yes/no criteria with a multi-class set, e.g.
+`human / animal / object / text / landscape / other`. Ask Jev to pick
+one per image. This is a drop-in change to the `criteria` in
+`classify_images.py`; the pipeline logic is unchanged.
+
+**Effort:** Small. The criteria dict changes; the rest of the pipeline
+is reusable.
+
+### 2. Hierarchical image ontology
+
+**Why:** The ticket project's core insight is that Jev classifies well
+against a *hierarchy* via recursive descent, and its calibrated
+probabilities surface where the ontology is incomplete. Images have the
+same structure (e.g. `scene -> contains_human -> photo/depiction`), but
+the current pipeline is flat.
+
+**What:** Author a small image ontology (2-3 levels, ~8-12 leaves) and
+classify each image by recursive descent, exactly like
+`mvp_jev_ontology.py`. Track cumulative confidence down the tree. This
+is the direct analog of the ticket work and the strongest way to
+increase Jev's contribution.
+
+**Effort:** Moderate. Reuse the recursive-descent logic from the ticket
+MVP; the ontology authoring and prompt design are the main work.
+
+### 3. Multiple questions in one pass
+
+**Why:** Jev supports several questions in a single call (Choice, Score,
+Noul). The current pipeline asks one. Asking several per image -- e.g.
+"contains human?", "is it a photo or a depiction?", "is it text?" --
+lets Jev return a richer, structured decision in one round trip.
+
+**What:** Extend the Jev call to include multiple questions. Use the
+answers together (e.g. `contains_human=yes` AND `is_photo=yes` -> a real
+photo of a person; `contains_human=yes` AND `is_depiction=yes` -> an
+illustration). This directly addresses the "real human vs. depiction"
+boundary that the current single question only flags with low
+confidence.
+
+**Effort:** Small. The API supports multiple questions in one body; the
+interpretation logic is the new work.
+
+---
+
+## Medium priority -- calibrate, route, and close the loop
+
+### 4. Calibration-driven routing
+
+**Why:** We currently use a fixed 0.7 threshold to flag ambiguous cases.
+Jev's confidence is a richer signal than a threshold -- it can drive
+routing (auto-classify vs. human review) and prioritization.
+
+**What:** Replace the fixed threshold with a routing policy driven by
+Jev's confidence: high confidence -> auto-classify; mid -> queue for
+review; low -> escalate. Measure the precision/recall of each band
+against a labeled sample.
+
+**Effort:** Small. The routing logic is new; the confidence data already
+exists in `image_human_results.json`.
+
+### 5. Criteria as the ontology -- close the feedback loop
+
+**Why:** The ticket project's most interesting result is the feedback
+loop: Jev's low-confidence signals reveal where the ontology is
+incomplete, the LLM revises it, and re-running improves confidence. The
+image pipeline has no such loop -- the criteria are fixed.
+
+**What:** Treat the decision criteria as an ontology to be revised.
+Collect Jev's low-confidence images and the descriptions that produced
+them, feed them to an LLM with instructions to sharpen the criteria
+(e.g. split "human" into "photo of a real person" vs. "depiction"),
+then re-run. This is the same abduction loop as the ticket work.
+
+**Effort:** Moderate. Needs an LLM call for criteria revision and a
+re-run harness.
+
+### 6. Run-to-run variance
+
+**Why:** Every result here is from a single Jev call per image. We do
+not know whether Jev is deterministic on image descriptions. If the same
+description yields 1.000 on one call and 0.70 on the next, the
+confidence thresholds are less meaningful than they appear.
+
+**What:** Pick ~10 images (mix of high-confidence and flagged).
+Classify each 10 times against the same criteria. Measure mean and
+standard deviation of confidence, and whether the choice ever flips.
+
+**Effort:** Small. A loop over the existing `jev_classify` function.
+
+### 7. Ground truth and accuracy
+
+**Why:** We have no ground truth. The 73/142 split is Jev's judgment,
+not a verified answer. Accuracy is unmeasured, so we cannot say whether
+the pipeline is right, only that it is confident.
+
+**What:** Manually label a sample (e.g. 50 images, oversampling the
+low-confidence ones). Compare Jev's choice to the label. Report
+accuracy, and per-confidence-bin accuracy (calibration).
+
+**Effort:** Small once labels exist; the labeling is the main work.
+
+---
+
+## Lower priority -- broaden and harden
+
+### 8. Baseline comparison
+
+**Why:** We have no baseline. The right comparison is "Jev + vision
+description vs. the cheapest acceptable image classifier" -- e.g. a
+CLIP-based zero-shot model, a face detector, or the vision model asked
+directly.
+
+**What:** Run the same images through a CLIP zero-shot classifier and/or
+a face detector. Compare accuracy (once ground truth exists), cost, and
+latency.
+
+**Effort:** Moderate. Needs a baseline model and ground-truth labels.
+
+### 9. Adversarial and edge cases
+
+**Why:** `[redacted]` showed a real failure mode: a screenshot
+of text describing a person was classified as containing a person,
+because the vision model transcribed the text as if it were a scene.
+Other edge cases: memes, AI-generated images, collages, images with
+people in the background, text-heavy screenshots.
+
+**What:** Build a small suite of these edge cases. Measure how often the
+pipeline misclassifies them, and whether the multi-question approach
+(item 3) catches them (e.g. `is_text=yes` would flag the screenshot).
+
+**Effort:** Small. Assembling the suite is the main work.
+
+### 10. Jev's Score and Noul primitives
+
+**Why:** The pipeline uses only Jev's Choice primitive. Jev also has
+Score (rate on a 2-10 scale) and Noul (yes/no probability). These could
+help: Noul as a pre-filter ("is this image relevant to the 'human'
+branch?"), Score as a continuous fit measure.
+
+**What:** Build a variant that uses Noul as a pre-filter and Score as a
+confidence supplement. Compare to the Choice-only pipeline.
+
+**Effort:** Small. The API supports all three in a single call.
+
+### 11. Larger dataset and different domains
+
+**Why:** The pipeline ran on 215 images from one folder. Scaling to a
+larger, more varied collection (and different domains, e.g. medical or
+satellite imagery) would test whether the approach generalizes.
+
+**What:** Run the pipeline on a larger or different image set. Compare
+confidence distributions and flag rates.
+
+**Effort:** Small if a dataset is available; the pipeline works as-is.
+
+---
+
+## Summary
+
+| # | Item | Priority | Effort | Motivated by |
+|---|---|---|---|---|
+| 1 | Multi-class taxonomy | High | Small | Single yes/no underuses Jev |
+| 2 | Hierarchical image ontology | High | Moderate | Flat pipeline; ticket analog |
+| 3 | Multiple questions in one pass | High | Small | Richer decision per image |
+| 4 | Calibration-driven routing | Medium | Small | Fixed threshold is crude |
+| 5 | Criteria as ontology / feedback loop | Medium | Moderate | No loop; ticket analog |
+| 6 | Run-to-run variance | Medium | Small | Unknown determinism |
+| 7 | Ground truth and accuracy | Medium | Small | No ground truth |
+| 8 | Baseline comparison | Low | Moderate | No baseline |
+| 9 | Adversarial and edge cases | Low | Small | [redacted] failure |
+| 10 | Jev's Score and Noul primitives | Low | Small | Only Choice tested |
+| 11 | Larger dataset and different domains | Low | Small | Single folder tested |
