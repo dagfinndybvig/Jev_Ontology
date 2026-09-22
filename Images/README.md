@@ -2,6 +2,9 @@
 
 A visual ontology, Twiki. That is where we are going!
 
+Goal: a pipeline that auto-classifies digitized image collections
+against a revisable taxonomy, routing uncertain items to human review.
+
 Since I work in a university library, making a system for auto-classifying images according to some taxonomic scheme is a real use-case for me.
 
 Classifying images with [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev),
