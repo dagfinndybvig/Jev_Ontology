@@ -52,7 +52,7 @@ Where it is thin:
 - **The vision model could likely answer directly.** Ask Pixtral "does
   this contain a human?" and it would probably be right; Jev is an extra
   hop.
-- **Jev inherits vision errors.** `[redacted]` is the proof:
+- **Jev inherits vision errors.** A screenshot-of-text image is the proof:
   Pixtral transcribed text as if it were a scene, and Jev said "yes"
   because it only saw the description.
 - **The bottleneck is the vision model.** The 13 low-confidence cases are
@@ -89,21 +89,23 @@ filters" cascade as the ticket work.
 ## Files
 
 ```
-classify_images.py       -- resumable pipeline (vision -> Jev)
-summarize_results.py     -- regenerates the summary from the JSON
-image_human_results.json -- full per-image records (description, choice, confidence)
-image_human_summary.txt  -- clean sorted list (human / no-human)
-RESULTS.md               -- writeup of the run and findings
+classify_images.py                  -- resumable pipeline (vision -> Jev)
+summarize_results.py                -- regenerates the summary from the JSON
+image_human_results.sample.json     -- anonymized sample of the record format
+image_human_results.json (private)  -- full per-image records (gitignored)
+image_human_summary.txt (private)   -- clean sorted list, real filenames (gitignored)
+fix_false_positive.py               -- corrects one record, preserving raw output
+copy_humans.py                      -- copies human-classified images to a subfolder
+RESULTS.md                          -- writeup of the run and findings
 ```
 
 ## Running it
 
-Requires `MISTRAL_API_KEY` (vision) and `TYPESAFE_API_KEY` (Jev).
-`classify_images.py` is hardcoded to process the Pictures folder
-(`C:\Users\you\Pictures`); change the `PICTURES`
-variable to point elsewhere.
+Requires `MISTRAL_API_KEY` (vision) and `TYPESAFE_API_KEY` (Jev), plus
+`PICTURES_DIR` pointing at the folder of images to classify.
 
 ```bash
+export PICTURES_DIR="C:/path/to/your/pictures"
 python classify_images.py   # processes all images, saves incrementally
 python summarize_results.py # prints the sorted summary
 ```
@@ -126,5 +128,26 @@ boundary. See `RESULTS.md` for the full writeup.
   criteria could be tightened or split into sub-labels.
 - **No baseline.** We did not compare against a dedicated image
   classifier.
+
+## Privacy
+
+The classified images are a personal photo collection, so the per-image
+data is kept private:
+
+- `image_human_results.json` and `image_human_summary.txt` contain
+  real filenames and vision-model descriptions of personal photos.
+  They are **gitignored** and never pushed; only
+  `image_human_results.sample.json` (anonymized records) is committed.
+- In `RESULTS.md`, filenames are replaced with anonymous IDs
+  (`image_01`, `image_02`, ...); the mapping is not published.
+- Scripts take the image folder from the `PICTURES_DIR` environment
+  variable rather than a hardcoded local path.
+
+If you re-run the pipeline on your own photos, keep the results file
+out of any public repository the same way.
+
+Note: this protects the *current* state of the repository. Data
+committed in earlier revisions remains in git history until the history
+is rewritten.
 
 See the parent `../README.md` for the broader Ontology + Jev project.

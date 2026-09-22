@@ -140,7 +140,7 @@ latency.
 
 ### 9. Adversarial and edge cases
 
-**Why:** `[redacted]` showed a real failure mode: a screenshot
+**Why:** One image showed a real failure mode: a screenshot
 of text describing a person was classified as containing a person,
 because the vision model transcribed the text as if it were a scene.
 Other edge cases: memes, AI-generated images, collages, images with
@@ -189,6 +189,6 @@ confidence distributions and flag rates.
 | 6 | Run-to-run variance | Medium | Small | Unknown determinism |
 | 7 | Ground truth and accuracy | Medium | Small | No ground truth |
 | 8 | Baseline comparison | Low | Moderate | No baseline |
-| 9 | Adversarial and edge cases | Low | Small | [redacted] failure |
+| 9 | Adversarial and edge cases | Low | Small | Screenshot-of-text failure |
 | 10 | Jev's Score and Noul primitives | Low | Small | Only Choice tested |
 | 11 | Larger dataset and different domains | Low | Small | Single folder tested |

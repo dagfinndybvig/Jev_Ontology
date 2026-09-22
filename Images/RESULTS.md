@@ -2,7 +2,7 @@
 
 **Date:** 2026-09-22
 **Author:** Mistral Vibe (mistral-vibe)
-**Task:** Sort 215 images in `Pictures\` by whether they contain a human.
+**Task:** Sort 215 images in a personal photo folder by whether they contain a human.
 **Vision model:** Mistral `pixtral-12b-2409`
 **Jev model:** jev-latest (jev-1.13.0)
 **Images:** 215 (73 human, 142 no-human, 0 errors)
@@ -11,7 +11,7 @@
 
 ## Summary
 
-The task was to sort the images in the Pictures folder by whether they
+The task was to sort the images in a personal photo folder by whether they
 contain a human, using Jev. The result: 73 images contain a human, 142
 do not, with 0 errors. 188 of 215 (87%) were classified at 0.9+
 confidence.
@@ -53,18 +53,18 @@ placeholder, so Mistral's Pixtral was used for the vision step.)
 
 0 errors. 188 of 215 (87%) classified at 0.9+ confidence. The buckets
 above use each record's effective (post-correction) confidence, so the
-corrected `[redacted]` contributes a manual 1.0 to the
+corrected screenshot-of-text record contributes a manual 1.0 to the
 no-human >=0.9 bucket; Jev's raw answer ("yes" at 1.000, preserved
 under the record's `jev` key in `image_human_results.json`) would place
 it in the contains-human >=0.9 bucket instead.
 
-> **Correction (2026-09-22):** `[redacted]` was initially classified
-> as "contains human" at 1.000, but it is actually a screenshot of *text*
-> describing a photo, not a photo of a human. The vision model read the
-> text ("a man and a robot...") and described it as if it were the scene,
-> and Jev then said "yes." It has been removed from the human set and
-> reclassified as no-human. This is a real failure mode: screenshots of
-> text that *describes* a person get misclassified as containing a person.
+> **Correction (2026-09-22):** One image -- a screenshot of *text*
+> describing a photo -- was initially classified as "contains human" at
+> 1.000. The vision model read the text ("a man and a robot...") and
+> described it as if it were the scene, and Jev then said "yes." It has
+> been removed from the human set and reclassified as no-human. This is
+> a real failure mode: screenshots of text that *describes* a person get
+> misclassified as containing a person.
 
 ---
 
@@ -74,21 +74,25 @@ The 13 cases below 0.7 confidence are not noise -- they are all
 illustrations, statues, cartoons, or posters rather than photographs of
 real people:
 
-| File | Choice | Conf | Description |
+| Image | Choice | Conf | Description |
 |---|---|---|---|
-| [redacted] | yes | 0.05 | comic book characters Batman and Robin |
-| [redacted] | yes | 0.16 | Arthur Mensch discusses Mistral AI |
-| [redacted] | yes | 0.28 | cartoon boy celebrates his 15th birthday |
-| [redacted] | yes | 0.39 | pixelated version of "The Thinker" statue |
-| [redacted] | no | 0.45 | superhero resembling The Flash |
-| [redacted] | no | 0.47 | cartoon superhero labeled GPT-5 |
-| [redacted] | yes | 0.48 | illustrations of team members |
-| [redacted] | no | 0.49 | magazine cover |
-| [redacted] | yes | 0.54 | illustrations of team members |
-| [redacted] | no | 0.55 | victory screen with characters |
-| [redacted] | no | 0.57 | list of students |
-| [redacted] | no | 0.61 | cartoon character giving a thumbs-up |
-| [redacted] | yes | 0.69 | film poster |
+| image_01 | yes | 0.05 | comic book characters Batman and Robin |
+| image_02 | yes | 0.16 | Arthur Mensch discusses Mistral AI |
+| image_03 | yes | 0.28 | a cartoon child celebrating a birthday |
+| image_04 | yes | 0.39 | pixelated version of "The Thinker" statue |
+| image_05 | no | 0.45 | superhero resembling The Flash |
+| image_06 | no | 0.47 | cartoon superhero labeled GPT-5 |
+| image_07 | yes | 0.48 | illustrations of team members |
+| image_08 | no | 0.49 | magazine cover |
+| image_09 | yes | 0.54 | illustrations of team members |
+| image_10 | no | 0.55 | victory screen with characters |
+| image_11 | no | 0.57 | list of students |
+| image_12 | no | 0.61 | cartoon character giving a thumbs-up |
+| image_13 | yes | 0.69 | film poster |
+
+(Filenames are redacted: they come from a personal photo collection.
+The unredacted records live in the private `image_human_results.json`;
+see the Privacy section in `README.md`.)
 
 Jev's criteria said "one or more humans (people, faces, bodies)", but it
 correctly hedged on depictions. A statue of a person, a cartoon of a

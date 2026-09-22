@@ -1,4 +1,6 @@
-"""Remove a false positive (screenshot of text) from the Humans folder and correct the record.
+"""Remove a false positive from the Humans folder and correct the record.
+
+Usage: python fix_false_positive.py <filename>
 
 The correction preserves Jev's raw output under the record's "jev" key, so the
 manual override never destroys the model's actual answer. Idempotent: safe to
@@ -6,19 +8,26 @@ re-run; a record that is already corrected is left untouched.
 """
 import json
 import os
+import sys
 
-PICTURES = r"C:\Users\you\Pictures"
-HUMANS = os.path.join(PICTURES, "Humans")
+PICTURES = os.environ.get("PICTURES_DIR", "")  # folder of classified images
+HUMANS = os.path.join(PICTURES, "Humans") if PICTURES else ""
 RESULTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "image_human_results.json")
-TARGET = "[redacted]"
 
-# 1. Remove the copy from the Humans folder (original stays in Pictures root).
-fp = os.path.join(HUMANS, TARGET)
-if os.path.exists(fp):
-    os.remove(fp)
-    print(f"Removed {TARGET} from Humans folder")
+if len(sys.argv) < 2:
+    raise SystemExit("usage: python fix_false_positive.py <filename>")
+TARGET = sys.argv[1]
+
+# 1. Remove the copy from the Humans folder (original stays in the image folder).
+if HUMANS and os.path.isdir(HUMANS):
+    fp = os.path.join(HUMANS, TARGET)
+    if os.path.exists(fp):
+        os.remove(fp)
+        print(f"Removed {TARGET} from Humans folder")
+    else:
+        print(f"{TARGET} not found in Humans folder")
 else:
-    print(f"{TARGET} not found in Humans folder")
+    print("PICTURES_DIR not set; skipping Humans folder cleanup")
 
 # 2. Correct the record, preserving the raw Jev output.
 with open(RESULTS, "r", encoding="utf-8") as f:
@@ -37,8 +46,8 @@ else:
         rec["probabilities"] = {"yes": 0.0, "no": 1.0}
         rec["corrected"] = True
         rec["correction_note"] = (
-            "Manual correction: image is a screenshot of text describing a photo, "
-            "not a photo of a human. Jev's raw answer is preserved under 'jev'."
+            "Manual correction: the image does not contain a human. "
+            "Jev's raw answer is preserved under 'jev'."
         )
         with open(RESULTS, "w", encoding="utf-8") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)

@@ -1,0 +1,56 @@
+{
+  "image_001.png": {
+    "file": "image_001.png",
+    "status": "ok",
+    "description": "A mountain lake at sunrise with mist over the water.",
+    "choice": "no",
+    "confidence": 1.0,
+    "probabilities": {
+      "yes": 0.0,
+      "no": 1.0
+    }
+  },
+  "image_002.jpg": {
+    "file": "image_002.jpg",
+    "status": "ok",
+    "description": "Two hikers resting on a ridge above a valley.",
+    "choice": "yes",
+    "confidence": 1.0,
+    "probabilities": {
+      "yes": 1.0,
+      "no": 0.0
+    }
+  },
+  "image_003.png": {
+    "file": "image_003.png",
+    "status": "ok",
+    "description": "A bronze statue of a man sitting on a rock, in a park.",
+    "choice": "yes",
+    "confidence": 0.39,
+    "probabilities": {
+      "yes": 0.61,
+      "no": 0.39
+    }
+  },
+  "image_004.png": {
+    "file": "image_004.png",
+    "status": "ok",
+    "description": "A screenshot of text describing a photo of a man and a robot.",
+    "choice": "no",
+    "confidence": 1.0,
+    "probabilities": {
+      "yes": 0.0,
+      "no": 1.0
+    },
+    "corrected": true,
+    "jev": {
+      "choice": "yes",
+      "confidence": 1.0,
+      "probabilities": {
+        "yes": 1.0,
+        "no": 0.0
+      }
+    },
+    "correction_note": "Manual correction: the image is a screenshot of text describing a person, not an image of a person. Jev's raw answer is preserved under 'jev'."
+  }
+}

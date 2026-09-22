@@ -1,4 +1,4 @@
-"""Classify all images in the Pictures root as containing a human or not.
+"""Classify all images in a folder (PICTURES_DIR) as containing a human or not.
 
 Pipeline: Mistral vision (Pixtral) describes each image -> Jev classifies the
 description as human / no-human. Results are saved incrementally to
@@ -12,7 +12,7 @@ import sys
 import time
 import urllib.request
 
-PICTURES = r"C:\Users\you\Pictures"
+PICTURES = os.environ.get("PICTURES_DIR", "")  # folder of images to classify
 RESULTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "image_human_results.json")
 EXTS = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".avif", ".tiff", ".tif", ".jfif"}
 
@@ -105,6 +105,9 @@ def save_results(results):
 def main():
     if not MISTRAL_KEY or not TYPESAFE_KEY:
         print("Missing MISTRAL_API_KEY or TYPESAFE_API_KEY")
+        sys.exit(1)
+    if not PICTURES or not os.path.isdir(PICTURES):
+        print("Set PICTURES_DIR to the folder of images to classify")
         sys.exit(1)
 
     files = []
