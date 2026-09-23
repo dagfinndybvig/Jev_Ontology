@@ -265,6 +265,15 @@ edge-case suite on 09-23)
     need for a richer ontology -- noted for a future revision, not
     acted on; the corpus now has 60 labeled records to measure a
     revision against. See RESULTS.md ("Stand-in library corpus").
+    The Sample filter was also used on the corpus: a stratified
+    sample of 27 fully confident unreviewed records (short of the
+    30 target -- the corpus's confident pool per band/class is
+    smaller) was computed and persisted at
+    `library_review_sample_tmp.json` (gitignored); 6/27 reviewed
+    (4 confirmed, 2 corrected -- both book covers), 21 remain. The
+    2/6 miss rate is consistent with the queue's cover weakness but
+    too small to bound the threshold's miss rate on the 89
+    auto-accepted records.
 
 ## Where things live
 
