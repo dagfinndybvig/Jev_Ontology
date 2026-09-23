@@ -106,17 +106,17 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
    queue: its confidence carries no information. See RESULTS.md
    ("Confident-band verification"). 85 of 218 records are now
    labeled.
-14. **Phase 2 baseline started (two of three systems).**
+14. **Phase 2 baseline complete (all three systems).**
     `baseline_compare.py` measures accuracy, ECE, flag rate at 0.7,
     and errors caught against the 85 reviewed records. Keyword
     baseline (trivial, always confident): 78% pooled accuracy, ECE
-    0.166, 0/49 errors caught. Cascade (Pixtral+Jev): 91%, ECE 0.038,
-    16/27 caught. Jev adds calibration, not just accuracy -- the
-    baseline matches on easy facets and collapses on ambiguous ones,
-    silently. Pixtral-direct (`baseline_pixtral_direct.py`,
-    resumable) is blocked: Mistral returned HTTP 402 Payment Required
-    on every call -- the account needs credits. See RESULTS.md
-    ("Phase 2 baseline").
+    0.166, 0/49 errors caught. Pixtral-direct (85/85 after the
+    account was topped up): 80%, ECE 0.150, 0/45 caught -- it
+    reports >= 0.9 confidence on everything, ignoring the
+    calibration instruction. Cascade (Pixtral+Jev): 91%, ECE 0.038,
+    16/27 caught. The cascade wins on every measure; Jev supplies
+    the calibrated probability that makes routing possible. See
+    RESULTS.md ("Phase 2 baseline").
 
 ## Where things live
 
@@ -141,18 +141,15 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 
 ## Next steps, in order
 
-1. **Finish Phase 2: Pixtral-direct.** Add Mistral credits (the run
-   failed with HTTP 402 Payment Required), then rerun
-   `python baseline_pixtral_direct.py` (resumable; 85 vision calls)
-   and `python baseline_compare.py` -- the three-way comparison
-   answers whether the Jev hop earns its keep.
-2. **Representation residuals are vision-limited.** The remaining
+1. **Representation residuals are vision-limited.** The remaining
    representation errors trace to descriptions that mislead (a
    photographed cover described as "consists of text"). The
    durable fix is LIBRARY.md Phase 3's structured vision state
    (typed fields: medium, subjects, text_in_image), not further
    criteria wording -- v3 and v5 proved criteria wording is
-   exhausted.
+   exhausted. Phase 2's verdict sharpens the case: the cascade's
+   remaining weakness is exactly the facet where the description
+   misleads it.
 
 The android question is settled by the review: the collection
 contains no androids (buck.jpg's Twiki is a robot, not an android).

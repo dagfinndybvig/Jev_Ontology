@@ -334,12 +334,10 @@ Three systems were run against the 85 reviewed records (ground truth
 2. **Cascade** (Pixtral description + Jev): the production path;
    raw Jev answers from the v4 run.
 3. **Pixtral asked directly** (`baseline_pixtral_direct.py`): the
-   vision model classifies the five facets itself, same v4 criteria.
-   Written and resumable, but **blocked**: the Mistral account
-   returned HTTP 402 Payment Required on every call (the earlier
-   runs succeeded, so the balance ran out mid-project). The
-   three-way comparison completes once credits are added; the run
-   skips already-done records.
+   vision model classifies the five facets itself, same v4 criteria,
+   with a calibrated-confidence instruction. 85/85 records, 0 API
+   errors (an earlier attempt failed with HTTP 402 Payment Required
+   until the account was topped up).
 
 Head-to-head on the 85 labeled records:
 
@@ -347,19 +345,20 @@ Head-to-head on the 85 labeled records:
 |---|---|---|---|---|---|
 | Keyword baseline | 78% | 0.166 | 49 | 0/49 | 49 |
 | Cascade (Pixtral+Jev) | **91%** | **0.038** | 27 | 16/27 | 11 |
+| Pixtral asked directly | 80% | 0.150 | 45 | 0/45 | 45 |
 
 Per-facet accuracy:
 
-| Facet | Keyword | Cascade |
-|---|---|---|
-| contains_human | 67/85 (79%) | 78/85 (92%) |
-| contains_robot | 78/85 (92%) | 82/85 (96%) |
-| contains_android | 85/85 (100%) | 84/85 (99%) |
-| primary_subject | 61/85 (72%) | 77/85 (91%) |
-| representation | 42/85 (49%) | 67/85 (79%) |
+| Facet | Keyword | Cascade | Pixtral-direct |
+|---|---|---|---|
+| contains_human | 67/85 (79%) | 78/85 (92%) | 72/85 (85%) |
+| contains_robot | 78/85 (92%) | 82/85 (96%) | 71/85 (84%) |
+| contains_android | 85/85 (100%) | 84/85 (99%) | 79/85 (93%) |
+| primary_subject | 61/85 (72%) | 77/85 (91%) | 64/85 (75%) |
+| representation | 42/85 (49%) | 67/85 (79%) | 54/85 (64%) |
 
-Cascade accuracy by confidence bin (the keyword baseline has one bin,
-0.9-1.0, at 78% -- its confidence carries no information):
+Cascade accuracy by confidence bin (both other systems have one bin,
+0.9-1.0, at 78% and 80% -- their confidence carries no information):
 
 | Confidence | Accuracy |
 |---|---|
@@ -370,21 +369,28 @@ Cascade accuracy by confidence bin (the keyword baseline has one bin,
 
 Findings:
 
-1. **Jev adds calibration, not just accuracy.** The keyword baseline
-   matches the cascade on easy facets (contains_android 100% vs 99%,
-   contains_robot 92% vs 96%) but collapses where descriptions are
-   ambiguous (representation 49%, primary_subject 72%) -- and being
-   always confident, every one of its 49 wrong records is silent.
-   The cascade is wrong on 27 and flags 16 of them for review.
-2. **The burden number needs care.** On the labeled subset the
+1. **The cascade wins on every measure that matters.** +11 points
+   pooled accuracy over Pixtral-direct, 4x lower calibration error,
+   and it is the only system whose 0.7 threshold catches errors
+   (16/27). Both alternatives answer everything at 0.9+ confidence,
+   so all 45-49 of their wrong records are silent.
+2. **Pixtral-direct ignores the calibration instruction.** Asked for
+   calibrated probabilities, it reports >= 0.9 on all 425 facet
+   answers while being wrong 20% of the time. Jev's confidence is
+   the scarce resource in this pipeline: the vision model supplies
+   perception, Jev supplies the probability that makes routing
+   possible.
+3. **The keyword baseline is a real floor, not a straw man.** It
+   matches the cascade on easy facets (contains_android 100% vs 99%)
+   because the descriptions already contain the answer -- but it
+   collapses where descriptions are ambiguous (representation 49%,
+   primary_subject 72%). The comparison is also conservative toward
+   it: the keyword rules run on Pixtral's descriptions, inheriting
+   the vision model's work for free.
+4. **The burden number needs care.** On the labeled subset the
    cascade flags 52% -- but that subset is queue-heavy by
    construction (50 of 85 are queue records). The collection-wide
    burden remains 50/218 (23%).
-3. **The comparison is conservative toward the baseline.** The
-   keyword rules run on Pixtral's descriptions, so they inherit the
-   vision model's work for free; a true trivial baseline (raw
-   pixels) would do worse. Even so, it loses on every measure that
-   matters in a routing workflow.
 
 ---
 
@@ -408,12 +414,11 @@ Findings:
    photo). The criteria could be tightened (e.g., "a real, living human
    in a photograph") or split into sub-labels (photo / illustration /
    statue).
-4. **The baseline comparison is two-thirds done.** The keyword
-   baseline and the cascade are measured (above); Pixtral-direct is
-   written but blocked on Mistral credits (HTTP 402). The
-   "Jev + vision vs. the vision model alone" question -- whether the
-   Jev hop earns its keep -- is still unanswered, as is a CLIP-style
-   pixel-level baseline.
+4. **The baseline comparison is complete on this collection.** All
+   three systems are measured (above): the cascade beats both the
+   keyword baseline and Pixtral-direct on accuracy, calibration, and
+   errors caught. Still unmeasured: a CLIP-style pixel-level
+   baseline, and the comparison on a real library collection.
 
 ---
 

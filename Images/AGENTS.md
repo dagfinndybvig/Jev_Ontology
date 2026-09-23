@@ -50,7 +50,8 @@ Essential context for any agent working in this directory.
   the five facets directly (v4 criteria) on the labeled records.
   Writes `baseline_pixtral_direct_results.json` (private,
   gitignored). Resumable; needs MISTRAL_API_KEY credits (a run
-  failed with HTTP 402 Payment Required on 2026-09-23).
+  failed with HTTP 402 Payment Required on 2026-09-23 until the
+  account was topped up; the completed run is 85/85, 0 errors).
 - `baseline_compare.py` — Phase 2 comparison: keyword baseline vs.
   cascade vs. Pixtral-direct (when present) against the
   manual_correction ground truth. Accuracy, ECE, flag rate at 0.7,
