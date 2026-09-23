@@ -8,7 +8,7 @@ against a revisable taxonomy, routing uncertain items to human review.
 
 See `LIBRARY.md` for the project plan for the library use-case.
 
-Since I work in a university library, making a system for auto-classifying images according to some taxonomic scheme is a real use-case for me.
+Since we work in a university library, making a system for auto-classifying images according to some taxonomic scheme is a real use-case for us.
 
 Classifying images with [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev),
 TypeSafe AI's "System One" decision model.
@@ -22,6 +22,10 @@ TypeSafe AI's "System One" decision model.
 > front-end.
 
 Note: Once Jev becomes the multimodal, we can shorten the pipeline and quite likely acheive amazing speed and economy.
+
+Also note that while Jev is ridiculously cheap, Pixtral is also low cost, so on the whole the project is already economical as-is.
+
+But being able to do this just with a Jev-like model would certainly be a game-changer, so we are holding our breath for that.
 
 ## What this directory is
 
