@@ -15,11 +15,13 @@ TypeSafe AI's "System One" decision model.
 
 > **Vision describes, Jev decides.**
 >
-> Jev is text-only: it classifies a text *state* against typed questions.
+> Jev is text-only for the time being: it classifies a text *state* against typed questions.
 > It cannot see pixels. So each image is first described by a vision model
 > (Mistral Pixtral), and Jev then classifies that description. This is the
 > same cascade pattern as the ticket ontology, with a vision model as the
 > front-end.
+
+Note: Once Jev becomes the multimodal, we can shorten the pipeline and quite likely acheive amazing speed and economy.
 
 ## What this directory is
 
