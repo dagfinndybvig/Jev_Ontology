@@ -117,6 +117,18 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
     16/27 caught. The cascade wins on every measure; Jev supplies
     the calibrated probability that makes routing possible. See
     RESULTS.md ("Phase 2 baseline").
+15. **Phase 3: structured vision state (two iterations).**
+    `structured_vision.py` extracts typed fields (medium, subjects,
+    text_in_image, setting, people) and Jev classifies the composed
+    state. v1 (rich medium vocabulary) regressed on representation
+    (67%) -- vocabulary mismatch with the taxonomy. v2 (medium
+    aligned to the representation classes): pooled 90%, representation
+    76%, burden 22% -- still a measured negative vs the cascade
+    (91%, 79%, 16/27 caught vs 5/25). The decisive finding: 19 of 20
+    remaining representation errors have a wrong vision `medium`
+    field -- the bottleneck moved into the vision model, and the
+    screenshot-of-text failure mode is eliminated where the medium
+    is right. See RESULTS.md ("Phase 3").
 
 ## Where things live
 
@@ -131,7 +143,9 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 | Review UI (public; localhost web app) | `Images/review_ui.py` -> http://localhost:8765 |
 | Phase 2: Pixtral-direct baseline (public) | `Images/baseline_pixtral_direct.py` |
 | Phase 2: three-system comparison (public) | `Images/baseline_compare.py` |
+| Phase 3: structured vision state (public) | `Images/structured_vision.py` |
 | Pixtral-direct results (private, gitignored) | `Images/baseline_pixtral_direct_results.json` |
+| Structured vision results (private, gitignored) | `Images/structured_vision_results.json` |
 | Sorted folder tree (private) | `PICTURES_DIR\Humanoids\` (+ `_review\`) |
 | Pilot per-image results (private, gitignored) | `Images/humanoid_pilot_results.json` |
 | Original-run results (private, gitignored) | `Images/image_human_results.json` |
@@ -141,15 +155,18 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 
 ## Next steps, in order
 
-1. **Representation residuals are vision-limited.** The remaining
-   representation errors trace to descriptions that mislead (a
-   photographed cover described as "consists of text"). The
-   durable fix is LIBRARY.md Phase 3's structured vision state
-   (typed fields: medium, subjects, text_in_image), not further
-   criteria wording -- v3 and v5 proved criteria wording is
-   exhausted. Phase 2's verdict sharpens the case: the cascade's
-   remaining weakness is exactly the facet where the description
-   misleads it.
+1. **Fix the vision medium field.** Phase 3 located the remaining
+   representation errors in the vision model: 19 of 20 have a wrong
+   `medium` field (photographed covers labeled `screenshot_of_text`;
+   the deepseek described-scene trap in `subjects`). A vision-prompt
+   revision targeting that family, measured on the labeled 85, is
+   the next single-variable experiment. The cascade stays the
+   production path until a structured variant beats it on
+   errors-caught-per-burden.
+2. **A real library collection.** The 218-image set is personal
+   photos; the pipeline, taxonomy, and review UX are ready for
+   library material, where the android facet and the held-out
+   revision protocol (LIBRARY.md Phase 6) actually apply.
 
 The android question is settled by the review: the collection
 contains no androids (buck.jpg's Twiki is a robot, not an android).

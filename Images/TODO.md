@@ -59,6 +59,20 @@ illustration). This directly addresses the "real human vs. depiction"
 boundary that the current single question only flags with low
 confidence.
 
+**Update (2026-09-23):** the structured-decision variant ran twice on
+the 85 labeled records (`structured_vision.py`, LIBRARY.md Phase 3):
+typed vision fields (medium, subjects, text_in_image, setting,
+people) composed into the state Jev classifies. v1 (rich medium
+vocabulary) regressed on representation (67%) -- vocabulary mismatch
+with the taxonomy. v2 (medium aligned to the representation classes):
+pooled 90%, representation 76%, burden 22% -- still a measured
+negative vs the cascade (91%, 79%, 16/27 caught vs 5/25). The
+decisive finding: 19 of 20 remaining representation errors have a
+wrong vision `medium` field -- the bottleneck is the vision model,
+not Jev, and the screenshot-of-text failure mode is eliminated where
+the medium is right. The structured state is the diagnostic
+instrument; the cascade stays the production path.
+
 **Effort:** Small. The API supports multiple questions in one body; the
 interpretation logic is the new work.
 

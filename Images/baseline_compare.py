@@ -20,6 +20,7 @@ import os
 HERE = os.path.dirname(os.path.abspath(__file__))
 CASCADE_RESULTS = os.path.join(HERE, "humanoid_pilot_results.json")
 DIRECT_RESULTS = os.path.join(HERE, "baseline_pixtral_direct_results.json")
+STRUCTURED_RESULTS = os.path.join(HERE, "structured_vision_results.json")
 FACETS = ["contains_human", "contains_robot", "contains_android", "primary_subject", "representation"]
 THRESHOLD = 0.7
 BINS = [(0.0, 0.5), (0.5, 0.7), (0.7, 0.9), (0.9, 1.0001)]
@@ -105,6 +106,19 @@ def load_direct(labeled):
         rec = raw.get(name, {})
         if rec.get("status") == "ok" and rec.get("answer"):
             out[name] = rec["answer"]
+    return out
+
+
+def load_structured(labeled):
+    if not os.path.exists(STRUCTURED_RESULTS):
+        return {}
+    with open(STRUCTURED_RESULTS, "r", encoding="utf-8") as f:
+        raw = json.load(f)
+    out = {}
+    for name in labeled:
+        rec = raw.get(name, {})
+        if rec.get("status") == "ok" and rec.get("answers"):
+            out[name] = rec["answers"]
     return out
 
 
@@ -194,8 +208,12 @@ def main():
     if direct:
         systems.append(evaluate("Pixtral asked directly", direct, labeled))
     else:
-        print("\nPixtral-direct: no results yet (run baseline_pixtral_direct.py; "
-              "last attempt failed with HTTP 402 Payment Required)")
+        print("\nPixtral-direct: no results yet (run baseline_pixtral_direct.py)")
+    structured = load_structured(labeled)
+    if structured:
+        systems.append(evaluate("structured vision state (Phase 3)", structured, labeled))
+    else:
+        print("Structured vision state: no results yet (run structured_vision.py)")
 
     for ev in systems:
         report(ev)

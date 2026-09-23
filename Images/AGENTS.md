@@ -53,9 +53,17 @@ Essential context for any agent working in this directory.
   failed with HTTP 402 Payment Required on 2026-09-23 until the
   account was topped up; the completed run is 85/85, 0 errors).
 - `baseline_compare.py` — Phase 2 comparison: keyword baseline vs.
-  cascade vs. Pixtral-direct (when present) against the
-  manual_correction ground truth. Accuracy, ECE, flag rate at 0.7,
-  errors caught. No API calls.
+  cascade vs. Pixtral-direct vs. structured vision state (when
+  present) against the manual_correction ground truth. Accuracy,
+  ECE, flag rate at 0.7, errors caught. No API calls.
+- `structured_vision.py` — Phase 3: Pixtral extracts typed fields
+  (medium, subjects, text_in_image, setting, people), Jev classifies
+  the composed state. Two resumable stages; writes
+  `structured_vision_results.json` (private, gitignored). The medium
+  vocabulary must stay aligned with the representation classes
+  (v1's poster/diagram vocabulary was a measured regression). The
+  parser needs `strict=False` and the regex repair fallback: Pixtral
+  emits raw newlines and unescaped quotes inside transcribed text.
 - Runs skip records with `status: ok`. Fresh descriptions require
   moving the results JSON aside first. Cost is small but real
   (~$0.0003 per image for the vision step).

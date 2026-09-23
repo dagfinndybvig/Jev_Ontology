@@ -394,6 +394,58 @@ Findings:
 
 ---
 
+## Phase 3: structured vision state (2026-09-23)
+
+LIBRARY.md Phase 3 replaces the free 25-word description with typed
+fields per image (medium, subjects, text_in_image, setting, people);
+Jev classifies the composed state, with transcribed text explicitly
+labeled as quoted content. Two iterations, each run on the 85 labeled
+records (`structured_vision.py`; runs preserved privately in
+`2026-09-23_structured_v1_run/`):
+
+| System | Pooled accuracy | ECE | representation | Burden at 0.7 | Wrong | Caught | Silent |
+|---|---|---|---|---|---|---|---|
+| Cascade (production) | 91% | 0.038 | 79% | 52% | 27 | 16/27 | 11 |
+| Structured v1 (rich medium: poster, diagram, render) | 88% | 0.047 | 67% | 22% | 34 | 11/34 | 23 |
+| Structured v2 (medium aligned to the representation classes) | 90% | 0.048 | 76% | 22% | 25 | 5/25 | 20 |
+
+Findings:
+
+1. **v1's regression was vocabulary mismatch.** The medium field
+   answered `poster` and `diagram`, which are not representation
+   classes -- Jev had to guess (a poster of a photograph became an
+   illustration). Aligning `medium` exactly with the representation
+   taxonomy recovered most of the loss (representation 67% -> 76%).
+2. **The bottleneck moved into the vision field extraction.** Of the
+   20 remaining representation errors in v2, 19 have a wrong
+   `medium` field -- Jev inherits the error from a state that is
+   already wrong. The photographed-cover family (a real photo of a
+   cover described as `screenshot_of_text`) and the deepseek
+   described-scene trap (subjects filled from text the image merely
+   mentions) both live in the vision model, not in Jev.
+3. **The screenshot-of-text failure mode is eliminated where the
+   medium field is right.** Every image the vision model correctly
+   labels `text_screenshot` classifies as `text_screenshot` at 1.0
+   confidence -- the incident that motivated Phase 3 cannot recur on
+   a correctly-extracted state.
+4. **On the errors-caught-per-burden metric, the structured state is
+   still a measured negative against the cascade**: it flags less
+   (22% vs 52% on this subset) but converts more errors into
+   confident ones (20 silent vs 11). The cascade remains the
+   production path.
+5. **The structured state is the right diagnostic instrument.** It
+   separates vision errors from Jev errors cleanly: Jev is now
+   nearly perfect on the state it is given. The next representation
+   fix is a vision-prompt fix (the photographed-cover family), not a
+   Jev-criteria fix.
+
+Engineering notes: Pixtral emits raw newlines and unescaped quotes
+inside transcribed text -- the parser needs `strict=False` and a
+regex repair fallback; `max_tokens` 300 truncated long transcriptions
+(raised to 700).
+
+---
+
 ## What is unproven
 
 1. **Ground truth covers 85 of 218 records (39%).** All 50 queued
