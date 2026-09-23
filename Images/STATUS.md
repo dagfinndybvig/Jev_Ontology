@@ -198,15 +198,16 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 
 ## Next steps, in order
 
-1. **Integrate the routing rule into the sorter and review UI.**
-   `routing.py` computes the adopted rule (0.7 threshold OR
-   text-bearing signal) and writes `routing_queue.json`; the next
-   step is wiring it into `sort_humanoids.py`'s `_review\` placement
-   and the review UI's queue so the 156 routed records are walkable.
+1. ~~**Integrate the routing rule into the sorter and review UI.**~~
+   Done (2026-09-23, commit a884d95): `route_reason` is wired into
+   `sort_humanoids.py`'s `_review\` placement and the review UI's
+   queue tags; the 156 routed records are walkable.
 2. **A real library collection.** The 218-image set is personal
    photos; the pipeline, taxonomy, and review UX are ready for
    library material, where the android facet and the held-out
-   revision protocol (LIBRARY.md Phase 6) actually apply.
+   revision protocol (LIBRARY.md Phase 6) actually apply. This needs
+   library material supplied (a folder of images); the pipeline then
+   runs as-is: describe -> classify -> sort -> review.
 
 The android question is settled by the review: the collection
 contains no androids (buck.jpg's Twiki is a robot, not an android).
