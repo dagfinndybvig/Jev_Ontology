@@ -78,12 +78,15 @@ can label a stratified sample: ~50 random images, plus deliberately
 hard ones (depictions, text-heavy scans, compound images). Label the
 top-level facets only. Record inter-annotator agreement if two
 catalogers are available -- it sets the ceiling for what "accuracy"
-can mean. Until library material exists, the generated edge-case
-suite (`generate_edge_cases.py`, 8 images covering the measured
-failure families) is the practice stand-in for the hard images;
-measured 2026-09-23: pooled agreement 33/36 (92%), with the
-AI-generated portrait called `photograph` at 1.000 as the one silent
-error (RESULTS.md, "Edge-case suite").
+can mean. Until library material exists, two stand-ins are in place:
+the generated edge-case suite (`generate_edge_cases.py`, 8 images
+covering the measured failure families; measured 2026-09-23, pooled
+agreement 33/36) and a 149-image Wikimedia Commons corpus
+(`fetch_library_standin.py`, 5 categories with a committed manifest
+as ground truth; short of target after Wikimedia rate-limited the
+fetch -- resume to top up). The Commons corpus is the closer analog
+to real library material: digitized covers, statues, and
+illustrations with structured depicts annotations.
 
 **Why first:** every later decision (thresholds, taxonomy size,
 baseline comparison) needs a labeled sample. Without it the project

@@ -103,6 +103,18 @@ Essential context for any agent working in this directory.
   `route_reason` to each record. Writes
   `edge_case_pipeline_results.json` (private, gitignored). Resumable;
   needs both API keys.
+- `fetch_library_standin.py` — fetches the stand-in library corpus
+  from Wikimedia Commons: one category per taxonomy class
+  (`CATEGORIES` below is data), a deterministic stride sample over
+  the category members, 960px thumbnails (a Wikimedia standard size),
+  and `library_manifest.json` as the stand-in ground truth (filename,
+  category, Commons description, license, depicts statements). The
+  manifest is committed (public data); images go to
+  `library_standin/` (gitignored). Resumable: tops up to
+  `LIBRARY_PER_CATEGORY` (default 40) per category. First run:
+  149 images across 5 of 6 categories (statue 28, humanoid_robot 22,
+  book_cover 36, human_photo 33, human_illustration 30;
+  ui_screenshot 0) before Wikimedia rate-limited the IP.
 - Runs skip records with `status: ok`. Fresh descriptions require
   moving the results JSON aside first. Cost is small but real
   (~$0.0003 per image for the vision step).
@@ -142,6 +154,16 @@ recomputed from the result JSONs, never recalled from memory.
   that is really a harness gap) and the live API payloads curl'd to
   files. This found a nonexistent-function call that left the page
   stuck at "Loading..." while every server endpoint answered fine.
+- Wikimedia Commons rate limits are aggressive (found live,
+  2026-09-23): bursts of thumbnail downloads get HTTP 429 even at 5s
+  spacing, and sustained fetching escalates to a 403 robot-policy
+  block on the whole IP (API included) that outlasts a 3-minute
+  wait. Use only the standard thumbnail sizes (960, 1280, ... --
+  w.wiki/GHai; 1024 is not one), keep DELAY high, and resume across
+  sessions rather than pushing through. The `depicts` (P180)
+  resolution returned empty on the first run -- undebugged because
+  the block landed; check `pageprops` -> `wikibase_item` ->
+  `wbgetentities` once the block lifts.
 - Known failure mode: screenshots of text *describing* a scene.
   Fixed at the vision layer (2026-09-23 prompt); the open half is
   Jev's criteria, which still answer a described scene — the

@@ -219,6 +219,20 @@ edge-case suite on 09-23)
     `humanoid_taxonomy_v4.json` -- documented, not revised, per the
     v3/v5 lesson (n=1 synthetic evidence; revisit with the library
     collection). See RESULTS.md ("Routing stripper fixed").
+23. **Stand-in library corpus fetched (partial).**
+    `fetch_library_standin.py` pulls one Wikimedia Commons category
+    per taxonomy class and writes `library_manifest.json` (committed;
+    public data) as the stand-in ground truth: filename, category,
+    Commons description, license, and depicts statements. First run:
+    149 images across 5 of 6 categories (statue 28, humanoid_robot
+    22, book_cover 36, human_photo 33, human_illustration 30;
+    ui_screenshot 0) -- short of the 40/category target because
+    Wikimedia rate-limited the IP (429s on bursts, then a 403
+    robot-policy block that outlasted a 3-minute wait). The script is
+    resumable: re-run it once the block lifts to top up all
+    categories and add ui_screenshot. The depicts resolution came
+    back empty -- undebugged because of the block (see AGENTS.md
+    gotchas). The corpus is usable as-is for a first pipeline pass.
 
 ## Where things live
 
@@ -238,6 +252,9 @@ edge-case suite on 09-23)
 | Option 2: routing rule (public) | `Images/routing.py` |
 | Edge-case generator (public) | `Images/generate_edge_cases.py` |
 | Edge-case measurement (public) | `Images/measure_edge_cases.py` |
+| Library stand-in fetcher (public) | `Images/fetch_library_standin.py` |
+| Library stand-in manifest (public; the stand-in ground truth) | `Images/library_manifest.json` |
+| Library stand-in images (private, gitignored) | `Images/library_standin/` |
 | Edge-case images (private, gitignored) | `Images/edge_cases/` |
 | Edge-case run records + agent cache (private, gitignored) | `Images/edge_case_results.json`, `Images/edge_case_pipeline_results.json`, `Images/edge_case_agent.json` |
 | Pixtral-direct results (private, gitignored) | `Images/baseline_pixtral_direct_results.json` |
@@ -259,9 +276,12 @@ edge-case suite on 09-23)
 2. **A real library collection.** The 218-image set is personal
    photos; the pipeline, taxonomy, and review UX are ready for
    library material, where the android facet and the held-out
-   revision protocol (LIBRARY.md Phase 6) actually apply. This needs
-   library material supplied (a folder of images); the pipeline then
-   runs as-is: describe -> classify -> sort -> review.
+   revision protocol (LIBRARY.md Phase 6) actually apply. A stand-in
+   now exists: 149 Commons images across 5 categories
+   (`library_standin/`, manifest committed). Next: re-run the fetcher
+   once the Wikimedia block lifts (top up to 40/category, add
+   ui_screenshot, debug the depicts resolution), then run the
+   pipeline on it and measure against the manifest.
 3. ~~**Measure the edge-case suite.**~~ Done (2026-09-23): 8/8
    measured, pooled agreement 33/36 (92%); see RESULTS.md
    ("Edge-case suite"). Residuals: the AI-generated portrait is

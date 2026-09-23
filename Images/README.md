@@ -133,6 +133,11 @@ edge_cases/ (private)              -- generated edge-case images (gitignored)
 measure_edge_cases.py             -- runs the pipeline on the edge-case suite and
                                      compares to the intended labels
 edge_case_pipeline_results.json (private) -- measurement records (gitignored)
+fetch_library_standin.py          -- fetches a stand-in library corpus from
+                                     Wikimedia Commons (categories are data)
+library_manifest.json             -- stand-in ground truth: category, description,
+                                     license per image (committed; public data)
+library_standin/ (private)        -- fetched corpus images (gitignored)
 ```
 
 ## Running it

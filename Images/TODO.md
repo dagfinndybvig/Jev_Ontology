@@ -2,12 +2,14 @@
 
 > **NEXT STEP (2026-09-23): A real library collection.** Everything
 > else on this list is either done, measured, or blocked on it. The
-> pipeline, taxonomy, and review UX are ready; what is missing is
-> library material -- a folder of images that is not personal photos,
-> where the android facet and the held-out revision protocol
-> (LIBRARY.md Phase 6) actually apply. Point the pipeline at the
-> folder and run: describe -> classify -> sort -> review. See
-> STATUS.md "Next steps" item 2.
+> pipeline, taxonomy, and review UX are ready. A stand-in now exists:
+> 149 Wikimedia Commons images across 5 categories
+> (`library_standin/`, manifest committed as the ground truth) --
+> short of the 40/category target because Wikimedia rate-limited the
+> fetch; re-run `fetch_library_standin.py` once the block lifts to
+> top up. Run the pipeline on it: describe -> classify -> sort ->
+> review, and measure against the manifest. See STATUS.md "Next
+> steps" item 2.
 
 The current pipeline (`classify_images.py`) is scaffolding: a vision
 model describes each image, Jev answers one yes/no question. The goal of

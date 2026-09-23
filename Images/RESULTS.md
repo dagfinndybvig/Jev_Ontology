@@ -627,6 +627,25 @@ low-confidence, 91 text-bearing only).
 
 ---
 
+## Stand-in library corpus (2026-09-23)
+
+`fetch_library_standin.py` fetched a stand-in library corpus from
+Wikimedia Commons: 149 images across 5 of 6 categories (statue 28,
+humanoid_robot 22, book_cover 36, human_photo 33, human_illustration
+30; ui_screenshot 0), each with a manifest record (category, Commons
+description, license) in `library_manifest.json` -- committed, since
+Commons metadata is public data and the manifest is the stand-in
+ground truth. Images live in `library_standin/` (gitignored). The
+run is short of the 40/category target: Wikimedia rate-limited the
+IP (429s on download bursts even at 5s spacing, then a 403
+robot-policy block that outlasted a 3-minute wait). The script is
+resumable -- re-run it once the block lifts to top up all categories
+and add ui_screenshot. The structured depicts (P180) resolution came
+back empty on this run; undebugged because of the block. The corpus
+is usable as-is for a first pipeline pass.
+
+---
+
 ## Files
 
 ```
