@@ -39,16 +39,19 @@ def describe_image(path, model=VISION_MODEL):
                     {
                         "type": "text",
                         "text": (
-                            "Describe this image in one short sentence (max 25 words). "
-                            "Focus on the main subject. If it contains people, say so. "
-                            "Do not mention the filename."
+                            "First, check: does this image consist of text, code, or a "
+                            "terminal screenshot? Then describe the image in one short "
+                            "sentence (max 25 words), starting with the medium: photograph, "
+                            "illustration, render, screenshot, or text. If it is text or a "
+                            "screenshot, describe what the text says -- never a scene the "
+                            "text merely mentions. Do not mention the filename."
                         ),
                     },
                     {"type": "image_url", "image_url": f"data:{mime};base64,{b64}"},
                 ],
             }
         ],
-        "max_tokens": 80,
+        "max_tokens": 120,
     }
     req = urllib.request.Request(
         "https://api.mistral.ai/v1/chat/completions",

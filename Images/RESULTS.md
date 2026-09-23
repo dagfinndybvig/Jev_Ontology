@@ -66,6 +66,22 @@ it in the contains-human >=0.9 bucket instead.
 > a real failure mode: screenshots of text that *describes* a person get
 > misclassified as containing a person.
 
+> **Correction 2 (2026-09-23, humanoid pilot):** A second instance of the
+> same failure mode. A screenshot of a text-only terminal showing another
+> model's text *describing* an image (again a man and a robot) was
+> described by the vision model as a promotional photograph, and Jev
+> answered at 1.000 confidence (photograph, multiple subjects). The
+> record now carries a manual correction -- raw Jev answers preserved --
+> in `humanoid_pilot_results.json`, and `sort_humanoids.py` sorts
+> corrected records by their corrected labels. The vision prompt in
+> `classify_images.py` now checks for text first, states the medium,
+> and requires describing what text says rather than a scene the text
+> merely mentions. Verified live: the known failure image and a second
+> text screenshot are both described as text; normal photographs
+> still describe normally. A weaker medium-first-only instruction was
+> tested first and failed on the known image -- the scene description
+> overwhelmed it.
+
 ---
 
 ## The interesting finding: Jev surfaces "real human vs. depiction"
