@@ -279,14 +279,58 @@ preserved privately outside the repo.
 
 ---
 
+## Confident-band verification (2026-09-23)
+
+A stratified 30-record sample of the confident band (every facet
+>= 0.7, previously unreviewed) was labeled through the review UI's
+Sample filter -- 15 records from 0.7-0.9, 15 from 0.9-1.0, spread
+across representation classes.
+
+**Record-level miss rate: 7/30 (23%), Wilson 95% CI 12-41%.** On its
+face that is high -- but the errors are almost entirely
+`representation` (6 of 7 records; the seventh, an entity error, sat
+exactly at the 0.70 boundary):
+
+| Facet | Confident-band accuracy |
+|---|---|
+| contains_human | 29/30 (97%) |
+| contains_robot | 30/30 (100%) |
+| contains_android | 30/30 (100%) |
+| primary_subject | 29/30 (97%) |
+| representation | 24/30 (80%) |
+
+Entity-only miss rate: 1/30 (3%). Pooled calibration in the band:
+0.7-0.9: 88%; 0.9-1.0: 95% -- matching the queue's numbers, so
+Jev's confidence is genuinely calibrated for the entity facets.
+
+The `representation` finding is the sharpest of the project: its
+confident-band accuracy (80%) equals its queue accuracy (80%).
+Whether Jev hedges or asserts, `representation` is wrong a fifth of
+the time -- its confidence carries no information, and the errors
+are the same class everywhere (interface, app, and game screens
+forced into the wrong bucket). This is not a criteria problem; the
+facet needs either a review-always policy or LIBRARY.md Phase 3's
+structured vision state (a typed `medium` field from the vision
+model instead of a five-way choice on a free-text description).
+
+**The two-sided routing verdict:** at threshold 0.7, the queue
+catches entity errors (17/19 in the v4 run), the confident band's
+entity miss rate is ~3%, and `representation` should never be
+auto-accepted at any confidence. Total labeled records: 85 of 218.
+
+---
+
 ## What is unproven
 
-1. **Ground truth is only seeded, not established.** 25 of 218
-   images are labeled (queue-heavy by construction). The 73/142
-   split is still Jev's judgment everywhere else. The reviewed
-   subset gives first accuracy numbers above, but per-confidence
-   calibration for the collection needs a stratified sample,
-   including confident records.
+1. **Ground truth covers 85 of 218 records (39%).** All 50 queued
+   records plus a 30-record stratified sample of the confident band
+   are labeled -- the first two-sided view of the routing threshold.
+   The verdict: entity facets are well-calibrated (queue catches
+   their errors; confident-band entity miss ~3%), but
+   `representation` is ~80% accurate at every confidence level and
+   should never be auto-accepted. The remaining 133 confident
+   records are unlabeled; extrapolating the sample, roughly 31
+   carry a wrong facet, almost all `representation`.
 2. **The vision model is the bottleneck.** Jev only sees the 25-word
    description. If Pixtral mis-describes an image (e.g., misses a person
    in the background, or describes a statue as a person), Jev inherits

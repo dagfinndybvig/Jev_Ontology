@@ -99,6 +99,13 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
    (`../Ontology_private_backup/confident_sample_v1.json`). Reviewing
    it bounds the 0.7 threshold's miss rate and extends the labeled
    set into the confident band.
+13. **Confident-band sample reviewed (30/30).** Miss rate 7/30
+   (23%, Wilson CI 12-41%) -- but 6 of 7 errors are `representation`;
+   entity facets are 97-100% in the band (entity-only miss 3%).
+   `representation` accuracy is 80% in the band, the same as in the
+   queue: its confidence carries no information. See RESULTS.md
+   ("Confident-band verification"). 85 of 218 records are now
+   labeled.
 
 ## Where things live
 
@@ -120,21 +127,18 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 
 ## Next steps, in order
 
-1. **Review the confident sample** (30 records): open the review UI
-   and switch to the Sample filter -- same confirm/correct flow.
-   The result bounds the threshold's miss rate and yields the first
-   confident-band calibration numbers.
-2. **Phase 2 baseline.** Pixtral-direct vs. Pixtral+Jev vs. a
-   trivial classifier on the labeled set, measured on accuracy,
-   calibration, and review burden. The revision series showed the
-   metric that matters: errors caught per review burden, against
-   labels.
-3. **Representation residuals are vision-limited.** The remaining
+1. **Phase 2 baseline.** Pixtral-direct vs. Pixtral+Jev vs. a
+   trivial classifier on the 85 labeled records, measured on
+   accuracy, calibration, and review burden. The revision series
+   showed the metric that matters: errors caught per review burden,
+   against labels.
+2. **Representation residuals are vision-limited.** The remaining
    representation errors trace to descriptions that mislead (a
    photographed cover described as "consists of text"). The
    durable fix is LIBRARY.md Phase 3's structured vision state
    (typed fields: medium, subjects, text_in_image), not further
-   criteria wording.
+   criteria wording -- v3 and v5 proved criteria wording is
+   exhausted.
 
 The android question is settled by the review: the collection
 contains no androids (buck.jpg's Twiki is a robot, not an android).
@@ -143,9 +147,11 @@ actually arise.
 
 ## Open decisions
 
-- Threshold 0.7 is validated on the queue side: it caught all 22
-  errors at a 23% review burden (50/218). The miss side is unknown
-  until confident records are sampled (next step 2).
+- Threshold 0.7 is validated two-sided for entity facets: the queue
+  caught 17/19 errors in the v4 run at a ~20% burden, and the
+  confident band's entity miss rate is ~3%. `representation` is the
+  exception -- ~80% accurate at every confidence level, so it needs
+  a review-always policy or Phase 3's structured vision state.
 - Taxonomy v2's improvement is measured in-sample (same 218
   descriptions). The held-out protocol (LIBRARY.md Phase 6) is the
   standard for calling a revision real.
