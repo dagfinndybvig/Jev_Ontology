@@ -21,7 +21,7 @@ TypeSafe AI's "System One" decision model.
 > same cascade pattern as the ticket ontology, with a vision model as the
 > front-end.
 
-Note: Once Jev becomes the multimodal, we can shorten the pipeline and quite likely acheive amazing speed and economy.
+Note: Once Jev becomes multimodal, we can shorten the pipeline and quite likely acheive amazing speed and economy.
 
 Also note that while Jev is ridiculously cheap, Pixtral is also low cost, so on the whole the project is already economical as-is.
 
