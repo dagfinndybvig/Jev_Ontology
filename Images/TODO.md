@@ -92,7 +92,8 @@ remaining fix for the ambiguous family.
 **Update (2026-09-23, Option 2 adopted):** `routing.py` routes to
 review on the 0.7 threshold OR a text-bearing signal in the
 description. Measured on the labeled 85: catches 25/27 errors vs
-18/27 for the threshold alone. Full-collection burden 156/218 (72%).
+18/27 for the threshold alone. Full-collection burden 135/218 (62%)
+after the 2026-09-23 preamble-stripper fix (was 156/218, 72%).
 The two remaining silent errors are vision-limited with no text
 signal. The trade is explicit and tunable (the pattern is one
 constant).
@@ -120,9 +121,12 @@ exists in `image_human_results.json`.
 
 **Update (2026-09-23):** a first routing policy is implemented:
 `routing.py` routes to review on the 0.7 threshold OR a text-bearing
-description signal (measured: 25/27 errors caught at 72% burden), and
-the rule is wired into `sort_humanoids.py` and `review_ui.py`. A
-multi-band policy (mid -> queue, low -> escalate) remains open.
+description signal (measured: 25/27 errors caught), and the rule is
+wired into `sort_humanoids.py` and `review_ui.py`. The preamble
+stripper was fixed 2026-09-23 (negation-only stripping, found by the
+edge-case suite): same 25/27 catches, burden 156 -> 135 of 218
+(72% -> 62%). A multi-band policy (mid -> queue, low -> escalate)
+remains open.
 
 ### 5. Criteria as the ontology -- close the feedback loop
 

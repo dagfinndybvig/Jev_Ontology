@@ -76,10 +76,11 @@ Essential context for any agent working in this directory.
   perceptual, not fixable by question architecture.
 - `routing.py` — Option 2 (adopted): routes records to review on the
   0.7 threshold OR a text-bearing signal in the description
-  (measured: catches 25/27 errors vs 18/27 for the threshold alone,
-  at a 72% full-collection burden). Writes `routing_queue.json`
-  (private, gitignored). The text-signal pattern is a single
-  constant, tunable without other code changes.
+  (measured: catches 25/27 errors vs 18/27 for the threshold alone).
+  Writes `routing_queue.json` (private, gitignored). The text-signal
+  pattern is a single constant, tunable without other code changes.
+  The preamble stripper was fixed 2026-09-23 (see gotchas): same
+  25/27 catches, burden 156/218 (72%) -> 135/218 (62%).
 - `generate_edge_cases.py` — TODO item 9: generates the adversarial
   edge-case suite (text-describes-scene, memes, AI-generated people,
   collages, background people, app screens, statue/robot boundaries)
@@ -151,13 +152,15 @@ recomputed from the result JSONs, never recalled from memory.
   file download returns JPEG (JFIF) bytes even though the `tool_file`
   chunk reports `file_type: png` — sniff the magic bytes, don't trust
   the reported extension.
-- `routing.py`'s preamble stripper is brittle (found by the
-  edge-case suite, 2026-09-23): `description_body` only strips a
-  first line starting "this image does not consist", but Pixtral's
-  check-first line varies ("The image does not consist...",
-  "This image consists of neither..."). Unstripped, the word
-  "terminal" in the preamble fires a false `text_bearing` signal on
-  clean photographs. Measured on the suite: 2-3 of 4 text-bearing
-  flags were preamble artifacts. Fixing the stripper changes the
-  measured 156/218 burden — re-run `routing.py` on the full
-  collection before adopting any change.
+- `routing.py`'s preamble stripper (found by the edge-case suite,
+  fixed 2026-09-23): `description_body` strips the model's check-first
+  line only when it is a NEGATION ("does not consist", "consists of
+  neither") -- Pixtral's negation wording varies, and unstripped the
+  word "terminal" in it fired false `text_bearing` flags on clean
+  photographs. Measured trade: stripping negations only keeps 25/27
+  catches and drops the burden 156 -> 135 of 218 (72% -> 62%);
+  stripping every first line also drops the burden (to 50%) but loses
+  2 catches -- first lines that AFFIRM text ("The image consists of
+  text.") are true signals and must be kept. If the vision prompt
+  changes, re-check the preamble wording against
+  `PREAMBLE_NEGATION`.

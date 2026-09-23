@@ -204,6 +204,21 @@ edge-case suite on 09-23)
     measured 156/218 burden -- re-run `routing.py` on the full
     collection before adopting a change. See RESULTS.md
     ("Edge-case suite").
+22. **Routing stripper fixed; taxonomy gaps documented.** Three
+    stripper variants were measured on the full 218 against the 85
+    labeled records: the old one-wording stripper (25/27 caught,
+    156/218 burden), stripping every first line (23/27, 109/218 --
+    strictly worse: two caught errors have first lines that affirm
+    text, true signals), and stripping only negated check-lines
+    (25/27, 135/218). The negation-only fix was adopted: same 25/27
+    catches, burden 72% -> 62%; `routing_queue.json` regenerated
+    (135 routed: 44 low-confidence, 91 text-bearing only). On the
+    suite, the two false text-bearing flags now auto-accept and the
+    true signals remain. The two taxonomy gaps (incidental humans;
+    UI with a depicted subject) are recorded as design notes in
+    `humanoid_taxonomy_v4.json` -- documented, not revised, per the
+    v3/v5 lesson (n=1 synthetic evidence; revisit with the library
+    collection). See RESULTS.md ("Routing stripper fixed").
 
 ## Where things live
 
@@ -240,7 +255,7 @@ edge-case suite on 09-23)
 1. ~~**Integrate the routing rule into the sorter and review UI.**~~
    Done (2026-09-23, commit a884d95): `route_reason` is wired into
    `sort_humanoids.py`'s `_review\` placement and the review UI's
-   queue tags; the 156 routed records are walkable.
+   queue tags; the 135 routed records are walkable.
 2. **A real library collection.** The 218-image set is personal
    photos; the pipeline, taxonomy, and review UX are ready for
    library material, where the android facet and the held-out
@@ -253,11 +268,10 @@ edge-case suite on 09-23)
    pixel-indistinguishable from a photograph (perceptual, no taxonomy
    class), and the routing preamble stripper is brittle (AGENTS.md
    gotchas).
-4. **Decide on the routing preamble stripper.** The edge-case suite
-   showed `routing.py`'s `description_body` misses two of Pixtral's
-   check-first line variants, firing false text-bearing flags. Any
-   fix must be re-measured on the full 218 (the 156/218 burden is
-   the adopted record).
+4. ~~**Decide on the routing preamble stripper.**~~ Done
+   (2026-09-23): negation-only stripping adopted -- same 25/27
+   catches, burden 156 -> 135 of 218 (72% -> 62%). See RESULTS.md
+   ("Routing stripper fixed").
 
 The android question is settled by the review: the collection
 contains no androids (the Twiki image is a robot, not an android).

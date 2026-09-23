@@ -10,7 +10,9 @@
       "The v3 experiment (broadening text_screenshot to game and app screens) is rejected: it converted hedged errors into confident ones -- 22/22 queue-caught errors fell to 16/21. The review's actual semantics are subtler: a screenshot classifies by its content (text screens are text_screenshot; rendered or drawn scenes classify by their rendering).",
       "Depiction includes all media: a human drawn in an illustration, rendered in 3D, or sketched in a diagram is visible and counts. Only bare text mentioning a person does not.",
       "Robots require a being-like form (body, face, or limbs); the review corrected mechanical 'intellect machines' and engines to no.",
-      "The 10 contains_human corrections split between over-strict hedges (renders, cartoons) and text-confusions; this revision addresses the former."
+      "The 10 contains_human corrections split between over-strict hedges (renders, cartoons) and text-confusions; this revision addresses the former.",
+      "GAP (found by the edge-case suite, 2026-09-23, not yet revised): primary_subject has no class for incidental humans -- people visible but not the main subject (e.g., a building with people walking in front). 'none' requires no visible humanoid, so such images fit neither 'human' nor 'none' cleanly; Jev hedges just under the threshold and the queue catches them. Revisit with the library collection, where incidental humans are common.",
+      "GAP (found by the edge-case suite, 2026-09-23, not yet revised): representation has no class for an interface screenshot with a depicted subject (e.g., a game inventory screen with a character portrait) -- 'text_screenshot' requires words-not-a-scene, 'other' requires no depicted subject. Jev answers 'other' confidently; the gap is definitional, not a calibration failure. Revisit with the library collection."
     ]
   },
   "facets": {

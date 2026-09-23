@@ -594,17 +594,36 @@ people in front) and an interface screenshot with a depicted subject
 have no clean primary_subject or representation class -- both were
 scored as ambiguous rather than forced.
 
-**Routing on the suite.** All 8 records route to review (100%
-burden -- expected for a deliberately adversarial suite): 4
-text-bearing, 4 low-confidence. But 2-3 of the 4 text-bearing flags
-are preamble artifacts: `routing.py`'s `description_body` strips only
-a first line starting "this image does not consist", while Pixtral's
-check-first line varies ("The image does not consist...",
-"This image consists of neither..."); unstripped, the word "terminal"
-in the preamble fires a false text-bearing signal on clean
-photographs. Fixing the stripper would change the measured 156/218
-burden on the main collection -- re-run `routing.py` there before
-adopting any change (see AGENTS.md gotchas).
+**Routing on the suite.** With the fixed stripper (below), 6 of 8
+records route to review: 2 text-bearing (the game screen and the
+meme -- both genuinely contain text), 4 low-confidence (collage,
+background people, statue, and the described-scene image -- all
+hedged), and 2 auto-accept (the AI-generated portrait and the robot
+illustration, both fully confident and correctly classified). Before
+the fix, all 8 routed, with 2-3 false text-bearing flags caused by
+the preamble leak.
+
+**Routing stripper fixed (2026-09-23).** The suite exposed that
+`routing.py`'s `description_body` stripped only a first line starting
+"this image does not consist", while Pixtral's check-first line
+varies ("The image does not consist...", "This image consists of
+neither..."); unstripped, the word "terminal" in the negated preamble
+fired false text-bearing flags on clean photographs. Three variants
+were measured on the full 218 against the 85 labeled records:
+
+| Stripper | Caught | Silent | Burden |
+|---|---|---|---|
+| old (one wording only) | 25/27 | 2 | 156/218 (72%) |
+| every first line | 23/27 | 4 | 109/218 (50%) |
+| negations only (adopted) | 25/27 | 2 | 135/218 (62%) |
+
+Stripping every first line is strictly worse: two of the caught
+errors (a book cover and a text-and-graphics illustration) have
+first lines that AFFIRM text ("The image consists of text.") -- true
+signals the aggressive stripper deleted. The adopted fix strips only
+negated check-lines: same 25/27 catches, burden down 21 records
+(72% -> 62%). `routing_queue.json` regenerated: 135 routed (44
+low-confidence, 91 text-bearing only).
 
 ---
 

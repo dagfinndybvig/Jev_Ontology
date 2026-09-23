@@ -33,16 +33,24 @@ FACETS = ["contains_human", "contains_robot", "contains_android",
 THRESHOLD = 0.7
 
 # Text-bearing signals in the description (the vision prompt states the
-# medium first, so these phrases are reliable). The preamble line
-# ("This image does not consist of text...") is stripped before matching.
+# medium first, so these phrases are reliable). The preamble line (the
+# model's check-first statement) is stripped before matching -- but only
+# when it is a NEGATION ("does not consist", "consists of neither"):
+# Pixtral's negation wording varies, and unstripped the word "terminal"
+# in it fires false text-bearing flags on clean photographs (measured
+# 2026-09-23: stripping negations only keeps 25/27 catches and drops the
+# burden 156 -> 135 of 218; stripping every first line loses 2 catches).
+# A first line that AFFIRMS text ("The image consists of text.") is a
+# true signal and is kept.
 TEXT_PATTERN = re.compile(
     r"is a screenshot|screenshot shows|consists of text|terminal|scan of|readout|interface"
 )
+PREAMBLE_NEGATION = re.compile(r"does not consist|consists of neither|consists of no\b")
 
 
 def description_body(desc):
     lines = [ln for ln in desc.split("\n") if ln.strip()]
-    if lines and lines[0].lower().startswith("this image does not consist"):
+    if lines and PREAMBLE_NEGATION.search(lines[0].lower()):
         lines = lines[1:]
     return " ".join(lines).lower()
 
