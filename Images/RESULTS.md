@@ -128,6 +128,49 @@ effectively free.
 
 ---
 
+## Re-run with the fixed vision prompt (2026-09-23)
+
+The second screenshot-of-text instance (Correction 2 above) led to a
+vision-prompt fix: Pixtral now checks for text first and states the
+medium (photograph, illustration, render, screenshot, or text) before
+describing content. A weaker medium-first-only draft failed live
+testing on the known failure image; the check-first version passed on
+that image, a second text screenshot, and two normal photos.
+
+The full pipeline was then re-run on the collection, grown to 218
+images (3 new since the original 215). 218 descriptions, 218 Jev
+calls, 0 errors. Comparison against the original run (215 common
+images; the old-prompt baseline is preserved in a private backup
+outside the repo):
+
+| Measure | Original run | Re-run |
+|---|---|---|
+| Review queue (<0.7 any facet) | 79/215 (37%) | 52/218 (24%) |
+| `representation` hedges | 64 | 28 |
+| Binary "contains human" | 73 yes / 142 no | 67 yes / 151 no |
+| `contains_human` choice flips | -- | 11 (10 of them yes -> no) |
+
+The 10 yes->no flips are almost entirely the failure family the prompt
+fix targeted: screenshots of text *about* people (article headlines,
+name lists), a greeting card, poster illustrations, and a render. The
+single no->yes flip also looks correct.
+
+The original failure image is now described as text at the raw level
+(`representation: text_screenshot` at 0.53, previously `photograph`
+at 1.0). Jev, however, still answers the *described* scene for
+`primary_subject` (multiple, 0.91): the remaining gap is in Jev's
+criteria, which do not distinguish "depicted" from "described." The
+manual correction stands.
+
+`sort_humanoids.py` (new) materializes the pilot results as a sorted
+folder tree -- `Humanoids/<primary_subject>/<representation>/` plus a
+`_review/` folder of low-confidence and corrected records -- for
+visual verification. Its first version read `manual_correction` labels
+from the wrong JSON level and sorted corrected records by raw labels;
+fixed the same day, placement verified with `find`.
+
+---
+
 ## What is unproven
 
 1. **No ground truth.** We did not manually label the 215 images, so

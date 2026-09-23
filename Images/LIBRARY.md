@@ -305,3 +305,24 @@ The pilot validates the taxonomy-as-data pattern and the
 multi-question single-call pattern at library scale. What it does
 not do is measure accuracy: the 215 images still have no ground
 truth. Phase 0 remains the next dependency.
+
+### Addendum (2026-09-23): re-run with the fixed vision prompt
+
+A second screenshot-of-text false positive (text describing "a man
+and a robot," classified as a promotional photograph at 1.0
+confidence) led to a vision-prompt fix -- Pixtral now checks for
+text first and states the medium -- and a full re-run on the
+collection, now 218 images:
+
+- Review queue 52/218 (24%), down from 79/215 (37%);
+  `representation` hedges 28, down from 64.
+- The failure image is now `text_screenshot` at the raw level, but
+  Jev still answers the *described* scene for `primary_subject`
+  (multiple, 0.91). The criteria need a "depicted vs. described"
+  clause; Phase 3's structured vision state remains the durable
+  fix for this class of error.
+- Android: 2 raw yes in the re-run (one is the corrected failure
+  record); the facet is still awaiting ground truth.
+
+The old-prompt baseline is preserved privately outside the repo.
+Phase 0 ground truth is still the dependency.

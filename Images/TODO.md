@@ -107,6 +107,11 @@ confidence thresholds are less meaningful than they appear.
 Classify each 10 times against the same criteria. Measure mean and
 standard deviation of confidence, and whether the choice ever flips.
 
+**Update (2026-09-23):** a cross-prompt comparison now exists (old
+vs. fixed vision prompt: 204/215 contains_human agreement, queue
+79 -> 52), but that changes two variables at once. Same-prompt,
+same-description variance is still unmeasured.
+
 **Effort:** Small. A loop over the existing `jev_classify` function.
 
 ### 7. Ground truth and accuracy
@@ -149,6 +154,13 @@ people in the background, text-heavy screenshots.
 **What:** Build a small suite of these edge cases. Measure how often the
 pipeline misclassifies them, and whether the multi-question approach
 (item 3) catches them (e.g. `is_text=yes` would flag the screenshot).
+
+**Update (2026-09-23):** the prompt-level fix is in: Pixtral now
+checks for text first and states the medium. Both confirmed
+screenshot-of-text instances are fixed at the `representation` level;
+Jev's criteria still answer a *described* scene for `primary_subject`,
+so a "depicted vs. described" clause is the open half. The edge-case
+suite remains worth building to measure the residual rate.
 
 **Effort:** Small. Assembling the suite is the main work.
 

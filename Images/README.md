@@ -33,8 +33,8 @@ A small sub-project of the Ontology + Jev work. The task: sort a folder
 of images by whether they contain a human. The pipeline is:
 
 ```
-Mistral Pixtral describes the image (one 25-word sentence)
-  -> Jev classifies the description: "Does this image contain a human?" (yes/no)
+Mistral Pixtral describes the image (checks for text first, states the medium, then a short description)
+  -> Jev classifies that description: "Does this image contain a human?" (yes/no)
 ```
 
 The vision model is the "eyes"; Jev is the decision maker. Jev returns a
@@ -63,14 +63,17 @@ What Jev genuinely adds:
 
 Where it is thin:
 
-- **Jev never sees the image.** It sees a 25-word description, so its
+- **Jev never sees the image.** It sees a short text description, so its
   "understanding" is bounded by that summary.
 - **The vision model could likely answer directly.** Ask Pixtral "does
   this contain a human?" and it would probably be right; Jev is an extra
   hop.
 - **Jev inherits vision errors.** A screenshot-of-text image is the proof:
   Pixtral transcribed text as if it were a scene, and Jev said "yes"
-  because it only saw the description.
+  because it only saw the description. (Fixed 2026-09-23 with a
+  check-text-first, medium-first vision prompt; the residual gap is
+  Jev's criteria, which still answer a *described* scene -- see
+  RESULTS.md.)
 - **The bottleneck is the vision model.** The 13 low-confidence cases are
   depictions *because* Pixtral described them as statues/cartoons; Jev
   just attached a number to that.
@@ -117,7 +120,8 @@ LIBRARY.md                          -- project plan for the library use-case
 TODO.md                             -- outline of the fuller multi-question project
 STATUS.md                           -- session pickup notes: where we are, next steps
 humanoid_taxonomy_v1.json          -- pilot taxonomy: humanoid facets as data
-pilot_humanoid.py                  -- re-classifies the 215 descriptions against it
+pilot_humanoid.py                  -- re-classifies the stored descriptions against it
+sort_humanoids.py                  -- copies images into a sorted Humanoids tree
 humanoid_pilot_results.json (private) -- pilot per-image results (gitignored)
 ```
 
@@ -140,11 +144,17 @@ illustrations, statues, cartoons, or posters rather than photos of real
 people -- Jev's calibration surfaces the "real human vs. depiction"
 boundary. See `RESULTS.md` for the full writeup.
 
+**Re-run (2026-09-23):** the pipeline was re-run on 218 images with
+the fixed vision prompt: review queue 52/218 (24%, down from 37%),
+representation hedges halved, and both known screenshot-of-text
+false positives caught at the vision layer. The humanoid pilot and
+the sorted verification tree are described in `STATUS.md`.
+
 ## Caveats
 
 - **No ground truth.** The split is Jev's judgment; accuracy is
   unmeasured. A manual audit of a sample would establish real accuracy.
-- **The vision model is the bottleneck.** Jev only sees the 25-word
+- **The vision model is the bottleneck.** Jev only sees the short text
   description, so a mis-description propagates.
 - **"Human" is fuzzy.** Statue vs. person, cartoon vs. photo. The
   criteria could be tightened or split into sub-labels.
