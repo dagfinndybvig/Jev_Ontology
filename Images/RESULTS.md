@@ -171,6 +171,33 @@ fixed the same day, placement verified with `find`.
 
 ---
 
+## Taxonomy v2: the depicted-vs-described clause (2026-09-23)
+
+The re-run left one gap: Jev answered the *described* scene for
+`primary_subject` on the failure image (`multiple` at 0.91).
+`humanoid_taxonomy_v2.json` adds one clause to every entity facet:
+only what the image itself shows counts; a person or robot merely
+mentioned or described in text does not. The pilot was re-run on the
+same 218 descriptions (criteria-v1 results preserved privately).
+
+- The failure image is now correct raw on all five facets:
+  `primary_subject: none` (0.88, previously `multiple` at 0.91).
+  No manual correction needed anymore.
+- Choice agreement with criteria v1: 217/218 on four facets,
+  213/218 on `primary_subject`. The five subject flips are the
+  intended fixes (the failure image, a birthday greeting card, a
+  text+illustration timeline, a movie poster described only by title
+  and stars) or coin-flip noise on records already hedged.
+- Review queue 50/218 (23%), down from 52. The clause's effect is
+  targeted: it fixes text-describes-entity cases and adds mild
+  hedging where the description is ambiguous about whether anyone is
+  depicted.
+- Caveat: measured in-sample, on the same descriptions that
+  motivated the revision. The held-out protocol (LIBRARY.md Phase 6)
+  is the standard for calling a revision real.
+
+---
+
 ## What is unproven
 
 1. **No ground truth.** We did not manually label the 215 images, so

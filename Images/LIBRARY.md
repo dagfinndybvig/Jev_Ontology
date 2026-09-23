@@ -326,3 +326,11 @@ collection, now 218 images:
 
 The old-prompt baseline is preserved privately outside the repo.
 Phase 0 ground truth is still the dependency.
+
+Later the same day, `humanoid_taxonomy_v2.json` added the
+depicted-vs-described clause to every entity facet (only what the
+image itself shows counts; entities described in text do not).
+Re-run on the same 218 descriptions: the failure image is correct
+raw on all five facets, queue 50/218 (23%). This is the first
+criteria revision driven by review-queue signals -- in-sample only;
+Phase 6's held-out protocol is the standard for future revisions.

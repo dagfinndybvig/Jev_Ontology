@@ -1,8 +1,8 @@
 # Status: Where We Are, Where to Pick Up
 
-**Last updated:** 2026-09-23 (sessions: original run 09-22; humanoid
-pilot 09-22; folder verification, prompt fix, and full re-run 09-23)
-**Repo state:** clean, in sync with `origin/main`.
+**Last updated:** 2026-09-23 (original run and humanoid pilot 09-22;
+folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
+**Repo state:** see git; keep in sync with `origin/main` before new work.
 
 ---
 
@@ -15,75 +15,79 @@ pilot 09-22; folder verification, prompt fix, and full re-run 09-23)
    except the known failure image.
 2. **Second screenshot-of-text false positive.** A screenshot of a
    text-only terminal showing DeepSeek text describing an image was
-   classified as a promotional photograph at 1.0 confidence. Manual
-   correction recorded (raw Jev answers preserved). Both instances
-   involve text describing "a man and a robot."
-3. **Vision prompt fix.** `classify_images.py` now makes Pixtral check
-   for text first and state the medium. Verified live: the failure
-   image and a second text screenshot are described as text; normal
-   photographs unaffected. A weaker medium-first draft failed on the
-   failure image -- the scene description overwhelmed it. RESULTS.md
-   documents both corrections.
-4. **Full re-run.** 218 images (3 new), 0 errors, negligible cost.
-   Review queue 79 -> 52 (37% -> 24% burden); `representation` hedges
-   64 -> 28; 11 `contains_human` flips, almost all correct catches of
-   text-describing-people images. The failure image is now
-   `text_screenshot` at the raw level, but Jev still answers the
-   *described* scene for `primary_subject` -- a criteria gap
-   ("depicted vs. described"). Android: now 2 raw yes (one is the
-   corrected failure record; one is the new Buck Rogers photo).
-5. **Sorter bug fixed.** `sort_humanoids.py` initially read
-   `manual_correction` labels from the wrong JSON level, so corrected
-   records sorted by raw labels. Fixed; placement verified with find.
-
-The old-prompt baseline (both result JSONs) is preserved at
-`../Ontology_private_backup/rerun_v1_2026-09-23/` (outside the repo,
-private).
+   classified as a promotional photograph at 1.0 confidence. Both
+   instances involve text describing "a man and a robot."
+3. **Vision prompt fix.** `classify_images.py` now makes Pixtral
+   check for text first and state the medium. Verified live; a weaker
+   medium-first draft failed on the known image. RESULTS.md documents
+   both corrections.
+4. **Full re-run (fixed prompt, taxonomy v1).** 218 images (3 new),
+   0 errors. Queue 79 -> 52; `representation` hedges 64 -> 28. The
+   failure image became `text_screenshot` raw, but Jev still answered
+   the *described* scene for `primary_subject` -- a criteria gap.
+5. **Sorter bug fixed.** `manual_correction` labels are nested under
+   `correct`; the sorter first read them at the wrong level. Fixed;
+   placement verified with find.
+6. **Taxonomy v2 (depicted vs. described).** New
+   `humanoid_taxonomy_v2.json` adds one clause to every entity facet:
+   only what the image itself shows counts; entities merely mentioned
+   or described in text do not. Pilot re-run on the same 218
+   descriptions (v1-criteria results preserved privately):
+   - The failure image is now correct raw on all five facets
+     (`primary_subject: none` at 0.88, was `multiple` at 0.91). No
+     manual correction needed anymore.
+   - Choice agreement with v1 criteria: 217/218 on four facets,
+     213/218 on primary_subject; the five subject flips are the
+     intended fixes or noise on already-hedged records.
+   - Queue 50/218 (23%), down from 52. `contains_human` 66/152.
+   - This is the first criteria revision driven by review-queue
+     signals -- in-sample only; LIBRARY.md Phase 6's held-out
+     protocol applies to future revisions.
 
 ## Where things live
 
 | Thing | Path |
 |---|---|
 | Pilot plan and results write-up | `Images/LIBRARY.md` |
-| Run write-up incl. both corrections and the re-run | `Images/RESULTS.md` |
-| Pilot taxonomy (public, data) | `Images/humanoid_taxonomy_v1.json` |
-| Pilot script (public) | `Images/pilot_humanoid.py` |
+| Run write-up (both corrections, re-run, taxonomy v2) | `Images/RESULTS.md` |
+| Pilot taxonomy v2 (current) | `Images/humanoid_taxonomy_v2.json` |
+| Pilot taxonomy v1 (superseded, kept for comparison) | `Images/humanoid_taxonomy_v1.json` |
+| Pilot script (public; `TAXONOMY` env var selects version) | `Images/pilot_humanoid.py` |
 | Sorter (public) | `Images/sort_humanoids.py` |
 | Sorted folder tree (private) | `PICTURES_DIR\Humanoids\` (+ `_review\`) |
 | Pilot per-image results (private, gitignored) | `Images/humanoid_pilot_results.json` |
 | Original-run results (private, gitignored) | `Images/image_human_results.json` |
-| Old-prompt baseline (private) | `../Ontology_private_backup/rerun_v1_2026-09-23/` |
+| Baselines (private) | `../Ontology_private_backup/` (`rerun_v1_2026-09-23/` = old prompt; `2026-09-23_criteria_v1_run/` = fixed prompt, v1 criteria) |
 | Review queue printout | rerun `python pilot_humanoid.py` (instant; resumable) |
 
 ## Next steps, in order
 
-1. **Walk the new review queue** (52 records, was 79): same
-   cataloger-eye pass, now against `Humanoids\_review\`. The
-   `representation` hedges halved; the remaining ones still cluster on
-   covers/posters, game and UI screens, and 3D renders -- the missing
-   classes identified on 2026-09-22.
-2. **Add a "depicted vs. described" clause** to Jev's criteria
-   (`contains_human`, `primary_subject`): text describing a person is
-   not an image containing one. The re-run shows the vision layer
-   fixed but Jev still answering the described scene.
-3. **Sharpen the `representation` definitions** (28 queue entries):
-   add cover_or_poster, interface_or_game_screen, and 3d_render
-   classes; re-run the pilot and see if the queue shrinks further.
-4. **Decide the android question**: 2 raw yes now (one corrected);
-   `buck.jpg` at 0.55 is the only genuine hedge. Loosen the criteria
-   or drop the facet until ground truth exists.
-5. **Phase 0 ground truth (the real dependency).** Label a
-   stratified sample (~50 random plus the deliberate hard cases:
-   depictions, text scans, compound images). Until this exists,
-   everything is consistency, not accuracy.
-6. **Phase 2 baseline** once labels exist: Pixtral-direct vs.
+1. **Walk the review queue** (50 records, was 79 at peak): the
+   cataloger-eye pass against `Humanoids\_review\`. The `representation`
+   hedges (26) still cluster on covers/posters, game and UI screens,
+   and 3D renders -- the missing classes identified on 2026-09-22.
+2. **Sharpen the `representation` definitions**: add cover_or_poster,
+   interface_or_game_screen, and 3d_render classes as
+   `humanoid_taxonomy_v3.json`; re-run and see if the queue shrinks.
+   Measure against the v2 baseline, one change at a time.
+3. **Decide the android question**: 1 raw yes (`buck.jpg`, 0.55).
+   Loosen the criteria or drop the facet until ground truth exists.
+4. **Phase 0 ground truth (the real dependency).** Label a stratified
+   sample (~50 random plus the deliberate hard cases: depictions,
+   text scans, compound images). Until this exists, everything is
+   consistency, not accuracy.
+5. **Phase 2 baseline** once labels exist: Pixtral-direct vs.
    Pixtral+Jev vs. a trivial classifier, measured on accuracy,
    calibration, and review burden.
 
 ## Open decisions
 
-- Threshold 0.7 now yields a 24% review burden (52/218), down from
-  37%. Still provisional; Phase 2's burden-vs-accuracy curve decides.
+- Threshold 0.7 now yields a 23% review burden (50/218), down from
+  37% at the first pilot. Still provisional; Phase 2's
+  burden-vs-accuracy curve decides.
+- Taxonomy v2's improvement is measured in-sample (same 218
+  descriptions). The held-out protocol (LIBRARY.md Phase 6) is the
+  standard for calling a revision real.
 - The 218-image collection is personal photos, not library material.
   Phase 0 work on it is practice; the real ground truth comes from an
   actual library collection.

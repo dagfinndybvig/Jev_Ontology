@@ -93,6 +93,12 @@ them, feed them to an LLM with instructions to sharpen the criteria
 (e.g. split "human" into "photo of a real person" vs. "depiction"),
 then re-run. This is the same abduction loop as the ticket work.
 
+**Update (2026-09-23):** first revision done. Taxonomy v2's
+depicted-vs-described clause, written from review-queue signals,
+fixed the known failure raw and moved the queue 52 -> 50. Measured
+in-sample on the same 218 descriptions; the held-out protocol
+(LIBRARY.md Phase 6) applies to future revisions.
+
 **Effort:** Moderate. Needs an LLM call for criteria revision and a
 re-run harness.
 
@@ -155,12 +161,12 @@ people in the background, text-heavy screenshots.
 pipeline misclassifies them, and whether the multi-question approach
 (item 3) catches them (e.g. `is_text=yes` would flag the screenshot).
 
-**Update (2026-09-23):** the prompt-level fix is in: Pixtral now
-checks for text first and states the medium. Both confirmed
-screenshot-of-text instances are fixed at the `representation` level;
-Jev's criteria still answer a *described* scene for `primary_subject`,
-so a "depicted vs. described" clause is the open half. The edge-case
-suite remains worth building to measure the residual rate.
+**Update (2026-09-23):** fixed in two layers. The vision prompt now
+checks for text first and states the medium, and
+`humanoid_taxonomy_v2.json` adds a depicted-vs-described clause to
+the entity facets. The known failure image is now correct raw on all
+five facets. The edge-case suite remains worth building to measure
+the residual rate.
 
 **Effort:** Small. Assembling the suite is the main work.
 

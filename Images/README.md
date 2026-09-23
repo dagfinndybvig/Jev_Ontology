@@ -119,8 +119,11 @@ RESULTS.md                          -- writeup of the run and findings
 LIBRARY.md                          -- project plan for the library use-case
 TODO.md                             -- outline of the fuller multi-question project
 STATUS.md                           -- session pickup notes: where we are, next steps
-humanoid_taxonomy_v1.json          -- pilot taxonomy: humanoid facets as data
-pilot_humanoid.py                  -- re-classifies the stored descriptions against it
+humanoid_taxonomy_v1.json          -- pilot taxonomy v1 (superseded, kept for comparison)
+humanoid_taxonomy_v2.json          -- pilot taxonomy v2 (current): adds the
+                                     depicted-vs-described clause
+pilot_humanoid.py                  -- re-classifies the stored descriptions
+                                     (TAXONOMY env var selects the version)
 sort_humanoids.py                  -- copies images into a sorted Humanoids tree
 humanoid_pilot_results.json (private) -- pilot per-image results (gitignored)
 ```
