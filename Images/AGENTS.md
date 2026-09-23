@@ -70,6 +70,12 @@ Essential context for any agent working in this directory.
   the measured record: the vision model answers `digital_capture`
   for plain photographs -- the text-vs-physical distinction is
   perceptual, not fixable by question architecture.
+- `routing.py` — Option 2 (adopted): routes records to review on the
+  0.7 threshold OR a text-bearing signal in the description
+  (measured: catches 25/27 errors vs 18/27 for the threshold alone,
+  at a 72% full-collection burden). Writes `routing_queue.json`
+  (private, gitignored). The text-signal pattern is a single
+  constant, tunable without other code changes.
 - Runs skip records with `status: ok`. Fresh descriptions require
   moving the results JSON aside first. Cost is small but real
   (~$0.0003 per image for the vision step).

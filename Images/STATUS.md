@@ -150,6 +150,15 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
     the same distinction. Review-always routing (Option 2) is the
     remaining path for the ambiguous family. See RESULTS.md
     ("Option 1").
+18. **Option 2: review-always routing adopted.** `routing.py` routes
+    to review on the existing 0.7 threshold OR a text-bearing signal
+    in the description (measured on the labeled 85: catches 25/27
+    errors vs 18/27 for the threshold alone). Full-collection
+    burden: 156/218 (72%) -- 44 low-confidence, 112 text-bearing
+    only. The two remaining silent errors are vision-limited with no
+    text signal; one sits exactly at the 0.70 boundary (the queue
+    rule is `< 0.7`). The trade is explicit: 20% burden / 9 silent
+    errors vs 72% burden / 2. See RESULTS.md ("Option 2").
 
 ## Where things live
 
@@ -165,8 +174,11 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 | Phase 2: Pixtral-direct baseline (public) | `Images/baseline_pixtral_direct.py` |
 | Phase 2: three-system comparison (public) | `Images/baseline_compare.py` |
 | Phase 3: structured vision state (public) | `Images/structured_vision.py` |
+| Option 1: capture-type experiment (public, falsified) | `Images/capture_type.py` |
+| Option 2: routing rule (public) | `Images/routing.py` |
 | Pixtral-direct results (private, gitignored) | `Images/baseline_pixtral_direct_results.json` |
 | Structured vision results (private, gitignored) | `Images/structured_vision_results.json` |
+| Routing queue (private, gitignored) | `Images/routing_queue.json` |
 | Sorted folder tree (private) | `PICTURES_DIR\Humanoids\` (+ `_review\`) |
 | Pilot per-image results (private, gitignored) | `Images/humanoid_pilot_results.json` |
 | Original-run results (private, gitignored) | `Images/image_human_results.json` |
@@ -176,14 +188,11 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 
 ## Next steps, in order
 
-1. **Review-always routing for the ambiguous family (Option 2).**
-   With the capture-type question falsified, the vision model
-   demonstrably cannot separate "photo of a text-bearing object"
-   from "flat digital capture." The remaining fix is routing, not
-   perception: records whose state involves text-bearing surfaces
-   (or whose `representation` confidence is in the uninformative
-   band) go to review regardless of confidence. Design the rule,
-   measure its burden on the labeled 85 and the full 218.
+1. **Integrate the routing rule into the sorter and review UI.**
+   `routing.py` computes the adopted rule (0.7 threshold OR
+   text-bearing signal) and writes `routing_queue.json`; the next
+   step is wiring it into `sort_humanoids.py`'s `_review\` placement
+   and the review UI's queue so the 156 routed records are walkable.
 2. **A real library collection.** The 218-image set is personal
    photos; the pipeline, taxonomy, and review UX are ready for
    library material, where the android facet and the held-out

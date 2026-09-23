@@ -490,6 +490,40 @@ tried so far moves it. The remaining path for the ambiguous family
 is review-always routing (Option 2), not another vision-prompt
 variant.
 
+### Option 2: review-always routing for the text-bearing family (2026-09-23)
+
+With perception ruled out, the fix is routing (`routing.py`): route
+to review if any facet confidence < 0.7 (the existing queue rule) OR
+the description carries a text-bearing signal ("is a screenshot",
+"screenshot shows", "consists of text", terminal, scan of, readout,
+interface) after stripping the vision prompt's preamble.
+
+Candidate rules measured on the 85 labeled records (27 wrong records;
+burden also shown on the full 218):
+
+| Rule | Burden (labeled / full 218) | Errors caught | Silent |
+|---|---|---|---|
+| A: current threshold only | 52% / 20% | 18/27 | 9 |
+| B: A + text signal (broad) | 86% / 72% | **25/27** | 2 |
+| C: A + representation conf < 0.95 | 73% / -- | 22/27 | 5 |
+| D: A + representation conf < 1.0 | 79% / -- | 23/27 | 4 |
+| E: B + C | 88% / 73% | 25/27 | 2 |
+
+Rule B is adopted: the text signal catches 7 of the 9 silent errors
+at a full-collection burden of 72% (156/218 records: 44
+low-confidence, 112 text-bearing only). The two remaining silent
+errors are vision-limited without any text signal (a render described
+as a render; a poster illustration whose entity error sits exactly at
+the 0.70 boundary -- note the queue rule is `< 0.7`, so a record at
+exactly 0.70 escapes; tightening to `<= 0.7` is a separate decision).
+
+The trade is explicit and the cataloger's to make: 20% burden leaves
+9 silent errors per 27 wrong; 72% burden leaves 2. On this
+screenshot-heavy personal collection the burden is high because the
+collection is full of text-bearing surfaces; a library collection's
+proportion would differ. The pattern is a single constant in
+`routing.py`, tunable without code changes elsewhere.
+
 ---
 
 ## What is unproven

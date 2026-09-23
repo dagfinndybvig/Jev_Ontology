@@ -80,6 +80,14 @@ perceptual. The structured state is the diagnostic instrument; the
 cascade stays the production path, and review-always routing is the
 remaining fix for the ambiguous family.
 
+**Update (2026-09-23, Option 2 adopted):** `routing.py` routes to
+review on the 0.7 threshold OR a text-bearing signal in the
+description. Measured on the labeled 85: catches 25/27 errors vs
+18/27 for the threshold alone. Full-collection burden 156/218 (72%).
+The two remaining silent errors are vision-limited with no text
+signal. The trade is explicit and tunable (the pattern is one
+constant).
+
 **Effort:** Small. The API supports multiple questions in one body; the
 interpretation logic is the new work.
 
