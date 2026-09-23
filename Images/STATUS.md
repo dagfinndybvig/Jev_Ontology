@@ -269,11 +269,19 @@ edge-case suite on 09-23)
     sample of 27 fully confident unreviewed records (short of the
     30 target -- the corpus's confident pool per band/class is
     smaller) was computed and persisted at
-    `library_review_sample_tmp.json` (gitignored); 6/27 reviewed
-    (4 confirmed, 2 corrected -- both book covers), 21 remain. The
-    2/6 miss rate is consistent with the queue's cover weakness but
-    too small to bound the threshold's miss rate on the 89
-    auto-accepted records.
+    `library_review_sample_tmp.json` (gitignored); 27/27 reviewed:
+    22 confirmed, 5 corrected -- miss rate 5/27 (19%, Wilson CI
+    ~8-37%), corrections spread across categories (2 book covers,
+    1 each human_photo, humanoid_robot, statue) rather than
+    concentrated in representation. Confident-band accuracy is
+    89-96% on every facet -- on this corpus, representation's
+    confidence carries information (89% in the band vs 83% in the
+    queue), unlike the personal collection where it carried none.
+    81 of 149 corpus records are now labeled. A GUI confusion during
+    the sample review (samples appearing not to load) was a stale
+    browser tab, not a code bug: the server and front-end verified
+    clean end to end (endpoints 200, DOM-stub harness rendered the
+    sample correctly against live payloads).
 
 ## Where things live
 

@@ -708,15 +708,19 @@ criteria) -- noted for a future revision, not acted on; per the
 v3/v5 lesson, taxonomy revisions are measured against labeled
 records, and the corpus now has 60 of them to measure against.
 
-**Confident-band sample (partial).** The review UI's Sample filter
-computed a stratified sample of 27 fully confident unreviewed corpus
-records (short of the 30 target: the corpus's confident pool per
-band/class is smaller than the personal collection's), persisted at
-`library_review_sample_tmp.json` (gitignored). 6/27 reviewed: 4
-confirmed, 2 corrected -- both book covers, consistent with the
-queue's cover weakness. 21 remain; the sample exists to bound the
-0.7 threshold's miss rate on the 89 auto-accepted records, and 6/27
-does not bound it yet.
+**Confident-band sample (complete, 27/27).** The review UI's Sample
+filter computed a stratified sample of 27 fully confident unreviewed
+corpus records (short of the 30 target: the corpus's confident pool
+per band/class is smaller than the personal collection's), persisted
+at `library_review_sample_tmp.json` (gitignored). All 27 reviewed:
+22 confirmed, 5 corrected -- miss rate 5/27 (19%, Wilson CI ~8-37%)
+on the 89 auto-accepted records' family. Unlike the personal
+collection's band (7/30, 6 of 7 representation), the corrections are
+spread across categories (2 book covers, 1 each human_photo,
+humanoid_robot, statue), and confident-band accuracy is 89-96% on
+every facet: on this corpus, representation's confidence carries
+information (89% in the band vs 83% in the queue). 81 of 149 corpus
+records are now labeled.
 
 ---
 
