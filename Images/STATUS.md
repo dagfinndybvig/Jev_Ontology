@@ -48,7 +48,12 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
    confirm/correct buttons whose choices come from the taxonomy JSON.
    Corrections save as `manual_correction` blocks and double as the
    Phase 0 ground-truth seed. Tested against a copy of the results
-   (via `REVIEW_RESULTS`) before pointing at the live file.
+   (via `REVIEW_RESULTS`) before pointing at the live file. First
+   browser run hung at "Loading...": `init()` called a nonexistent
+   `buildFilters()`; fixed by removing the call and wrapping `init()`
+   in try/catch so errors surface in the pane. Reproduced and
+   verified with a Node DOM-stub harness against the live API
+   payloads before restarting the server.
 
 ## Where things live
 

@@ -71,6 +71,12 @@ recomputed from the result JSONs, never recalled from memory.
   occurrence-count assertions instead.
 - Verify file placement with `find`, not `grep` over multi-dir `ls`
   output — that produced a false verification once.
+- To debug a browser-page bug in `review_ui.py`'s embedded script:
+  extract the `<script>` block, `node --check` it for syntax, then
+  run it with a stubbed DOM (`document`/`fetch` as small JS stubs)
+  and the live API payloads curl'd to files. This found a
+  nonexistent-function call that left the page stuck at "Loading..."
+  while every server endpoint answered fine.
 - Known failure mode: screenshots of text *describing* a scene.
   Fixed at the vision layer (2026-09-23 prompt); the open half is
   Jev's criteria, which still answer a described scene — the
