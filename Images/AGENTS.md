@@ -20,7 +20,9 @@ Essential context for any agent working in this directory.
   user-level env var on this machine).
 - `MISTRAL_API_KEY` — Pixtral vision calls. `TYPESAFE_API_KEY` — Jev.
 - Scripts are stdlib-only Python (urllib, json, shutil); nothing to
-  install.
+  install. One exception: `review_ui.py` uses Pillow, if present, to
+  convert TIFF to PNG on the fly (browsers cannot render TIFF);
+  without Pillow it returns a clear error for TIFF only.
 
 ## Pipeline (all resumable, incremental saves)
 

@@ -25,6 +25,7 @@ import json
 import os
 import random
 import sys
+import tempfile
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import unquote, urlparse
@@ -46,6 +47,30 @@ MIME = {
     ".avif": "image/avif", ".tiff": "image/tiff", ".tif": "image/tiff",
     ".jfif": "image/jpeg",
 }
+
+
+def tiff_as_png(path, name):
+    """Browsers cannot render TIFF; convert to PNG (cached) with Pillow.
+
+    Returns (bytes, mime). Raises ImportError if Pillow is missing.
+    """
+    cache = os.path.join(tempfile.gettempdir(), "review_ui_png_cache")
+    os.makedirs(cache, exist_ok=True)
+    out = os.path.join(cache, name + ".png")
+    if not os.path.exists(out) or os.path.getmtime(out) < os.path.getmtime(path):
+        from PIL import Image
+        with Image.open(path) as im:
+            im.load()
+            if im.mode in ("P", "LA", "PA", "RGBA") or "A" in im.mode:
+                im = im.convert("RGBA")
+                background = Image.new("RGB", im.size, (255, 255, 255))
+                background.paste(im, mask=im.split()[-1])
+                im = background
+            elif im.mode != "RGB":
+                im = im.convert("RGB")
+            im.save(out, "PNG")
+    with open(out, "rb") as f:
+        return f.read(), "image/png"
 
 _lock = threading.Lock()
 _results = None
@@ -479,6 +504,15 @@ class Handler(BaseHTTPRequestHandler):
                 self._send(404, b"not found", "text/plain")
                 return
             ext = os.path.splitext(name)[1].lower()
+            if ext in (".tiff", ".tif"):
+                try:
+                    body, mime = tiff_as_png(fp, name)
+                except ImportError:
+                    self._send(500, b"TIFF display needs Pillow (pip install pillow)",
+                               "text/plain")
+                    return
+                self._send(200, body, mime)
+                return
             with open(fp, "rb") as f:
                 self._send(200, f.read(), MIME.get(ext, "application/octet-stream"))
         else:
