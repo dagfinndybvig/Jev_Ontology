@@ -49,7 +49,13 @@ Essential context for any agent working in this directory.
   stratified sample of 30 fully confident records (persisted at
   `../Ontology_private_backup/confident_sample_v1.json`) to bound
   the threshold's miss rate. For testing, point `REVIEW_RESULTS` at
-  a copy of the results and `REVIEW_SAMPLE` at a temp path.
+  a copy of the results and `REVIEW_SAMPLE` at a temp path. To review
+  the stand-in corpus instead of the personal collection, run with
+  `REVIEW_RESULTS` at `library_standin_results.json`,
+  `PICTURES_DIR` at `library_standin/`, `TAXONOMY` at
+  `humanoid_taxonomy_v4.json`, and `REVIEW_SAMPLE` at a temp path
+  (otherwise the Sample filter overwrites the personal collection's
+  persisted sample).
 - `baseline_pixtral_direct.py` — Phase 2 baseline: Pixtral classifies
   the five facets directly (v4 criteria) on the labeled records.
   Writes `baseline_pixtral_direct_results.json` (private,

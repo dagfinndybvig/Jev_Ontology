@@ -87,7 +87,11 @@ as ground truth; short of target after Wikimedia rate-limited the
 fetch -- resume to top up; measured 2026-09-23 by
 `measure_library_standin.py`, 149/149, 0 errors, pooled agreement
 541/615 (88%) against the category-implied labels, routing burden
-40%). The Commons corpus is the closer analog
+40%; reviewed 2026-09-23 (60/60 routed records: 32 confirmed,
+28 corrected, pooled 83% on the hard cases) -- the corpus now has
+60 labeled records, and its edge cases (non-humanoid statues, android
+boundaries, covers with depicted content) are the input for a future
+taxonomy revision). The Commons corpus is the closer analog
 to real library material: digitized covers, statues, and
 illustrations with structured depicts annotations.
 

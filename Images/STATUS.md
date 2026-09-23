@@ -249,6 +249,22 @@ edge-case suite on 09-23)
     hedges where the labels are unreliable. Results in
     `library_standin_results.json` (private, gitignored). See
     RESULTS.md ("Stand-in library corpus").
+25. **Stand-in corpus review completed (60/60).** All 60 routed
+    records were reviewed through `review_ui.py` (corpus results,
+    `library_standin/`, taxonomy v4): 32 confirmed, 28 corrected.
+    Per-facet accuracy on the reviewed set: contains_human 72%,
+    contains_robot 95%, contains_android 88%, primary_subject 75%,
+    representation 83%; pooled 248/300 (83%) -- accuracy on the hard
+    cases, not overall; the 89 auto-accepted records remain
+    unverified. The corrections cluster into three families: the
+    android facet finally exercised (6 contains_android corrections
+    in humanoid_robot -- the facet that never fired on the personal
+    collection), non-humanoid statues (8 corrections; Category:Statues
+    includes animal statues and architectural sculpture), and book
+    covers with depicted content (5). The edge cases highlight the
+    need for a richer ontology -- noted for a future revision, not
+    acted on; the corpus now has 60 labeled records to measure a
+    revision against. See RESULTS.md ("Stand-in library corpus").
 
 ## Where things live
 
@@ -295,15 +311,18 @@ edge-case suite on 09-23)
    photos; the pipeline, taxonomy, and review UX are ready for
    library material, where the android facet and the held-out
    revision protocol (LIBRARY.md Phase 6) actually apply. A stand-in
-   now exists and has had a first pipeline pass: 149 Commons images
-   across 5 categories (`library_standin/`, manifest committed),
-   measured 2026-09-23 -- 149/149, 0 errors, pooled agreement 88%
-   against the category-implied labels, routing burden 40%. Next:
+   now exists with a first pipeline pass and a completed review:
+   149 Commons images across 5 categories (`library_standin/`,
+   manifest committed), measured 2026-09-23 (149/149, 0 errors, 88%
+   agreement) and reviewed 2026-09-23 (60/60 routed records: 32
+   confirmed, 28 corrected, pooled 83% on the hard cases). Next:
    re-run the fetcher once the Wikimedia block lifts (top up to
    40/category, add ui_screenshot, debug the depicts resolution --
    precise depicts annotation would replace the noisy
-   category-implied labels), then review the 60 routed records
-   through the UI to turn the stand-in into labeled ground truth.
+   category-implied labels), then review the new records. The
+   review's edge cases (non-humanoid statues, android boundaries,
+   covers with depicted content) are the input for a future taxonomy
+   revision, measured against the 60 labeled records.
 3. ~~**Measure the edge-case suite.**~~ Done (2026-09-23): 8/8
    measured, pooled agreement 33/36 (92%); see RESULTS.md
    ("Edge-case suite"). Residuals: the AI-generated portrait is

@@ -673,6 +673,41 @@ hedging less. The depicts (P180) resolution is still empty; once
 fixed, the manifest's per-image depicts statements would replace the
 noisy category-implied labels with precise annotation.
 
+**Reviewed (2026-09-23).** All 60 routed records were reviewed through
+`review_ui.py` (pointed at the corpus results, `library_standin/`,
+taxonomy v4): 32 confirmed, 28 corrected. Per-facet accuracy on the
+reviewed set: contains_human 43/60 (72%), contains_robot 57/60 (95%),
+contains_android 53/60 (88%), primary_subject 45/60 (75%),
+representation 50/60 (83%); pooled 248/300 (83%). This is accuracy on
+the hard cases (the queue is all low-confidence or text-bearing), not
+overall. The 89 auto-accepted records remain unverified, so the
+queue's miss rate on the corpus is unknown. Corrections by category:
+statue 11 of 20, humanoid_robot 10 of 18, book_cover 5 of 13,
+human_illustration 2 of 8.
+
+The corrections cluster into three families, and they are the
+stand-in's real finding:
+
+- **The android facet finally gets exercised.** 6 of the 28
+  corrections are contains_android in the humanoid-robot category --
+  the facet that never fired on the personal collection (0/215). The
+  corpus's robot category mixes androids, toys, and costumes, and the
+  boundary is exactly where the review was needed.
+- **Non-humanoid statues.** 8 statue corrections touch
+  contains_human/primary_subject: Category:Statues includes animal
+  statues and architectural sculpture, and Jev answered "human" on
+  the humanoid-looking ones. Part noisy label, part taxonomy gap --
+  the v4 taxonomy has no clean class for a statue of a non-human.
+- **Book covers with depicted content.** 5 cover corrections: covers
+  carrying human figures or graphic designs strain both
+  primary_subject and representation.
+
+These edge cases highlight the need for a richer ontology (finer
+representation splits, a non-human-statue class, sharper android
+criteria) -- noted for a future revision, not acted on; per the
+v3/v5 lesson, taxonomy revisions are measured against labeled
+records, and the corpus now has 60 of them to measure against.
+
 ---
 
 ## Files
