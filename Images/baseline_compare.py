@@ -21,6 +21,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CASCADE_RESULTS = os.path.join(HERE, "humanoid_pilot_results.json")
 DIRECT_RESULTS = os.path.join(HERE, "baseline_pixtral_direct_results.json")
 STRUCTURED_RESULTS = os.path.join(HERE, "structured_vision_results.json")
+CAPTURE_RESULTS = os.path.join(HERE, "capture_type_results.json")
 FACETS = ["contains_human", "contains_robot", "contains_android", "primary_subject", "representation"]
 THRESHOLD = 0.7
 BINS = [(0.0, 0.5), (0.5, 0.7), (0.7, 0.9), (0.9, 1.0001)]
@@ -122,6 +123,19 @@ def load_structured(labeled):
     return out
 
 
+def load_capture(labeled):
+    if not os.path.exists(CAPTURE_RESULTS):
+        return {}
+    with open(CAPTURE_RESULTS, "r", encoding="utf-8") as f:
+        raw = json.load(f)
+    out = {}
+    for name in labeled:
+        rec = raw.get(name, {})
+        if rec.get("status") == "ok" and rec.get("answers"):
+            out[name] = rec["answers"]
+    return out
+
+
 def evaluate(name, answers, labeled):
     """answers: {filename: {facet: {choice, confidence}}}"""
     per_facet = {f: [0, 0] for f in FACETS}
@@ -214,6 +228,11 @@ def main():
         systems.append(evaluate("structured vision state (Phase 3)", structured, labeled))
     else:
         print("Structured vision state: no results yet (run structured_vision.py)")
+    capture = load_capture(labeled)
+    if capture:
+        systems.append(evaluate("capture-type override (Option 1)", capture, labeled))
+    else:
+        print("Capture-type override: no results yet (run capture_type.py)")
 
     for ev in systems:
         report(ev)

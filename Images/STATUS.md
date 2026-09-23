@@ -139,6 +139,17 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
     same family, prompt wording is exhausted for this failure mode;
     it is a genuine vision limitation. v2 is restored as the live
     structured variant; the cascade stays the production path.
+17. **Option 1 (capture-type question) falsified.** An isolated
+    binary vision call -- "flat digital capture, or photograph of a
+    physical object?" -- with a deterministic medium override
+    (`capture_type.py`) was run on the labeled 85: pooled 89%,
+    representation 74%, but the question itself answers
+    `digital_capture` for 37 of 85 records whose truth is a photo,
+    illustration, or render. The limitation is perceptual, not
+    instructional; three question architectures have now failed on
+    the same distinction. Review-always routing (Option 2) is the
+    remaining path for the ambiguous family. See RESULTS.md
+    ("Option 1").
 
 ## Where things live
 
@@ -165,13 +176,14 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 
 ## Next steps, in order
 
-1. **The representation residual is a vision limitation.** Three
-   prompt-wording attempts (v2's clause failed to fire, v3's
-   physical-context clause backfired) cannot make the vision model
-   separate "photo of a text-bearing object" from "screenshot of
-   text." The remaining options: a dedicated binary capture-type
-   question as its own vision field, or review-always for the
-   ambiguous family. The cascade stays the production path.
+1. **Review-always routing for the ambiguous family (Option 2).**
+   With the capture-type question falsified, the vision model
+   demonstrably cannot separate "photo of a text-bearing object"
+   from "flat digital capture." The remaining fix is routing, not
+   perception: records whose state involves text-bearing surfaces
+   (or whose `representation` confidence is in the uninformative
+   band) go to review regardless of confidence. Design the rule,
+   measure its burden on the labeled 85 and the full 218.
 2. **A real library collection.** The 218-image set is personal
    photos; the pipeline, taxonomy, and review UX are ready for
    library material, where the android facet and the held-out

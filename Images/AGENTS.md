@@ -64,6 +64,12 @@ Essential context for any agent working in this directory.
   (v1's poster/diagram vocabulary was a measured regression). The
   parser needs `strict=False` and the regex repair fallback: Pixtral
   emits raw newlines and unescaped quotes inside transcribed text.
+- `capture_type.py` — Option 1 experiment (falsified): an isolated
+  binary capture question with a deterministic medium override.
+  Writes `capture_type_results.json` (private, gitignored). Kept as
+  the measured record: the vision model answers `digital_capture`
+  for plain photographs -- the text-vs-physical distinction is
+  perceptual, not fixable by question architecture.
 - Runs skip records with `status: ok`. Fresh descriptions require
   moving the results JSON aside first. Cost is small but real
   (~$0.0003 per image for the vision step).

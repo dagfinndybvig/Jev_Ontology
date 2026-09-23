@@ -68,12 +68,17 @@ mismatch with the taxonomy. v2 (medium aligned to the representation
 classes): pooled 90%, representation 76%, burden 22% -- still a
 measured negative vs the cascade (91%, 79%, 16/27 caught vs 5/25).
 v3 (physical-context clause) was rejected: it fixed 1 record and
-broke 7 (representation 69%). The decisive finding: 19 of 20
+broke 7 (representation 69%). Option 1 (an isolated binary
+capture-type question with a deterministic medium override,
+`capture_type.py`) was also falsified: the question itself answers
+`digital_capture` for 37 of 85 records whose truth is a photo,
+illustration, or render. The decisive finding: 19 of 20
 remaining representation errors have a wrong vision `medium` field,
-and prompt wording cannot fix that family (two clause attempts
-failed in opposite directions) -- it is a genuine vision limitation.
-The structured state is the diagnostic instrument; the cascade stays
-the production path.
+and no question architecture tried (embedded clause, sharper clause,
+isolated binary) can fix that family -- the limitation is
+perceptual. The structured state is the diagnostic instrument; the
+cascade stays the production path, and review-always routing is the
+remaining fix for the ambiguous family.
 
 **Effort:** Small. The API supports multiple questions in one body; the
 interpretation logic is the new work.

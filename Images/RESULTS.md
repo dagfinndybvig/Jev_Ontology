@@ -459,6 +459,37 @@ inside transcribed text -- the parser needs `strict=False` and a
 regex repair fallback; `max_tokens` 300 truncated long transcriptions
 (raised to 700).
 
+### Option 1: the dedicated capture-type question (2026-09-23)
+
+The remaining option was a different mechanism: an isolated second
+vision call answering only "flat digital capture, or photograph of a
+physical object?" (`capture_type.py`), with a deterministic override
+of the structured `medium` field -- photo_of_physical flips
+text_screenshot to photograph; digital_capture flips photograph to
+text_screenshot and clears subjects. Run on the 85 labeled records:
+
+| System | Pooled accuracy | ECE | representation | Burden at 0.7 | Wrong | Caught | Silent |
+|---|---|---|---|---|---|---|---|
+| Structured v2 (no capture question) | 90% | 0.048 | 76% | 22% | 25 | 5/25 | 20 |
+| Capture-type override | 89% | 0.033 | 74% | 26% | 27 | 11/27 | 16 |
+
+**Rejected -- and the reason is more important than the numbers.**
+The capture question itself does not perceive the distinction: it
+answers `digital_capture` for 37 of the 85 records whose truth is a
+photograph, illustration, or render of a physical thing -- plain
+photographs included. The override therefore fired in both directions
+at random, manufacturing new errors (photographed covers flipped to
+text_screenshot) while failing to fix the family it targeted.
+
+The conclusion across all three attempts (v2's embedded clause, v3's
+physical-context clause, and now an isolated forced-binary question):
+**this vision model cannot distinguish "a photograph of a
+text-bearing object" from "a flat digital capture."** The limitation
+is perceptual, not instructional. No prompt or question architecture
+tried so far moves it. The remaining path for the ambiguous family
+is review-always routing (Option 2), not another vision-prompt
+variant.
+
 ---
 
 ## What is unproven
