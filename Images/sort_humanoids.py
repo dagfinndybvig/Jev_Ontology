@@ -42,7 +42,7 @@ def main():
             missing.append(fname)
             continue
 
-        corr = r.get("manual_correction") or {}
+        corr = (r.get("manual_correction") or {}).get("correct") or {}
         subject = corr.get("primary_subject", r["primary_subject"]["choice"])
         rep = corr.get("representation", r["representation"]["choice"])
         folder = os.path.join(DST, subject, rep)
