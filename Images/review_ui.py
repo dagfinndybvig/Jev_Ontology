@@ -23,6 +23,7 @@ Environment:
 import datetime
 import json
 import os
+import random
 import sys
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -90,6 +91,63 @@ def record_view(name, r):
     }
 
 
+SAMPLE_PATH = os.environ.get(
+    "REVIEW_SAMPLE",
+    os.path.normpath(os.path.join(SCRIPT_DIR, "..", "..", "Ontology_private_backup",
+                                  "confident_sample_v1.json")),
+)
+SAMPLE_SIZE = 30
+SAMPLE_SEED = 20260923
+
+
+def confident_sample(res):
+    """Deterministic stratified sample of unreviewed, fully confident records.
+
+    Half from the 0.7-0.9 band, half from 0.9-1.0, spread round-robin
+    across representation classes. Computed once, then persisted, so
+    the sample is stable across sessions.
+    """
+    if os.path.exists(SAMPLE_PATH):
+        with open(SAMPLE_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)["files"]
+
+    cands = []
+    for name, r in res.items():
+        if r.get("status") != "ok" or "manual_correction" in r:
+            continue
+        if any(r[f]["confidence"] < REVIEW_THRESHOLD for f in FACETS):
+            continue
+        cands.append((name, min(r[f]["confidence"] for f in FACETS),
+                      r["representation"]["choice"]))
+
+    rng = random.Random(SAMPLE_SEED)
+    picked = []
+    per_band = SAMPLE_SIZE // 2
+    for band in (lambda c: c < 0.9, lambda c: c >= 0.9):
+        by_rep = {}
+        for name, conf, rep in cands:
+            if band(conf):
+                by_rep.setdefault(rep, []).append(name)
+        reps = sorted(by_rep)
+        rng.shuffle(reps)
+        for rep in reps:
+            rng.shuffle(by_rep[rep])
+        count, i = 0, 0
+        while count < per_band and any(by_rep[r] for r in reps):
+            rep = reps[i % len(reps)]
+            if by_rep[rep]:
+                picked.append(by_rep[rep].pop())
+                count += 1
+            i += 1
+
+    files = sorted(picked)
+    os.makedirs(os.path.dirname(SAMPLE_PATH), exist_ok=True)
+    with open(SAMPLE_PATH, "w", encoding="utf-8") as f:
+        json.dump({"date": datetime.date.today().isoformat(),
+                   "files": files}, f, indent=1, ensure_ascii=False)
+    return files
+
+
 PAGE = """<!doctype html>
 <html lang="en">
 <head>
@@ -147,7 +205,7 @@ PAGE = """<!doctype html>
 </main>
 <script>
 let records = [], defs = {}, order = [], idx = 0;
-let filter = 'queue', pendingOnly = true;
+let filter = 'queue', pendingOnly = true, sampleFiles = [];
 let pick = {subject: null, rep: null, flags: {contains_human: false, contains_robot: false, contains_android: false}};
 const SUBKEYS = ['contains_human','contains_robot','contains_android'];
 
@@ -163,6 +221,8 @@ async function init() {
     defs = tax.definitions;
     const data = await (await fetch('/api/records')).json();
     records = data.records;
+    const smp = await (await fetch('/api/sample')).json();
+    sampleFiles = smp.files || [];
     rebuild();
   } catch (e) {
     document.getElementById('pane').innerHTML =
@@ -171,7 +231,7 @@ async function init() {
 }
 
 function buildOrder() {
-  const inFilter = r => filter === 'all' ? true : (filter === 'queue' ? (r.queued && (!pendingOnly || !r.reviewed)) : r.reviewed);
+  const inFilter = r => filter === 'all' ? true : (filter === 'queue' ? (r.queued && (!pendingOnly || !r.reviewed)) : filter === 'sample' ? (sampleFiles.includes(r.file) && (!pendingOnly || !r.reviewed)) : r.reviewed);
   const list = records.filter(inFilter);
   list.sort((a, b) => (a.reviewed - b.reviewed) || (minConf(a) - minConf(b)));
   return list.map(r => r.file);
@@ -183,10 +243,12 @@ function rebuild() {
   const f = document.getElementById('filters');
   f.innerHTML = '';
   const counts = { queue: records.filter(r => r.queued).length, all: records.length, reviewed: records.filter(r => r.reviewed).length };
-  [['queue','Queue'], ['all','All'], ['reviewed','Reviewed']].forEach(([k, label]) => {
+  [['queue','Queue'], ['sample','Sample'], ['all','All'], ['reviewed','Reviewed']].forEach(([k, label]) => {
     const b = document.createElement('button');
     if (k === 'queue' && pendingOnly)
       b.textContent = 'Queue (' + records.filter(r => r.queued && !r.reviewed).length + ' pending of ' + counts.queue + ')';
+    else if (k === 'sample')
+      b.textContent = 'Sample (' + records.filter(r => sampleFiles.includes(r.file) && !r.reviewed).length + ' pending of ' + sampleFiles.length + ')';
     else
       b.textContent = label + ' (' + counts[k] + ')';
     b.className = filter === k ? 'active' : '';
@@ -198,7 +260,7 @@ function rebuild() {
   const cb = document.createElement('input');
   cb.type = 'checkbox';
   cb.checked = pendingOnly;
-  cb.disabled = filter !== 'queue';
+  cb.disabled = filter !== 'queue' && filter !== 'sample';
   cb.onchange = () => { pendingOnly = cb.checked; rebuild(); };
   lab.appendChild(cb);
   lab.appendChild(document.createTextNode('pending only'));
@@ -215,10 +277,11 @@ function render() {
     (pending === 0 && records.some(r => r.queued) ? '  <span style="color:#4caf7d">queue complete</span>' : '');
   if (!order.length) {
     document.getElementById('imgpane').innerHTML = '';
-    const done = filter === 'queue' && pendingOnly && records.some(r => r.queued);
+    const hasAny = filter === 'queue' ? records.some(r => r.queued) : sampleFiles.length > 0;
+    const done = (filter === 'queue' || filter === 'sample') && pendingOnly && hasAny;
     document.getElementById('pane').innerHTML = '<div class="empty">' + (done ?
       '<strong style="color:#4caf7d">Review complete.</strong><br><br>' +
-      'Every queued record has a label. Use the Reviewed filter to browse ' +
+      'Every record in this filter has a label. Use the Reviewed filter to browse ' +
       'your labels, or All to see the whole collection.' :
       'No records in this filter.') + '</div>';
     return;
@@ -323,7 +386,7 @@ async function save() {
   document.getElementById('status').textContent = out.ok ? 'Saved.' : ('Error: ' + out.error);
   if (out.ok) { r.reviewed = true; r.correction = out.correction;
     setTimeout(() => {
-      if (filter === 'queue' && pendingOnly) rebuild();
+      if ((filter === 'queue' || filter === 'sample') && pendingOnly) rebuild();
       else { idx = Math.min(idx + 1, order.length - 1); render(); }
     }, 250); }
 }
@@ -382,6 +445,11 @@ class Handler(BaseHTTPRequestHandler):
                 res = load_results()
                 views = [record_view(n, r) for n, r in res.items() if r.get("status") == "ok"]
             self._json({"records": views})
+        elif path == "/api/sample":
+            with _lock:
+                res = load_results()
+                files = confident_sample(res)
+            self._json({"files": files})
         elif path.startswith("/image/"):
             name = unquote(path[len("/image/"):])
             if os.path.basename(name) != name or "/" in name or "\\" in name:

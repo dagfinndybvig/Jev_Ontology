@@ -39,8 +39,11 @@ Essential context for any agent working in this directory.
   correct classifications through the browser; writes
   `manual_correction` blocks into `humanoid_pilot_results.json`.
   The queue view shows only unreviewed queued records by default and
-  flags completion explicitly. For testing, point `REVIEW_RESULTS`
-  at a copy of the results.
+  flags completion explicitly. A Sample filter walks a fixed,
+  stratified sample of 30 fully confident records (persisted at
+  `../Ontology_private_backup/confident_sample_v1.json`) to bound
+  the threshold's miss rate. For testing, point `REVIEW_RESULTS` at
+  a copy of the results and `REVIEW_SAMPLE` at a temp path.
 - Runs skip records with `status: ok`. Fresh descriptions require
   moving the results JSON aside first. Cost is small but real
   (~$0.0003 per image for the vision step).

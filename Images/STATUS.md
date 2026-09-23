@@ -91,6 +91,14 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
    errors; measure errors-caught per burden, not queue size.
    `pilot_humanoid.py` defaults to v4; the live results are the v4
    run with the 50 review corrections merged.
+12. **Confident-band sampling instrumented.** The review UI gained a
+   Sample filter: a deterministic, stratified sample of 30 fully
+   confident unreviewed records (15 from the 0.7-0.9 band, 15 from
+   0.9-1.0, round-robin across representation classes), computed
+   once and persisted privately
+   (`../Ontology_private_backup/confident_sample_v1.json`). Reviewing
+   it bounds the 0.7 threshold's miss rate and extends the labeled
+   set into the confident band.
 
 ## Where things live
 
@@ -106,15 +114,16 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 | Sorted folder tree (private) | `PICTURES_DIR\Humanoids\` (+ `_review\`) |
 | Pilot per-image results (private, gitignored) | `Images/humanoid_pilot_results.json` |
 | Original-run results (private, gitignored) | `Images/image_human_results.json` |
+| Confident-band sample (private) | `../Ontology_private_backup/confident_sample_v1.json` |
 | Baselines (private) | `../Ontology_private_backup/` (`rerun_v1_2026-09-23/` = old prompt; `2026-09-23_criteria_v1_run/`; `2026-09-23_criteria_v2_reviewed/` = reviewed ground truth; `2026-09-23_taxonomy_v3_run/`, `..._v4_run/`, `..._v5_run/`) |
 | Review queue printout | rerun `python pilot_humanoid.py` (instant; resumable) |
 
 ## Next steps, in order
 
-1. **Verify the confident band.** The queue is fully labeled, but
-   the 168 records above threshold are not; the threshold's miss
-   rate is unknown. Sample ~30 confident records through the review
-   UI (All filter) to bound it.
+1. **Review the confident sample** (30 records): open the review UI
+   and switch to the Sample filter -- same confirm/correct flow.
+   The result bounds the threshold's miss rate and yields the first
+   confident-band calibration numbers.
 2. **Phase 2 baseline.** Pixtral-direct vs. Pixtral+Jev vs. a
    trivial classifier on the labeled set, measured on accuracy,
    calibration, and review burden. The revision series showed the
