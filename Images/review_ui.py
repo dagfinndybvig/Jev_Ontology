@@ -158,12 +158,16 @@ function subjectDefaults(s) {
 }
 
 async function init() {
-  const tax = await (await fetch('/api/taxonomy')).json();
-  defs = tax.definitions;
-  const data = await (await fetch('/api/records')).json();
-  records = data.records;
-  buildFilters();
-  rebuild();
+  try {
+    const tax = await (await fetch('/api/taxonomy')).json();
+    defs = tax.definitions;
+    const data = await (await fetch('/api/records')).json();
+    records = data.records;
+    rebuild();
+  } catch (e) {
+    document.getElementById('pane').innerHTML =
+      '<div class="empty">Error: ' + esc(String(e)) + '</div>';
+  }
 }
 
 function buildOrder() {
