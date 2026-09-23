@@ -147,7 +147,7 @@ PAGE = """<!doctype html>
 </main>
 <script>
 let records = [], defs = {}, order = [], idx = 0;
-let filter = 'queue';
+let filter = 'queue', pendingOnly = true;
 let pick = {subject: null, rep: null, flags: {contains_human: false, contains_robot: false, contains_android: false}};
 const SUBKEYS = ['contains_human','contains_robot','contains_android'];
 
@@ -171,7 +171,7 @@ async function init() {
 }
 
 function buildOrder() {
-  const inFilter = r => filter === 'all' ? true : (filter === 'queue' ? r.queued : r.reviewed);
+  const inFilter = r => filter === 'all' ? true : (filter === 'queue' ? (r.queued && (!pendingOnly || !r.reviewed)) : r.reviewed);
   const list = records.filter(inFilter);
   list.sort((a, b) => (a.reviewed - b.reviewed) || (minConf(a) - minConf(b)));
   return list.map(r => r.file);
@@ -182,24 +182,45 @@ function rebuild() {
   order = buildOrder();
   const f = document.getElementById('filters');
   f.innerHTML = '';
+  const counts = { queue: records.filter(r => r.queued).length, all: records.length, reviewed: records.filter(r => r.reviewed).length };
   [['queue','Queue'], ['all','All'], ['reviewed','Reviewed']].forEach(([k, label]) => {
     const b = document.createElement('button');
-    b.textContent = label + ' (' + (k === 'queue' ? records.filter(r => r.queued).length : k === 'all' ? records.length : records.filter(r => r.reviewed).length) + ')';
+    if (k === 'queue' && pendingOnly)
+      b.textContent = 'Queue (' + records.filter(r => r.queued && !r.reviewed).length + ' pending of ' + counts.queue + ')';
+    else
+      b.textContent = label + ' (' + counts[k] + ')';
     b.className = filter === k ? 'active' : '';
     b.onclick = () => { filter = k; rebuild(); };
     f.appendChild(b);
   });
+  const lab = document.createElement('label');
+  lab.style.cssText = 'font-size:12px;color:#9aa0ab;display:flex;align-items:center;gap:4px;margin-left:6px;cursor:pointer';
+  const cb = document.createElement('input');
+  cb.type = 'checkbox';
+  cb.checked = pendingOnly;
+  cb.disabled = filter !== 'queue';
+  cb.onchange = () => { pendingOnly = cb.checked; rebuild(); };
+  lab.appendChild(cb);
+  lab.appendChild(document.createTextNode('pending only'));
+  f.appendChild(lab);
   idx = Math.min(idx, Math.max(order.length - 1, 0));
   render();
 }
 
 function render() {
-  document.getElementById('meta').textContent =
+  const pending = records.filter(r => r.queued && !r.reviewed).length;
+  document.getElementById('meta').innerHTML =
     (order.length ? (idx + 1) + ' / ' + order.length : '0') +
-    '  |  reviewed: ' + records.filter(r => r.reviewed).length + ' / ' + records.length;
+    '  |  pending: ' + pending +
+    (pending === 0 && records.some(r => r.queued) ? '  <span style="color:#4caf7d">queue complete</span>' : '');
   if (!order.length) {
     document.getElementById('imgpane').innerHTML = '';
-    document.getElementById('pane').innerHTML = '<div class="empty">No records in this filter.</div>';
+    const done = filter === 'queue' && pendingOnly && records.some(r => r.queued);
+    document.getElementById('pane').innerHTML = '<div class="empty">' + (done ?
+      '<strong style="color:#4caf7d">Review complete.</strong><br><br>' +
+      'Every queued record has a label. Use the Reviewed filter to browse ' +
+      'your labels, or All to see the whole collection.' :
+      'No records in this filter.') + '</div>';
     return;
   }
   const r = records.find(x => x.file === order[idx]);
@@ -300,7 +321,11 @@ async function save() {
     method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
   const out = await resp.json();
   document.getElementById('status').textContent = out.ok ? 'Saved.' : ('Error: ' + out.error);
-  if (out.ok) { r.reviewed = true; r.correction = out.correction; setTimeout(() => { idx = Math.min(idx + 1, order.length - 1); rebuild(); }, 250); }
+  if (out.ok) { r.reviewed = true; r.correction = out.correction;
+    setTimeout(() => {
+      if (filter === 'queue' && pendingOnly) rebuild();
+      else { idx = Math.min(idx + 1, order.length - 1); render(); }
+    }, 250); }
 }
 
 async function uncorrect() {
