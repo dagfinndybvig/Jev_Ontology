@@ -64,6 +64,14 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
    above threshold in the reviewed set. Analysis is now restricted
    to reviewed records; the other 25 queued and 168 unqueued
    records remain unverified.
+9. **Review UX hardened.** The queue view now shows only unreviewed
+   queued records by default (a pending-only toggle, on by default),
+   the header carries a live pending count that turns green with
+   "queue complete" at zero, and finishing the last pending record
+   shows an explicit "Review complete" pane. Saving advances to the
+   next pending record without re-showing reviewed ones. Verified
+   with five scenario tests in the Node DOM-stub harness (the
+   harness needed a document.createTextNode stub).
 
 ## Where things live
 

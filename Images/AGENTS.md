@@ -38,7 +38,9 @@ Essential context for any agent working in this directory.
 - `review_ui.py` — localhost review app (127.0.0.1:8765): confirm or
   correct classifications through the browser; writes
   `manual_correction` blocks into `humanoid_pilot_results.json`.
-  For testing, point `REVIEW_RESULTS` at a copy of the results.
+  The queue view shows only unreviewed queued records by default and
+  flags completion explicitly. For testing, point `REVIEW_RESULTS`
+  at a copy of the results.
 - Runs skip records with `status: ok`. Fresh descriptions require
   moving the results JSON aside first. Cost is small but real
   (~$0.0003 per image for the vision step).
@@ -73,10 +75,11 @@ recomputed from the result JSONs, never recalled from memory.
   output — that produced a false verification once.
 - To debug a browser-page bug in `review_ui.py`'s embedded script:
   extract the `<script>` block, `node --check` it for syntax, then
-  run it with a stubbed DOM (`document`/`fetch` as small JS stubs)
-  and the live API payloads curl'd to files. This found a
-  nonexistent-function call that left the page stuck at "Loading..."
-  while every server endpoint answered fine.
+  run it with a stubbed DOM (`document`/`fetch` as small JS stubs --
+  include `createTextNode`; a missing stub surfaces as an app bug
+  that is really a harness gap) and the live API payloads curl'd to
+  files. This found a nonexistent-function call that left the page
+  stuck at "Loading..." while every server endpoint answered fine.
 - Known failure mode: screenshots of text *describing* a scene.
   Fixed at the vision layer (2026-09-23 prompt); the open half is
   Jev's criteria, which still answer a described scene — the
