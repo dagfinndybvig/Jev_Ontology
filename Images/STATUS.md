@@ -54,6 +54,7 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 | Pilot taxonomy v1 (superseded, kept for comparison) | `Images/humanoid_taxonomy_v1.json` |
 | Pilot script (public; `TAXONOMY` env var selects version) | `Images/pilot_humanoid.py` |
 | Sorter (public) | `Images/sort_humanoids.py` |
+| Review UI (public; localhost web app) | `Images/review_ui.py` -> http://localhost:8765 |
 | Sorted folder tree (private) | `PICTURES_DIR\Humanoids\` (+ `_review\`) |
 | Pilot per-image results (private, gitignored) | `Images/humanoid_pilot_results.json` |
 | Original-run results (private, gitignored) | `Images/image_human_results.json` |
@@ -62,8 +63,11 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 
 ## Next steps, in order
 
-1. **Walk the review queue** (50 records, was 79 at peak): the
-   cataloger-eye pass against `Humanoids\_review\`. The `representation`
+1. **Walk the review queue** (50 records, was 79 at peak): run
+   `python review_ui.py` and open http://localhost:8765 -- confirm or
+   correct each queued image's subject and representation; corrections
+   are saved as `manual_correction` blocks and double as the Phase 0
+   ground-truth seed. The `representation`
    hedges (26) still cluster on covers/posters, game and UI screens,
    and 3D renders -- the missing classes identified on 2026-09-22.
 2. **Sharpen the `representation` definitions**: add cover_or_poster,

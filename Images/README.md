@@ -125,6 +125,7 @@ humanoid_taxonomy_v2.json          -- pilot taxonomy v2 (current): adds the
 pilot_humanoid.py                  -- re-classifies the stored descriptions
                                      (TAXONOMY env var selects the version)
 sort_humanoids.py                  -- copies images into a sorted Humanoids tree
+review_ui.py                       -- localhost review app: confirm/correct classifications
 humanoid_pilot_results.json (private) -- pilot per-image results (gitignored)
 ```
 
