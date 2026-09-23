@@ -644,6 +644,35 @@ and add ui_screenshot. The structured depicts (P180) resolution came
 back empty on this run; undebugged because of the block. The corpus
 is usable as-is for a first pipeline pass.
 
+**Measured (2026-09-23).** `measure_library_standin.py` ran the
+production path (Pixtral describe -> Jev five facets, v4) on all 149
+and compared to the labels the manifest category implies: 149/149
+measured, 0 pipeline errors. Pooled agreement on unambiguous facets:
+541/615 (88%). Per facet: contains_human 91/113 (81%),
+contains_robot 145/149 (97%), contains_android 140/149 (94%),
+primary_subject 89/113 (79%), representation 76/91 (84%). Per
+category: book_cover 72/72 (100%) of 36, human_photo 165/165 (100%)
+of 33, human_illustration 139/150 (93%) of 30, humanoid_robot 64/88
+(73%) of 22, statue 101/140 (72%) of 28.
+
+Reading: the clean categories are perfect -- book covers and human
+photos score 100% on every facet the category can determine. The two
+weak categories are exactly the noisy-label ones: Category:Statues
+includes non-humanoid statues (animal statues, architectural
+sculpture), and the humanoid-robot category mixes toys, costumes, and
+concept art, so the category-implied labels are approximations there.
+Mismatches are review candidates, not verdicts. Jev's calibration
+behaves as designed on both: 20 of 28 statue records and 17 of 22
+humanoid-robot records route to review on low confidence, while the
+clean categories mostly auto-accept.
+
+**Routing on the corpus.** 60/149 (40%) route to review (11
+text-bearing, 49 low-confidence) -- a lower burden than the personal
+collection's 62%, consistent with canonical, well-lit material
+hedging less. The depicts (P180) resolution is still empty; once
+fixed, the manifest's per-image depicts statements would replace the
+noisy category-implied labels with precise annotation.
+
 ---
 
 ## Files

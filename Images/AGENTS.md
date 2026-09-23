@@ -115,6 +115,18 @@ Essential context for any agent working in this directory.
   149 images across 5 of 6 categories (statue 28, humanoid_robot 22,
   book_cover 36, human_photo 33, human_illustration 30;
   ui_screenshot 0) before Wikimedia rate-limited the IP.
+- `measure_library_standin.py` — runs the production path on the
+  stand-in corpus: Pixtral describes each image (same prompt as
+  `classify_images.py`), Jev answers the five facets (v4 taxonomy,
+  same call shape as `pilot_humanoid.py`), and answers are compared
+  to the labels the manifest category implies (facets the category
+  cannot determine are marked `ambiguous` and excluded from strict
+  agreement). Also applies `routing.py`'s `route_reason` and reports
+  the burden per category. Writes `library_standin_results.json`
+  (private, gitignored). Resumable; needs both API keys. First run:
+  149/149, 0 errors, pooled agreement 541/615 (88%) — Commons
+  categories are noisy labels, so mismatches are review candidates,
+  not verdicts.
 - Runs skip records with `status: ok`. Fresh descriptions require
   moving the results JSON aside first. Cost is small but real
   (~$0.0003 per image for the vision step).

@@ -84,7 +84,10 @@ covering the measured failure families; measured 2026-09-23, pooled
 agreement 33/36) and a 149-image Wikimedia Commons corpus
 (`fetch_library_standin.py`, 5 categories with a committed manifest
 as ground truth; short of target after Wikimedia rate-limited the
-fetch -- resume to top up). The Commons corpus is the closer analog
+fetch -- resume to top up; measured 2026-09-23 by
+`measure_library_standin.py`, 149/149, 0 errors, pooled agreement
+541/615 (88%) against the category-implied labels, routing burden
+40%). The Commons corpus is the closer analog
 to real library material: digitized covers, statues, and
 illustrations with structured depicts annotations.
 

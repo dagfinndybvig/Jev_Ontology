@@ -138,6 +138,9 @@ fetch_library_standin.py          -- fetches a stand-in library corpus from
 library_manifest.json             -- stand-in ground truth: category, description,
                                      license per image (committed; public data)
 library_standin/ (private)        -- fetched corpus images (gitignored)
+measure_library_standin.py       -- runs the pipeline on the stand-in
+                                     corpus and compares to the manifest
+library_standin_results.json (private) -- measurement records (gitignored)
 ```
 
 ## Running it

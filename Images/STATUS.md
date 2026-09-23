@@ -233,6 +233,22 @@ edge-case suite on 09-23)
     categories and add ui_screenshot. The depicts resolution came
     back empty -- undebugged because of the block (see AGENTS.md
     gotchas). The corpus is usable as-is for a first pipeline pass.
+24. **Stand-in corpus measured (first pipeline pass).**
+    `measure_library_standin.py` ran the production path (Pixtral
+    describe -> Jev five facets, v4) on all 149 corpus images and
+    compared to the labels the manifest category implies: 149/149,
+    0 pipeline errors, pooled agreement 541/615 (88%) on unambiguous
+    facets (contains_human 81%, contains_robot 97%,
+    contains_android 94%, primary_subject 79%, representation 84%).
+    book_cover and human_photo are perfect on scored facets; statue
+    (72%) and humanoid_robot (73%) are weak exactly where the Commons
+    categories are noisy labels (Category:Statues includes
+    non-humanoid statues). Routing burden 60/149 (40%) -- lower than
+    the personal collection's 62% -- concentrated in statue (20/28
+    low-confidence) and humanoid_robot (17/22): the calibration
+    hedges where the labels are unreliable. Results in
+    `library_standin_results.json` (private, gitignored). See
+    RESULTS.md ("Stand-in library corpus").
 
 ## Where things live
 
@@ -253,8 +269,10 @@ edge-case suite on 09-23)
 | Edge-case generator (public) | `Images/generate_edge_cases.py` |
 | Edge-case measurement (public) | `Images/measure_edge_cases.py` |
 | Library stand-in fetcher (public) | `Images/fetch_library_standin.py` |
+| Library stand-in measurement (public) | `Images/measure_library_standin.py` |
 | Library stand-in manifest (public; the stand-in ground truth) | `Images/library_manifest.json` |
 | Library stand-in images (private, gitignored) | `Images/library_standin/` |
+| Library stand-in results (private, gitignored) | `Images/library_standin_results.json` |
 | Edge-case images (private, gitignored) | `Images/edge_cases/` |
 | Edge-case run records + agent cache (private, gitignored) | `Images/edge_case_results.json`, `Images/edge_case_pipeline_results.json`, `Images/edge_case_agent.json` |
 | Pixtral-direct results (private, gitignored) | `Images/baseline_pixtral_direct_results.json` |
@@ -277,11 +295,15 @@ edge-case suite on 09-23)
    photos; the pipeline, taxonomy, and review UX are ready for
    library material, where the android facet and the held-out
    revision protocol (LIBRARY.md Phase 6) actually apply. A stand-in
-   now exists: 149 Commons images across 5 categories
-   (`library_standin/`, manifest committed). Next: re-run the fetcher
-   once the Wikimedia block lifts (top up to 40/category, add
-   ui_screenshot, debug the depicts resolution), then run the
-   pipeline on it and measure against the manifest.
+   now exists and has had a first pipeline pass: 149 Commons images
+   across 5 categories (`library_standin/`, manifest committed),
+   measured 2026-09-23 -- 149/149, 0 errors, pooled agreement 88%
+   against the category-implied labels, routing burden 40%. Next:
+   re-run the fetcher once the Wikimedia block lifts (top up to
+   40/category, add ui_screenshot, debug the depicts resolution --
+   precise depicts annotation would replace the noisy
+   category-implied labels), then review the 60 routed records
+   through the UI to turn the stand-in into labeled ground truth.
 3. ~~**Measure the edge-case suite.**~~ Done (2026-09-23): 8/8
    measured, pooled agreement 33/36 (92%); see RESULTS.md
    ("Edge-case suite"). Residuals: the AI-generated portrait is

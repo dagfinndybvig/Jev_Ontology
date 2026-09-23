@@ -2,14 +2,16 @@
 
 > **NEXT STEP (2026-09-23): A real library collection.** Everything
 > else on this list is either done, measured, or blocked on it. The
-> pipeline, taxonomy, and review UX are ready. A stand-in now exists:
-> 149 Wikimedia Commons images across 5 categories
-> (`library_standin/`, manifest committed as the ground truth) --
-> short of the 40/category target because Wikimedia rate-limited the
-> fetch; re-run `fetch_library_standin.py` once the block lifts to
-> top up. Run the pipeline on it: describe -> classify -> sort ->
-> review, and measure against the manifest. See STATUS.md "Next
-> steps" item 2.
+> pipeline, taxonomy, and review UX are ready. A stand-in now exists
+> and has had a first pipeline pass: 149 Wikimedia Commons images
+> across 5 categories (`library_standin/`, manifest committed as the
+> ground truth), measured 2026-09-23 -- 149/149, 0 errors, pooled
+> agreement 541/615 (88%) against the category-implied labels,
+> routing burden 60/149 (40%). Short of the 40/category target
+> because Wikimedia rate-limited the fetch; re-run
+> `fetch_library_standin.py` once the block lifts to top up. Next:
+> review the 60 routed records through the UI to turn the stand-in
+> into labeled ground truth. See STATUS.md "Next steps" item 2.
 
 The current pipeline (`classify_images.py`) is scaffolding: a vision
 model describes each image, Jev answers one yes/no question. The goal of
