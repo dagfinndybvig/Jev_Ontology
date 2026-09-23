@@ -198,47 +198,46 @@ same 218 descriptions (criteria-v1 results preserved privately).
 
 ---
 
-## First accuracy numbers: the reviewed subset (2026-09-23)
+## First accuracy numbers: the complete review queue (2026-09-23)
 
-A first review pass via `review_ui.py` labeled 25 records (13
-confirmed, 12 corrected) -- the first ground truth this project has.
-Accuracy is computed on that subset only; it is queue-heavy by
-construction, so these numbers describe the dubious band, not the
-collection as a whole.
+A full review pass via `review_ui.py` labeled all 50 queued records
+(28 confirmed, 22 corrected) -- the first ground truth this project
+has. The queue is every record hedging below 0.7 on any facet, so
+these numbers describe the dubious band; the 168 confident records
+remain unverified and the threshold's miss rate is unknown.
 
 Per-facet accuracy (raw Jev choice vs. the reviewed label):
 
 | Facet | Accuracy |
 |---|---|
-| contains_human | 19/25 (76%) |
-| contains_robot | 22/25 (88%) |
-| contains_android | 24/25 (96%) |
-| primary_subject | 20/25 (80%) |
-| representation | 21/25 (84%) |
+| contains_human | 40/50 (80%) |
+| contains_robot | 46/50 (92%) |
+| contains_android | 49/50 (98%) |
+| primary_subject | 43/50 (86%) |
+| representation | 40/50 (80%) |
 
-All five facets right on 13/25 records. Pooled facet-answers by
+All five facets right on 28/50 records. Pooled facet-answers by
 confidence bin -- accuracy rises monotonically with confidence, and
-the high band is close to its stated confidence:
+the top band lands on its stated probability:
 
 | Confidence | Accuracy |
 |---|---|
-| 0.0-0.5 | 8/12 (67%) |
-| 0.5-0.7 | 13/21 (62%) |
-| 0.7-0.9 | 10/12 (83%) |
-| 0.9-1.0 | 75/80 (94%) |
+| 0.0-0.5 | 18/25 (72%) |
+| 0.5-0.7 | 27/41 (66%) |
+| 0.7-0.9 | 15/17 (88%) |
+| 0.9-1.0 | 158/167 (95%) |
 
-The routing claim holds on this subset: every wrong record (12/12)
-was in the review queue; zero errors were found above the 0.7
-threshold. The queue is doing its job -- at 0.7, hedging and error
-largely coincide -- though 25 of the 50 queued records and all 168
-unqueued records remain unverified, so the threshold's *miss* rate
-is still unknown.
+The routing claim holds across the whole queue: every wrong record
+(22/22) was in the queue; zero errors were found above the 0.7
+threshold. At 0.7, hedging and error coincide -- the threshold
+routes exactly the records that need eyes.
 
-The 12 corrections also sharpen the taxonomy agenda: game screens
+The 22 corrections sharpen the taxonomy agenda: game screens
 corrected to `text_screenshot` (the missing interface class),
 illustrations of text-labeled characters corrected back to `human`
-(the v2 clause overcorrected there -- depicted-in-illustration must
-still count), and one robot overcall corrected to `none`.
+(the v2 depicted-vs-described clause overcorrected there --
+depicted-in-illustration must still count), and robot overcalls
+corrected to `none`.
 
 ---
 

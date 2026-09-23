@@ -72,6 +72,13 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
    next pending record without re-showing reviewed ones. Verified
    with five scenario tests in the Node DOM-stub harness (the
    harness needed a document.createTextNode stub).
+10. **Review queue completed.** All 50 queued records reviewed:
+   28 confirmed, 22 corrected. Per-facet accuracy 80-98%
+   (representation and contains_human lowest at 80%), pooled
+   accuracy 72%/66% below the threshold, 88% at 0.7-0.9, 95% at
+   0.9-1.0. Every wrong record was in the queue; zero errors above
+   threshold. The 168 confident records remain unverified, so the
+   threshold's miss rate is unknown. See RESULTS.md for the tables.
 
 ## Where things live
 
@@ -92,32 +99,34 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 
 ## Next steps, in order
 
-1. **Walk the review queue** (50 records, was 79 at peak): run
-   `python review_ui.py` and open http://localhost:8765 -- confirm or
-   correct each queued image's subject and representation; corrections
-   are saved as `manual_correction` blocks and double as the Phase 0
-   ground-truth seed. The `representation`
-   hedges (26) still cluster on covers/posters, game and UI screens,
-   and 3D renders -- the missing classes identified on 2026-09-22.
-2. **Sharpen the `representation` definitions**: add cover_or_poster,
-   interface_or_game_screen, and 3d_render classes as
-   `humanoid_taxonomy_v3.json`; re-run and see if the queue shrinks.
-   Measure against the v2 baseline, one change at a time.
-3. **Decide the android question**: 1 raw yes (`buck.jpg`, 0.55).
-   Loosen the criteria or drop the facet until ground truth exists.
-4. **Phase 0 ground truth (the real dependency).** Label a stratified
-   sample (~50 random plus the deliberate hard cases: depictions,
-   text scans, compound images). Until this exists, everything is
-   consistency, not accuracy.
-5. **Phase 2 baseline** once labels exist: Pixtral-direct vs.
-   Pixtral+Jev vs. a trivial classifier, measured on accuracy,
+1. **Taxonomy v3, informed by the 22 corrections.** Two changes,
+   each measured against the v2 run with the 50 reviewed records as
+   the test set: (a) the missing `representation` classes
+   (cover_or_poster, interface_or_game_screen, 3d_render) for the
+   game-screen and cover hedges; (b) soften the v2
+   depicted-vs-described clause where it overcorrected --
+   characters depicted in an illustration count even when text
+   also describes them. One revision per re-run; the held-out
+   protocol (LIBRARY.md Phase 6) applies before calling either
+   real.
+2. **Verify the confident band.** The queue is fully labeled, but
+   the 168 records above threshold are not; the threshold's miss
+   rate is unknown. Sample ~30 confident records through the review
+   UI (All filter) to bound it.
+3. **Phase 2 baseline.** Pixtral-direct vs. Pixtral+Jev vs. a
+   trivial classifier on the labeled set, measured on accuracy,
    calibration, and review burden.
+
+The android question is settled by the review: the collection
+contains no androids (buck.jpg's Twiki is a robot, not an android).
+Keep the facet for library material, where the question will
+actually arise.
 
 ## Open decisions
 
-- Threshold 0.7 now yields a 23% review burden (50/218), down from
-  37% at the first pilot. Still provisional; Phase 2's
-  burden-vs-accuracy curve decides.
+- Threshold 0.7 is validated on the queue side: it caught all 22
+  errors at a 23% review burden (50/218). The miss side is unknown
+  until confident records are sampled (next step 2).
 - Taxonomy v2's improvement is measured in-sample (same 218
   descriptions). The held-out protocol (LIBRARY.md Phase 6) is the
   standard for calling a revision real.
