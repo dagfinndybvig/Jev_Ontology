@@ -1,5 +1,14 @@
 # TODO: Image classification with Jev -- next steps
 
+> **NEXT STEP (2026-09-23): A real library collection.** Everything
+> else on this list is either done, measured, or blocked on it. The
+> pipeline, taxonomy, and review UX are ready; what is missing is
+> library material -- a folder of images that is not personal photos,
+> where the android facet and the held-out revision protocol
+> (LIBRARY.md Phase 6) actually apply. Point the pipeline at the
+> folder and run: describe -> classify -> sort -> review. See
+> STATUS.md "Next steps" item 2.
+
 The current pipeline (`classify_images.py`) is scaffolding: a vision
 model describes each image, Jev answers one yes/no question. The goal of
 this project is to **increase Jev's contribution** -- to make Jev do
