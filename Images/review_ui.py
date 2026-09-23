@@ -279,9 +279,18 @@ function render() {
     document.getElementById('imgpane').innerHTML = '';
     const hasAny = filter === 'queue' ? records.some(r => r.queued) : sampleFiles.length > 0;
     const done = (filter === 'queue' || filter === 'sample') && pendingOnly && hasAny;
+    const samplePending = sampleFiles.filter(f => {
+      const rr = records.find(x => x.file === f);
+      return rr && !rr.reviewed;
+    }).length;
     document.getElementById('pane').innerHTML = '<div class="empty">' + (done ?
       '<strong style="color:#4caf7d">Review complete.</strong><br><br>' +
-      'Every record in this filter has a label. Use the Reviewed filter to browse ' +
+      'Every record in this filter has a label.' +
+      (filter === 'queue' && samplePending > 0
+        ? '<br><br>The <strong>Sample</strong> filter still has ' + samplePending +
+          ' confident records pending.'
+        : '') +
+      '<br><br>Use the Reviewed filter to browse ' +
       'your labels, or All to see the whole collection.' :
       'No records in this filter.') + '</div>';
     return;
