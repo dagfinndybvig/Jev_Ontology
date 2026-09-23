@@ -6,3 +6,4 @@ __pycache__/
 Images/image_human_results.json
 Images/image_human_summary.txt
 Images/humanoid_pilot_results.json
+Images/baseline_pixtral_direct_results.json

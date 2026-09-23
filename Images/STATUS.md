@@ -106,6 +106,17 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
    queue: its confidence carries no information. See RESULTS.md
    ("Confident-band verification"). 85 of 218 records are now
    labeled.
+14. **Phase 2 baseline started (two of three systems).**
+    `baseline_compare.py` measures accuracy, ECE, flag rate at 0.7,
+    and errors caught against the 85 reviewed records. Keyword
+    baseline (trivial, always confident): 78% pooled accuracy, ECE
+    0.166, 0/49 errors caught. Cascade (Pixtral+Jev): 91%, ECE 0.038,
+    16/27 caught. Jev adds calibration, not just accuracy -- the
+    baseline matches on easy facets and collapses on ambiguous ones,
+    silently. Pixtral-direct (`baseline_pixtral_direct.py`,
+    resumable) is blocked: Mistral returned HTTP 402 Payment Required
+    on every call -- the account needs credits. See RESULTS.md
+    ("Phase 2 baseline").
 
 ## Where things live
 
@@ -118,6 +129,9 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 | Pilot script (public; `TAXONOMY` env var selects version, v4 default) | `Images/pilot_humanoid.py` |
 | Sorter (public) | `Images/sort_humanoids.py` |
 | Review UI (public; localhost web app) | `Images/review_ui.py` -> http://localhost:8765 |
+| Phase 2: Pixtral-direct baseline (public) | `Images/baseline_pixtral_direct.py` |
+| Phase 2: three-system comparison (public) | `Images/baseline_compare.py` |
+| Pixtral-direct results (private, gitignored) | `Images/baseline_pixtral_direct_results.json` |
 | Sorted folder tree (private) | `PICTURES_DIR\Humanoids\` (+ `_review\`) |
 | Pilot per-image results (private, gitignored) | `Images/humanoid_pilot_results.json` |
 | Original-run results (private, gitignored) | `Images/image_human_results.json` |
@@ -127,11 +141,11 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 
 ## Next steps, in order
 
-1. **Phase 2 baseline.** Pixtral-direct vs. Pixtral+Jev vs. a
-   trivial classifier on the 85 labeled records, measured on
-   accuracy, calibration, and review burden. The revision series
-   showed the metric that matters: errors caught per review burden,
-   against labels.
+1. **Finish Phase 2: Pixtral-direct.** Add Mistral credits (the run
+   failed with HTTP 402 Payment Required), then rerun
+   `python baseline_pixtral_direct.py` (resumable; 85 vision calls)
+   and `python baseline_compare.py` -- the three-way comparison
+   answers whether the Jev hop earns its keep.
 2. **Representation residuals are vision-limited.** The remaining
    representation errors trace to descriptions that mislead (a
    photographed cover described as "consists of text"). The

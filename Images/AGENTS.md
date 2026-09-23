@@ -46,6 +46,15 @@ Essential context for any agent working in this directory.
   `../Ontology_private_backup/confident_sample_v1.json`) to bound
   the threshold's miss rate. For testing, point `REVIEW_RESULTS` at
   a copy of the results and `REVIEW_SAMPLE` at a temp path.
+- `baseline_pixtral_direct.py` — Phase 2 baseline: Pixtral classifies
+  the five facets directly (v4 criteria) on the labeled records.
+  Writes `baseline_pixtral_direct_results.json` (private,
+  gitignored). Resumable; needs MISTRAL_API_KEY credits (a run
+  failed with HTTP 402 Payment Required on 2026-09-23).
+- `baseline_compare.py` — Phase 2 comparison: keyword baseline vs.
+  cascade vs. Pixtral-direct (when present) against the
+  manual_correction ground truth. Accuracy, ECE, flag rate at 0.7,
+  errors caught. No API calls.
 - Runs skip records with `status: ok`. Fresh descriptions require
   moving the results JSON aside first. Cost is small but real
   (~$0.0003 per image for the vision step).

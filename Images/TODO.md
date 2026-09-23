@@ -155,6 +155,16 @@ directly.
 a face detector. Compare accuracy (once ground truth exists), cost, and
 latency.
 
+**Update (2026-09-23):** Phase 2 started on the 85 labeled records.
+`baseline_compare.py` measures accuracy, ECE, flag rate at 0.7, and
+errors caught per system. Measured so far: the keyword baseline
+(trivial, always confident) reaches 78% pooled accuracy with ECE 0.166
+and catches 0 of 49 wrong records; the cascade (Pixtral+Jev) reaches
+91% with ECE 0.038 and catches 16 of 27 at a 23% collection-wide
+burden. Pixtral-direct is written (`baseline_pixtral_direct.py`,
+resumable) but blocked: the Mistral account returned HTTP 402 Payment
+Required -- it needs credits before the three-way comparison completes.
+
 **Effort:** Moderate. Needs a baseline model and ground-truth labels.
 
 ### 9. Adversarial and edge cases
