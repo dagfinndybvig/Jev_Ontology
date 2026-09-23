@@ -129,6 +129,16 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
     field -- the bottleneck moved into the vision model, and the
     screenshot-of-text failure mode is eliminated where the medium
     is right. See RESULTS.md ("Phase 3").
+16. **Vision-prompt revision v3 rejected.** A physical-context
+    clause (photograph when a text-bearing surface shows depth or
+    surroundings; text_screenshot only for flat head-on captures)
+    was measured on the labeled 85: it fixed 1 record and broke 7
+    (representation 76% -> 69%) -- the clause made the vision model
+    more eager to call photographed covers and game screens
+    `text_screenshot`. With v2's milder clause having failed on the
+    same family, prompt wording is exhausted for this failure mode;
+    it is a genuine vision limitation. v2 is restored as the live
+    structured variant; the cascade stays the production path.
 
 ## Where things live
 
@@ -155,14 +165,13 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 
 ## Next steps, in order
 
-1. **Fix the vision medium field.** Phase 3 located the remaining
-   representation errors in the vision model: 19 of 20 have a wrong
-   `medium` field (photographed covers labeled `screenshot_of_text`;
-   the deepseek described-scene trap in `subjects`). A vision-prompt
-   revision targeting that family, measured on the labeled 85, is
-   the next single-variable experiment. The cascade stays the
-   production path until a structured variant beats it on
-   errors-caught-per-burden.
+1. **The representation residual is a vision limitation.** Three
+   prompt-wording attempts (v2's clause failed to fire, v3's
+   physical-context clause backfired) cannot make the vision model
+   separate "photo of a text-bearing object" from "screenshot of
+   text." The remaining options: a dedicated binary capture-type
+   question as its own vision field, or review-always for the
+   ambiguous family. The cascade stays the production path.
 2. **A real library collection.** The 218-image set is personal
    photos; the pipeline, taxonomy, and review UX are ready for
    library material, where the android facet and the held-out

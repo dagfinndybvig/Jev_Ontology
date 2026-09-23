@@ -399,15 +399,18 @@ Findings:
 LIBRARY.md Phase 3 replaces the free 25-word description with typed
 fields per image (medium, subjects, text_in_image, setting, people);
 Jev classifies the composed state, with transcribed text explicitly
-labeled as quoted content. Two iterations, each run on the 85 labeled
-records (`structured_vision.py`; runs preserved privately in
-`2026-09-23_structured_v1_run/`):
+labeled as quoted content. Three iterations, each run on the 85
+labeled records (`structured_vision.py`; v1 and v2 runs preserved
+privately in `2026-09-23_structured_v1_run/` and
+`..._structured_v2_run/`; the v3 run's raw records were not
+preserved -- only its measured numbers):
 
 | System | Pooled accuracy | ECE | representation | Burden at 0.7 | Wrong | Caught | Silent |
 |---|---|---|---|---|---|---|---|
 | Cascade (production) | 91% | 0.038 | 79% | 52% | 27 | 16/27 | 11 |
 | Structured v1 (rich medium: poster, diagram, render) | 88% | 0.047 | 67% | 22% | 34 | 11/34 | 23 |
-| Structured v2 (medium aligned to the representation classes) | 90% | 0.048 | 76% | 22% | 25 | 5/25 | 20 |
+| Structured v2 (medium aligned to the representation classes) | **90%** | 0.048 | **76%** | 22% | 25 | 5/25 | 20 |
+| Structured v3 (physical-context clause) | 88% | 0.047 | 69% | 20% | 31 | 9/31 | 22 |
 
 Findings:
 
@@ -423,17 +426,29 @@ Findings:
    cover described as `screenshot_of_text`) and the deepseek
    described-scene trap (subjects filled from text the image merely
    mentions) both live in the vision model, not in Jev.
-3. **The screenshot-of-text failure mode is eliminated where the
+3. **v3 (physical-context clause) is a rejected negative result.** A
+   sharper medium definition -- photograph when the text-bearing
+   surface shows physical depth or surroundings, text_screenshot only
+   for a flat head-on capture -- fixed 1 record and broke 7: the
+   clause made the vision model *more* eager to call photographed
+   covers and game screens `text_screenshot`. With v2's milder clause
+   having failed to fire on the same family, the conclusion is that
+   prompt wording cannot make this vision model reliably separate
+   "photo of a text-bearing object" from "screenshot of text." The
+   residual is a genuine vision limitation; the durable options are a
+   dedicated binary capture-type question or review-always for the
+   ambiguous family. v2 is restored as the live structured variant.
+4. **The screenshot-of-text failure mode is eliminated where the
    medium field is right.** Every image the vision model correctly
    labels `text_screenshot` classifies as `text_screenshot` at 1.0
    confidence -- the incident that motivated Phase 3 cannot recur on
    a correctly-extracted state.
-4. **On the errors-caught-per-burden metric, the structured state is
+5. **On the errors-caught-per-burden metric, the structured state is
    still a measured negative against the cascade**: it flags less
    (22% vs 52% on this subset) but converts more errors into
    confident ones (20 silent vs 11). The cascade remains the
    production path.
-5. **The structured state is the right diagnostic instrument.** It
+6. **The structured state is the right diagnostic instrument.** It
    separates vision errors from Jev errors cleanly: Jev is now
    nearly perfect on the state it is given. The next representation
    fix is a vision-prompt fix (the photographed-cover family), not a
