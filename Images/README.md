@@ -130,6 +130,9 @@ humanoid_pilot_results.json (private) -- pilot per-image results (gitignored)
 generate_edge_cases.py             -- generates the adversarial edge-case suite
                                      (Mistral image generation, API credits)
 edge_cases/ (private)              -- generated edge-case images (gitignored)
+measure_edge_cases.py             -- runs the pipeline on the edge-case suite and
+                                     compares to the intended labels
+edge_case_pipeline_results.json (private) -- measurement records (gitignored)
 ```
 
 ## Running it

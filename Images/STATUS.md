@@ -185,6 +185,25 @@ edge-case suite on 09-23)
     generated but not yet measured: the next step is running the 8
     images through the pipeline (describe -> classify -> sort) and
     comparing to the intended labels.
+21. **Edge-case suite measured.** `measure_edge_cases.py` ran the
+    production path (Pixtral describe -> Jev five facets, v4) on all
+    8 and compared to the intended labels: 8/8 measured, 0 pipeline
+    errors, pooled agreement 33/36 (92%) on unambiguous facets
+    (contains_human 7/8, contains_robot 7/8, contains_android 7/7,
+    primary_subject 6/6, representation 6/7). The known
+    described-scene failure reappeared but hedged into the queue
+    (contains_robot yes at 0.050 -- caught, not silent); the one
+    silent error is the AI-generated portrait called `photograph` at
+    1.000 -- the known perceptual limitation, and the taxonomy has no
+    AI-generated class. Two taxonomy gaps surfaced (incidental
+    humans; UI with a depicted subject have no clean class). The
+    suite also exposed a routing brittleness: the preamble stripper
+    in `routing.py` misses two of Pixtral's check-first line
+    variants, so the word "terminal" in the preamble fires false
+    text-bearing flags (2-3 of the suite's 4). Fixing it changes the
+    measured 156/218 burden -- re-run `routing.py` on the full
+    collection before adopting a change. See RESULTS.md
+    ("Edge-case suite").
 
 ## Where things live
 
@@ -203,8 +222,9 @@ edge-case suite on 09-23)
 | Option 1: capture-type experiment (public, falsified) | `Images/capture_type.py` |
 | Option 2: routing rule (public) | `Images/routing.py` |
 | Edge-case generator (public) | `Images/generate_edge_cases.py` |
+| Edge-case measurement (public) | `Images/measure_edge_cases.py` |
 | Edge-case images (private, gitignored) | `Images/edge_cases/` |
-| Edge-case run records + agent cache (private, gitignored) | `Images/edge_case_results.json`, `Images/edge_case_agent.json` |
+| Edge-case run records + agent cache (private, gitignored) | `Images/edge_case_results.json`, `Images/edge_case_pipeline_results.json`, `Images/edge_case_agent.json` |
 | Pixtral-direct results (private, gitignored) | `Images/baseline_pixtral_direct_results.json` |
 | Structured vision results (private, gitignored) | `Images/structured_vision_results.json` |
 | Routing queue (private, gitignored) | `Images/routing_queue.json` |
@@ -227,11 +247,17 @@ edge-case suite on 09-23)
    revision protocol (LIBRARY.md Phase 6) actually apply. This needs
    library material supplied (a folder of images); the pipeline then
    runs as-is: describe -> classify -> sort -> review.
-3. **Measure the edge-case suite.** The 8 generated images
-   (`edge_cases/`) are unmeasured. Run them through the pipeline
-   (point `PICTURES_DIR` at the folder or copy them in), review the
-   five-facet answers against the intended labels, and record the
-   residual failure rate in RESULTS.md.
+3. ~~**Measure the edge-case suite.**~~ Done (2026-09-23): 8/8
+   measured, pooled agreement 33/36 (92%); see RESULTS.md
+   ("Edge-case suite"). Residuals: the AI-generated portrait is
+   pixel-indistinguishable from a photograph (perceptual, no taxonomy
+   class), and the routing preamble stripper is brittle (AGENTS.md
+   gotchas).
+4. **Decide on the routing preamble stripper.** The edge-case suite
+   showed `routing.py`'s `description_body` misses two of Pixtral's
+   check-first line variants, firing false text-bearing flags. Any
+   fix must be re-measured on the full 218 (the 156/218 burden is
+   the adopted record).
 
 The android question is settled by the review: the collection
 contains no androids (the Twiki image is a robot, not an android).

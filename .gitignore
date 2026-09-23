@@ -15,4 +15,5 @@ Images/routing_queue.json
 # Regenerate with Images/generate_edge_cases.py; do not commit binaries.
 Images/edge_cases/
 Images/edge_case_results.json
+Images/edge_case_pipeline_results.json
 Images/edge_case_agent.json

@@ -228,12 +228,17 @@ pipeline misclassifies them, and whether the multi-question approach
 checks for text first and states the medium, and
 `humanoid_taxonomy_v2.json` adds a depicted-vs-described clause to
 the entity facets. The known failure image is now correct raw on all
-five facets. The suite now exists: `generate_edge_cases.py` generated
-8 images (text-describes-scene, meme, AI-generated portrait, collage,
-background people, game screen, statue, robot illustration) with
-Mistral image generation, 0 errors, 7,217 tokens + 8 generations
-billed to the API credits. The images are unmeasured until run
-through the pipeline (STATUS.md next steps item 3).
+five facets. The suite now exists and is measured:
+`generate_edge_cases.py` generated 8 images (0 errors, 7,217 tokens
++ 8 generations, API credits) and `measure_edge_cases.py` ran the
+production path on all 8: pooled agreement 33/36 (92%) on
+unambiguous facets. The described-scene failure reappeared but
+hedged into the queue (caught at 0.050 confidence); the one silent
+error is the AI-generated portrait called `photograph` at 1.000 --
+perceptual, and the taxonomy has no AI-generated class. The suite
+also exposed a routing preamble-stripper brittleness (AGENTS.md
+gotchas) and two taxonomy gaps (incidental humans; UI with a
+depicted subject).
 
 **Effort:** Small. Assembling the suite is the main work.
 

@@ -564,9 +564,47 @@ text describing a scene (the known screenshot-of-text mode), a meme
 with caption text, an AI-generated portrait, a collage, people small
 in the background, a game inventory screen, a statue, and a robot
 illustration. Images live in `edge_cases/` (gitignored); per-prompt
-records in `edge_case_results.json` (private, gitignored). The suite
-is generated but not yet measured -- running it through the pipeline
-against the intended labels is the next step (STATUS.md item 3).
+records in `edge_case_results.json` (private, gitignored).
+
+**Measured (2026-09-23).** `measure_edge_cases.py` ran the production
+path (Pixtral describe -> Jev five facets, v4 taxonomy) on all 8 and
+compared to the intended labels: 8/8 measured, 0 pipeline errors.
+Pooled agreement on unambiguous facets: 33/36 (92%). Per facet:
+contains_human 7/8 (88%), contains_robot 7/8 (88%),
+contains_android 7/7 (100%), primary_subject 6/6 (100%),
+representation 6/7 (86%). The three mismatches:
+
+- `text_describes_scene` contains_robot answered yes at 0.050
+  confidence -- the known described-scene failure, but hedged into
+  the queue (caught, not silent). contains_human and primary_subject
+  were correct: the depicted-vs-described clause held.
+- `ai_generated_portrait` representation answered photograph at 1.000
+  (intended render) -- the known perceptual limitation again: a
+  photorealistic AI image is pixel-indistinguishable from a
+  photograph, and the taxonomy has no AI-generated class. The one
+  silent, confident mismatch.
+- `game_screen` contains_human answered no at 0.960 (intended yes) --
+  but the description mentions only "items and character stats", no
+  visible person: the generated image likely lacks the character
+  portrait the prompt asked for. A generation-side gap, not clearly
+  a classification error.
+
+Two taxonomy gaps surfaced: incidental humans (a building with
+people in front) and an interface screenshot with a depicted subject
+have no clean primary_subject or representation class -- both were
+scored as ambiguous rather than forced.
+
+**Routing on the suite.** All 8 records route to review (100%
+burden -- expected for a deliberately adversarial suite): 4
+text-bearing, 4 low-confidence. But 2-3 of the 4 text-bearing flags
+are preamble artifacts: `routing.py`'s `description_body` strips only
+a first line starting "this image does not consist", while Pixtral's
+check-first line varies ("The image does not consist...",
+"This image consists of neither..."); unstripped, the word "terminal"
+in the preamble fires a false text-bearing signal on clean
+photographs. Fixing the stripper would change the measured 156/218
+burden on the main collection -- re-run `routing.py` there before
+adopting any change (see AGENTS.md gotchas).
 
 ---
 

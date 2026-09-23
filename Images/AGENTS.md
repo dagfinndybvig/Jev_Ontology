@@ -92,6 +92,16 @@ Essential context for any agent working in this directory.
   overhead; the first 8-image run cost 7,217 tokens + 8 generations).
   `EDGE_CASE_PROMPTS` selects a prompt-list JSON; positional args run
   named prompts only.
+- `measure_edge_cases.py` — runs the production path on the generated
+  suite: Pixtral describes each image (same prompt as
+  `classify_images.py`), Jev answers the five facets (v4 taxonomy,
+  same call shape as `pilot_humanoid.py`), and answers are compared
+  to the intended labels each prompt was written to elicit. Facets
+  whose truth the taxonomy cannot express are marked `ambiguous` and
+  excluded from strict agreement. Also applies `routing.py`'s
+  `route_reason` to each record. Writes
+  `edge_case_pipeline_results.json` (private, gitignored). Resumable;
+  needs both API keys.
 - Runs skip records with `status: ok`. Fresh descriptions require
   moving the results JSON aside first. Cost is small but real
   (~$0.0003 per image for the vision step).
@@ -141,3 +151,13 @@ recomputed from the result JSONs, never recalled from memory.
   file download returns JPEG (JFIF) bytes even though the `tool_file`
   chunk reports `file_type: png` — sniff the magic bytes, don't trust
   the reported extension.
+- `routing.py`'s preamble stripper is brittle (found by the
+  edge-case suite, 2026-09-23): `description_body` only strips a
+  first line starting "this image does not consist", but Pixtral's
+  check-first line varies ("The image does not consist...",
+  "This image consists of neither..."). Unstripped, the word
+  "terminal" in the preamble fires a false `text_bearing` signal on
+  clean photographs. Measured on the suite: 2-3 of 4 text-bearing
+  flags were preamble artifacts. Fixing the stripper changes the
+  measured 156/218 burden — re-run `routing.py` on the full
+  collection before adopting any change.

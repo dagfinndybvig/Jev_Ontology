@@ -80,7 +80,10 @@ top-level facets only. Record inter-annotator agreement if two
 catalogers are available -- it sets the ceiling for what "accuracy"
 can mean. Until library material exists, the generated edge-case
 suite (`generate_edge_cases.py`, 8 images covering the measured
-failure families) is the practice stand-in for the hard images.
+failure families) is the practice stand-in for the hard images;
+measured 2026-09-23: pooled agreement 33/36 (92%), with the
+AI-generated portrait called `photograph` at 1.000 as the one silent
+error (RESULTS.md, "Edge-case suite").
 
 **Why first:** every later decision (thresholds, taxonomy size,
 baseline comparison) needs a labeled sample. Without it the project
