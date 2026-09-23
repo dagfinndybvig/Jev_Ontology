@@ -54,6 +54,16 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
    in try/catch so errors surface in the pane. Reproduced and
    verified with a Node DOM-stub harness against the live API
    payloads before restarting the server.
+8. **First review pass (25 records).** The dubious cases were
+   reviewed via the UI: 13 confirmed, 12 corrected. On this
+   ground-truth-seeded subset, per-facet accuracy was 76-96%
+   (contains_human lowest at 76%, contains_android highest at
+   96%), and pooled accuracy rose monotonically with confidence:
+   62-67% below the 0.7 threshold, 83% at 0.7-0.9, 94% at 0.9-1.0.
+   Every wrong record was in the review queue -- zero errors found
+   above threshold in the reviewed set. Analysis is now restricted
+   to reviewed records; the other 25 queued and 168 unqueued
+   records remain unverified.
 
 ## Where things live
 
