@@ -79,6 +79,18 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
    0.9-1.0. Every wrong record was in the queue; zero errors above
    threshold. The 168 confident records remain unverified, so the
    threshold's miss rate is unknown. See RESULTS.md for the tables.
+11. **Taxonomy revision series (v3, v4, v5).** Three revisions from
+   the 22 corrections, each run separately and measured on the 50
+   reviewed records. v3 (broadened text_screenshot to game/app
+   screens): rejected -- accuracy flat, five hedged errors became
+   confident. v4 (depiction counts in any medium; robots need a
+   being-like form): adopted -- contains_human 88%, 19 wrong
+   records, two confident errors. v5 (content-based screenshot
+   rule): rejected -- representation +1 but six confident errors.
+   Lesson: de-hedging without accuracy gains manufactures silent
+   errors; measure errors-caught per burden, not queue size.
+   `pilot_humanoid.py` defaults to v4; the live results are the v4
+   run with the 50 review corrections merged.
 
 ## Where things live
 
@@ -86,36 +98,34 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 |---|---|
 | Pilot plan and results write-up | `Images/LIBRARY.md` |
 | Run write-up (both corrections, re-run, taxonomy v2) | `Images/RESULTS.md` |
-| Pilot taxonomy v2 (current) | `Images/humanoid_taxonomy_v2.json` |
-| Pilot taxonomy v1 (superseded, kept for comparison) | `Images/humanoid_taxonomy_v1.json` |
-| Pilot script (public; `TAXONOMY` env var selects version) | `Images/pilot_humanoid.py` |
+| Pilot taxonomy v4 (current, adopted) | `Images/humanoid_taxonomy_v4.json` |
+| Pilot taxonomies v1-v3, v5 (history; v3 and v5 measured rejections) | `Images/humanoid_taxonomy_v*.json` |
+| Pilot script (public; `TAXONOMY` env var selects version, v4 default) | `Images/pilot_humanoid.py` |
 | Sorter (public) | `Images/sort_humanoids.py` |
 | Review UI (public; localhost web app) | `Images/review_ui.py` -> http://localhost:8765 |
 | Sorted folder tree (private) | `PICTURES_DIR\Humanoids\` (+ `_review\`) |
 | Pilot per-image results (private, gitignored) | `Images/humanoid_pilot_results.json` |
 | Original-run results (private, gitignored) | `Images/image_human_results.json` |
-| Baselines (private) | `../Ontology_private_backup/` (`rerun_v1_2026-09-23/` = old prompt; `2026-09-23_criteria_v1_run/` = fixed prompt, v1 criteria) |
+| Baselines (private) | `../Ontology_private_backup/` (`rerun_v1_2026-09-23/` = old prompt; `2026-09-23_criteria_v1_run/`; `2026-09-23_criteria_v2_reviewed/` = reviewed ground truth; `2026-09-23_taxonomy_v3_run/`, `..._v4_run/`, `..._v5_run/`) |
 | Review queue printout | rerun `python pilot_humanoid.py` (instant; resumable) |
 
 ## Next steps, in order
 
-1. **Taxonomy v3, informed by the 22 corrections.** Two changes,
-   each measured against the v2 run with the 50 reviewed records as
-   the test set: (a) the missing `representation` classes
-   (cover_or_poster, interface_or_game_screen, 3d_render) for the
-   game-screen and cover hedges; (b) soften the v2
-   depicted-vs-described clause where it overcorrected --
-   characters depicted in an illustration count even when text
-   also describes them. One revision per re-run; the held-out
-   protocol (LIBRARY.md Phase 6) applies before calling either
-   real.
-2. **Verify the confident band.** The queue is fully labeled, but
+1. **Verify the confident band.** The queue is fully labeled, but
    the 168 records above threshold are not; the threshold's miss
    rate is unknown. Sample ~30 confident records through the review
    UI (All filter) to bound it.
-3. **Phase 2 baseline.** Pixtral-direct vs. Pixtral+Jev vs. a
+2. **Phase 2 baseline.** Pixtral-direct vs. Pixtral+Jev vs. a
    trivial classifier on the labeled set, measured on accuracy,
-   calibration, and review burden.
+   calibration, and review burden. The revision series showed the
+   metric that matters: errors caught per review burden, against
+   labels.
+3. **Representation residuals are vision-limited.** The remaining
+   representation errors trace to descriptions that mislead (a
+   photographed cover described as "consists of text"). The
+   durable fix is LIBRARY.md Phase 3's structured vision state
+   (typed fields: medium, subjects, text_in_image), not further
+   criteria wording.
 
 The android question is settled by the review: the collection
 contains no androids (buck.jpg's Twiki is a robot, not an android).

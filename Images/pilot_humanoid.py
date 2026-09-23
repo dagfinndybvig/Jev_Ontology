@@ -1,7 +1,8 @@
 """Pilot: re-classify the stored image descriptions against a humanoid taxonomy.
 
-Uses humanoid_taxonomy_v2.json by default; set the TAXONOMY environment
-variable (a bare filename in this directory) to run against another version.
+Uses humanoid_taxonomy_v4.json by default (the best measured version
+on the reviewed 50); set the TAXONOMY environment variable (a bare
+filename in this directory) to run against another version.
 
 One Jev call per image carries all five facet questions (contains_human,
 contains_robot, contains_android, primary_subject, representation) in a
@@ -22,7 +23,7 @@ import time
 import urllib.request
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-TAXONOMY = os.path.join(SCRIPT_DIR, os.environ.get("TAXONOMY", "humanoid_taxonomy_v2.json"))
+TAXONOMY = os.path.join(SCRIPT_DIR, os.environ.get("TAXONOMY", "humanoid_taxonomy_v4.json"))
 SOURCE = os.path.join(SCRIPT_DIR, "image_human_results.json")
 RESULTS = os.path.join(SCRIPT_DIR, "humanoid_pilot_results.json")
 

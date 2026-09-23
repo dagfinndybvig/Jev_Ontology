@@ -119,9 +119,9 @@ RESULTS.md                          -- writeup of the run and findings
 LIBRARY.md                          -- project plan for the library use-case
 TODO.md                             -- outline of the fuller multi-question project
 STATUS.md                           -- session pickup notes: where we are, next steps
-humanoid_taxonomy_v1.json          -- pilot taxonomy v1 (superseded, kept for comparison)
-humanoid_taxonomy_v2.json          -- pilot taxonomy v2 (current): adds the
-                                     depicted-vs-described clause
+humanoid_taxonomy_v1-v3, v5.json    -- pilot taxonomy history (v3 and v5: measured rejections)
+humanoid_taxonomy_v4.json          -- pilot taxonomy v4 (current): depiction in any
+                                     medium counts; robots need a being-like form
 pilot_humanoid.py                  -- re-classifies the stored descriptions
                                      (TAXONOMY env var selects the version)
 sort_humanoids.py                  -- copies images into a sorted Humanoids tree

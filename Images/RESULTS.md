@@ -241,6 +241,44 @@ corrected to `none`.
 
 ---
 
+## Taxonomy revision series: v3, v4, v5 (2026-09-23)
+
+After the 50-record review, three revisions were drafted from the 22
+corrections, each run separately and measured on the reviewed records
+(one revision per re-run):
+
+| Run | Revision | Wrong /50 | Queue | Errors caught | Confident errors |
+|---|---|---|---|---|---|
+| v2 (baseline) | -- | 22 | 50 (22%) | 22/22 | 0 |
+| v3 | broaden text_screenshot to game/app screens | 21 | 32 (14%) | 16/21 | 5 |
+| v4 | depiction counts in any medium; robots need a being-like form | **19** | 44 (20%) | 17/19 | 2 |
+| v5 | screenshots classify by their content | 19 | 31 (14%) | 13/19 | 6 |
+
+Findings:
+
+1. **v4 is adopted.** Entity accuracy clearly improved
+   (contains_human 80% -> 88%, contains_robot 92% -> 94% on the
+   labeled 50) at a small routing cost: two confident errors, both
+   on records whose descriptions mislead.
+2. **v3 and v5 are rejected negative results.** Both cut the
+   review burden while leaving accuracy flat -- the revisions
+   converted hedged errors into confident ones. In a routing
+   workflow, confidence must be earned by correctness: de-hedging
+   without improving accuracy manufactures silent errors. LIBRARY.md
+   Phase 6's revision caution is now demonstrated twice, in-sample,
+   on labeled data.
+3. **The residual representation errors are largely vision-limited.**
+   Descriptions that open "This image consists of text" for what
+   are photographs of covers leave Jev no correct basis to answer.
+   The durable fix is Phase 3's structured vision state, not more
+   criteria words.
+
+The live results are the v4 run with all 50 review corrections
+merged back; `pilot_humanoid.py` defaults to v4. All runs are
+preserved privately outside the repo.
+
+---
+
 ## What is unproven
 
 1. **Ground truth is only seeded, not established.** 25 of 218

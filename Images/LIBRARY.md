@@ -225,8 +225,17 @@ ticket experiments learned the hard way (in-sample +0.013, held-out
 
 **Why:** the loop is the project's interesting bet, but it is
 currently a classifier-tuning mechanism, not a learning mechanism.
-The library setting -- with real ground truth and many batches --
-is actually the best place yet to test whether it can become one.
+The library setting -- with real ground truth and many batches -- is
+actually the best place yet to test whether it can become one.
+
+**Update (2026-09-23):** demonstrated twice in one session, on
+labeled data: revisions v3 and v5 (both representation definitions)
+cut the review burden while leaving accuracy flat, converting hedged
+errors into confident ones -- revisions that fit the batch and broke
+the routing property. The adopted revision (v4, entity clause)
+raised accuracy. Lesson for the protocol: evaluate revisions on
+errors-caught per review burden against labels, never on confidence
+or queue size alone. See RESULTS.md ("Taxonomy revision series").
 
 **Success:** at least one revision that beats its held-out batch
 beyond the noise floor. Until then, revisions are cataloger-driven

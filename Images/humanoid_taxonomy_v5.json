@@ -1,0 +1,63 @@
+{
+  "_meta": {
+    "version": "humanoid_taxonomy_v5",
+    "date": "2026-09-23",
+    "author": "Mistral Vibe (mistral-vibe)",
+    "derived_from": "humanoid_taxonomy_v4",
+    "purpose": "Pilot taxonomy for the humanoid facet. v5 revises only the representation facet, encoding the content rule the review actually used: a screenshot classifies by its content -- text screens are text_screenshot, rendered or drawn scenes classify by their rendering, gameplay and interface screens are other. Covers classify by their content style (photograph of a cover is a photograph; illustrated cover is an illustration).",
+    "design_notes": [
+      "One revision per re-run: v5 changes only representation, measured against v2/v3/v4 on the 50 reviewed records.",
+      "v3's blanket 'game and app screens are text_screenshot' was rejected: the review distinguishes text-heavy screens (score lists, prompts, Game Over text) from graphical gameplay (other), wireframes and video stills (statue_or_render), and drawn diagrams (illustration).",
+      "The photograph-of-printed-material clause is kept from v3, where it fixed two records without side effects.",
+      "Entity facets are unchanged from v4 (the adopted best: contains_human 88%, contains_robot 94% on the labeled 50)."
+    ]
+  },
+  "facets": {
+    "contains_human": {
+      "type": "choice",
+      "instructions": "Does this image contain a human?",
+      "criteria": {
+        "yes": "The image itself shows one or more humans (people, faces, bodies) in any medium: photographed, drawn, illustrated, rendered, or sketched in a diagram. A character depicted in a cartoon, card, or illustration is visible and counts. A person merely mentioned, named, or described in text within the image does not count",
+        "no": "The image itself shows no humans: no person, face, or body is visible in any medium (people only mentioned or described in text do not count)"
+      }
+    },
+    "contains_robot": {
+      "type": "choice",
+      "instructions": "Does this image contain a robot or mechanical automaton?",
+      "criteria": {
+        "yes": "The image itself shows one or more robots: mechanical automatons with a being-like form -- a body, face, or limbs -- whether photographed, illustrated, or rendered. Abstract machinery, engines, or mechanisms without a being-like form do not count; robots merely mentioned or described in text do not count",
+        "no": "The image itself shows no robots or mechanical automatons with a being-like form (machinery without a body or face, and robots only mentioned in text, do not count)"
+      }
+    },
+    "contains_android": {
+      "type": "choice",
+      "instructions": "Does this image contain an android: an artificial being that passes as human?",
+      "criteria": {
+        "yes": "The image itself shows one or more androids: artificial beings manufactured to pass as human, where the image or its context identifies them as artificial. Only what is visible in any medium counts; beings merely described in text do not count",
+        "no": "The image itself shows no androids: no artificial beings presented as human-passing (beings only mentioned in text do not count)"
+      }
+    },
+    "primary_subject": {
+      "type": "choice",
+      "instructions": "What is the primary humanoid subject of the image?",
+      "criteria": {
+        "human": "The main subject the image itself shows, in any medium (photo, illustration, render, diagram), is one or more humans; humans only mentioned or described in text do not count",
+        "robot": "The main subject the image itself shows is one or more robots or mechanical automatons with a being-like form; abstract machinery and robots only mentioned in text do not count",
+        "android": "The main subject the image itself shows is one or more androids: artificial beings that pass as human",
+        "multiple": "The image itself prominently shows more than one distinct kind of humanoid (e.g., a human together with a robot)",
+        "none": "The image shows no humanoid subject of any kind, in any medium: no human, robot, or android is visible. Images that are only text, objects, or scenes without humanoids are 'none' -- a humanoid described in text is not depicted"
+      }
+    },
+    "representation": {
+      "type": "choice",
+      "instructions": "How is the subject represented?",
+      "criteria": {
+        "photograph": "A photograph of a real scene: actual people, objects, or places captured by a camera -- including photographs of covers, posters, pages, or other printed material",
+        "illustration": "A drawing, cartoon, comic, painting, or digital illustration -- including illustrated covers and posters",
+        "statue_or_render": "A statue, figurine, sculpture, model, or 3D render of a subject -- including wireframes, rendered scenes, and video stills of rendered content",
+        "text_screenshot": "A screenshot or scan whose main content is text: terminal output, code, documents, lists, prompts, or text-heavy screens such as score lists and text-only game-over screens -- not a screenshot showing a drawn or rendered scene",
+        "other": "None of the above: diagrams, charts, maps, abstract images, or gameplay and interface screens that show a scene or controls rather than mainly text"
+      }
+    }
+  }
+}

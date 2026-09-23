@@ -1,0 +1,64 @@
+{
+  "_meta": {
+    "version": "humanoid_taxonomy_v4",
+    "date": "2026-09-23",
+    "author": "Mistral Vibe (mistral-vibe)",
+    "derived_from": "humanoid_taxonomy_v2",
+    "purpose": "Pilot taxonomy for the humanoid facet. v4 revises only the entity facets (contains_human, contains_robot, contains_android, primary_subject): the v2 depicted-vs-described clause overcorrected -- characters depicted in illustrations, cards, and diagrams must count as visible, and robots require a being-like form (abstract machinery does not count). Representation definitions revert to v2: v3's broadened text_screenshot was a measured negative result (same accuracy on the labeled 50, but five errors became confident and escaped the queue).",
+    "design_notes": [
+      "One revision per re-run (LIBRARY.md Phase 6 discipline): v4 changes only the entity facets, measured against the v2 run on the 50 reviewed records.",
+      "The v3 experiment (broadening text_screenshot to game and app screens) is rejected: it converted hedged errors into confident ones -- 22/22 queue-caught errors fell to 16/21. The review's actual semantics are subtler: a screenshot classifies by its content (text screens are text_screenshot; rendered or drawn scenes classify by their rendering).",
+      "Depiction includes all media: a human drawn in an illustration, rendered in 3D, or sketched in a diagram is visible and counts. Only bare text mentioning a person does not.",
+      "Robots require a being-like form (body, face, or limbs); the review corrected mechanical 'intellect machines' and engines to no.",
+      "The 10 contains_human corrections split between over-strict hedges (renders, cartoons) and text-confusions; this revision addresses the former."
+    ]
+  },
+  "facets": {
+    "contains_human": {
+      "type": "choice",
+      "instructions": "Does this image contain a human?",
+      "criteria": {
+        "yes": "The image itself shows one or more humans (people, faces, bodies) in any medium: photographed, drawn, illustrated, rendered, or sketched in a diagram. A character depicted in a cartoon, card, or illustration is visible and counts. A person merely mentioned, named, or described in text within the image does not count",
+        "no": "The image itself shows no humans: no person, face, or body is visible in any medium (people only mentioned or described in text do not count)"
+      }
+    },
+    "contains_robot": {
+      "type": "choice",
+      "instructions": "Does this image contain a robot or mechanical automaton?",
+      "criteria": {
+        "yes": "The image itself shows one or more robots: mechanical automatons with a being-like form -- a body, face, or limbs -- whether photographed, illustrated, or rendered. Abstract machinery, engines, or mechanisms without a being-like form do not count; robots merely mentioned or described in text do not count",
+        "no": "The image itself shows no robots or mechanical automatons with a being-like form (machinery without a body or face, and robots only mentioned in text, do not count)"
+      }
+    },
+    "contains_android": {
+      "type": "choice",
+      "instructions": "Does this image contain an android: an artificial being that passes as human?",
+      "criteria": {
+        "yes": "The image itself shows one or more androids: artificial beings manufactured to pass as human, where the image or its context identifies them as artificial. Only what is visible in any medium counts; beings merely described in text do not count",
+        "no": "The image itself shows no androids: no artificial beings presented as human-passing (beings only mentioned in text do not count)"
+      }
+    },
+    "primary_subject": {
+      "type": "choice",
+      "instructions": "What is the primary humanoid subject of the image?",
+      "criteria": {
+        "human": "The main subject the image itself shows, in any medium (photo, illustration, render, diagram), is one or more humans; humans only mentioned or described in text do not count",
+        "robot": "The main subject the image itself shows is one or more robots or mechanical automatons with a being-like form; abstract machinery and robots only mentioned in text do not count",
+        "android": "The main subject the image itself shows is one or more androids: artificial beings that pass as human",
+        "multiple": "The image itself prominently shows more than one distinct kind of humanoid (e.g., a human together with a robot)",
+        "none": "The image shows no humanoid subject of any kind, in any medium: no human, robot, or android is visible. Images that are only text, objects, or scenes without humanoids are 'none' -- a humanoid described in text is not depicted"
+      }
+    },
+    "representation": {
+      "type": "choice",
+      "instructions": "How is the subject represented?",
+      "criteria": {
+        "photograph": "A photograph of a real scene: actual people, objects, or places captured by a camera",
+        "illustration": "A drawing, cartoon, comic, painting, or digital illustration",
+        "statue_or_render": "A statue, figurine, sculpture, model, or 3D render of a subject",
+        "text_screenshot": "A screenshot or scan of text: the image shows words or code, not a scene",
+        "other": "None of the above: a diagram, chart, map, abstract image, or interface screenshot without a depicted subject"
+      }
+    }
+  }
+}

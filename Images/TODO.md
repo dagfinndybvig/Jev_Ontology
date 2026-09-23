@@ -93,11 +93,14 @@ them, feed them to an LLM with instructions to sharpen the criteria
 (e.g. split "human" into "photo of a real person" vs. "depiction"),
 then re-run. This is the same abduction loop as the ticket work.
 
-**Update (2026-09-23):** first revision done. Taxonomy v2's
-depicted-vs-described clause, written from review-queue signals,
-fixed the known failure raw and moved the queue 52 -> 50. Measured
-in-sample on the same 218 descriptions; the held-out protocol
-(LIBRARY.md Phase 6) applies to future revisions.
+**Update (2026-09-23):** the loop ran three times, measured against
+50 reviewed records. Adopted: v4 (depiction counts in any medium;
+robots need a being-like form) -- contains_human 80% -> 88%.
+Rejected: v3 and v5 (representation rewrites) -- both de-hedged
+without accuracy gains, converting queue-caught errors into
+confident ones. The loop needs the errors-caught-per-burden metric,
+not confidence or queue size. Residual representation errors are
+vision-limited (see item 3's structured vision state).
 
 **Effort:** Moderate. Needs an LLM call for criteria revision and a
 re-run harness.
