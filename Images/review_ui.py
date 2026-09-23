@@ -296,8 +296,15 @@ function render() {
     return;
   }
   const r = records.find(x => x.file === order[idx]);
-  document.getElementById('imgpane').innerHTML =
-    '<img src="/image/' + encodeURIComponent(r.file) + '" alt="">';
+  const imgpane = document.getElementById('imgpane');
+  imgpane.innerHTML = '<img src="/image/' + encodeURIComponent(r.file) + '" alt="image">';
+  const im = imgpane.querySelector ? imgpane.querySelector('img') : null;
+  if (im) {
+    im.onerror = () => {
+      imgpane.innerHTML = '<div style="color:#d98a8a;font-size:14px;padding:24px">' +
+        'Failed to load image: ' + esc(r.file) + '</div>';
+    };
+  }
   const pane = document.getElementById('pane');
   let h = '<div class="fname">' + r.file + (r.queued ? ' <span style="color:#c7903b">[queued]</span>' : '') + '</div>';
   h += '<div class="desc">' + esc(r.description) + '</div>';
@@ -429,6 +436,9 @@ init();
 
 
 class Handler(BaseHTTPRequestHandler):
+    def log_request(self, code="-", size="-"):
+        print(f"REQ {self.command} {self.path} -> {code}", flush=True)
+
     def log_message(self, fmt, *args):
         pass
 
