@@ -228,8 +228,12 @@ pipeline misclassifies them, and whether the multi-question approach
 checks for text first and states the medium, and
 `humanoid_taxonomy_v2.json` adds a depicted-vs-described clause to
 the entity facets. The known failure image is now correct raw on all
-five facets. The edge-case suite remains worth building to measure
-the residual rate.
+five facets. The suite now exists: `generate_edge_cases.py` generated
+8 images (text-describes-scene, meme, AI-generated portrait, collage,
+background people, game screen, statue, robot illustration) with
+Mistral image generation, 0 errors, 7,217 tokens + 8 generations
+billed to the API credits. The images are unmeasured until run
+through the pipeline (STATUS.md next steps item 3).
 
 **Effort:** Small. Assembling the suite is the main work.
 

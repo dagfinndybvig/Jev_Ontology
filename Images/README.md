@@ -127,6 +127,9 @@ pilot_humanoid.py                  -- re-classifies the stored descriptions
 sort_humanoids.py                  -- copies images into a sorted Humanoids tree
 review_ui.py                       -- localhost review app: confirm/correct classifications
 humanoid_pilot_results.json (private) -- pilot per-image results (gitignored)
+generate_edge_cases.py             -- generates the adversarial edge-case suite
+                                     (Mistral image generation, API credits)
+edge_cases/ (private)              -- generated edge-case images (gitignored)
 ```
 
 ## Running it
@@ -141,6 +144,7 @@ python summarize_results.py # prints the sorted summary
 python pilot_humanoid.py    # 5-facet classification (TAXONOMY selects the version)
 python sort_humanoids.py    # copies images into a sorted Humanoids tree
 python review_ui.py         # localhost review app: http://localhost:8765
+python generate_edge_cases.py  # generates the edge-case suite into edge_cases/
 ```
 
 ## Results

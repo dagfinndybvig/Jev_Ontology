@@ -18,7 +18,8 @@ Essential context for any agent working in this directory.
 
 - `PICTURES_DIR` — the folder of images to classify (set as a
   user-level env var on this machine).
-- `MISTRAL_API_KEY` — Pixtral vision calls. `TYPESAFE_API_KEY` — Jev.
+- `MISTRAL_API_KEY` — Pixtral vision calls and Mistral image
+  generation (`generate_edge_cases.py`). `TYPESAFE_API_KEY` — Jev.
 - Scripts are stdlib-only Python (urllib, json, shutil); nothing to
   install. One exception: `review_ui.py` uses Pillow, if present, to
   convert TIFF to PNG on the fly (browsers cannot render TIFF);
@@ -79,6 +80,18 @@ Essential context for any agent working in this directory.
   at a 72% full-collection burden). Writes `routing_queue.json`
   (private, gitignored). The text-signal pattern is a single
   constant, tunable without other code changes.
+- `generate_edge_cases.py` — TODO item 9: generates the adversarial
+  edge-case suite (text-describes-scene, memes, AI-generated people,
+  collages, background people, app screens, statue/robot boundaries)
+  with Mistral image generation. Creates the image-generation agent
+  once (cached in `edge_case_agent.json`, reused across runs), then
+  one conversations call per prompt; downloads the file by `file_id`.
+  Writes `edge_case_results.json` (private, gitignored); images go to
+  `edge_cases/` (gitignored). Resumable; skips `status: ok`. Needs
+  MISTRAL_API_KEY credits (per-image rate plus a small token
+  overhead; the first 8-image run cost 7,217 tokens + 8 generations).
+  `EDGE_CASE_PROMPTS` selects a prompt-list JSON; positional args run
+  named prompts only.
 - Runs skip records with `status: ok`. Fresh descriptions require
   moving the results JSON aside first. Cost is small but real
   (~$0.0003 per image for the vision step).
@@ -122,3 +135,9 @@ recomputed from the result JSONs, never recalled from memory.
   Fixed at the vision layer (2026-09-23 prompt); the open half is
   Jev's criteria, which still answer a described scene — the
   "depicted vs. described" clause is pending.
+- Mistral image generation API gotchas (found live, 2026-09-23): the
+  REST conversations response carries the entries under the top-level
+  `outputs` key, not `entries` (the SDK docs show `entries`); and the
+  file download returns JPEG (JFIF) bytes even though the `tool_file`
+  chunk reports `file_type: png` — sniff the magic bytes, don't trust
+  the reported extension.

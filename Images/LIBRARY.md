@@ -78,7 +78,9 @@ can label a stratified sample: ~50 random images, plus deliberately
 hard ones (depictions, text-heavy scans, compound images). Label the
 top-level facets only. Record inter-annotator agreement if two
 catalogers are available -- it sets the ceiling for what "accuracy"
-can mean.
+can mean. Until library material exists, the generated edge-case
+suite (`generate_edge_cases.py`, 8 images covering the measured
+failure families) is the practice stand-in for the hard images.
 
 **Why first:** every later decision (thresholds, taxonomy size,
 baseline comparison) needs a labeled sample. Without it the project
@@ -160,7 +162,7 @@ people: none | individuals | group (no identities)
 Prompting Pixtral for typed fields directly attacks the known
 failure mode: a scan of text gets `medium: scan of text`, and the
 classifier never mistakes a description of a photo for the photo.
-The `deepseek_image.png` incident is the exact motivating case.
+The DeepSeek-screenshot incident is the exact motivating case.
 
 **Also:** strip OCR-able text from the *state* passed to Jev, or
 label it explicitly as quoted content -- Jev treats state as data,

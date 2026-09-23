@@ -554,6 +554,22 @@ proportion would differ. The pattern is a single constant in
 
 ---
 
+## Edge-case suite (2026-09-23)
+
+`generate_edge_cases.py` generated the adversarial edge-case suite
+(TODO item 9) with Mistral image generation, billed to the Mistral
+API credits: 8/8 prompts, 0 errors, 7,217 tokens and 8 image
+generations total. The prompts cover the measured failure families:
+text describing a scene (the known screenshot-of-text mode), a meme
+with caption text, an AI-generated portrait, a collage, people small
+in the background, a game inventory screen, a statue, and a robot
+illustration. Images live in `edge_cases/` (gitignored); per-prompt
+records in `edge_case_results.json` (private, gitignored). The suite
+is generated but not yet measured -- running it through the pipeline
+against the intended labels is the next step (STATUS.md item 3).
+
+---
+
 ## Files
 
 ```

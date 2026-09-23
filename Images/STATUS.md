@@ -1,7 +1,8 @@
 # Status: Where We Are, Where to Pick Up
 
 **Last updated:** 2026-09-23 (original run and humanoid pilot 09-22;
-folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
+folder verification, prompt fix, re-run, taxonomy v2, routing, and the
+edge-case suite on 09-23)
 **Repo state:** see git; keep in sync with `origin/main` before new work.
 
 ---
@@ -169,6 +170,21 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
     reviewer knows why it is in the queue. Verified: routing output
     unchanged (156/218), all three modules compile, and a DOM-stub
     harness of the UI's embedded script renders both queue tags.
+20. **Edge-case suite generated (TODO item 9).** `generate_edge_cases.py`
+    renders the adversarial edge cases with Mistral image generation,
+    billed to the Mistral API credits (the Vibe subscription's image
+    generations were exhausted; the included API credits were unused).
+    The image-generation agent is created once and cached
+    (`edge_case_agent.json`); each prompt is one conversations call and
+    one file download. First run: 8/8 prompts, 0 errors, 7,217 tokens
+    and 8 image generations total, images in `edge_cases/` (gitignored).
+    Two live API gotchas found and documented in AGENTS.md: the REST
+    conversations response nests entries under `outputs` (not
+    `entries`), and the file download returns JPEG bytes despite
+    `file_type: png` -- the script sniffs magic bytes. The suite is
+    generated but not yet measured: the next step is running the 8
+    images through the pipeline (describe -> classify -> sort) and
+    comparing to the intended labels.
 
 ## Where things live
 
@@ -186,6 +202,9 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
 | Phase 3: structured vision state (public) | `Images/structured_vision.py` |
 | Option 1: capture-type experiment (public, falsified) | `Images/capture_type.py` |
 | Option 2: routing rule (public) | `Images/routing.py` |
+| Edge-case generator (public) | `Images/generate_edge_cases.py` |
+| Edge-case images (private, gitignored) | `Images/edge_cases/` |
+| Edge-case run records + agent cache (private, gitignored) | `Images/edge_case_results.json`, `Images/edge_case_agent.json` |
 | Pixtral-direct results (private, gitignored) | `Images/baseline_pixtral_direct_results.json` |
 | Structured vision results (private, gitignored) | `Images/structured_vision_results.json` |
 | Routing queue (private, gitignored) | `Images/routing_queue.json` |
@@ -208,9 +227,14 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
    revision protocol (LIBRARY.md Phase 6) actually apply. This needs
    library material supplied (a folder of images); the pipeline then
    runs as-is: describe -> classify -> sort -> review.
+3. **Measure the edge-case suite.** The 8 generated images
+   (`edge_cases/`) are unmeasured. Run them through the pipeline
+   (point `PICTURES_DIR` at the folder or copy them in), review the
+   five-facet answers against the intended labels, and record the
+   residual failure rate in RESULTS.md.
 
 The android question is settled by the review: the collection
-contains no androids (buck.jpg's Twiki is a robot, not an android).
+contains no androids (the Twiki image is a robot, not an android).
 Keep the facet for library material, where the question will
 actually arise.
 
