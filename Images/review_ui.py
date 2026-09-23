@@ -31,6 +31,9 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.parse import unquote, urlparse
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, SCRIPT_DIR)
+from routing import route_reason
+
 TAXONOMY = os.path.join(SCRIPT_DIR, os.environ.get("TAXONOMY", "humanoid_taxonomy_v2.json"))
 RESULTS = os.environ.get(
     "REVIEW_RESULTS",
@@ -105,12 +108,14 @@ def taxonomy_choices():
 
 
 def record_view(name, r):
+    reason = route_reason(r)
     return {
         "file": name,
         "description": r.get("description", ""),
         "facets": {f: {"choice": r[f]["choice"], "confidence": r[f]["confidence"]}
                    for f in FACETS if f in r},
-        "queued": any(r[f]["confidence"] < REVIEW_THRESHOLD for f in FACETS if f in r),
+        "queued": reason is not None,
+        "queued_reason": reason,
         "reviewed": "manual_correction" in r,
         "correction": r.get("manual_correction"),
     }
@@ -331,7 +336,7 @@ function render() {
     };
   }
   const pane = document.getElementById('pane');
-  let h = '<div class="fname">' + r.file + (r.queued ? ' <span style="color:#c7903b">[queued]</span>' : '') + '</div>';
+  let h = '<div class="fname">' + r.file + (r.queued ? ' <span style="color:#c7903b">[queued: ' + (r.queued_reason === 'text_bearing' ? 'text-bearing' : 'low conf') + ']</span>' : '') + '</div>';
   h += '<div class="desc">' + esc(r.description) + '</div>';
   for (const [name, f] of Object.entries(r.facets)) {
     h += '<div class="facet"><div class="row"><span>' + name + '</span>' +

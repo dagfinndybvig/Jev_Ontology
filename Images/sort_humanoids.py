@@ -6,16 +6,22 @@ moved -- into:
 
     Humanoids/<primary_subject>/<representation>/<file>
 
-Images hedging on any facet (confidence < REVIEW_THRESHOLD) are also copied
-into Humanoids/_review/ for visual verification of the taxonomy's weak spots.
-Records carrying a "manual_correction" (e.g. the screenshot-of-text false
-positive) sort by their corrected labels and are always copied to _review/.
+Images hedging on any facet (confidence < REVIEW_THRESHOLD) or carrying
+a text-bearing signal (the Option 2 routing rule, routing.py) are also
+copied into Humanoids/_review/ for visual verification of the taxonomy's
+weak spots. Records carrying a "manual_correction" (e.g. the
+screenshot-of-text false positive) sort by their corrected labels and are
+always copied to _review/.
 """
 import json
 import os
 import shutil
+import sys
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, SCRIPT_DIR)
+from routing import route_reason
+
 RESULTS = os.path.join(SCRIPT_DIR, "humanoid_pilot_results.json")
 PICTURES = os.environ.get("PICTURES_DIR", "")
 DST = os.path.join(PICTURES, "Humanoids")
@@ -50,14 +56,14 @@ def main():
         shutil.copy2(src, os.path.join(folder, fname))
         copied += 1
 
-        if corr or any(r[f]["confidence"] < REVIEW_THRESHOLD for f in FACETS):
+        if corr or route_reason(r) is not None:
             os.makedirs(os.path.join(DST, "_review"), exist_ok=True)
             shutil.copy2(src, os.path.join(DST, "_review", fname))
             review_copied += 1
 
     print(f"Records: {len(data)}")
     print(f"Copied into {DST}: {copied}")
-    print(f"Review copies (any facet < {REVIEW_THRESHOLD}): {review_copied}")
+    print(f"Review copies (routing rule: any facet < {REVIEW_THRESHOLD} or text-bearing): {review_copied}")
     if missing:
         print(f"Missing source files ({len(missing)}):")
         for m in missing:

@@ -47,11 +47,18 @@ def description_body(desc):
     return " ".join(lines).lower()
 
 
+def route_reason(rec):
+    """None if the record auto-classifies; otherwise why it needs review."""
+    if any(rec[f]["confidence"] < THRESHOLD for f in FACETS):
+        return "low_confidence"
+    if TEXT_PATTERN.search(description_body(rec.get("description", ""))):
+        return "text_bearing"
+    return None
+
+
 def route(rec):
     """True if the record should be routed to human review."""
-    if any(rec[f]["confidence"] < THRESHOLD for f in FACETS):
-        return True
-    return bool(TEXT_PATTERN.search(description_body(rec.get("description", ""))))
+    return route_reason(rec) is not None
 
 
 def main():
@@ -64,15 +71,15 @@ def main():
 
     queue = []
     for name, rec in sorted(recs.items()):
-        if route(rec):
+        reason = route_reason(rec)
+        if reason:
             weak = [(f, rec[f]["choice"], round(rec[f]["confidence"], 3))
                     for f in FACETS if rec[f]["confidence"] < THRESHOLD]
-            text_signal = bool(TEXT_PATTERN.search(description_body(rec.get("description", ""))))
             queue.append({
                 "file": name,
-                "reason": "low_confidence" if weak else "text_bearing",
+                "reason": reason,
                 "weak_facets": weak,
-                "text_signal": text_signal,
+                "text_signal": reason == "text_bearing",
             })
 
     with open(OUT, "w", encoding="utf-8") as f:

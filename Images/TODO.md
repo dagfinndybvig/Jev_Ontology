@@ -109,6 +109,12 @@ against a labeled sample.
 **Effort:** Small. The routing logic is new; the confidence data already
 exists in `image_human_results.json`.
 
+**Update (2026-09-23):** a first routing policy is implemented:
+`routing.py` routes to review on the 0.7 threshold OR a text-bearing
+description signal (measured: 25/27 errors caught at 72% burden), and
+the rule is wired into `sort_humanoids.py` and `review_ui.py`. A
+multi-band policy (mid -> queue, low -> escalate) remains open.
+
 ### 5. Criteria as the ontology -- close the feedback loop
 
 **Why:** The ticket project's most interesting result is the feedback

@@ -159,6 +159,16 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
     text signal; one sits exactly at the 0.70 boundary (the queue
     rule is `< 0.7`). The trade is explicit: 20% burden / 9 silent
     errors vs 72% burden / 2. See RESULTS.md ("Option 2").
+19. **Routing rule wired into the sorter and the review UI.**
+    `routing.py` now exposes `route_reason(rec)` (None |
+    "low_confidence" | "text_bearing"); `route(rec)` is reason is not
+    None. `sort_humanoids.py` places a record in `_review\` when it is
+    corrected OR `route_reason` is not None (previously: low
+    confidence only). `review_ui.py` tags each queued record in the
+    pane with `[queued: text-bearing]` or `[queued: low conf]` so the
+    reviewer knows why it is in the queue. Verified: routing output
+    unchanged (156/218), all three modules compile, and a DOM-stub
+    harness of the UI's embedded script renders both queue tags.
 
 ## Where things live
 

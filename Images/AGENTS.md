@@ -34,14 +34,17 @@ Essential context for any agent working in this directory.
   `humanoid_pilot_results.json`. No vision calls.
 - `sort_humanoids.py` — copies images into
   `PICTURES_DIR\Humanoids\<primary_subject>\<representation>\` plus
-  `_review\` (low-confidence and corrected records). Honors
-  `manual_correction`; the corrected labels are nested under its
-  `correct` key.
+  `_review\` (corrected records and anything the routing rule in
+  `routing.py` flags: facet confidence < 0.7 or a text-bearing
+  description signal). Honors `manual_correction`; the corrected
+  labels are nested under its `correct` key.
 - `review_ui.py` — localhost review app (127.0.0.1:8765): confirm or
   correct classifications through the browser; writes
   `manual_correction` blocks into `humanoid_pilot_results.json`.
   The queue view shows only unreviewed queued records by default and
-  flags completion explicitly. A Sample filter walks a fixed,
+  flags completion explicitly; each queued record is tagged with its
+  routing reason (`text-bearing` or `low conf`) from
+  `routing.py`'s `route_reason`. A Sample filter walks a fixed,
   stratified sample of 30 fully confident records (persisted at
   `../Ontology_private_backup/confident_sample_v1.json`) to bound
   the threshold's miss rate. For testing, point `REVIEW_RESULTS` at
