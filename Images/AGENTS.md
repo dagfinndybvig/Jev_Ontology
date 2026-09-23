@@ -35,6 +35,10 @@ Essential context for any agent working in this directory.
   `_review\` (low-confidence and corrected records). Honors
   `manual_correction`; the corrected labels are nested under its
   `correct` key.
+- `review_ui.py` — localhost review app (127.0.0.1:8765): confirm or
+  correct classifications through the browser; writes
+  `manual_correction` blocks into `humanoid_pilot_results.json`.
+  For testing, point `REVIEW_RESULTS` at a copy of the results.
 - Runs skip records with `status: ok`. Fresh descriptions require
   moving the results JSON aside first. Cost is small but real
   (~$0.0003 per image for the vision step).

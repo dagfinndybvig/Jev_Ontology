@@ -198,6 +198,12 @@ override goes in the top-level fields, and nothing is overwritten.
 Corrections accumulate as a labeled set -- which feeds Phase 2's
 ground truth over time.
 
+**Update (2026-09-23):** `review_ui.py` implements this phase's first
+pass on the pilot data: a localhost app with the queue sorted by
+ascending confidence, a confirm/correct interface driven by the
+taxonomy JSON, and `manual_correction` blocks that accumulate as the
+ground-truth seed.
+
 Route on the **review-burden curve** chosen in Phase 2, not on an
 arbitrary threshold. Re-check the curve against the noise floor
 (~0.005 on 16-item means) before treating small confidence changes

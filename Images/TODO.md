@@ -130,6 +130,11 @@ the pipeline is right, only that it is confident.
 low-confidence ones). Compare Jev's choice to the label. Report
 accuracy, and per-confidence-bin accuracy (calibration).
 
+**Update (2026-09-23):** `review_ui.py` records every confirm/correct
+as a `manual_correction` block, so a review pass of the queue
+accumulates labels directly in the results file -- the labeled set
+Phase 5 (LIBRARY.md) describes.
+
 **Effort:** Small once labels exist; the labeling is the main work.
 
 ---

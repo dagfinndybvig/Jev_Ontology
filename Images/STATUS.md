@@ -43,6 +43,12 @@ folder verification, prompt fix, re-run, and taxonomy v2 on 09-23)
    - This is the first criteria revision driven by review-queue
      signals -- in-sample only; LIBRARY.md Phase 6's held-out
      protocol applies to future revisions.
+7. **Review UI.** `review_ui.py`: a localhost single-page app for
+   walking the queue -- image, description, facet confidences, and
+   confirm/correct buttons whose choices come from the taxonomy JSON.
+   Corrections save as `manual_correction` blocks and double as the
+   Phase 0 ground-truth seed. Tested against a copy of the results
+   (via `REVIEW_RESULTS`) before pointing at the live file.
 
 ## Where things live
 

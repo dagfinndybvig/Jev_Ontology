@@ -138,6 +138,9 @@ Requires `MISTRAL_API_KEY` (vision) and `TYPESAFE_API_KEY` (Jev), plus
 export PICTURES_DIR="C:/path/to/your/pictures"
 python classify_images.py   # processes all images, saves incrementally
 python summarize_results.py # prints the sorted summary
+python pilot_humanoid.py    # 5-facet classification (TAXONOMY selects the version)
+python sort_humanoids.py    # copies images into a sorted Humanoids tree
+python review_ui.py         # localhost review app: http://localhost:8765
 ```
 
 ## Results
