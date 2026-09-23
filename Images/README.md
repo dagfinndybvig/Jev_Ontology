@@ -1,6 +1,6 @@
 <img width="1900" height="1139" alt="Twiki and Buck" src="https://github.com/user-attachments/assets/0be69cb5-437b-4d33-b283-10360b4fdd15" />
 "A visual ontology, Twiki. That is where we are going!"<br>
-"Yes, Buck, and Jev is going to help us"
+"Yes, Buck, and Jev is going to help us."
 
 # Images + Jev
 Goal: a pipeline that auto-classifies digitized image collections
