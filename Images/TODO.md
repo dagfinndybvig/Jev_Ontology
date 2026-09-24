@@ -15,10 +15,14 @@
 > batch (pooled 89% vs 85%, fixes 10 / breaks 2, android 100%) and
 > matches it on the personal collection (92% vs 91%, inside noise)
 > -- v7 is now the default taxonomy; see RESULTS.md "Held-out
-> taxonomy revision". 136 records are labeled (corrections merged
-> into the v7 results). Next: review the v7 run's routed records
-> (106/240) -- the corrections are the input for the next held-out
-> revision. Depicts annotation is a dead end for this corpus: 0/231
+> taxonomy revision". 148 records are labeled (three review passes:
+> 60/60 and 55/55 under v4, then 12/12 under v7 -- 83 confirmed,
+> 65 corrected; v7 agreed with the reviewer on 93% of the third
+> batch, and its fresh answers agree with all human corrections on
+> 663/740 = 90%). The review queue is empty. Next: the second
+> held-out taxonomy revision, authored from the 65 corrections'
+> families and measured held-out on a fresh batch. Depicts
+> annotation is a dead end for this corpus: 0/231
 > files carry P180 statements. See STATUS.md "Next steps" item 2.
 
 The current pipeline (`classify_images.py`) is scaffolding: a vision

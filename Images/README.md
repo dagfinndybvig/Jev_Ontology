@@ -219,9 +219,9 @@ corpus (`library_standin/`, manifest committed, all 6 categories,
 complete at 40 per category after the 2026-09-24 top-up), fully
 re-run with v7: 240/240 measured, 89%
 agreement against the category-implied labels (v4's run: 85%); the routed records
-reviewed in two passes under v4 (60/60 then 55/55: 75 confirmed, 61
+reviewed in three passes (60/60 and 55/55 under v4, then 12/12 under v7: 75+8 confirmed, 61+4
 corrected, pooled 55% on the hard cases); 136 of the 231 records
-labeled (of the 231 measured under v4; the 2026-09-24 top-up added 9 unmeasured images). See `RESULTS.md` ("Stand-in library corpus").
+labeled (of 240; the 2026-09-24 top-up added 9 unmeasured images). See `RESULTS.md` ("Stand-in library corpus").
 
 ## Caveats
 

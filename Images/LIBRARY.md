@@ -92,8 +92,9 @@ fully re-run with v7 on 2026-09-24 (240/240, 0 errors, pooled
 857/960 = 89%, routing burden 44%); routed records reviewed
 2026-09-23 and 2026-09-24 (60/60 then
 55/55: 75 confirmed, 61 corrected, pooled 55% on the hard cases) --
-the corpus now has 136 labeled records (of the 231 measured under
-v4; corrections merged into the v7 results), and its edge cases
+the corpus now has 148 labeled records (three review passes: 60/60
+and 55/55 under v4, then 12/12 under v7; corrections merged into the
+v7 results), and its edge cases
 (non-humanoid statues, android boundaries, covers with depicted
 content, finer representation splits) are the input for a future
 taxonomy revision; depicts annotation is a dead end -- 0/231 files

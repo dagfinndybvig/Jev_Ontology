@@ -403,6 +403,18 @@ first review pass on 09-23; corpus top-up and second review pass on
     reviewed in the two batches; their corrections came back in the
     merge) -- review UI running with v7 taxonomy and a temp sample
     path. See RESULTS.md ("Production re-run with v7").
+33. **Third review pass complete (12/12; 148/240 labeled; queue
+    empty).** The 12 unreviewed routed records from the v7 re-run
+    were reviewed through the UI (v7 taxonomy, temp sample path): 8
+    confirmed, 4 corrected -- v7 agreed with the reviewer on 56/60
+    facets (93%), far above the v4 batches' 55% on their hard cases.
+    Route reasons: 10 low-confidence, 2 text-bearing. Cumulative:
+    148 of 240 records labeled (83 confirmed, 65 corrected); v7's
+    fresh answers agree with all human corrections on 663/740 (90%).
+    The review queue is empty. Next: the next held-out taxonomy
+    revision, authored from the correction families (the same
+    abduction loop as v6 -> v7). See RESULTS.md ("Production re-run
+    with v7", third batch).
 
 ## Where things live
 
@@ -456,19 +468,20 @@ first review pass on 09-23; corpus top-up and second review pass on
    categories (40 per category after the 2026-09-24 top-up;
    `library_standin/`, manifest committed), fully re-run with v7
    (240/240, 0 errors, pooled 857/960 = 89% vs v4's 85%; routing
-   burden 44%), with two completed review passes on the 231 measured
-   under v4 (60/60 then 55/55: 75 confirmed, 61 corrected, pooled
-   55% on the hard cases; the confident-band sample 27/27, miss rate
-   19%). 136 records are labeled (the corrections are merged into
-   the v7 results; v4's raw answers are backed up at
+   burden 44%), with three completed review passes (60/60, 55/55
+   under v4, then 12/12 under v7: 83 confirmed, 65 corrected; v7
+   agreed with the reviewer on 93% of the third batch). 148 records
+   are labeled (the corrections are merged into the v7 results; v4's
+   raw answers are backed up at
    `../Ontology_private_backup/v4_corpus_run_2026-09-24/`). The
    first held-out taxonomy revision is done: v7 adopted and now the
    default (pooled 89% vs v4's 85% on the corpus's held-out batch,
    92% vs 91% on the personal collection, android 100% on both; see
-   RESULTS.md "Held-out taxonomy revision"). Next: review the v7
-   run's routed records (106/240, 44%) -- the corrections are the
-   input for the next held-out revision. Depicts annotation is a
-   dead end for this corpus: 0/231 files carry P180 statements.
+   RESULTS.md "Held-out taxonomy revision"). The review queue is
+   empty. Next: the second held-out taxonomy revision, authored from
+   the 65 corrections' families and measured held-out on a fresh
+   batch. Depicts annotation is a dead end for this corpus: 0/231
+   files carry P180 statements.
 3. ~~**Measure the edge-case suite.**~~ Done (2026-09-23): 8/8
    measured, pooled agreement 33/36 (92%); see RESULTS.md
    ("Edge-case suite"). Residuals: the AI-generated portrait is

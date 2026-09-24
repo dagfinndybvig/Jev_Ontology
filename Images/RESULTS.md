@@ -917,6 +917,25 @@ inside noise). The held-out result holds against real ground truth on
 the full labeled set: v7 is better where it was designed to be
 (entity facets) and no worse on representation.
 
+**Reviewed, third batch (2026-09-24, v7 answers).** The 12 unreviewed
+routed records from the v7 re-run were reviewed through `review_ui.py`
+(corpus results, v7 taxonomy, temp sample path): 8 confirmed, 4
+corrected -- v7 agreed with the reviewer on 56/60 facets (93%), far
+above the v4 batches' 55% on their hard cases. Route reasons: 10
+low-confidence, 2 text-bearing. Categories: ui_screenshot 7,
+humanoid_robot 2, human_illustration 2, statue 1. Per-facet accuracy
+on the batch: contains_human 11/12 (92%), contains_robot 11/12 (92%),
+contains_android 12/12 (100%), primary_subject 12/12 (100%),
+representation 10/12 (83%). The review queue is now empty (0
+unreviewed routed records).
+
+Cumulative review state (three batches, 148 of 240 records labeled):
+83 confirmed, 65 corrected. v7's fresh answers agree with all human
+corrections on 663/740 facets (90%). The 92 unreviewed records are
+auto-accepted (the confident-band sample of 27 under v4 bounded their
+miss rate at 19%); a fresh confident-band sample under v7 would
+re-bound that rate.
+
 ---
 
 ## Files
