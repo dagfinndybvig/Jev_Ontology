@@ -27,6 +27,32 @@ Also note that while Jev is ridiculously cheap, Pixtral is also low cost, so on 
 
 But being able to do this just with a Jev-like model would certainly be a game-changer, so we are holding our breath for that.
 
+## The empirical case
+
+Two collections, in order of appearance:
+
+- **A personal photo collection (218 images, private).** The
+  development corpus: real photographs of people, statues, robots,
+  posters, and screenshots from one folder. It is where the
+  pipeline, taxonomy, and review UX were built and measured
+  (85 of 218 records labeled by review). Filenames and descriptions
+  are private and never appear in public docs.
+- **A stand-in library corpus (231 Wikimedia Commons images,
+  public).** The empirical case for the library use-case: one
+  Commons category per taxonomy class (statue, humanoid_robot,
+  book_cover, human_photo, human_illustration, ui_screenshot),
+  fetched by `fetch_library_standin.py` with a committed manifest
+  (`library_manifest.json`) as the stand-in ground truth. It is
+  digitized, catalog-like material -- covers, statues, illustrations,
+  screenshots -- the closest available analog to a real library
+  image collection. 136 of 231 records are labeled by review; the
+  Commons categories are noisy labels, so review-corrected records,
+  not the categories, are the measured ground truth.
+
+The real target remains an actual library collection with a
+cataloger (see `LIBRARY.md` Phase 0); both stand-ins exist to have
+labeled material before that arrives.
+
 ## What this directory is
 
 A growing sub-project of the Ontology + Jev work. The task: sort a folder
