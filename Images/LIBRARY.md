@@ -86,12 +86,14 @@ agreement 33/36) and a 240-image Wikimedia Commons corpus
 manifest as ground truth; topped up 2026-09-23 after the first fetch
 was rate-limited, and completed at 40 per category on 2026-09-24;
 measured 2026-09-23 by
-`measure_library_standin.py`, 231/231, 0 errors, pooled agreement
-794/929 (85%) against the category-implied labels, routing burden
-50%; routed records reviewed 2026-09-23 and 2026-09-24 (60/60 then
+`measure_library_standin.py` under v4, 231/231, 0 errors, pooled
+agreement 794/929 (85%) against the category-implied labels, then
+fully re-run with v7 on 2026-09-24 (240/240, 0 errors, pooled
+857/960 = 89%, routing burden 44%); routed records reviewed
+2026-09-23 and 2026-09-24 (60/60 then
 55/55: 75 confirmed, 61 corrected, pooled 55% on the hard cases) --
-the corpus now has 136 labeled records (of the 231 measured so far;
-the 9 top-up images are unmeasured), and its edge cases
+the corpus now has 136 labeled records (of the 231 measured under
+v4; corrections merged into the v7 results), and its edge cases
 (non-humanoid statues, android boundaries, covers with depicted
 content, finer representation splits) are the input for a future
 taxonomy revision; depicts annotation is a dead end -- 0/231 files

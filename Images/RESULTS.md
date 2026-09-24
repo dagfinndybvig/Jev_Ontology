@@ -867,6 +867,48 @@ moves records across the 0.7 boundary.
 
 ---
 
+## Production re-run with v7 (2026-09-24)
+
+With the corpus complete at 240 and v7 the default taxonomy,
+`measure_library_standin.py` re-ran the full production path
+(Pixtral describe -> Jev five facets, v7) on all 240 images with
+fresh descriptions. The v4 results were moved aside first (the
+script skips records already in the results file); the v4 run's raw
+answers are preserved at
+`../Ontology_private_backup/v4_corpus_run_2026-09-24/`, and the 136
+manual corrections were merged back into the new results file
+afterwards -- corrections are ground truth about the images, not
+model answers, so the review state survives the re-run.
+
+**Measured, full corpus (n=240, 0 pipeline errors).** Pooled
+agreement on unambiguous facets: 857/960 (89%), vs v4's 794/929
+(85%) on the 231-image run. Per facet: contains_human 138/160 (86%,
+was 80%), contains_robot 229/240 (95%, was 96%),
+contains_android 239/240 (100%, was 93%), primary_subject 137/160
+(86%, was 77%), representation 114/160 (71%, was 73%). Per category:
+book_cover 80/80 (100%), human_photo 200/200 (100%),
+human_illustration 187/200 (94%), statue 171/200 (86%),
+ui_screenshot 99/120 (82%), humanoid_robot 120/160 (75%).
+
+**Caveat: three variables changed at once** -- taxonomy (v7), fresh
+descriptions (new vision calls), and the 9 new images. The held-out
+batch (same descriptions, v7 vs v4 isolated) already measured the
+taxonomy effect at 89% vs 85%; this run is the production
+confirmation on the whole corpus, not an isolated comparison. The
+representation dip (73% -> 71%) is inside that run-to-run noise.
+
+**Routing.** Full-rule burden 106/240 (44%), down from v4's 115/231
+(50%): statue routes 25/40 (all low-confidence), ui_screenshot 39/40
+(28 text-bearing -- the true signal for screenshots -- and 11
+low-confidence), humanoid_robot 16/40, book_cover 14/40,
+human_illustration 11/40, human_photo 1/40. Threshold-routed alone:
+69/240 (29%).
+
+The 9 top-up images are now measured but unlabeled; the 136 labeled
+records are the two review batches against v4's answers.
+
+---
+
 ## Files
 
 ```

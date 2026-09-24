@@ -215,12 +215,13 @@ false positives caught at the vision layer. The humanoid pilot and
 the sorted verification tree are described in `STATUS.md`.
 
 **Stand-in corpus (2026-09-23/24):** a 240-image Wikimedia Commons
-corpus (`library_standin/`, manifest committed, all 6 categories)
-was run through the pipeline and reviewed: 231/231 measured, 85%
-agreement against the category-implied labels; the routed records
-reviewed in two passes (60/60 then 55/55: 75 confirmed, 61
+corpus (`library_standin/`, manifest committed, all 6 categories,
+complete at 40 per category after the 2026-09-24 top-up), fully
+re-run with v7: 240/240 measured, 89%
+agreement against the category-implied labels (v4's run: 85%); the routed records
+reviewed in two passes under v4 (60/60 then 55/55: 75 confirmed, 61
 corrected, pooled 55% on the hard cases); 136 of the 231 records
-labeled (the 2026-09-24 top-up added 9 unmeasured images). See `RESULTS.md` ("Stand-in library corpus").
+labeled (of the 231 measured under v4; the 2026-09-24 top-up added 9 unmeasured images). See `RESULTS.md` ("Stand-in library corpus").
 
 ## Caveats
 

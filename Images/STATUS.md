@@ -3,7 +3,8 @@
 **Last updated:** 2026-09-24 (original run and humanoid pilot 09-22;
 routing, edge-case suite, stand-in corpus fetch/measure, and the
 first review pass on 09-23; corpus top-up and second review pass on
-09-23/09-24; corpus complete at 240 on 09-24)
+09-23/09-24; corpus complete at 240 and the v7 production re-run on
+09-24)
 **Repo state:** see git; keep in sync with `origin/main` before new work.
 
 ---
@@ -375,6 +376,22 @@ first review pass on 09-23; corpus top-up and second review pass on
     The 9 new images are unmeasured and unlabeled; they join at the
     next pipeline re-run (next steps item 2). See RESULTS.md
     ("Top-up complete").
+31. **Production re-run with v7 complete (240/240, 0 errors).**
+    `measure_library_standin.py` re-ran the full pipeline (fresh
+    descriptions, v7 facets) on all 240 images. The v4 results were
+    moved aside to `../Ontology_private_backup/v4_corpus_run_2026-09-24/`
+    (the script skips records already in the results file); the 136
+    manual corrections were merged back into the new results file
+    afterwards, so the review state survives. Pooled agreement
+    857/960 (89%) vs v4's 794/929 (85%): contains_human 86% (was
+    80%), contains_robot 95% (was 96%), contains_android 100% (was
+    93%), primary_subject 86% (was 77%), representation 71% (was
+    73%). Routing burden 106/240 (44%, was 115/231 = 50%).
+    Caveat: taxonomy, descriptions, and the 9 new images all changed
+    at once -- the held-out batch already isolated the taxonomy
+    effect (89% vs 85%); this is the production confirmation. The 9
+    top-up images are measured but unlabeled. See RESULTS.md
+    ("Production re-run with v7").
 
 ## Where things live
 
@@ -426,20 +443,21 @@ first review pass on 09-23; corpus top-up and second review pass on
    revision protocol (LIBRARY.md Phase 6) actually apply. A stand-in
    now exists, complete at 240 Commons images across all 6
    categories (40 per category after the 2026-09-24 top-up;
-   `library_standin/`, manifest committed), with a first pipeline
-   pass and two completed review passes on the 231 measured so far
-   (231/231, 0 errors, 85% agreement), routed records reviewed
-   2026-09-23 and 2026-09-24 (60/60 then 55/55: 75 confirmed,
-   61 corrected, pooled 55% on the hard cases; the confident-band
-   sample 27/27, miss rate 19%). 136 of the 231 measured records
-   are labeled. The first held-out taxonomy revision is done: v7
-   adopted and now the default (pooled 89% vs v4's 85% on the
-   corpus's held-out batch, 92% vs 91% on the personal collection,
-   android 100% on both; see RESULTS.md "Held-out taxonomy
-   revision"). Next: re-run the corpus pipeline with v7 -- the
-   Wikimedia block has lifted and the corpus is complete, so nothing
-   blocks it (it also measures the 9 new images). Depicts annotation
-   is a dead end for this corpus: 0/231 files carry P180 statements.
+   `library_standin/`, manifest committed), fully re-run with v7
+   (240/240, 0 errors, pooled 857/960 = 89% vs v4's 85%; routing
+   burden 44%), with two completed review passes on the 231 measured
+   under v4 (60/60 then 55/55: 75 confirmed, 61 corrected, pooled
+   55% on the hard cases; the confident-band sample 27/27, miss rate
+   19%). 136 records are labeled (the corrections are merged into
+   the v7 results; v4's raw answers are backed up at
+   `../Ontology_private_backup/v4_corpus_run_2026-09-24/`). The
+   first held-out taxonomy revision is done: v7 adopted and now the
+   default (pooled 89% vs v4's 85% on the corpus's held-out batch,
+   92% vs 91% on the personal collection, android 100% on both; see
+   RESULTS.md "Held-out taxonomy revision"). Next: review the v7
+   run's routed records (106/240, 44%) -- the corrections are the
+   input for the next held-out revision. Depicts annotation is a
+   dead end for this corpus: 0/231 files carry P180 statements.
 3. ~~**Measure the edge-case suite.**~~ Done (2026-09-23): 8/8
    measured, pooled agreement 33/36 (92%); see RESULTS.md
    ("Edge-case suite"). Residuals: the AI-generated portrait is

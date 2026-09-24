@@ -143,7 +143,15 @@ Essential context for any agent working in this directory.
   (private, gitignored). Resumable; needs both API keys. First run:
   149/149, 0 errors, pooled agreement 541/615 (88%) — Commons
   categories are noisy labels, so mismatches are review candidates,
-  not verdicts.
+  not verdicts. Full-corpus v4 run: 231/231, 794/929 (85%).
+  Production re-run with v7 (2026-09-24): 240/240, 0 errors, pooled
+  857/960 (89%), routing burden 106/240 (44%). Resume trap: the
+  script skips records already in the results file, so a full re-run
+  requires moving the results JSON aside first (the v4 run's raw
+  answers are backed up at
+  `../Ontology_private_backup/v4_corpus_run_2026-09-24/`; the 136
+  manual corrections were merged back into the new results file
+  afterwards — corrections are ground truth, not model answers).
 - `author_taxonomy_v6.py` / `author_taxonomy_v7.py` — build the
   held-out revision taxonomies from v4/v6 JSON (criterion text is
   data; the scripts patch and bump `_meta`). v6 was authored from
