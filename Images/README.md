@@ -45,11 +45,13 @@ Two collections, in order of appearance:
   (`library_manifest.json`) as the stand-in ground truth. It is
   digitized, catalog-like material -- covers, statues, illustrations,
   screenshots -- the closest available analog to a real library
-  image collection. 136 of the 231 records measured so far are
-  labeled by review (the 2026-09-24 top-up added 9 unmeasured
-  images); the
-  Commons categories are noisy labels, so review-corrected records,
-  not the categories, are the measured ground truth.
+  image collection. All 240 records are labeled by review (172
+  confirmed, 68 corrected); the Commons categories are noisy
+  labels, so review-corrected records, not the categories, are the
+  measured ground truth. The stand-in's potential as a measurement
+  corpus is more or less exhausted: the taxonomy loop ran to
+  diminishing returns on it (ten revisions, three adopted), and the
+  remaining residuals are not authorable from the descriptions.
 
 The real target remains an actual library collection with a
 cataloger (see `LIBRARY.md` Phase 0); both stand-ins exist to have
@@ -82,7 +84,9 @@ same five facets directly reaches 80% with ECE 0.150 and catches 0/45 --
 it reports >= 0.9 confidence on everything, right or wrong. Jev is less
 accurate than the vision model on any single answer and more trustworthy
 overall, because it is the only component that knows what it does not
-know.
+know. The complete ground truth confirms the pattern at scale: with
+all 240 stand-in records labeled, the production path under v9 agrees
+with the human corrections on 95.1% of facets (representation 88%).
 
 What Jev genuinely adds:
 
@@ -159,15 +163,18 @@ direct perception as well as it survives the paraphrase.
 
 > **From scaffolding to measured system.** The directions listed here
 > when this section was first written are now done and measured: the
-> single yes/no became a five-facet taxonomy (v7, the first
-> held-out-validated revision, is the default); the multiple-questions
+> single yes/no became a five-facet taxonomy (v9 is the default, two
+> revisions held-out-validated); the multiple-questions
 > pass is the production path; calibration-driven routing is
 > `routing.py` (threshold + text-bearing signal, wired into the sorter
-> and the review UI); and the criteria-as-ontology loop ran seven
-> times (v1-v7, four rejections documented), producing one
-> held-out-validated revision. What remains is the corpus pipeline
-> re-run with v7 once the Wikimedia rate-limit block lifts, and the
-> real library collection itself. See `TODO.md` and `STATUS.md`.
+> and the review UI); and the criteria-as-ontology loop ran ten
+> times (v1-v10, six measured rejections), producing two
+> held-out-validated revisions (v7, v9). With ground truth complete
+> on the stand-in corpus, v9 agrees with every human correction on
+> 95.1% of facets, and the loop is at diminishing returns: the
+> decision layer is nearly exhausted, and what remains is the
+> interface (a vision-prompt experiment) or the real library
+> collection itself. See `TODO.md` and `STATUS.md`.
 
 ## Files
 
