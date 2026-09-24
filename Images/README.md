@@ -29,7 +29,7 @@ But being able to do this just with a Jev-like model would certainly be a game-c
 
 ## What this directory is
 
-A small sub-project of the Ontology + Jev work. The task: sort a folder
+A growing sub-project of the Ontology + Jev work. The task: sort a folder
 of images by whether they contain a human. The pipeline is:
 
 ```
