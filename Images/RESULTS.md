@@ -907,6 +907,16 @@ human_illustration 11/40, human_photo 1/40. Threshold-routed alone:
 The 9 top-up images are now measured but unlabeled; the 136 labeled
 records are the two review batches against v4's answers.
 
+**Against human ground truth (no API calls).** The merged corrections
+allow a direct comparison on the same 136 labeled records: v7's fresh
+answers agree with the human corrections on 607/680 facets (89%) vs
+v4's stored answers' 585/680 (86%). Per facet: contains_human 90% vs
+85%, contains_robot 96% vs 96%, contains_android 100% vs 90%,
+primary_subject 87% vs 84%, representation 74% vs 76% (the only dip,
+inside noise). The held-out result holds against real ground truth on
+the full labeled set: v7 is better where it was designed to be
+(entity facets) and no worse on representation.
+
 ---
 
 ## Files

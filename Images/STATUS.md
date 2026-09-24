@@ -392,6 +392,17 @@ first review pass on 09-23; corpus top-up and second review pass on
     effect (89% vs 85%); this is the production confirmation. The 9
     top-up images are measured but unlabeled. See RESULTS.md
     ("Production re-run with v7").
+32. **v7 vs human ground truth on the corpus (no API calls).** The
+    merged corrections allow a direct comparison on the same 136
+    labeled records: v7's fresh answers 607/680 facets (89%) vs v4's
+    stored 585/680 (86%). Per facet: contains_human 90% vs 85%,
+    contains_android 100% vs 90%, primary_subject 87% vs 84%,
+    representation 74% vs 76% (only dip, inside noise). The held-out
+    result holds against real ground truth. Next: review the 12
+    unreviewed routed records (94 of the 106 routed were already
+    reviewed in the two batches; their corrections came back in the
+    merge) -- review UI running with v7 taxonomy and a temp sample
+    path. See RESULTS.md ("Production re-run with v7").
 
 ## Where things live
 
