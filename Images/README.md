@@ -94,17 +94,25 @@ What Jev genuinely adds:
 - **Typed, deterministic output.** A structured choice per facet with
   probabilities -- no parsing, no format drift, directly usable in code.
 - **Criteria-as-state.** The decision rules are data
-  (`humanoid_taxonomy_v7.json`), not code. Seven revisions (v1-v7) were
+  (`humanoid_taxonomy_v7.json`), not code. Eight revisions (v1-v8) were
   authored and measured without touching the pipeline. v7 -- the first
   held-out-validated revision (LIBRARY.md Phase 6): authored from one
   review batch, measured on a batch it never saw -- beats v4 on the
   stand-in corpus (89% vs 85%, contains_android 100%) and matches it on
-  the personal collection (92% vs 91%), and is now the default. Four
+  the personal collection (92% vs 91%), and is now the default. Five
   rejections are documented, two as the v3/v5 lesson: de-hedging
   without accuracy gains manufactures silent errors, and v6's
   text_screenshot narrowing showed the same failure in mirror image --
   the regression was invisible at authoring time, which is why the
-  held-out protocol exists.
+  held-out protocol exists. The result also held in production: the
+  full-corpus re-run with v7 reaches 89% pooled (v4's run: 85%) and
+  90% agreement with the human corrections on 148 labeled records
+  (v4's stored answers: 86%). The latest rejection, v8 (a
+  subject-decides clause for representation, authored from the
+  statue-family corrections), measured inside noise on the held-out
+  batch (fixes 5 / breaks 3, three of the eight changes pure
+  run-to-run variance): the loop's bar is measured gains, not
+  plausible criteria.
 - **A real check on the LLM.** Pixtral verifies; Jev falsifies. Its
   dissent is the signal: every taxonomy gap found in this project
   (android boundaries, non-humanoid statues, representation splits)
