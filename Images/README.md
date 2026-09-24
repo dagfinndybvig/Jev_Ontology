@@ -92,11 +92,17 @@ What Jev genuinely adds:
 - **Typed, deterministic output.** A structured choice per facet with
   probabilities -- no parsing, no format drift, directly usable in code.
 - **Criteria-as-state.** The decision rules are data
-  (`humanoid_taxonomy_v4.json`), not code. Four revisions (v1-v5) were
-  authored and measured without touching the pipeline; v4 was adopted
-  on measured accuracy (contains_human 80% -> 88%), and two rejections
-  are documented as the v3/v5 lesson: de-hedging without accuracy gains
-  manufactures silent errors.
+  (`humanoid_taxonomy_v7.json`), not code. Seven revisions (v1-v7) were
+  authored and measured without touching the pipeline. v7 -- the first
+  held-out-validated revision (LIBRARY.md Phase 6): authored from one
+  review batch, measured on a batch it never saw -- beats v4 on the
+  stand-in corpus (89% vs 85%, contains_android 100%) and matches it on
+  the personal collection (92% vs 91%), and is now the default. Four
+  rejections are documented, two as the v3/v5 lesson: de-hedging
+  without accuracy gains manufactures silent errors, and v6's
+  text_screenshot narrowing showed the same failure in mirror image --
+  the regression was invisible at authoring time, which is why the
+  held-out protocol exists.
 - **A real check on the LLM.** Pixtral verifies; Jev falsifies. Its
   dissent is the signal: every taxonomy gap found in this project
   (android boundaries, non-humanoid statues, representation splits)
@@ -129,14 +135,15 @@ direct perception as well as it survives the paraphrase.
 
 > **From scaffolding to measured system.** The directions listed here
 > when this section was first written are now done and measured: the
-> single yes/no became a five-facet taxonomy (v4, adopted on accuracy);
-> the multiple-questions pass is the production path; calibration-driven
-> routing is `routing.py` (threshold + text-bearing signal, wired into
-> the sorter and the review UI); and the criteria-as-ontology loop ran
-> four times (v1-v5, two rejections documented). What remains is the
-> held-out validation of the next taxonomy revision against the 136
-> labeled stand-in records (LIBRARY.md Phase 6), and the real library
-> collection itself. See `TODO.md` and `STATUS.md`.
+> single yes/no became a five-facet taxonomy (v7, the first
+> held-out-validated revision, is the default); the multiple-questions
+> pass is the production path; calibration-driven routing is
+> `routing.py` (threshold + text-bearing signal, wired into the sorter
+> and the review UI); and the criteria-as-ontology loop ran seven
+> times (v1-v7, four rejections documented), producing one
+> held-out-validated revision. What remains is the corpus pipeline
+> re-run with v7 once the Wikimedia rate-limit block lifts, and the
+> real library collection itself. See `TODO.md` and `STATUS.md`.
 
 ## Files
 
