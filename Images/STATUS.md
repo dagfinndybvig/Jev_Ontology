@@ -289,7 +289,9 @@ first review pass on 09-23; corpus top-up and second review pass on
     40/40, human_photo 40/40, human_illustration 38/40,
     ui_screenshot 33/40 (was 0) -- 231 total, 9 short of the
     40/category target (11 downloads lost to HTTP 429s even at 20s
-    spacing; resumable, re-run to top up the last 9). Two fetcher
+    spacing; resumable, re-run to top up the last 9 -- a 2026-09-24
+    re-run was 429-blocked on the category listing itself, even after
+    a 200s wait; resume in a later session). Two fetcher
     bugs found and fixed on this run: the resume path numbered new
     files from 1, colliding with existing manifest keys, so a re-run
     fetched nothing (fixed: numbering starts after the category's
