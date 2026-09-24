@@ -120,7 +120,12 @@ Essential context for any agent working in this directory.
   `LIBRARY_PER_CATEGORY` (default 40) per category. First run:
   149 images across 5 of 6 categories (statue 28, humanoid_robot 22,
   book_cover 36, human_photo 33, human_illustration 30;
-  ui_screenshot 0) before Wikimedia rate-limited the IP.
+  ui_screenshot 0) before Wikimedia rate-limited the IP. Top-up
+  (2026-09-23, block lifted): 231 total across all 6 categories
+  (statue 40, humanoid_robot 40, book_cover 40, human_photo 40,
+  human_illustration 38, ui_screenshot 33) -- 9 short of target, 11
+  downloads lost to HTTP 429s even at 20s spacing; re-run to top up
+  the last 9. DELAY is 20s (5s drew 429s on the top-up).
 - `measure_library_standin.py` — runs the production path on the
   stand-in corpus: Pixtral describes each image (same prompt as
   `classify_images.py`), Jev answers the five facets (v4 taxonomy,
@@ -179,9 +184,17 @@ recomputed from the result JSONs, never recalled from memory.
   wait. Use only the standard thumbnail sizes (960, 1280, ... --
   w.wiki/GHai; 1024 is not one), keep DELAY high, and resume across
   sessions rather than pushing through. The `depicts` (P180)
-  resolution returned empty on the first run -- undebugged because
-  the block landed; check `pageprops` -> `wikibase_item` ->
-  `wbgetentities` once the block lifts.
+  resolution was debugged 2026-09-23: the old route queried
+  `pageprops.wikibase_item` -- the Wikidata Q-id link, empty for most
+  files -- instead of the MediaInfo M-id route (`wbgetentities` with
+  `sites=commonswiki` + the file title, `props=claims|info`; the
+  entity carries `title` for mapping back). The corrected route works
+  mechanically, but 0/231 corpus files carry P180 statements:
+  Commons structured-data coverage is uneven, so the manifest's
+  category remains the only ground truth. Also fixed 2026-09-23: the
+  resume path numbered new files from 1, colliding with existing
+  manifest keys, so a re-run fetched nothing -- numbering now starts
+  after the category's existing count.
 - Known failure mode: screenshots of text *describing* a scene.
   Fixed at the vision layer (2026-09-23 prompt); the open half is
   Jev's criteria, which still answer a described scene — the

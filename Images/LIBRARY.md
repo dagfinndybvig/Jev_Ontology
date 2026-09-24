@@ -81,17 +81,18 @@ catalogers are available -- it sets the ceiling for what "accuracy"
 can mean. Until library material exists, two stand-ins are in place:
 the generated edge-case suite (`generate_edge_cases.py`, 8 images
 covering the measured failure families; measured 2026-09-23, pooled
-agreement 33/36) and a 149-image Wikimedia Commons corpus
-(`fetch_library_standin.py`, 5 categories with a committed manifest
-as ground truth; short of target after Wikimedia rate-limited the
-fetch -- resume to top up; measured 2026-09-23 by
+agreement 33/36) and a 231-image Wikimedia Commons corpus
+(`fetch_library_standin.py`, all 6 categories with a committed
+manifest as ground truth; topped up 2026-09-23 after the first fetch
+was rate-limited; measured 2026-09-23 by
 `measure_library_standin.py`, 149/149, 0 errors, pooled agreement
 541/615 (88%) against the category-implied labels, routing burden
 40%; reviewed 2026-09-23 (60/60 routed records: 32 confirmed,
 28 corrected, pooled 83% on the hard cases) -- the corpus now has
-60 labeled records, and its edge cases (non-humanoid statues, android
+81+ labeled records, and its edge cases (non-humanoid statues, android
 boundaries, covers with depicted content) are the input for a future
-taxonomy revision). The Commons corpus is the closer analog
+taxonomy revision; depicts annotation is a dead end -- 0/231 files
+carry P180 statements). The Commons corpus is the closer analog
 to real library material: digitized covers, statues, and
 illustrations with structured depicts annotations.
 

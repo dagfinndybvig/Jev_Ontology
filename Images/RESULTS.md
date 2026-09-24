@@ -722,6 +722,45 @@ every facet: on this corpus, representation's confidence carries
 information (89% in the band vs 83% in the queue). 81 of 149 corpus
 records are now labeled.
 
+**Top-up (2026-09-23, block lifted).** `fetch_library_standin.py`
+topped up all categories: 231 images total across all 6 categories
+(statue 40/40, humanoid_robot 40/40, book_cover 40/40,
+human_photo 40/40, human_illustration 38/40, ui_screenshot 33/40 --
+was 0). Nine short of the 40/category target: 11 downloads lost to
+HTTP 429s even at 20s spacing (DELAY raised from 5s after the first
+top-up attempt drew 429s); the script is resumable, so a re-run tops
+up the last 9. Two fetcher bugs found and fixed on this run:
+
+- **Resume numbering.** The resume path numbered new files from 1,
+  colliding with existing manifest keys (`statue_001.jpg` ...), so a
+  re-run fetched nothing while exiting 0. Fixed: numbering starts
+  after the category's existing count.
+- **Depicts route.** The P180 resolution queried
+  `pageprops.wikibase_item` -- the Wikidata Q-id link, empty for most
+  files -- instead of the MediaInfo M-id route (`wbgetentities` with
+  `sites=commonswiki` + the file title). The corrected route works
+  mechanically, but 0/231 corpus files carry P180 depicts statements:
+  Commons structured-data coverage is uneven in these categories, so
+  the manifest's category remains the only ground truth. Precise
+  depicts annotation is a dead end for this corpus.
+
+**Measured, full corpus (2026-09-23, n=231).**
+`measure_library_standin.py` ran the production path on the 82 new
+images (resumable; 231/231 measured, 0 pipeline errors). Pooled
+agreement on unambiguous facets: 794/929 (85%). Per facet:
+contains_human 127/158 (80%), contains_robot 221/231 (96%),
+contains_android 215/231 (93%), primary_subject 121/158 (77%),
+representation 110/151 (73%). Per category: book_cover 80/80 (100%)
+of 40, human_photo 200/200 (100%) of 40, human_illustration 177/190
+(93%) of 38, statue 150/200 (75%) of 40, ui_screenshot 79/99 (80%)
+of 33, humanoid_robot 108/160 (68%) of 40. The new ui_screenshot
+category scores 80%: its only scored facet is representation, and
+Jev answers text_screenshot on most but hedges to `other` on the
+rest. Routing burden rises to 115/231 (50%) with the new category:
+ui_screenshot routes 32/33 (22 text-bearing -- a true signal for
+screenshots -- and 10 low-confidence), while the clean categories
+still mostly auto-accept.
+
 ---
 
 ## Files

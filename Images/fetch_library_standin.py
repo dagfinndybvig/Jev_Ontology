@@ -41,7 +41,8 @@ PER_CATEGORY = int(os.environ.get("LIBRARY_PER_CATEGORY", "40"))
 POOL = 200          # members fetched per category before the stride sample
 THUMB_WIDTH = 960   # a Wikimedia standard thumbnail size (1024 is not; see w.wiki/GHai)
 EXTS = {".jpg", ".jpeg", ".png", ".gif", ".webp", ".tif", ".tiff"}
-DELAY = 5.0         # seconds between downloads; Commons rate-limits bursts hard
+DELAY = 20.0        # seconds between downloads; Commons rate-limits bursts hard
+                    # (5s drew 429s on the 2026-09-23 top-up; 20s after cooldown)
 RETRIES = 3         # with backoff, on HTTP 429
 
 TAGS = re.compile(r"<[^>]+>")
@@ -88,15 +89,22 @@ def batched(titles, prop, extra=None, batch=50):
     return out
 
 
-def depicts_labels(mids):
-    """P180 (depicts) statements resolved to English Wikidata labels."""
+def depicts_by_title(titles):
+    """P180 (depicts) statements per file title, resolved to English labels.
+
+    Commons structured data lives in MediaInfo entities (M-ids), looked
+    up by site+title; pageprops.wikibase_item is the Wikidata Q-id link
+    and is empty for most files (found live, 2026-09-23).
+    """
     claims = {}
-    for i in range(0, len(mids), 50):
-        d = api({"action": "wbgetentities", "ids": "|".join(mids[i:i + 50]), "props": "claims"})
-        for eid, ent in d.get("entities", {}).items():
-            claims[eid] = [c["mainsnak"]["datavalue"]["value"]["id"]
-                           for c in ent.get("claims", {}).get("P180", [])
-                           if c.get("mainsnak", {}).get("datavalue", {}).get("value")]
+    for i in range(0, len(titles), 50):
+        d = api({"action": "wbgetentities", "sites": "commonswiki",
+                 "titles": "|".join(titles[i:i + 50]), "props": "claims|info"})
+        for ent in d.get("entities", {}).values():
+            title = ent.get("title", "")
+            claims[title] = [c["mainsnak"]["datavalue"]["value"]["id"]
+                             for c in ent.get("claims", {}).get("P180", [])
+                             if c.get("mainsnak", {}).get("datavalue", {}).get("value")]
         time.sleep(DELAY)
     qids = sorted({q for qs in claims.values() for q in qs})
     labels = {}
@@ -108,7 +116,7 @@ def depicts_labels(mids):
             if label:
                 labels[eid] = label
         time.sleep(DELAY)
-    return {mid: [labels[q] for q in qs if q in labels] for mid, qs in claims.items()}
+    return {t: [labels[q] for q in qs if q in labels] for t, qs in claims.items()}
 
 
 def download(url, dest):
@@ -177,12 +185,10 @@ def main():
         titles = stride_sample(fresh, need)
         infos = batched(titles, "imageinfo",
                         {"iiprop": "url|extmetadata|size", "iiurlwidth": str(THUMB_WIDTH)})
-        props = batched(titles, "pageprops")
-        mids = [p.get("pageprops", {}).get("wikibase_item")
-                for p in props.values() if p.get("pageprops", {}).get("wikibase_item")]
-        depicts = depicts_labels(mids) if mids else {}
+        depicts = depicts_by_title(titles)
 
         got = 0
+        next_num = have  # resume numbering after the existing files
         for title in titles:
             info = (infos.get(title, {}).get("imageinfo") or [{}])[0]
             thumb = info.get("thumburl") or info.get("url")
@@ -191,11 +197,11 @@ def main():
             ext = os.path.splitext(urllib.parse.urlparse(thumb).path)[1].lower()
             if ext not in EXTS:
                 continue
-            fname = f"{cls}_{got + 1:03d}{ext}"
+            fname = f"{cls}_{next_num + 1:03d}{ext}"
+            while fname in done:
+                next_num += 1
+                fname = f"{cls}_{next_num + 1:03d}{ext}"
             dest = os.path.join(IMAGES_DIR, fname)
-            if fname in done:
-                got += 1
-                continue
             try:
                 if not download(thumb, dest):
                     continue
@@ -203,7 +209,6 @@ def main():
                 print(f"  download failed {title}: {e}")
                 continue
             meta = info.get("extmetadata", {})
-            mid = props.get(title, {}).get("pageprops", {}).get("wikibase_item", "")
             manifest[fname] = {
                 "status": "ok",
                 "category": cls,
@@ -211,12 +216,13 @@ def main():
                 "title": title,
                 "description": TAGS.sub("", meta.get("ImageDescription", {}).get("value", "")).strip()[:500],
                 "license": meta.get("LicenseShortName", {}).get("value", ""),
-                "depicts": depicts.get(mid, []),
+                "depicts": depicts.get(title, []),
                 "url": info.get("descriptionurl", ""),
                 "file": fname,
             }
             save_manifest(manifest)
             seen_titles.add(title)
+            next_num += 1
             got += 1
             time.sleep(DELAY)
         print(f"  fetched {got} of {PER_CATEGORY} (pool {len(pool)})")

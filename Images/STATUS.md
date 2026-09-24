@@ -282,6 +282,32 @@ edge-case suite on 09-23)
     browser tab, not a code bug: the server and front-end verified
     clean end to end (endpoints 200, DOM-stub harness rendered the
     sample correctly against live payloads).
+26. **Corpus top-up complete (231 images, all 6 categories).** The
+    Wikimedia block had lifted; `fetch_library_standin.py` topped up
+    all categories: statue 40/40, humanoid_robot 40/40, book_cover
+    40/40, human_photo 40/40, human_illustration 38/40,
+    ui_screenshot 33/40 (was 0) -- 231 total, 9 short of the
+    40/category target (11 downloads lost to HTTP 429s even at 20s
+    spacing; resumable, re-run to top up the last 9). Two fetcher
+    bugs found and fixed on this run: the resume path numbered new
+    files from 1, colliding with existing manifest keys, so a re-run
+    fetched nothing (fixed: numbering starts after the category's
+    existing count); and the depicts resolution queried
+    `pageprops.wikibase_item` -- the Wikidata Q-id link, empty for
+    most files -- instead of the MediaInfo M-id route
+    (`wbgetentities` with `sites=commonswiki` + file title). The
+    corrected route works mechanically, but 0/231 corpus files carry
+    P180 depicts statements: Commons structured-data coverage is
+    uneven, so the manifest's category remains the only ground truth.
+    The pipeline ran on the 82 new images: 231/231 measured, 0
+    errors, pooled agreement 794/929 (85%) on unambiguous facets
+    (contains_human 80%, contains_robot 96%, contains_android 93%,
+    primary_subject 77%, representation 73%). Per category:
+    book_cover and human_photo 100%, human_illustration 93%, statue
+    75%, ui_screenshot 80% (its only scored facet is representation),
+    humanoid_robot 68%. Routing burden 115/231 (50%) -- ui_screenshot
+    routes 32/33 (22 text-bearing, a true signal for screenshots).
+    See RESULTS.md ("Top-up").
 
 ## Where things live
 
@@ -329,17 +355,18 @@ edge-case suite on 09-23)
    library material, where the android facet and the held-out
    revision protocol (LIBRARY.md Phase 6) actually apply. A stand-in
    now exists with a first pipeline pass and a completed review:
-   149 Commons images across 5 categories (`library_standin/`,
+   231 Commons images across all 6 categories (`library_standin/`,
    manifest committed), measured 2026-09-23 (149/149, 0 errors, 88%
    agreement) and reviewed 2026-09-23 (60/60 routed records: 32
-   confirmed, 28 corrected, pooled 83% on the hard cases). Next:
-   re-run the fetcher once the Wikimedia block lifts (top up to
-   40/category, add ui_screenshot, debug the depicts resolution --
-   precise depicts annotation would replace the noisy
-   category-implied labels), then review the new records. The
-   review's edge cases (non-humanoid statues, android boundaries,
-   covers with depicted content) are the input for a future taxonomy
-   revision, measured against the 60 labeled records.
+   confirmed, 28 corrected, pooled 83% on the hard cases; the
+   confident-band sample 27/27, miss rate 19%). The top-up added 82
+   images (ui_screenshot 0 -> 33); the pipeline ran on them (see
+   RESULTS.md). Next: review the new records' routed queue through
+   the UI. The review's edge cases (non-humanoid statues, android
+   boundaries, covers with depicted content) are the input for a
+   future taxonomy revision, measured against the labeled records.
+   Depicts annotation is a dead end for this corpus: 0/231 files
+   carry P180 statements.
 3. ~~**Measure the edge-case suite.**~~ Done (2026-09-23): 8/8
    measured, pooled agreement 33/36 (92%); see RESULTS.md
    ("Edge-case suite"). Residuals: the AI-generated portrait is
