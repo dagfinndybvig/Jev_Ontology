@@ -172,12 +172,13 @@ representation hedges halved, and both known screenshot-of-text
 false positives caught at the vision layer. The humanoid pilot and
 the sorted verification tree are described in `STATUS.md`.
 
-**Stand-in corpus (2026-09-23):** a 149-image Wikimedia Commons
-corpus (`library_standin/`, manifest committed) was run through the
-pipeline and reviewed: 149/149 measured, 88% agreement against the
-category-implied labels; all 60 routed records reviewed (32
-confirmed, 28 corrected, pooled 83% on the hard cases). See
-`RESULTS.md` ("Stand-in library corpus").
+**Stand-in corpus (2026-09-23/24):** a 231-image Wikimedia Commons
+corpus (`library_standin/`, manifest committed, all 6 categories)
+was run through the pipeline and reviewed: 231/231 measured, 85%
+agreement against the category-implied labels; the routed records
+reviewed in two passes (60/60 then 55/55: 75 confirmed, 61
+corrected, pooled 55% on the hard cases); 136 of 231 records
+labeled. See `RESULTS.md` ("Stand-in library corpus").
 
 ## Caveats
 

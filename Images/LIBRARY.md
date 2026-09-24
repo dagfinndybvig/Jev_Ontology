@@ -85,12 +85,13 @@ agreement 33/36) and a 231-image Wikimedia Commons corpus
 (`fetch_library_standin.py`, all 6 categories with a committed
 manifest as ground truth; topped up 2026-09-23 after the first fetch
 was rate-limited; measured 2026-09-23 by
-`measure_library_standin.py`, 149/149, 0 errors, pooled agreement
-541/615 (88%) against the category-implied labels, routing burden
-40%; reviewed 2026-09-23 (60/60 routed records: 32 confirmed,
-28 corrected, pooled 83% on the hard cases) -- the corpus now has
-81+ labeled records, and its edge cases (non-humanoid statues, android
-boundaries, covers with depicted content) are the input for a future
+`measure_library_standin.py`, 231/231, 0 errors, pooled agreement
+794/929 (85%) against the category-implied labels, routing burden
+50%; routed records reviewed 2026-09-23 and 2026-09-24 (60/60 then
+55/55: 75 confirmed, 61 corrected, pooled 55% on the hard cases) --
+the corpus now has 136 labeled records, and its edge cases
+(non-humanoid statues, android boundaries, covers with depicted
+content, finer representation splits) are the input for a future
 taxonomy revision; depicts annotation is a dead end -- 0/231 files
 carry P180 statements). The Commons corpus is the closer analog
 to real library material: digitized covers, statues, and

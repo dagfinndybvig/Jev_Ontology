@@ -1,22 +1,22 @@
 # TODO: Image classification with Jev -- next steps
 
-> **NEXT STEP (2026-09-23): A real library collection.** Everything
+> **NEXT STEP (2026-09-24): A real library collection.** Everything
 > else on this list is either done, measured, or blocked on it. The
 > pipeline, taxonomy, and review UX are ready. A stand-in now exists
-> with a first pipeline pass and a completed review: 231 Wikimedia
-> Commons images across all 6 categories (`library_standin/`,
-> manifest committed as the ground truth), measured 2026-09-23 --
-> 149/149, 0 errors, pooled agreement 541/615 (88%) against the
-> category-implied labels -- and reviewed 2026-09-23 (60/60 routed
-> records: 32 confirmed, 28 corrected, pooled 83% on the hard cases;
-> confident-band sample 27/27, miss rate 19%). The top-up added 82
-> images (ui_screenshot 0 -> 33); the pipeline ran on them. Next:
-> review the new records' routed queue through the UI. The review's
-> edge cases (non-humanoid statues, android boundaries, covers with
-> depicted content) highlight the need for a richer ontology -- a
-> future revision, measured against the labeled records. Depicts
-> annotation is a dead end for this corpus: 0/231 files carry P180
-> statements. See STATUS.md "Next steps" item 2.
+> with a first pipeline pass and two completed review passes: 231
+> Wikimedia Commons images across all 6 categories
+> (`library_standin/`, manifest committed as the ground truth),
+> measured 2026-09-23 -- 231/231, 0 errors, pooled agreement
+> 794/929 (85%) against the category-implied labels -- and the
+> routed records reviewed 2026-09-23 and 2026-09-24 (60/60 then
+> 55/55: 75 confirmed, 61 corrected, pooled 55% on the hard cases;
+> confident-band sample 27/27, miss rate 19%). 136 of 231 records
+> are labeled. Next: the future taxonomy revision (non-humanoid
+> statues, android boundaries, covers with depicted content, finer
+> representation splits), measured against the labeled records per
+> the held-out protocol (LIBRARY.md Phase 6). Depicts annotation is
+> a dead end for this corpus: 0/231 files carry P180 statements.
+> See STATUS.md "Next steps" item 2.
 
 The current pipeline (`classify_images.py`) is scaffolding: a vision
 model describes each image, Jev answers one yes/no question. The goal of

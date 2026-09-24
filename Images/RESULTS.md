@@ -761,6 +761,40 @@ ui_screenshot routes 32/33 (22 text-bearing -- a true signal for
 screenshots -- and 10 low-confidence), while the clean categories
 still mostly auto-accept.
 
+**Reviewed, second batch (2026-09-24).** The 55 unreviewed routed
+records from the top-up were reviewed through `review_ui.py` (corpus
+results, `library_standin/`, taxonomy v4): 25 confirmed, 30 corrected
+(45% agreement) -- harder than the first batch's 83%, as expected:
+this batch is dominated by the two noisy-label categories
+(ui_screenshot 32, humanoid_robot 11) plus 8 statue records. Route
+reasons: 25 text-bearing, 30 low-confidence. Per-facet accuracy on
+the batch: contains_human 51/55 (93%), contains_robot 53/55 (96%),
+contains_android 49/55 (89%), primary_subject 48/55 (87%),
+representation 34/55 (62%). Per category: book_cover 2/2,
+human_illustration 2/2, statue 4/8, ui_screenshot 15/32,
+humanoid_robot 2/11. The ui_screenshot result is the text-bearing
+signal working as designed -- it routes screenshots to review, where
+Jev's answers are right only 47% of the time; without the signal
+those would be silent errors. The humanoid_robot batch (2/11) is the
+noisy-label category again: toys, costumes, and concept art under
+one Commons category.
+
+Cumulative review state (both batches, 136 of 231 records labeled):
+75 confirmed, 61 corrected, pooled agreement 55% on the routed
+records. Per-facet accuracy across all reviewed: contains_human
+115/136 (85%), contains_robot 130/136 (96%), contains_android
+122/136 (90%), primary_subject 114/136 (84%), representation
+104/136 (76%). Correction families across the 61 corrected records:
+20 representation-only, 12 contains_android-only, 8
+contains_human+primary_subject (the non-humanoid statue family),
+6 contains_human+primary_subject+representation, 4 contains_human,
+3 contains_robot+primary_subject+representation, and 8 smaller
+combos. Per-facet correction counts: representation 32,
+primary_subject 22, contains_human 21, contains_android 14,
+contains_robot 6. The 95 auto-accepted records remain unverified
+(the confident-band sample of 27 bounds their miss rate at 19%,
+Wilson CI ~8-37%).
+
 ---
 
 ## Files

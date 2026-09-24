@@ -1,8 +1,9 @@
 # Status: Where We Are, Where to Pick Up
 
-**Last updated:** 2026-09-23 (original run and humanoid pilot 09-22;
-folder verification, prompt fix, re-run, taxonomy v2, routing, and the
-edge-case suite on 09-23)
+**Last updated:** 2026-09-24 (original run and humanoid pilot 09-22;
+routing, edge-case suite, stand-in corpus fetch/measure, and the
+first review pass on 09-23; corpus top-up and second review pass on
+09-23/09-24)
 **Repo state:** see git; keep in sync with `origin/main` before new work.
 
 ---
@@ -308,6 +309,25 @@ edge-case suite on 09-23)
     humanoid_robot 68%. Routing burden 115/231 (50%) -- ui_screenshot
     routes 32/33 (22 text-bearing, a true signal for screenshots).
     See RESULTS.md ("Top-up").
+27. **Second review pass complete (55/55; 136/231 labeled).** The 55
+    unreviewed routed records from the top-up were reviewed through
+    the UI: 25 confirmed, 30 corrected (45% agreement -- harder than
+    the first batch's 83%, as expected: the batch is dominated by
+    ui_screenshot (32) and humanoid_robot (11), the two noisy-label
+    categories). Per-facet accuracy on the batch: contains_human 93%,
+    contains_robot 96%, contains_android 89%, primary_subject 87%,
+    representation 62%. Per category: book_cover 2/2,
+    human_illustration 2/2, statue 4/8, ui_screenshot 15/32,
+    humanoid_robot 2/11. The ui_screenshot number is the text-bearing
+    routing signal earning its keep: it routes screenshots to review,
+    where Jev is right only 47% of the time -- without the signal
+    those would be silent errors. Cumulative: 136 of 231 records
+    labeled (75 confirmed, 61 corrected, pooled 55% on routed
+    records); correction families led by representation-only (20)
+    and contains_android-only (12). The 95 auto-accepted records
+    remain unverified; the confident-band sample bounds their miss
+    rate at 19% (Wilson CI ~8-37%). See RESULTS.md ("Reviewed,
+    second batch").
 
 ## Where things live
 
@@ -354,19 +374,18 @@ edge-case suite on 09-23)
    photos; the pipeline, taxonomy, and review UX are ready for
    library material, where the android facet and the held-out
    revision protocol (LIBRARY.md Phase 6) actually apply. A stand-in
-   now exists with a first pipeline pass and a completed review:
-   231 Commons images across all 6 categories (`library_standin/`,
-   manifest committed), measured 2026-09-23 (149/149, 0 errors, 88%
-   agreement) and reviewed 2026-09-23 (60/60 routed records: 32
-   confirmed, 28 corrected, pooled 83% on the hard cases; the
-   confident-band sample 27/27, miss rate 19%). The top-up added 82
-   images (ui_screenshot 0 -> 33); the pipeline ran on them (see
-   RESULTS.md). Next: review the new records' routed queue through
-   the UI. The review's edge cases (non-humanoid statues, android
-   boundaries, covers with depicted content) are the input for a
-   future taxonomy revision, measured against the labeled records.
-   Depicts annotation is a dead end for this corpus: 0/231 files
-   carry P180 statements.
+   now exists with a first pipeline pass and two completed review
+   passes: 231 Commons images across all 6 categories
+   (`library_standin/`, manifest committed), measured 2026-09-23
+   (231/231, 0 errors, 85% agreement), routed records reviewed
+   2026-09-23 and 2026-09-24 (60/60 then 55/55: 75 confirmed,
+   61 corrected, pooled 55% on the hard cases; the confident-band
+   sample 27/27, miss rate 19%). 136 of 231 records are labeled.
+   Next: the future taxonomy revision (non-humanoid statues, android
+   boundaries, covers with depicted content, finer representation
+   splits), measured against the labeled records per the held-out
+   protocol. Depicts annotation is a dead end for this corpus:
+   0/231 files carry P180 statements.
 3. ~~**Measure the edge-case suite.**~~ Done (2026-09-23): 8/8
    measured, pooled agreement 33/36 (92%); see RESULTS.md
    ("Edge-case suite"). Residuals: the AI-generated portrait is
