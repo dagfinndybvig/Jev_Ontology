@@ -5,7 +5,7 @@ routing, edge-case suite, stand-in corpus fetch/measure, and the
 first review pass on 09-23; corpus top-up and second review pass on
 09-23/09-24; corpus complete at 240, the v7 production re-run, and
 the fourth review pass -- ground truth complete at 240/240 -- on
-09-24)
+09-24; taxonomy v9 authored and adopted the same day)
 **Repo state:** see git; keep in sync with `origin/main` before new work.
 
 ---
@@ -457,6 +457,33 @@ the fourth review pass -- ground truth complete at 240/240 -- on
     that filter. Next: author v9 from the correction families,
     measured held-out on a batch the authoring never saw. See
     RESULTS.md ("Reviewed, fourth batch").
+36. **Third held-out revision: v9 authored and adopted (split-half
+    protocol).** Ground truth is complete (240/240), so the held-out
+    protocol became a deterministic split: md5(filename) first hex
+    char, even = authoring half (132 labeled records), odd =
+    measurement half (108); every correction family has members in
+    both halves (statue 13/9, interface 8/8, background-people 4/3).
+    `author_taxonomy_v9.py` built v9 from v7 with three changes,
+    authored from the authoring half only: (1) v8's subject-decides
+    clause refined ("statue, sculpture, figurine, or display model";
+    a real, functioning robot or machine is photograph); (2)
+    text_screenshot extended to software interfaces -- the first
+    held-out test of the 16-correction interface family; (3)
+    contains_human yes counts a person visible anywhere (background,
+    partial, reflection). Measured on the measurement half
+    (`measure_taxonomy_v9.py`): v9 pooled 516/540 (96%) vs v7's
+    stored 505/540 (94%), representation 89% vs 80% (+9, the weakest
+    facet), fixes 13 / breaks 4 (18 of 20 changed records on changed
+    criteria, 2 pure variance). Attribution: interface family 7
+    fixes / 1 break; statue clause 6 toward / 3 away;
+    background-people clause no measured effect (neutral). Errors 16
+    vs v7's 25 at identical burden (18 routed, 17%), catch rate 63%
+    vs 52%. Personal collection (85 labeled): 91% vs 91%, fixes 11 /
+    breaks 11 -- a wash, no regression. Adopted: v9 is now the
+    default taxonomy (`pilot_humanoid.py` default switched from v7
+    to v9). Residuals: the statue clause's 3 breaks (subject-decides
+    boundary needs sharpening) and the unmeasured background-people
+    clause. See RESULTS.md ("Third held-out revision").
 
 ## Where things live
 
@@ -465,10 +492,11 @@ the fourth review pass -- ground truth complete at 240/240 -- on
 | Pilot plan and results write-up | `Images/LIBRARY.md` |
 | Run write-up (both corrections, re-run, taxonomy v2) | `Images/RESULTS.md` |
 | Pilot taxonomy v4 (current, adopted) | `Images/humanoid_taxonomy_v4.json` |
-| Taxonomy v7 (adopted for the stand-in corpus; first held-out revision) | `Images/humanoid_taxonomy_v7.json` |
+| Taxonomy v7 (first held-out revision; superseded as default by v9) | `Images/humanoid_taxonomy_v7.json` |
+| Taxonomy v9 (current default; second held-out revision, split-half protocol) | `Images/humanoid_taxonomy_v9.json` |
 | Taxonomies v1-v3, v5, v6, v8 (history; v3, v5, and v6's text_screenshot narrowing measured rejections; v8's subject-decides clause measured inside noise) | `Images/humanoid_taxonomy_v*.json` |
-| Held-out revision authoring + measurement (public) | `Images/author_taxonomy_v6.py`, `Images/author_taxonomy_v7.py`, `Images/author_taxonomy_v8.py`, `Images/measure_taxonomy_v6.py` |
-| Held-out revision run records (private, gitignored) | `Images/taxonomy_v6_batch2_results.json`, `Images/taxonomy_v7_batch2_results.json`, `Images/taxonomy_v8_batch23_results.json` |
+| Held-out revision authoring + measurement (public) | `Images/author_taxonomy_v6.py`, `Images/author_taxonomy_v7.py`, `Images/author_taxonomy_v8.py`, `Images/author_taxonomy_v9.py`, `Images/measure_taxonomy_v6.py`, `Images/measure_taxonomy_v9.py` |
+| Held-out revision run records (private, gitignored) | `Images/taxonomy_v6_batch2_results.json`, `Images/taxonomy_v7_batch2_results.json`, `Images/taxonomy_v8_batch23_results.json`, `Images/taxonomy_v9_halfM_results.json`, `Images/taxonomy_v9_personal_results.json` |
 | Pilot script (public; `TAXONOMY` env var selects version, v4 default) | `Images/pilot_humanoid.py` |
 | Sorter (public) | `Images/sort_humanoids.py` |
 | Review UI (public; localhost web app) | `Images/review_ui.py` -> http://localhost:8765 |
@@ -522,11 +550,16 @@ the fourth review pass -- ground truth complete at 240/240 -- on
    92% vs 91% on the personal collection, android 100% on both; see
    RESULTS.md "Held-out taxonomy revision"). The review queue is
    empty and ground truth is complete (v7 agrees with all human
-   corrections on 1113/1200 facets, 93%). Next: the third held-out
-   taxonomy revision (v9), authored from the 68 corrections'
-   families and measured held-out on a batch the authoring never
-   saw. Depicts annotation is a dead end for this corpus: 0/231
-   files carry P180 statements.
+   corrections on 1113/1200 facets, 93%). The third held-out
+   revision is done: v9 adopted and now the default (split-half
+   protocol: pooled 96% vs v7's 94% on the measurement half,
+   representation 89% vs 80%, fixes 13 / breaks 4; neutral on the
+   personal collection, 91% vs 91%; see RESULTS.md "Third held-out
+   revision"). Next: the fourth held-out revision from v9's residual
+   signals (the statue clause's 3 breaks; the unmeasured
+   background-people clause), or a fresh corpus re-run with v9 as
+   the production confirmation. Depicts annotation is a dead end for
+   this corpus: 0/231 files carry P180 statements.
 3. ~~**Measure the edge-case suite.**~~ Done (2026-09-23): 8/8
    measured, pooled agreement 33/36 (92%); see RESULTS.md
    ("Edge-case suite"). Residuals: the AI-generated portrait is

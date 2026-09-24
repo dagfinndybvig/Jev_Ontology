@@ -998,6 +998,78 @@ measurement halves), not a criterion edit.
 
 ---
 
+## Third held-out revision (2026-09-24): v9 adopted
+
+Ground truth completed at 240/240 the same day, which changed the
+held-out protocol: with no unseen batch left, the split became
+deterministic -- md5(filename) first hex char, even = authoring half
+(132 labeled records), odd = measurement half (108). Every correction
+family has members in both halves (statue 13/9, interface 8/8,
+background-people 4/3), so each change is authored from one half and
+measured on the other (`author_taxonomy_v9.py`,
+`measure_taxonomy_v9.py`).
+
+**Three changes, authored from the authoring half only:**
+
+1. **representation: v8's subject-decides clause, refined.** v8's
+   "model" wording over-applied to photographed robots; v9 says
+   "statue, sculpture, figurine, or display model" and adds that a
+   real, functioning robot, machine, or vehicle is photograph.
+2. **text_screenshot: extended to software interfaces** (window,
+   website, terminal) -- the first held-out test of the interface
+   family (16 `other` -> text_screenshot corrections; v3's
+   broadening was a measured negative on the personal collection).
+   `other` loses the interface clause accordingly.
+3. **contains_human yes: a person visible anywhere counts** -- small,
+   partial, in the background, or in a reflection (6 no -> yes
+   corrections).
+
+**Measured (held-out, n=108, measurement half).** v9 pooled 516/540
+(96%) vs v7's stored 505/540 (94%). Per facet: contains_human 96%
+(both), contains_robot 98% (both), contains_android 100% (both),
+primary_subject 94% vs 94%, representation 96/108 (89%) vs 86/108
+(80%) -- the weakest facet gains 9 points. Per-record fixes 13 /
+breaks 4; of the 20 changed records, 18 are on changed criteria and
+2 are pure run-to-run variance (primary_subject on unchanged
+criteria).
+
+**Attribution by family.** The interface broadening is the clear
+winner: 7 of the measurement half's 8 interface corrections fixed
+(ui_screenshot_010, 011, 013, 017, 025, 031, 037), 1 broke
+(ui_screenshot_036, whose truth is `other`). The refined statue
+clause: 6 toward truth (statue_012, 013, 015, 022, 023, 040), 3 away
+(statue_032, humanoid_robot_008, human_illustration_006 -- the
+subject-decides clause misfires on an illustration whose subject is
+a statue but whose truth is photograph). The background-people
+clause: no measured effect on the measurement half (contains_human
+identical at 96%) -- neutral, kept as harmless wording. Criterion-
+attributable net: 13 toward, 5 away (sign test ~p=0.05, at the edge
+but consistent with v7's adoption bar of fixes 10 / breaks 2).
+
+**Errors and burden.** v9 leaves 16 wrong records vs v7's 25 on the
+same half; routing burden identical (18 routed, 17%), caught 10/16
+(63%) vs 13/25 (52%) -- a better catch rate at the same burden.
+
+**Personal collection (85 labeled records, no split needed).** v9
+pooled 388/425 (91%) vs v4's stored 388/425 (91%) -- identical
+pooled, fixes 11 / breaks 11, a wash. contains_android 100% (was
+99%); representation 78% vs 79%. No regression; the personal
+collection's representation errors remain the vision-limited family
+the interface clause cannot reach.
+
+**Verdict: adopted.** The corpus held-out win is decisive (96% vs
+94%, representation +9, fixes 13 / breaks 4) and the personal
+collection shows no regression. v9 is now the default taxonomy
+(`pilot_humanoid.py` default switched from v7 to v9; `TAXONOMY`
+still selects any version). Residuals: the statue clause's 3 breaks
+are the next revision's signal (the subject-decides clause needs a
+sharper boundary between a depicted statue-subject and a photographed
+scene containing one); the background-people clause is unmeasured on
+the corpus (its 3 measurement-half corrections were already right
+under v7).
+
+---
+
 ## Files
 
 ```

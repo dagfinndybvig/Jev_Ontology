@@ -32,7 +32,7 @@ Essential context for any agent working in this directory.
   contains_human. Writes `image_human_results.json`.
 - `pilot_humanoid.py` — one Jev call per *stored* description, five
   facets from the taxonomy JSON (`TAXONOMY` env var selects the
-  version; default `humanoid_taxonomy_v7.json`, the first
+  version; default `humanoid_taxonomy_v9.json`, the second
   held-out-validated revision). Writes
   `humanoid_pilot_results.json`. No vision calls.
 - `sort_humanoids.py` — copies images into
@@ -157,6 +157,24 @@ Essential context for any agent working in this directory.
   data; the scripts patch and bump `_meta`). v6 was authored from
   batch 1 signals; v7 = v6's entity changes + v4's representation
   wording. Committed (public data).
+- `author_taxonomy_v9.py` — builds v9 from v7 under the split-half
+  protocol (ground truth complete at 240/240, so the held-out split
+  is deterministic: md5(filename) first hex char, even = authoring
+  half 132, odd = measurement half 108; every correction family in
+  both halves). Three changes from the authoring half only: v8's
+  subject-decides clause refined ("display model"; a real,
+  functioning robot is photograph), text_screenshot extended to
+  software interfaces, contains_human background-people clause.
+  Committed (public data).
+- `measure_taxonomy_v9.py` — the split-half held-out measurement:
+  runs the taxonomy's five facets (Jev calls only) on the
+  measurement half (side M of the same md5 split — `side()` must
+  match the authoring script) and compares to the manual corrections
+  and v7's stored answers, with per-record fixes/breaks. `TAXONOMY`
+  selects the version, `RESULTS_OUT` the output file (default
+  `taxonomy_v9_halfM_results.json`, private, gitignored). Resumable;
+  needs TYPESAFE_API_KEY. Measured: v9 96% vs v7's 94%,
+  representation 89% vs 80%, fixes 13 / breaks 4 — v9 adopted.
 - `measure_taxonomy_v6.py` — the Phase 6 held-out measurement: runs
   the taxonomy's five facets (Jev calls only, no vision) on the
   labeled records with `manual_correction` date 2026-09-24 (batch 2,
@@ -172,7 +190,11 @@ Essential context for any agent working in this directory.
   compared to the manual corrections and v4's stored answers. Writes
   `taxonomy_v7_personal_results.json` (private, gitignored).
   Resumable; needs TYPESAFE_API_KEY. Measured: v7 92% vs v4's 91%,
-  fixes 3 / breaks 2, inside noise — v7 became the default.
+  fixes 3 / breaks 2, inside noise — v7 became the default. Re-run
+  with `TAXONOMY=humanoid_taxonomy_v9.json
+  RESULTS_OUT=taxonomy_v9_personal_results.json`: v9 91% vs v4's
+  91%, fixes 11 / breaks 11 — a wash, no regression (part of v9's
+  adoption).
 - Runs skip records with `status: ok`. Fresh descriptions require
   moving the results JSON aside first. Cost is small but real
   (~$0.0003 per image for the vision step).

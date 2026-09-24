@@ -1,38 +1,30 @@
 # TODO: Image classification with Jev -- next steps
 
-> **NEXT STEP (2026-09-24): Author taxonomy v9.** Everything
-> else on this list is either done, measured, or blocked on it. The
-> pipeline, taxonomy, and review UX are ready. A stand-in now exists,
-> complete at 240 Wikimedia Commons images across all 6 categories
-> (40 per category after the 2026-09-24 top-up; `library_standin/`,
-> manifest committed as the ground truth), fully re-run with v7
-> (240/240, 0 errors, pooled agreement 857/960 = 89% against the
-> category-implied labels, vs v4's 85%; routing burden 106/240 =
-> 44%), with four completed review passes (60/60 and 55/55 under v4,
-> then 12/12 under v7, then the 72 remaining auto-accepted records
-> walked and confirmed under v7: 72 confirmed, 0 corrected -- zero
-> errors above the 0.7 threshold on the full corpus; confident-band
-> sample under v7 20/20, miss rate 15%, v4-era 19%). Ground truth is
-> complete: all 240 records labeled (172 confirmed, 68 corrected);
-> v7's fresh answers agree with all human corrections on 1113/1200
-> facets (93%): contains_human 95%, contains_robot 97%,
-> contains_android 100%, primary_subject 93%, representation 78%.
-> The first held-out revision was adopted (v7 beats v4 on the
-> held-out batch, pooled 89% vs 85%, fixes 10 / breaks 2, android
-> 100%; matches it on the personal collection, 92% vs 91%, inside
-> noise) and is now the default taxonomy; the second (v8,
-> subject-decides clause for representation) measured inside noise
-> and was kept as the record. Next: author v9 from the 68
-> corrections' families -- photograph -> statue_or_render (22),
-> other -> text_screenshot (16), contains_human no -> yes (7),
-> photograph -> illustration (6), primary_subject none -> human (5)
-> -- and measure it held-out on a batch the authoring never saw
-> (split the new labels into authoring/measurement halves). The
-> interface-screenshot family (16) needs a designed experiment: no
-> held-out batch can test a text_screenshot rewrite (v3's broadening
-> and v6's narrowing are both measured negatives). Depicts
-> annotation is a dead end for this corpus: 0/231
-> files carry P180 statements. See STATUS.md "Next steps" item 2.
+> **NEXT STEP (2026-09-24): Taxonomy v9 adopted -- production
+> re-run, then the fourth revision.** Ground truth is complete:
+> all 240 stand-in records labeled (172 confirmed, 68 corrected;
+> v7 agreed with all human corrections on 1113/1200 facets, 93%).
+> The third held-out revision ran under a split-half protocol
+> (md5(filename) parity: authoring half 132, measurement half 108;
+> every correction family in both halves): v9 (v8's subject-decides
+> clause refined + text_screenshot extended to software interfaces +
+> contains_human background-people clause) measured pooled 516/540
+> (96%) vs v7's stored 505/540 (94%), representation 89% vs 80%
+> (+9), fixes 13 / breaks 4 (18 of 20 changed records on changed
+> criteria); interface family 7 fixes / 1 break, statue clause 6/3,
+> background-people clause neutral. Personal collection: 91% vs 91%,
+> fixes 11 / breaks 11 -- a wash, no regression. v9 is adopted and
+> is now the default taxonomy (`pilot_humanoid.py` default switched
+> from v7 to v9). Next: (1) a production re-run of the corpus with
+> v9 (fresh descriptions; move the results JSON aside first -- the
+> script skips records already present), the production
+> confirmation the v7 re-run provided; (2) the fourth held-out
+> revision from v9's residuals: the statue clause's 3 breaks (the
+> subject-decides boundary between a depicted statue-subject and a
+> photographed scene containing one) and the unmeasured
+> background-people clause. Depicts annotation is a dead end for
+> this corpus: 0/231 files carry P180 statements. See STATUS.md
+> "Next steps" item 2.
 
 The current pipeline (`classify_images.py`) is scaffolding: a vision
 model describes each image, Jev answers one yes/no question. The goal of

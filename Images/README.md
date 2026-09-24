@@ -99,7 +99,7 @@ What Jev genuinely adds:
   held-out-validated revision (LIBRARY.md Phase 6): authored from one
   review batch, measured on a batch it never saw -- beats v4 on the
   stand-in corpus (89% vs 85%, contains_android 100%) and matches it on
-  the personal collection (92% vs 91%), and is now the default. Five
+  the personal collection (92% vs 91%). Five
   rejections are documented, two as the v3/v5 lesson: de-hedging
   without accuracy gains manufactures silent errors, and v6's
   text_screenshot narrowing showed the same failure in mirror image --
@@ -112,7 +112,15 @@ What Jev genuinely adds:
   statue-family corrections), measured inside noise on the held-out
   batch (fixes 5 / breaks 3, three of the eight changes pure
   run-to-run variance): the loop's bar is measured gains, not
-  plausible criteria.
+  plausible criteria. The third revision, v9 (the clause refined,
+  text_screenshot extended to software interfaces, and a
+  background-people clause), was measured under a split-half
+  protocol -- ground truth is complete at 240/240, so the held-out
+  split became deterministic (md5(filename) parity: authoring half
+  132, measurement half 108, every correction family in both
+  halves) -- and adopted: pooled 96% vs v7's 94% on the measurement
+  half, representation 89% vs 80%, fixes 13 / breaks 4, neutral on
+  the personal collection (91% vs 91%): v9 is now the default.
 - **A real check on the LLM.** Pixtral verifies; Jev falsifies. Its
   dissent is the signal: every taxonomy gap found in this project
   (android boundaries, non-humanoid statues, representation splits)

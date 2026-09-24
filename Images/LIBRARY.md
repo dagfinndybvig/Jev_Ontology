@@ -274,9 +274,23 @@ suggestive rather than decisive, but the loop has now produced one
 held-out-validated revision. See RESULTS.md ("Held-out taxonomy
 revision").
 
+**Update (2026-09-24, v9):** with ground truth complete (240/240),
+no unseen batch remains; the protocol became a deterministic
+split-half (md5(filename) parity: authoring half 132, measurement
+half 108, every correction family present in both). v9 (v8's
+subject-decides clause refined + text_screenshot extended to
+software interfaces + a background-people clause) measured pooled
+96% vs v7's 94% on the measurement half, representation 89% vs 80%,
+fixes 13 / breaks 4 (18 of 20 changed records on changed criteria),
+and was neutral on the personal collection (91% vs 91%). Adopted;
+v9 is now the default taxonomy. See RESULTS.md ("Third held-out
+revision").
+
 **Success:** at least one revision that beats its held-out batch
-beyond the noise floor. Until then, revisions are cataloger-driven
-with LLM assistance, not autonomous.
+beyond the noise floor. Met (2026-09-24): v7 and v9 both beat their
+held-out batches, v9 decisively (96% vs 94%, representation +9).
+The open question is whether the loop keeps producing validated
+revisions without fresh labeled data.
 
 ---
 
