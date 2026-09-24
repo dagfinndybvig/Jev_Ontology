@@ -94,7 +94,7 @@ What Jev genuinely adds:
 - **Typed, deterministic output.** A structured choice per facet with
   probabilities -- no parsing, no format drift, directly usable in code.
 - **Criteria-as-state.** The decision rules are data
-  (`humanoid_taxonomy_v7.json`), not code. Eight revisions (v1-v8) were
+  (`humanoid_taxonomy_v9.json`), not code. Ten revisions (v1-v10) were
   authored and measured without touching the pipeline. v7 -- the first
   held-out-validated revision (LIBRARY.md Phase 6): authored from one
   review batch, measured on a batch it never saw -- beats v4 on the
@@ -247,14 +247,21 @@ labeled (95.1% facet agreement with the human corrections under v9). See `RESULT
 
 ## Caveats
 
-- **No ground truth.** The split is Jev's judgment; accuracy is
-  unmeasured. A manual audit of a sample would establish real accuracy.
+- **Ground truth is human, and complete.** All 240 labeled records
+  carry manual corrections; v9 agrees with them on 95.1% of facets
+  (representation 88%).
 - **The vision model is the bottleneck.** Jev only sees the short text
-  description, so a mis-description propagates.
+  description, so a mis-description propagates -- now measured: the
+  background-people family (descriptions that never mention the humans)
+  is a vision-layer limit no criterion edit can fire on.
 - **"Human" is fuzzy.** Statue vs. person, cartoon vs. photo. The
-  criteria could be tightened or split into sub-labels.
-- **No baseline.** We did not compare against a dedicated image
-  classifier.
+  criteria were tightened through ten revisions (through v10); the
+  residual is label noise -- e.g. the statue scene boundary is labeled
+  inconsistently by the same reviewer -- not authorable criteria.
+- **Baselines exist, but not a pixel-level one.** Phase 2 compared
+  keyword, Pixtral-direct, and cascade baselines against the manual
+  corrections -- the cascade wins every measure (91% accuracy, ECE
+  0.038). A CLIP-style pixel classifier remains unmeasured.
 
 ## Privacy
 
