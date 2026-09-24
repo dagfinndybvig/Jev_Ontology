@@ -415,6 +415,26 @@ first review pass on 09-23; corpus top-up and second review pass on
     revision, authored from the correction families (the same
     abduction loop as v6 -> v7). See RESULTS.md ("Production re-run
     with v7", third batch).
+34. **Second held-out revision: v8 measured, not adopted.**
+    `author_taxonomy_v8.py` built v8 from v7 with the subject-decides
+    clause for representation (a photograph/illustration whose
+    subject is a statue, sculpture, or model is statue_or_render; a
+    drawing/painting/poster subject is illustration), authored from
+    batch 1's statue-family corrections. Measured held-out on the 67
+    records dated 09-24 (batches 2+3): pooled 302/335 (90%) vs v7's
+    stored 301/335 (90%), representation 69% vs 66%; per-record
+    fixes 5 / breaks 3, but 3 of the 8 changes are on unchanged
+    criteria (run-to-run variance). Criterion-attributable: 4 toward
+    truth, 2 away (the clause's "model" over-applies to photographed
+    robots). Routing identical (12 caught, burden 25/67). Inside
+    noise -- v7's adoption bar was fixes 10 / breaks 2. v7 stays the
+    default; v8 kept as the measured record. Open gap documented, not
+    revised: the 13 `other` -> text_screenshot interface-screenshot
+    corrections (v3 tried the broadening; measured negative; no
+    held-out batch can test it). Next: a fresh labeled batch (review
+    the 92 auto-accepted records or a new confident-band sample)
+    before the next revision attempt. See RESULTS.md ("Second
+    held-out revision").
 
 ## Where things live
 
@@ -424,9 +444,9 @@ first review pass on 09-23; corpus top-up and second review pass on
 | Run write-up (both corrections, re-run, taxonomy v2) | `Images/RESULTS.md` |
 | Pilot taxonomy v4 (current, adopted) | `Images/humanoid_taxonomy_v4.json` |
 | Taxonomy v7 (adopted for the stand-in corpus; first held-out revision) | `Images/humanoid_taxonomy_v7.json` |
-| Taxonomies v1-v3, v5, v6 (history; v3, v5, and v6's text_screenshot narrowing measured rejections) | `Images/humanoid_taxonomy_v*.json` |
-| Held-out revision authoring + measurement (public) | `Images/author_taxonomy_v6.py`, `Images/author_taxonomy_v7.py`, `Images/measure_taxonomy_v6.py` |
-| Held-out revision run records (private, gitignored) | `Images/taxonomy_v6_batch2_results.json`, `Images/taxonomy_v7_batch2_results.json` |
+| Taxonomies v1-v3, v5, v6, v8 (history; v3, v5, and v6's text_screenshot narrowing measured rejections; v8's subject-decides clause measured inside noise) | `Images/humanoid_taxonomy_v*.json` |
+| Held-out revision authoring + measurement (public) | `Images/author_taxonomy_v6.py`, `Images/author_taxonomy_v7.py`, `Images/author_taxonomy_v8.py`, `Images/measure_taxonomy_v6.py` |
+| Held-out revision run records (private, gitignored) | `Images/taxonomy_v6_batch2_results.json`, `Images/taxonomy_v7_batch2_results.json`, `Images/taxonomy_v8_batch23_results.json` |
 | Pilot script (public; `TAXONOMY` env var selects version, v4 default) | `Images/pilot_humanoid.py` |
 | Sorter (public) | `Images/sort_humanoids.py` |
 | Review UI (public; localhost web app) | `Images/review_ui.py` -> http://localhost:8765 |

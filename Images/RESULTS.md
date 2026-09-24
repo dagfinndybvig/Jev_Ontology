@@ -938,6 +938,49 @@ re-bound that rate.
 
 ---
 
+## Second held-out revision (2026-09-24): v8 measured, not adopted
+
+The same abduction loop that produced v6 -> v7, run again:
+`author_taxonomy_v8.py` built v8 from v7 with one change -- the
+subject-decides clause for the representation facet (a photograph or
+illustration whose subject is a statue, sculpture, or model is
+statue_or_render; one whose subject is a drawing, painting, or poster
+is illustration). Authored from batch 1's statue-family corrections
+(2026-09-23: photograph->statue_or_render x5,
+illustration->statue_or_render x1, photograph->illustration x3), a
+family v6/v7 never addressed. Measured held-out on the 67 records
+dated 2026-09-24 (batches 2+3), which the revision never saw; the
+baseline is v7's stored answers on the same descriptions.
+
+**Measured (held-out, n=67).** v8 pooled 302/335 (90%) vs v7's stored
+301/335 (90%); representation 46/67 (69%) vs 44/67 (66%). Per-record
+fixes 5 / breaks 3 -- but 3 of the 8 changes (two ui_screenshot fixes,
+one break) are on criteria v8 did not change, i.e. pure run-to-run
+variance. The criterion-attributable effect: 4 representation records
+toward truth (statue_035, statue_040, human_illustration_035,
+humanoid_robot_026 -- the statue family fixed where targeted), 2 away
+(humanoid_robot_029, statue_032 -- the clause's word "model"
+over-applies to photographed robots). Routing: 12 caught, burden 25/67
+-- identical to v7's.
+
+**Verdict: inside noise, not adopted.** v7's adoption bar was fixes
+10 / breaks 2 (sign test ~p=0.04); v8's 5/3 does not clear it, and the
+criterion-attributable net is +2 records. v7 stays the default; v8 is
+kept as the measured record. The "model" ambiguity in the defer clause
+is the next revision's signal -- but a v9 authored from these breaks
+would need a fresh labeled batch to be held-out (batch 2+3 is spent).
+
+**Open gap, deliberately not revised:** 13 batch-2 corrections where
+Jev answers `other` for interface screenshots whose truth is
+text_screenshot. v3 tried the interface broadening inside
+text_screenshot and it was a measured negative on the personal
+collection; all 39 labeled ui_screenshot records are dated 2026-09-24,
+so no held-out batch can test the fix. Needs a designed experiment
+(a fresh ui_screenshot review batch split into authoring and
+measurement halves), not a criterion edit.
+
+---
+
 ## Files
 
 ```

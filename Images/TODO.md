@@ -19,9 +19,16 @@
 > 60/60 and 55/55 under v4, then 12/12 under v7 -- 83 confirmed,
 > 65 corrected; v7 agreed with the reviewer on 93% of the third
 > batch, and its fresh answers agree with all human corrections on
-> 663/740 = 90%). The review queue is empty. Next: the second
-> held-out taxonomy revision, authored from the 65 corrections'
-> families and measured held-out on a fresh batch. Depicts
+> 663/740 = 90%). The review queue is empty. The second held-out
+> revision was measured and rejected: v8 (subject-decides clause for
+> representation, authored from batch 1's statue family) pooled 90%
+> vs v7's 90% on the held-out batch, fixes 5 / breaks 3 with 3 of the
+> 8 changes pure run-to-run variance -- inside noise, v7 stays the
+> default. Next: a fresh labeled batch (review the 92 auto-accepted
+> records or a new confident-band sample under v7) before the next
+> revision attempt; the open signals are the clause's "model"
+> ambiguity and the 13 `other` -> text_screenshot interface-screenshot
+> corrections (needs a designed experiment). Depicts
 > annotation is a dead end for this corpus: 0/231
 > files carry P180 statements. See STATUS.md "Next steps" item 2.
 
