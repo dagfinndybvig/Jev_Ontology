@@ -106,7 +106,7 @@ What Jev genuinely adds:
   the regression was invisible at authoring time, which is why the
   held-out protocol exists. The result also held in production: the
   full-corpus re-run with v7 reaches 89% pooled (v4's run: 85%) and
-  90% agreement with the human corrections on 148 labeled records
+  93% agreement with the human corrections on all 240 labeled records
   (v4's stored answers: 86%). The latest rejection, v8 (a
   subject-decides clause for representation, authored from the
   statue-family corrections), measured inside noise on the held-out
@@ -227,9 +227,9 @@ corpus (`library_standin/`, manifest committed, all 6 categories,
 complete at 40 per category after the 2026-09-24 top-up), fully
 re-run with v7: 240/240 measured, 89%
 agreement against the category-implied labels (v4's run: 85%); the routed records
-reviewed in three passes (60/60 and 55/55 under v4, then 12/12 under v7: 75+8 confirmed, 61+4
-corrected, pooled 55% on the hard cases); 136 of the 231 records
-labeled (of 240; the 2026-09-24 top-up added 9 unmeasured images). See `RESULTS.md` ("Stand-in library corpus").
+reviewed in four passes (60/60 and 55/55 under v4, 12/12 under v7, then the 72 remaining auto-accepted records confirmed under v7: 172 confirmed, 68
+corrected overall); all 240 records
+labeled (93% facet agreement with the human corrections). See `RESULTS.md` ("Stand-in library corpus").
 
 ## Caveats
 

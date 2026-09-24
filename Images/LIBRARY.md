@@ -92,8 +92,8 @@ fully re-run with v7 on 2026-09-24 (240/240, 0 errors, pooled
 857/960 = 89%, routing burden 44%); routed records reviewed
 2026-09-23 and 2026-09-24 (60/60 then
 55/55: 75 confirmed, 61 corrected, pooled 55% on the hard cases) --
-the corpus now has 148 labeled records (three review passes: 60/60
-and 55/55 under v4, then 12/12 under v7; corrections merged into the
+the corpus now has all 240 records labeled (four review passes: 60/60
+and 55/55 under v4, 12/12 under v7, then the 72 remaining auto-accepted records confirmed under v7; corrections merged into the
 v7 results), and its edge cases
 (non-humanoid statues, android boundaries, covers with depicted
 content, finer representation splits) are the input for a future

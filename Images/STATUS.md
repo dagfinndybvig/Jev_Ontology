@@ -3,7 +3,8 @@
 **Last updated:** 2026-09-24 (original run and humanoid pilot 09-22;
 routing, edge-case suite, stand-in corpus fetch/measure, and the
 first review pass on 09-23; corpus top-up and second review pass on
-09-23/09-24; corpus complete at 240 and the v7 production re-run on
+09-23/09-24; corpus complete at 240, the v7 production re-run, and
+the fourth review pass -- ground truth complete at 240/240 -- on
 09-24)
 **Repo state:** see git; keep in sync with `origin/main` before new work.
 
@@ -435,6 +436,27 @@ first review pass on 09-23; corpus top-up and second review pass on
     the 92 auto-accepted records or a new confident-band sample)
     before the next revision attempt. See RESULTS.md ("Second
     held-out revision").
+35. **Fourth review pass complete; ground truth complete (240/240
+    labeled).** The 72 remaining auto-accepted records were walked
+    via the All filter (pending-only) under v7: 72 confirmed, 0
+    corrected -- 100% agreement, zero errors found above the 0.7
+    threshold on the full corpus. Combined with the fresh
+    confident-band sample (20/20 reviewed, miss rate 3/20 = 15%,
+    v4-era 19%), the auto-accept band is now validated by a full
+    walk, not just a sample. Cumulative: 172 confirmed, 68
+    corrected; v7's fresh answers agree with all human corrections
+    on 1113/1200 facets (93%): contains_human 95%, contains_robot
+    97%, contains_android 100%, primary_subject 93%, representation
+    78%. Correction families (87 facet changes across the 68
+    corrected records): photograph -> statue_or_render (22), other
+    -> text_screenshot (16), contains_human no -> yes (7), photograph
+    -> illustration (6), primary_subject none -> human (5). Known UI
+    gap: the header's pending counter tracks only queue-routed
+    records, so it reads "queue complete" throughout an All-filter
+    walk -- the data was correct; the counter just does not cover
+    that filter. Next: author v9 from the correction families,
+    measured held-out on a batch the authoring never saw. See
+    RESULTS.md ("Reviewed, fourth batch").
 
 ## Where things live
 
@@ -488,19 +510,22 @@ first review pass on 09-23; corpus top-up and second review pass on
    categories (40 per category after the 2026-09-24 top-up;
    `library_standin/`, manifest committed), fully re-run with v7
    (240/240, 0 errors, pooled 857/960 = 89% vs v4's 85%; routing
-   burden 44%), with three completed review passes (60/60, 55/55
-   under v4, then 12/12 under v7: 83 confirmed, 65 corrected; v7
-   agreed with the reviewer on 93% of the third batch). 148 records
-   are labeled (the corrections are merged into the v7 results; v4's
+   burden 44%), with four completed review passes (60/60, 55/55
+   under v4, then 12/12 under v7, then the 72 remaining
+   auto-accepted records walked and confirmed under v7: 172
+   confirmed, 68 corrected overall). All 240 records are labeled
+   (the corrections are merged into the v7 results; v4's
    raw answers are backed up at
    `../Ontology_private_backup/v4_corpus_run_2026-09-24/`). The
    first held-out taxonomy revision is done: v7 adopted and now the
    default (pooled 89% vs v4's 85% on the corpus's held-out batch,
    92% vs 91% on the personal collection, android 100% on both; see
    RESULTS.md "Held-out taxonomy revision"). The review queue is
-   empty. Next: the second held-out taxonomy revision, authored from
-   the 65 corrections' families and measured held-out on a fresh
-   batch. Depicts annotation is a dead end for this corpus: 0/231
+   empty and ground truth is complete (v7 agrees with all human
+   corrections on 1113/1200 facets, 93%). Next: the third held-out
+   taxonomy revision (v9), authored from the 68 corrections'
+   families and measured held-out on a batch the authoring never
+   saw. Depicts annotation is a dead end for this corpus: 0/231
    files carry P180 statements.
 3. ~~**Measure the edge-case suite.**~~ Done (2026-09-23): 8/8
    measured, pooled agreement 33/36 (92%); see RESULTS.md

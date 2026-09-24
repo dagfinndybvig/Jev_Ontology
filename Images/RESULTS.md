@@ -929,12 +929,29 @@ contains_android 12/12 (100%), primary_subject 12/12 (100%),
 representation 10/12 (83%). The review queue is now empty (0
 unreviewed routed records).
 
-Cumulative review state (three batches, 148 of 240 records labeled):
-83 confirmed, 65 corrected. v7's fresh answers agree with all human
-corrections on 663/740 facets (90%). The 92 unreviewed records are
-auto-accepted (the confident-band sample of 27 under v4 bounded their
-miss rate at 19%); a fresh confident-band sample under v7 would
-re-bound that rate.
+**Reviewed, fourth batch (2026-09-24, v7 answers; ground truth
+complete).** The 72 remaining auto-accepted records were walked via
+the All filter (pending-only) under v7: 72 confirmed, 0 corrected --
+100% agreement, zero errors found above the 0.7 threshold on the
+full corpus. The fresh confident-band sample under v7 (20 records,
+reviewed separately) had bounded the band's miss rate at 3/20 (15%,
+v4-era 19%); the full walk of these 72 found none. Ground truth is
+now complete: 240/240 records labeled.
+
+Cumulative review state (four batches, 240 of 240 records labeled):
+172 confirmed, 68 corrected. v7's fresh answers agree with all human
+corrections on 1113/1200 facets (93%). Per facet: contains_human
+229/240 (95%), contains_robot 233/240 (97%), contains_android
+240/240 (100%), primary_subject 224/240 (93%), representation
+187/240 (78%). The 87 facet changes across the 68 corrected records
+cluster in the known families: representation photograph ->
+statue_or_render (22), other -> text_screenshot (16), contains_human
+no -> yes (7, background people), photograph -> illustration (6),
+primary_subject none -> human (5). These are the authoring signals
+for the next revision (v9); the interface-screenshot family (16)
+still needs a designed experiment -- no held-out batch can test a
+text_screenshot rewrite (v3's broadening and v6's narrowing are both
+measured negatives).
 
 ---
 

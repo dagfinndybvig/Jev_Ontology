@@ -1,6 +1,6 @@
 # TODO: Image classification with Jev -- next steps
 
-> **NEXT STEP (2026-09-24): A real library collection.** Everything
+> **NEXT STEP (2026-09-24): Author taxonomy v9.** Everything
 > else on this list is either done, measured, or blocked on it. The
 > pipeline, taxonomy, and review UX are ready. A stand-in now exists,
 > complete at 240 Wikimedia Commons images across all 6 categories
@@ -8,27 +8,29 @@
 > manifest committed as the ground truth), fully re-run with v7
 > (240/240, 0 errors, pooled agreement 857/960 = 89% against the
 > category-implied labels, vs v4's 85%; routing burden 106/240 =
-> 44%), with two completed review passes on the 231 measured under
-> v4 (60/60 then 55/55: 75 confirmed, 61 corrected, pooled 55% on
-> the hard cases; confident-band sample 27/27, miss rate 19%), and
-> the first held-out revision adopted: v7 beats v4 on the held-out
-> batch (pooled 89% vs 85%, fixes 10 / breaks 2, android 100%) and
-> matches it on the personal collection (92% vs 91%, inside noise)
-> -- v7 is now the default taxonomy; see RESULTS.md "Held-out
-> taxonomy revision". 148 records are labeled (three review passes:
-> 60/60 and 55/55 under v4, then 12/12 under v7 -- 83 confirmed,
-> 65 corrected; v7 agreed with the reviewer on 93% of the third
-> batch, and its fresh answers agree with all human corrections on
-> 663/740 = 90%). The review queue is empty. The second held-out
-> revision was measured and rejected: v8 (subject-decides clause for
-> representation, authored from batch 1's statue family) pooled 90%
-> vs v7's 90% on the held-out batch, fixes 5 / breaks 3 with 3 of the
-> 8 changes pure run-to-run variance -- inside noise, v7 stays the
-> default. Next: a fresh labeled batch (review the 92 auto-accepted
-> records or a new confident-band sample under v7) before the next
-> revision attempt; the open signals are the clause's "model"
-> ambiguity and the 13 `other` -> text_screenshot interface-screenshot
-> corrections (needs a designed experiment). Depicts
+> 44%), with four completed review passes (60/60 and 55/55 under v4,
+> then 12/12 under v7, then the 72 remaining auto-accepted records
+> walked and confirmed under v7: 72 confirmed, 0 corrected -- zero
+> errors above the 0.7 threshold on the full corpus; confident-band
+> sample under v7 20/20, miss rate 15%, v4-era 19%). Ground truth is
+> complete: all 240 records labeled (172 confirmed, 68 corrected);
+> v7's fresh answers agree with all human corrections on 1113/1200
+> facets (93%): contains_human 95%, contains_robot 97%,
+> contains_android 100%, primary_subject 93%, representation 78%.
+> The first held-out revision was adopted (v7 beats v4 on the
+> held-out batch, pooled 89% vs 85%, fixes 10 / breaks 2, android
+> 100%; matches it on the personal collection, 92% vs 91%, inside
+> noise) and is now the default taxonomy; the second (v8,
+> subject-decides clause for representation) measured inside noise
+> and was kept as the record. Next: author v9 from the 68
+> corrections' families -- photograph -> statue_or_render (22),
+> other -> text_screenshot (16), contains_human no -> yes (7),
+> photograph -> illustration (6), primary_subject none -> human (5)
+> -- and measure it held-out on a batch the authoring never saw
+> (split the new labels into authoring/measurement halves). The
+> interface-screenshot family (16) needs a designed experiment: no
+> held-out batch can test a text_screenshot rewrite (v3's broadening
+> and v6's narrowing are both measured negatives). Depicts
 > annotation is a dead end for this corpus: 0/231
 > files carry P180 statements. See STATUS.md "Next steps" item 2.
 
