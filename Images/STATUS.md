@@ -455,8 +455,9 @@ re-run, the same day)
     gap: the header's pending counter tracks only queue-routed
     records, so it reads "queue complete" throughout an All-filter
     walk -- the data was correct; the counter just does not cover
-    that filter. Next: author v9 from the correction families,
-    measured held-out on a batch the authoring never saw. See
+    that filter. (Fixed 2026-09-24, item 38.) Next: author v9 from
+    the correction families, measured held-out on a batch the
+    authoring never saw. See
     RESULTS.md ("Reviewed, fourth batch").
 36. **Third held-out revision: v9 authored and adopted (split-half
     protocol).** Ground truth is complete (240/240), so the held-out
@@ -510,6 +511,19 @@ re-run, the same day)
     94%); this is the production confirmation. Next: the fourth
     held-out revision from these residuals. See RESULTS.md
     ("Production re-run with v9").
+38. **Review UI pending counter made filter-aware (the item 35 gap
+    fixed).** `render()`'s pending count and the green completion
+    tag now follow the active filter: the All filter counts all
+    unreviewed records and shows "filter complete" at zero (it read
+    "queue complete" at 0 throughout an All-filter walk before),
+    the Sample filter counts its own pending, and the Queue filter
+    is unchanged. The All button also shows a live pending suffix
+    ("All (240, 72 pending)") during a walk. Verified with five
+    scenario tests in the Node DOM-stub harness against the
+    embedded script (the harness needed document.addEventListener
+    and focus stubs, and an innerHTML setter that clears children --
+    stale button children otherwise leak between rebuilds);
+    `node --check` and `py_compile` clean.
 
 ## Where things live
 

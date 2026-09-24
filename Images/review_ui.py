@@ -279,6 +279,10 @@ function rebuild() {
       b.textContent = 'Queue (' + records.filter(r => r.queued && !r.reviewed).length + ' pending of ' + counts.queue + ')';
     else if (k === 'sample')
       b.textContent = 'Sample (' + records.filter(r => sampleFiles.includes(r.file) && !r.reviewed).length + ' pending of ' + sampleFiles.length + ')';
+    else if (k === 'all') {
+      const unrev = records.filter(r => !r.reviewed).length;
+      b.textContent = label + ' (' + counts.all + (unrev ? ', ' + unrev + ' pending' : '') + ')';
+    }
     else
       b.textContent = label + ' (' + counts[k] + ')';
     b.className = filter === k ? 'active' : '';
@@ -300,11 +304,14 @@ function rebuild() {
 }
 
 function render() {
-  const pending = records.filter(r => r.queued && !r.reviewed).length;
+  const scoped = r => filter === 'all' ? true : filter === 'queue' ? r.queued : filter === 'sample' ? sampleFiles.includes(r.file) : r.reviewed;
+  const pending = records.filter(r => scoped(r) && !r.reviewed).length;
+  const hasScope = records.some(scoped);
+  const doneTag = filter === 'queue' ? 'queue complete' : filter === 'reviewed' ? null : 'filter complete';
   document.getElementById('meta').innerHTML =
     (order.length ? (idx + 1) + ' / ' + order.length : '0') +
     '  |  pending: ' + pending +
-    (pending === 0 && records.some(r => r.queued) ? '  <span style="color:#4caf7d">queue complete</span>' : '');
+    (pending === 0 && doneTag && hasScope ? '  <span style="color:#4caf7d">' + doneTag + '</span>' : '');
   if (!order.length) {
     document.getElementById('imgpane').innerHTML = '';
     const hasAny = filter === 'queue' ? records.some(r => r.queued) : sampleFiles.length > 0;
