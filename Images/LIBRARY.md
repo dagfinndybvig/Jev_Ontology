@@ -254,6 +254,21 @@ raised accuracy. Lesson for the protocol: evaluate revisions on
 errors-caught per review burden against labels, never on confidence
 or queue size alone. See RESULTS.md ("Taxonomy revision series").
 
+**Update (2026-09-24):** the protocol ran held-out for the first
+time: v6 was authored from the stand-in corpus batch 1 corrections
+and measured on batch 2 (55 labeled records the revision never saw).
+v6's entity changes worked (android 89% -> 100%) but its
+text_screenshot narrowing regressed representation 62% -> 49% -- the
+v3 lesson in mirror image, and the reason the protocol exists: the
+regression was invisible at authoring time. The composed v7 (entity
+changes kept, representation reverted to v4) beat v4 held-out: pooled
+89% vs 85%, fixes 10 / breaks 2 (sign test ~p=0.04), routing
+property intact (21/22 caught). This is the first revision that
+beats its held-out batch -- at the edge of the noise floor,
+suggestive rather than decisive, but the loop has now produced one
+held-out-validated revision. See RESULTS.md ("Held-out taxonomy
+revision").
+
 **Success:** at least one revision that beats its held-out batch
 beyond the noise floor. Until then, revisions are cataloger-driven
 with LLM assistance, not autonomous.

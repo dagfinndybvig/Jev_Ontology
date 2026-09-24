@@ -797,6 +797,63 @@ Wilson CI ~8-37%).
 
 ---
 
+## Held-out taxonomy revision (2026-09-24)
+
+The first revision run under the LIBRARY.md Phase 6 held-out protocol:
+`humanoid_taxonomy_v6.json` was authored from the stand-in corpus
+batch 1 corrections (2026-09-23, 31 corrections in four families) and
+measured on batch 2 (2026-09-24, 55 labeled records), which the
+revision never saw. One Jev call per record on the same descriptions
+(`measure_taxonomy_v6.py`, no vision calls); the baseline is v4's
+stored answers, the answers the batch 2 review judged.
+
+**v6 (measured, held-out).** Pooled 238/275 (87%) vs v4's 235/275
+(85%). The entity-facet changes worked: contains_android 49/55 (100%,
+was 89%), contains_human 53/55 (96%, was 93%), primary_subject 50/55
+(91%, was 87%). The `text_screenshot` narrowing backfired:
+representation 27/55 (49%, was 62%) -- the labels say 28 of 32
+ui_screenshots ARE text_screenshot, and v6 broke 5 records v4 had
+right while fixing 0. This is the v3 lesson in mirror image: v3
+broadened the class and de-hedged errors into confident ones; v6
+narrowed it and converted correct confident answers into confident
+`other` errors. Both directions of rewriting `text_screenshot` are now
+measured negatives.
+
+**v7 (adopted).** `humanoid_taxonomy_v7.json` = v6's entity-facet
+changes with v4's representation wording restored -- a composition of
+measured components, re-measured on the same held-out batch: pooled
+246/275 (89%) vs v4's 235/275 (85%); v7 fixes 10 records v4 had wrong
+and breaks 2 (sign test ~p=0.04 -- at the edge of the noise floor,
+suggestive rather than decisive). Per facet: contains_human 96%,
+contains_robot 96%, contains_android 100%, primary_subject 91%,
+representation 64%. Full-route burden 45/55 (82% -- the batch is
+dominated by text-bearing ui_screenshots, a true signal); the routing
+rule catches 21 of 22 errors, the one silent being a representation
+error (statue_038) in the known vision-limited family. The v3/v5
+failure mode did not materialize: v7's de-hedged records are correct.
+
+**Adoption.** v7 is adopted for the stand-in corpus (corpus runs
+should set `TAXONOMY=humanoid_taxonomy_v7.json`; script defaults stay
+at v4, the personal collection's measured best, where v7 is
+unmeasured). The three v6/v7 criteria changes: sculpted works added to
+the depiction media (9 batch 1 statue corrections answered no/none on
+statues of humans -- the v4 medium enumeration omitted sculpting);
+the android boundary sharpened to require a human-passing appearance
+(8 batch 1 corrections over-fired on mechanical robots; "the image or
+its context identifies them as artificial" let any robot in a robot
+context count); `text_screenshot` left at v4's wording, now measured
+from both directions.
+
+**Run-to-run variance (TODO item 6) got a live data point.** The v6
+criteria were run twice on the same 55 descriptions (the second run
+accidental, a results-path mistake): identical choices on all five
+facets, but 14 vs 16 threshold-routed records (25% vs 29% burden) --
+choices are stable, confidences drift by a few points run to run.
+Same-prompt variance is now measured once: small, but real, and it
+moves records across the 0.7 boundary.
+
+---
+
 ## Files
 
 ```

@@ -1,0 +1,64 @@
+{
+  "_meta": {
+    "version": "humanoid_taxonomy_v6",
+    "date": "2026-09-24",
+    "author": "Mistral Vibe (mistral-vibe)",
+    "derived_from": "humanoid_taxonomy_v4",
+    "purpose": "Held-out taxonomy revision (LIBRARY.md Phase 6): authored from the stand-in corpus batch 1 corrections (2026-09-23, 31 corrections in four families) and measured on batch 2 (2026-09-24, 55 labeled records), which the revision never saw. Three changes: sculpted works added to the depiction media (9 statue corrections answered no/none on statues of humans); the android boundary sharpened to require a human-passing appearance (8 corrections over-fired on mechanical robots); text_screenshot narrowed to flat text captures so covers with designed surfaces classify by their surface (4 corrections). Representation otherwise reverts to v2/v4 wording.",
+    "design_notes": [
+      "One revision per re-run (Phase 6 discipline): authored from batch 1 signals only; batch 2 is the held-out test set.",
+      "The v4 medium enumeration (photographed, drawn, illustrated, rendered, sketched) omitted sculpted works, so Jev read a statue of a person as containing no human. 'Sculpted (a statue or figurine)' is added to contains_human.yes, primary_subject.human, and primary_subject.none.",
+      "The v4 android criteria ('the image or its context identifies them as artificial') let any robot in a robot context count as an android. v6 requires a human-passing appearance -- a human face, skin, and human proportions -- and states that a visibly mechanical robot, even a humanoid one, is not an android.",
+      "v4's text_screenshot ('shows words or code, not a scene') fired on book covers, which show words AND a designed surface. v6 narrows it to flat captures of words/code with no depicted scene or designed surface; a cover, poster, or packaging with a designed surface is illustration or photograph. This narrows (not broadens) the class, so it cannot de-hedge errors the way v3 did.",
+      "The two v4 GAPs (incidental humans; interface screenshot with a depicted subject) remain documented, not revised: n=1 synthetic evidence each, and the v3/v5 lesson applies."
+    ]
+  },
+  "facets": {
+    "contains_human": {
+      "type": "choice",
+      "instructions": "Does this image contain a human?",
+      "criteria": {
+        "yes": "The image itself shows one or more humans (people, faces, bodies) in any medium: photographed, drawn, illustrated, rendered, sculpted (a statue or figurine), or sketched in a diagram. A character depicted in a cartoon, card, or illustration is visible and counts. A person merely mentioned, named, or described in text within the image does not count",
+        "no": "The image itself shows no humans: no person, face, or body is visible in any medium (people only mentioned or described in text do not count). A robot or android, however human-like, is not a human for this question"
+      }
+    },
+    "contains_robot": {
+      "type": "choice",
+      "instructions": "Does this image contain a robot or mechanical automaton?",
+      "criteria": {
+        "yes": "The image itself shows one or more robots: mechanical automatons with a being-like form -- a body, face, or limbs -- whether photographed, illustrated, or rendered. Abstract machinery, engines, or mechanisms without a being-like form do not count; robots merely mentioned or described in text do not count",
+        "no": "The image itself shows no robots or mechanical automatons with a being-like form (machinery without a body or face, and robots only mentioned in text, do not count)"
+      }
+    },
+    "contains_android": {
+      "type": "choice",
+      "instructions": "Does this image contain an android: an artificial being that passes as human?",
+      "criteria": {
+        "yes": "The image itself shows one or more androids: artificial beings manufactured to pass as human -- a human face, skin, and human proportions, presented as a person. Only what is visible in any medium counts; beings merely described in text do not count",
+        "no": "The image itself shows no androids: no artificial being presented as human-passing. A visibly mechanical robot -- exposed machinery, metal or plastic skin, glowing or camera eyes -- is not an android, even if humanoid in shape (beings only mentioned in text do not count)"
+      }
+    },
+    "primary_subject": {
+      "type": "choice",
+      "instructions": "What is the primary humanoid subject of the image?",
+      "criteria": {
+        "human": "The main subject the image itself shows, in any medium (photo, illustration, render, sculpture, diagram), is one or more humans; humans only mentioned or described in text do not count",
+        "robot": "The main subject the image itself shows is one or more robots or mechanical automatons with a being-like form; abstract machinery and robots only mentioned in text do not count",
+        "android": "The main subject the image itself shows is one or more androids: artificial beings with a human-passing appearance (human face, skin, and proportions), not visibly mechanical robots",
+        "multiple": "The image itself prominently shows more than one distinct kind of humanoid (e.g., a human together with a robot)",
+        "none": "The image shows no humanoid subject of any kind, in any medium: no human, robot, or android is visible, whether photographed, drawn, rendered, or sculpted. Images that are only text, objects, or scenes without humanoids are 'none' -- a humanoid described in text is not depicted"
+      }
+    },
+    "representation": {
+      "type": "choice",
+      "instructions": "How is the subject represented?",
+      "criteria": {
+        "photograph": "A photograph of a real scene: actual people, objects, or places captured by a camera",
+        "illustration": "A drawing, cartoon, comic, painting, or digital illustration",
+        "statue_or_render": "A statue, figurine, sculpture, model, or 3D render of a subject",
+        "text_screenshot": "A flat capture of words or code: the image shows only text -- a terminal, document, or screen of words -- with no depicted scene and no designed surface. A book cover, poster, sign, or packaging with a designed surface is illustration or photograph, not text_screenshot, even though it carries words",
+        "other": "None of the above: a diagram, chart, map, abstract image, or interface screenshot without a depicted subject"
+      }
+    }
+  }
+}

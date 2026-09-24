@@ -138,6 +138,20 @@ Essential context for any agent working in this directory.
   149/149, 0 errors, pooled agreement 541/615 (88%) — Commons
   categories are noisy labels, so mismatches are review candidates,
   not verdicts.
+- `author_taxonomy_v6.py` / `author_taxonomy_v7.py` — build the
+  held-out revision taxonomies from v4/v6 JSON (criterion text is
+  data; the scripts patch and bump `_meta`). v6 was authored from
+  batch 1 signals; v7 = v6's entity changes + v4's representation
+  wording. Committed (public data).
+- `measure_taxonomy_v6.py` — the Phase 6 held-out measurement: runs
+  the taxonomy's five facets (Jev calls only, no vision) on the
+  labeled records with `manual_correction` date 2026-09-24 (batch 2,
+  55 records) and compares to the manual corrections and v4's stored
+  answers. `TAXONOMY` selects the version, `RESULTS_OUT` the output
+  file (default `taxonomy_v6_batch2_results.json`, private,
+  gitignored). Resumable; needs TYPESAFE_API_KEY. Measured: v6 87%
+  (text_screenshot narrowing regressed representation 62% -> 49%),
+  v7 89% vs v4's 85% — v7 adopted for the corpus.
 - Runs skip records with `status: ok`. Fresh descriptions require
   moving the results JSON aside first. Cost is small but real
   (~$0.0003 per image for the vision step).
@@ -217,3 +231,13 @@ recomputed from the result JSONs, never recalled from memory.
   text.") are true signals and must be kept. If the vision prompt
   changes, re-check the preamble wording against
   `PREAMBLE_NEGATION`.
+- `measure_taxonomy_v6.py` resume trap (found live, 2026-09-24): the
+  script skips records with `status: ok`, so running it with the
+  wrong `TAXONOMY` but the right `RESULTS_OUT` populates the output
+  file with the wrong version's answers, and the corrected re-run
+  then skips everything as "already done" — identical answers, exit
+  0, no error. If a version's answers look suspiciously identical to
+  a previous run's, delete the results file and re-run. (This
+  produced a live run-to-run variance data point as a byproduct:
+  identical v6 criteria, two runs, same choices, 14 vs 16
+  threshold-routed.)

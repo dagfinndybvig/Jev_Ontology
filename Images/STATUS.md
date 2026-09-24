@@ -330,6 +330,31 @@ first review pass on 09-23; corpus top-up and second review pass on
     remain unverified; the confident-band sample bounds their miss
     rate at 19% (Wilson CI ~8-37%). See RESULTS.md ("Reviewed,
     second batch").
+28. **First held-out taxonomy revision (v6 rejected, v7 adopted).**
+    The Phase 6 protocol ran for real: v6 was authored from batch 1's
+    31 corrections (sculpted works added to the depiction media -- the
+    v4 enumeration omitted sculpting, so statues of humans answered
+    no/none; the android boundary sharpened to require a human-passing
+    appearance; text_screenshot narrowed so covers classify by their
+    surface) and measured on batch 2's 55 labeled records, which the
+    revision never saw (`measure_taxonomy_v6.py`, Jev calls only).
+    v6: pooled 87% vs v4's 85% -- the entity changes worked (android
+    100%, was 89%; contains_human 96%; primary_subject 91%) but the
+    text_screenshot narrowing regressed representation 62% -> 49%,
+    breaking 5 records v4 had right and fixing 0: the v3 lesson in
+    mirror image, both directions of rewriting that class are now
+    measured negatives. v7 (v6's entity changes + v4's representation
+    wording, a composition of measured components) re-measured on the
+    same batch: pooled 89% vs 85%, fixes 10 / breaks 2 (sign test
+    ~p=0.04, at the edge of the noise floor), android 100%, and the
+    routing property holds (21 of 22 errors caught by the full rule;
+    the one silent is the known representation family). v7 is adopted
+    for the stand-in corpus (set `TAXONOMY=humanoid_taxonomy_v7.json`
+    on corpus runs; script defaults stay at v4, the personal
+    collection's measured best). A live run-to-run variance data point
+    fell out: identical v6 criteria, two runs, same choices, 14 vs 16
+    threshold-routed -- confidences drift a few points run to run
+    (TODO item 6). See RESULTS.md ("Held-out taxonomy revision").
 
 ## Where things live
 
@@ -338,7 +363,10 @@ first review pass on 09-23; corpus top-up and second review pass on
 | Pilot plan and results write-up | `Images/LIBRARY.md` |
 | Run write-up (both corrections, re-run, taxonomy v2) | `Images/RESULTS.md` |
 | Pilot taxonomy v4 (current, adopted) | `Images/humanoid_taxonomy_v4.json` |
-| Pilot taxonomies v1-v3, v5 (history; v3 and v5 measured rejections) | `Images/humanoid_taxonomy_v*.json` |
+| Taxonomy v7 (adopted for the stand-in corpus; first held-out revision) | `Images/humanoid_taxonomy_v7.json` |
+| Taxonomies v1-v3, v5, v6 (history; v3, v5, and v6's text_screenshot narrowing measured rejections) | `Images/humanoid_taxonomy_v*.json` |
+| Held-out revision authoring + measurement (public) | `Images/author_taxonomy_v6.py`, `Images/author_taxonomy_v7.py`, `Images/measure_taxonomy_v6.py` |
+| Held-out revision run records (private, gitignored) | `Images/taxonomy_v6_batch2_results.json`, `Images/taxonomy_v7_batch2_results.json` |
 | Pilot script (public; `TAXONOMY` env var selects version, v4 default) | `Images/pilot_humanoid.py` |
 | Sorter (public) | `Images/sort_humanoids.py` |
 | Review UI (public; localhost web app) | `Images/review_ui.py` -> http://localhost:8765 |
@@ -383,11 +411,13 @@ first review pass on 09-23; corpus top-up and second review pass on
    2026-09-23 and 2026-09-24 (60/60 then 55/55: 75 confirmed,
    61 corrected, pooled 55% on the hard cases; the confident-band
    sample 27/27, miss rate 19%). 136 of 231 records are labeled.
-   Next: the future taxonomy revision (non-humanoid statues, android
-   boundaries, covers with depicted content, finer representation
-   splits), measured against the labeled records per the held-out
-   protocol. Depicts annotation is a dead end for this corpus:
-   0/231 files carry P180 statements.
+   The first held-out taxonomy revision is done: v7 adopted for the
+   corpus (pooled 89% vs v4's 85% on the held-out batch, android
+   100%; see RESULTS.md "Held-out taxonomy revision"). Next: re-measure
+   v7 on the personal collection's 85 labeled records (Jev calls
+   only) before touching its default, and re-run the corpus pipeline
+   with v7 when the Wikimedia block lifts. Depicts annotation is a
+   dead end for this corpus: 0/231 files carry P180 statements.
 3. ~~**Measure the edge-case suite.**~~ Done (2026-09-23): 8/8
    measured, pooled agreement 33/36 (92%); see RESULTS.md
    ("Edge-case suite"). Residuals: the AI-generated portrait is

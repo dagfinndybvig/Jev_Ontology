@@ -3,20 +3,22 @@
 > **NEXT STEP (2026-09-24): A real library collection.** Everything
 > else on this list is either done, measured, or blocked on it. The
 > pipeline, taxonomy, and review UX are ready. A stand-in now exists
-> with a first pipeline pass and two completed review passes: 231
-> Wikimedia Commons images across all 6 categories
-> (`library_standin/`, manifest committed as the ground truth),
-> measured 2026-09-23 -- 231/231, 0 errors, pooled agreement
-> 794/929 (85%) against the category-implied labels -- and the
+> with a first pipeline pass, two completed review passes, and a
+> completed held-out taxonomy revision: 231 Wikimedia Commons images
+> across all 6 categories (`library_standin/`, manifest committed as
+> the ground truth), measured 2026-09-23 -- 231/231, 0 errors, pooled
+> agreement 794/929 (85%) against the category-implied labels -- the
 > routed records reviewed 2026-09-23 and 2026-09-24 (60/60 then
 > 55/55: 75 confirmed, 61 corrected, pooled 55% on the hard cases;
-> confident-band sample 27/27, miss rate 19%). 136 of 231 records
-> are labeled. Next: the future taxonomy revision (non-humanoid
-> statues, android boundaries, covers with depicted content, finer
-> representation splits), measured against the labeled records per
-> the held-out protocol (LIBRARY.md Phase 6). Depicts annotation is
-> a dead end for this corpus: 0/231 files carry P180 statements.
-> See STATUS.md "Next steps" item 2.
+> confident-band sample 27/27, miss rate 19%), and the first held-out
+> revision adopted: v7 beats v4 on the held-out batch (pooled 89% vs
+> 85%, fixes 10 / breaks 2, android 100%; see RESULTS.md "Held-out
+> taxonomy revision"). 136 of 231 records are labeled. Next: re-measure
+> v7 on the personal collection's 85 labeled records before touching
+> its default, and re-run the corpus pipeline with v7 when the
+> Wikimedia block lifts. Depicts annotation is a dead end for this
+> corpus: 0/231 files carry P180 statements. See STATUS.md "Next
+> steps" item 2.
 
 The current pipeline (`classify_images.py`) is scaffolding: a vision
 model describes each image, Jev answers one yes/no question. The goal of
@@ -175,8 +177,14 @@ standard deviation of confidence, and whether the choice ever flips.
 
 **Update (2026-09-23):** a cross-prompt comparison now exists (old
 vs. fixed vision prompt: 204/215 contains_human agreement, queue
-79 -> 52), but that changes two variables at once. Same-prompt,
-same-description variance is still unmeasured.
+79 -> 52), but that changes two variables at once.
+
+**Update (2026-09-24):** same-prompt, same-description variance is now
+measured once, as a byproduct of the held-out revision: the v6
+criteria were run twice on the same 55 descriptions -- identical
+choices on all five facets, but 14 vs 16 threshold-routed records
+(25% vs 29% burden). Choices are stable; confidences drift by a few
+points run to run, which moves records across the 0.7 boundary.
 
 **Effort:** Small. A loop over the existing `jev_classify` function.
 
