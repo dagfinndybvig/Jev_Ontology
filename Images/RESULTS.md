@@ -1125,6 +1125,60 @@ family (6, still unmeasured).
 
 ---
 
+## Fourth held-out revision (2026-09-24): v10 measured, not adopted
+
+The same split-half protocol, run on the production residuals:
+`author_taxonomy_v10.py` built v10 from v9 with two changes, authored
+from the authoring half's residuals only (every residual family has
+members in both halves: statue-miss 5/4, statue-reverse 2/1,
+text_screenshot over-call 5/3, background-people 3/3):
+
+1. **text_screenshot narrowed against the v9 broadening's
+   over-calls:** printed matter photographed or illustrated (book
+   covers, posters, programs, packages) is photograph/illustration
+   by its depicted content even when dominated by text; a screenshot
+   that primarily shows image content (a design canvas, an
+   annotation overlay, a grid of images) is other.
+2. **statue_or_render extended to robot costumes and display/exhibit
+   models** ("two large, detailed robot costumes", "a dog inside a
+   cardboard robot costume", "on display at an exhibit" answered
+   photograph).
+
+Deliberately not revised: the background-people family (6
+contains_human no -> yes corrections) -- the descriptions do not
+mention the humans (a fossil model, covers whose people go
+undescribed), so no criterion edit can fire; it is a vision-layer
+limit (the description is the bottleneck). Also left alone: the
+statue clause's scene boundary (a sculpture mounted on a building
+and a statue on an altar were corrected to photograph, while a
+distant statue in a landscape was corrected to statue_or_render) --
+the reviewer labels are inconsistent there; no authorable criterion.
+
+**Measured (held-out, n=108, measurement half).** v10 pooled 517/540
+(96%) vs v9's stored 517/540 (96%) -- identical pooled.
+representation 98/108 (91%) vs 96/108 (89%); primary_subject 94% vs
+95%. Per-record fixes 2 / breaks 3, but 2 of the breaks are pure
+run-to-run variance (primary_subject on unchanged criteria).
+Criterion-attributable: 4 toward truth, 2 away -- the printed-matter
+exclusion fixed book_cover_033 and _036 but broke book_cover_039
+(whose truth is text_screenshot); the costume/display clause fixed
+humanoid_robot_008.jpeg and broke humanoid_robot_008.jpg; the
+image-content-screenshot exclusion fixed ui_screenshot_036 (a v9
+break). Errors 15 vs v9's 14 at identical burden (15 routed, 14%),
+caught 7 vs 6.
+
+**Verdict: inside noise, not adopted.** The adoption bar is fixes
+10 / breaks 2 (v7) or 13 / 4 (v9); v10's 2/3 does not approach it.
+v9 stays the default; v10 is kept as the measured record. The loop
+is at diminishing returns on this corpus: the residual families are
+small (5/4, 2/1, 5/3, 3/3 per half) and the remaining labels are
+noisy at the boundaries. The next lever is new labeled data (a real
+library collection) or the vision layer -- for the background-people
+family the description itself is the bottleneck, which no criterion
+edit can fix.
+
+---
+
 ## Files
 
 ```

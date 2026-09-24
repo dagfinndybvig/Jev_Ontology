@@ -120,7 +120,13 @@ What Jev genuinely adds:
   132, measurement half 108, every correction family in both
   halves) -- and adopted: pooled 96% vs v7's 94% on the measurement
   half, representation 89% vs 80%, fixes 13 / breaks 4, neutral on
-  the personal collection (91% vs 91%): v9 is now the default.
+  the personal collection (91% vs 91%): v9 is now the default. The
+  fourth revision, v10 (printed-matter and image-content-screenshot
+  exclusions, robot costumes in statue_or_render), measured pooled
+  identical to v9 (96%) with fixes 2 / breaks 3 -- inside noise, not
+  adopted: the loop is at diminishing returns on this corpus, and
+  the remaining residuals are not authorable from the descriptions
+  (the background-people family is a vision-layer limit).
 - **A real check on the LLM.** Pixtral verifies; Jev falsifies. Its
   dissent is the signal: every taxonomy gap found in this project
   (android boundaries, non-humanoid statues, representation splits)

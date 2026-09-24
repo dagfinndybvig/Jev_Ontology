@@ -511,6 +511,30 @@ re-run, the same day)
     94%); this is the production confirmation. Next: the fourth
     held-out revision from these residuals. See RESULTS.md
     ("Production re-run with v9").
+39. **Fourth held-out revision: v10 measured, not adopted.** The
+    split-half protocol ran on the production residuals:
+    `author_taxonomy_v10.py` built v10 from v9 with two changes,
+    authored from the authoring half's residuals only (statue-miss
+    5/4, statue-reverse 2/1, text_screenshot over-call 5/3,
+    background-people 3/3 per half): (1) text_screenshot narrowed
+    against the v9 broadening's over-calls -- printed matter
+    photographed or illustrated is photograph/illustration by its
+    depicted content, and a screenshot that primarily shows image
+    content (design canvas, annotation overlay, image grid) is
+    other; (2) statue_or_render extended to robot costumes and
+    display/exhibit models. The background-people family was
+    deliberately not revised: the descriptions do not mention the
+    humans -- a vision-layer limit, no criterion edit can fire.
+    Measured (`measure_taxonomy_v10.py`): pooled 517/540 (96%) vs
+    v9's 517/540 (96%) -- identical; representation 91% vs 89%;
+    per-record fixes 2 / breaks 3 (2 of the breaks pure
+    run-to-run variance); criterion-attributable 4 toward / 2 away.
+    Inside noise -- the adoption bar is fixes 10 / breaks 2 (v7) or
+    13 / 4 (v9). v9 stays the default; v10 kept as the measured
+    record. The loop is at diminishing returns on this corpus: the
+    residual families are small and the boundary labels noisy. The
+    next lever is new labeled data (a real library collection) or
+    the vision layer. See RESULTS.md ("Fourth held-out revision").
 38. **Review UI pending counter made filter-aware (the item 35 gap
     fixed).** `render()`'s pending count and the green completion
     tag now follow the active filter: the All filter counts all
@@ -600,11 +624,15 @@ re-run, the same day)
    routing burden 37%; v9 agrees with all human corrections on
    1141/1200 facets, 95.1%; corrections merged into the v9 results;
    v7's raw answers backed up at
-   `../Ontology_private_backup/v7_corpus_run_2026-09-24/`). Next:
-   the fourth held-out revision from the production residuals (the
-   statue clause's residual 9 + 3 reverse breaks; the interface
-   broadening's 8 over-called text_screenshot records; the
-   unmeasured background-people family of 6). Depicts annotation is
+   `../Ontology_private_backup/v7_corpus_run_2026-09-24/`). The
+   fourth held-out revision is done: v10 measured and not adopted
+   (pooled identical to v9 at 96%, fixes 2 / breaks 3 -- inside
+   noise; the background-people family is a vision-layer limit).
+   The taxonomy loop is at diminishing returns on this corpus: the
+   residual families are small and the boundary labels noisy. Next:
+   new labeled data (a real library collection) or a vision-layer
+   lever -- for the background-people family the description itself
+   is the bottleneck. Depicts annotation is
    a dead end for this corpus: 0/231 files carry P180 statements.
 3. ~~**Measure the edge-case suite.**~~ Done (2026-09-23): 8/8
    measured, pooled agreement 33/36 (92%); see RESULTS.md

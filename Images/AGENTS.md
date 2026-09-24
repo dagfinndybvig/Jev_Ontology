@@ -175,6 +175,18 @@ Essential context for any agent working in this directory.
   `taxonomy_v9_halfM_results.json`, private, gitignored). Resumable;
   needs TYPESAFE_API_KEY. Measured: v9 96% vs v7's 94%,
   representation 89% vs 80%, fixes 13 / breaks 4 — v9 adopted.
+- `author_taxonomy_v10.py` — builds v10 from v9 under the same
+  split-half protocol, from the v9 production residuals: printed
+  matter and image-content screenshots excluded from
+  text_screenshot; robot costumes and display/exhibit models added
+  to statue_or_render. The background-people family is deliberately
+  not revised (the descriptions do not mention the humans — a
+  vision-layer limit). Committed (public data).
+- `measure_taxonomy_v10.py` — the split-half held-out measurement
+  for v10 (same md5 split, baseline v9's stored answers). Writes
+  `taxonomy_v10_halfM_results.json` (private, gitignored).
+  Measured: pooled identical to v9 (96%), fixes 2 / breaks 3 —
+  inside noise, v10 not adopted.
 - `measure_taxonomy_v6.py` — the Phase 6 held-out measurement: runs
   the taxonomy's five facets (Jev calls only, no vision) on the
   labeled records with `manual_correction` date 2026-09-24 (batch 2,

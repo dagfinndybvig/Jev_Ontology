@@ -1,35 +1,28 @@
 # TODO: Image classification with Jev -- next steps
 
-> **NEXT STEP (2026-09-24): Fourth held-out revision from v9's
-> production residuals.** Ground truth is complete: all 240
-> stand-in records labeled (172 confirmed, 68 corrected). The third
-> held-out revision ran under a split-half protocol (md5(filename)
-> parity: authoring half 132, measurement half 108; every
-> correction family in both halves): v9 (v8's subject-decides
-> clause refined + text_screenshot extended to software interfaces +
-> contains_human background-people clause) measured pooled 516/540
-> (96%) vs v7's stored 505/540 (94%), representation 89% vs 80%
-> (+9), fixes 13 / breaks 4 (18 of 20 changed records on changed
-> criteria); interface family 7 fixes / 1 break, statue clause 6/3,
-> background-people clause neutral. Personal collection: 91% vs 91%,
-> fixes 11 / breaks 11 -- a wash, no regression. v9 is adopted and
-> is now the default taxonomy (`pilot_humanoid.py` default switched
-> from v7 to v9). The v9 production re-run is done (240/240, 0
-> errors, pooled 898/960 = 94% vs v7's 89%; representation 94% vs
-> 71% against the category-implied labels; routing burden 89/240 =
-> 37%, was 44%; v9 agrees with all human corrections on 1141/1200
-> facets = 95.1%, was 92.8% under v7; corrections merged into the
-> v9 results; v7's raw answers backed up at
-> `../Ontology_private_backup/v7_corpus_run_2026-09-24/`).
-> Remaining families (59 facet changes): the statue clause's
-> residual 9 (photograph -> statue_or_render, was 22) + 3 reverse
-> breaks; the interface broadening over-calls text_screenshot on 8
-> records (-> other x3, -> photograph x3, -> illustration x2); the
-> background-people family of 6 (still unmeasured). Next: author
-> v10 from these residuals under the split-half protocol (re-split
-> or use the production corrections as the new labeled set).
-> Depicts annotation is a dead end for this corpus: 0/231 files
-> carry P180 statements. See STATUS.md "Next steps" item 2.
+> **NEXT STEP (2026-09-24): New labeled data or a vision-layer
+> lever -- the taxonomy loop is at diminishing returns on this
+> corpus.** Ground truth is complete: all 240 stand-in records
+> labeled (172 confirmed, 68 corrected). The taxonomy loop ran four
+> held-out revisions: v7 adopted (89% vs v4's 85%), v8 rejected
+> (inside noise), v9 adopted under the split-half protocol (96% vs
+> 94%, representation 89% vs 80%; production re-run 240/240, 0
+> errors, pooled 898/960 = 94% vs v7's 89%; v9 agrees with all
+> human corrections on 1141/1200 facets = 95.1%), and v10 measured
+> and rejected (pooled identical to v9 at 96%, fixes 2 / breaks 3,
+> criterion-attributable 4 toward / 2 away -- inside noise; the
+> residual families are small and the boundary labels noisy). v9 is
+> the default taxonomy. The remaining residuals are not authorable
+> from the descriptions: the background-people family (6
+> contains_human corrections) is a vision-layer limit -- the
+> descriptions do not mention the humans, so no criterion edit can
+> fire; the statue clause's scene boundary has inconsistent reviewer
+> labels. Next: (1) a real library collection (new labeled data for
+> the loop), or (2) a vision-layer lever -- e.g. the description
+> prompt asking explicitly about small/background people, measured
+> against the same ground truth. Depicts annotation is a dead end
+> for this corpus: 0/231 files carry P180 statements. See STATUS.md
+> "Next steps" item 2.
 
 The current pipeline (`classify_images.py`) is scaffolding: a vision
 model describes each image, Jev answers one yes/no question. The goal of

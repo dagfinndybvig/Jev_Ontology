@@ -286,6 +286,17 @@ and was neutral on the personal collection (91% vs 91%). Adopted;
 v9 is now the default taxonomy. See RESULTS.md ("Third held-out
 revision").
 
+**Update (2026-09-24, v10):** the loop ran once more on the
+production residuals under the same split: v10 (printed-matter and
+image-content-screenshot exclusions in text_screenshot; robot
+costumes and display models in statue_or_render) measured pooled
+identical to v9 (96%) with fixes 2 / breaks 3 -- inside noise, not
+adopted. The residual families are small and the boundary labels
+noisy; the background-people family is a vision-layer limit (the
+descriptions do not mention the humans). The loop needs new labeled
+data or a vision-layer lever. See RESULTS.md ("Fourth held-out
+revision").
+
 **Success:** at least one revision that beats its held-out batch
 beyond the noise floor. Met (2026-09-24): v7 and v9 both beat their
 held-out batches, v9 decisively (96% vs 94%, representation +9).
