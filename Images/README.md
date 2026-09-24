@@ -60,7 +60,9 @@ of images by whether they contain a human. The pipeline is:
 
 ```
 Mistral Pixtral describes the image (checks for text first, states the medium, then a short description)
-  -> Jev classifies that description: "Does this image contain a human?" (yes/no)
+  -> Jev answers the five taxonomy facets (contains_human, contains_robot,
+     contains_android, primary_subject, representation) with calibrated confidence
+  -> routing.py flags low-confidence or text-bearing records for human review
 ```
 
 The vision model is the "eyes"; Jev is the decision maker. Jev returns a
@@ -71,65 +73,70 @@ are flagged with low confidence rather than forced into an answer.
 
 Jev's role here is the **calibrated decision layer, not perception**. The
 vision model does the perceptual work; Jev decides with a probability.
+The Phase 2 baseline measured this directly on 85 labeled records
+(`baseline_compare.py`): the cascade (Pixtral + Jev) reaches 91% pooled
+accuracy with ECE 0.038 and catches 16/27 errors; Pixtral answering the
+same five facets directly reaches 80% with ECE 0.150 and catches 0/45 --
+it reports >= 0.9 confidence on everything, right or wrong. Jev is less
+accurate than the vision model on any single answer and more trustworthy
+overall, because it is the only component that knows what it does not
+know.
 
 What Jev genuinely adds:
 
 - **Calibrated confidence.** Pixtral returns free text; Jev returns a
-  probability. That probability is what lets us set a threshold (0.7)
-  and flag the 13 depictions as ambiguous instead of forcing a yes/no.
-- **Typed, deterministic output.** A structured `choice: yes/no` with
+  probability. That probability is what makes routing possible: the 0.7
+  threshold plus a text-bearing signal (`routing.py`) catches 25/27
+  errors at a ~50% review burden, where the vision model's own
+  confidence catches none.
+- **Typed, deterministic output.** A structured choice per facet with
   probabilities -- no parsing, no format drift, directly usable in code.
-- **Criteria-as-state.** The decision rule ("one or more humans (people,
-  faces, bodies)") is passed as data, not code. You can tighten it to
-  "a real, living human in a photograph" without retraining or touching
-  the pipeline.
-- **Consistency across the batch.** One criteria set applied to all 215
-  descriptions; a vision model asked directly might drift in how it
-  reads "human" from image to image.
+- **Criteria-as-state.** The decision rules are data
+  (`humanoid_taxonomy_v4.json`), not code. Four revisions (v1-v5) were
+  authored and measured without touching the pipeline; v4 was adopted
+  on measured accuracy (contains_human 80% -> 88%), and two rejections
+  are documented as the v3/v5 lesson: de-hedging without accuracy gains
+  manufactures silent errors.
+- **A real check on the LLM.** Pixtral verifies; Jev falsifies. Its
+  dissent is the signal: every taxonomy gap found in this project
+  (android boundaries, non-humanoid statues, representation splits)
+  surfaced first as a Jev low-confidence cluster, and the review
+  corrections cluster in the same families.
 
 Where it is thin:
 
 - **Jev never sees the image.** It sees a short text description, so its
-  "understanding" is bounded by that summary.
-- **The vision model could likely answer directly.** Ask Pixtral "does
-  this contain a human?" and it would probably be right; Jev is an extra
-  hop.
-- **Jev inherits vision errors.** A screenshot-of-text image is the proof:
-  Pixtral transcribed text as if it were a scene, and Jev said "yes"
-  because it only saw the description. (Fixed 2026-09-23 with a
-  check-text-first, medium-first vision prompt; the residual gap is
-  Jev's criteria, which still answer a *described* scene -- see
-  RESULTS.md.)
-- **The bottleneck is the vision model.** The 13 low-confidence cases are
-  depictions *because* Pixtral described them as statues/cartoons; Jev
-  just attached a number to that.
+  understanding is bounded by that summary -- and the residual errors
+  live exactly there: 19 of 20 remaining representation errors have a
+  wrong `medium` field in the description. The decision layer is nearly
+  exhausted; the frontier is the interface.
+- **Jev inherits vision errors.** A screenshot-of-text image was the
+  proof: Pixtral transcribed text as if it were a scene, and Jev said
+  "yes" because it only saw the description. (Fixed 2026-09-23 with a
+  check-text-first vision prompt; the described-scene gap in Jev's
+  criteria is measured and documented in RESULTS.md.)
+- **The check is not complete.** ~19% of Jev's confident answers were
+  wrong in the confident-band sample (5/27, Wilson CI ~8-37%), and
+  `representation`'s hedging carries no information (~80% accurate at
+  every confidence level). A human stays in the loop for the ambiguous
+  family.
 
-For a single yes/no "contains human" question, Jev's marginal value is
-mostly calibration and a stable, re-criterionable decision interface --
-real, but narrow. It grows when the decision is harder: a multi-class
-taxonomy, hierarchical routing, thresholding for human review, or
-changing criteria without retraining. That is the same "LLM authors, Jev
-filters" cascade as the ticket work.
+The epistemic summary: accuracy came not from a better judge, but from
+institutionalizing disagreement between a perceiver that verifies and a
+decider that falsifies. Once Jev becomes multimodal, the interface
+disappears -- and the open question is whether the calibration survives
+direct perception as well as it survives the paraphrase.
 
-> **This is scaffolding, not the end state.** The current pipeline is a
-> minimal demonstration that the cascade works end to end: a vision model
-> describes, Jev decides. The point is to *increase* Jev's contribution
-> from here -- to make Jev do more of the meaningful work, not just a
-> thin yes/no on a vision description. Concrete directions:
->
-> - **Richer decisions.** Replace the single yes/no with a multi-class
->   taxonomy (human / animal / object / text / landscape) or a
->   hierarchical ontology, so Jev's Choice question does real work.
-> - **Multiple questions in one pass.** Ask Jev several questions per
->   image (contains human? is it a photo? is it a depiction?) in a single
->   call, using its calibration to route.
-> - **Calibration-driven routing.** Use Jev's confidence to decide
->   auto-classify vs. human review, rather than a fixed threshold.
-> - **Criteria as the ontology.** Treat the decision criteria as the
->   ontology to be revised from Jev's low-confidence signals, closing the
->   same feedback loop as the ticket work.
->
-> See `TODO.md` for the full outline of this more ambitious project.
+> **From scaffolding to measured system.** The directions listed here
+> when this section was first written are now done and measured: the
+> single yes/no became a five-facet taxonomy (v4, adopted on accuracy);
+> the multiple-questions pass is the production path; calibration-driven
+> routing is `routing.py` (threshold + text-bearing signal, wired into
+> the sorter and the review UI); and the criteria-as-ontology loop ran
+> four times (v1-v5, two rejections documented). What remains is the
+> held-out validation of the next taxonomy revision against the 136
+> labeled stand-in records (LIBRARY.md Phase 6), and the real library
+> collection itself. See `TODO.md` and `STATUS.md`.
 
 ## Files
 
