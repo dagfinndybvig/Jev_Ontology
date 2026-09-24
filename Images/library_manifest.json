@@ -2539,5 +2539,104 @@
     "depicts": [],
     "url": "https://commons.wikimedia.org/wiki/File:KiSSFLOW_Screenshot.png",
     "file": "ui_screenshot_033.png"
+  },
+  "human_illustration_039.jpg": {
+    "status": "ok",
+    "category": "human_illustration",
+    "commons_category": "Category:Paintings of people",
+    "title": "File:10 Las siete hermanas.jpg",
+    "description": "Pedro Figari - Las siete hermanas  (óleo s/cartón)",
+    "license": "Public domain",
+    "depicts": [],
+    "url": "https://commons.wikimedia.org/wiki/File:10_Las_siete_hermanas.jpg",
+    "file": "human_illustration_039.jpg"
+  },
+  "human_illustration_040.jpg": {
+    "status": "ok",
+    "category": "human_illustration",
+    "commons_category": "Category:Paintings of people",
+    "title": "File:Intoarcerea Dragonilor.jpg",
+    "description": "Pictura Intoarcerea Dragonilor Mircea Rotaru",
+    "license": "CC BY-SA 3.0",
+    "depicts": [],
+    "url": "https://commons.wikimedia.org/wiki/File:Intoarcerea_Dragonilor.jpg",
+    "file": "human_illustration_040.jpg"
+  },
+  "ui_screenshot_034.png": {
+    "status": "ok",
+    "category": "ui_screenshot",
+    "commons_category": "Category:Screenshots of software",
+    "title": "File:(RU) Google Search Screenshot 16.06.2026.png",
+    "description": "Страница гугла",
+    "license": "Public domain",
+    "depicts": [],
+    "url": "https://commons.wikimedia.org/wiki/File:(RU)_Google_Search_Screenshot_16.06.2026.png",
+    "file": "ui_screenshot_034.png"
+  },
+  "ui_screenshot_035.jpg": {
+    "status": "ok",
+    "category": "ui_screenshot",
+    "commons_category": "Category:Screenshots of software",
+    "title": "File:Backoffice cms nina.jpg",
+    "description": "Screen shot of the backoffice of the CMS Nina",
+    "license": "CC BY 3.0",
+    "depicts": [],
+    "url": "https://commons.wikimedia.org/wiki/File:Backoffice_cms_nina.jpg",
+    "file": "ui_screenshot_035.jpg"
+  },
+  "ui_screenshot_036.png": {
+    "status": "ok",
+    "category": "ui_screenshot",
+    "commons_category": "Category:Screenshots of software",
+    "title": "File:CELUSDesignPlatform1.png",
+    "description": "CELUS Design Platform: Design Canvas",
+    "license": "CC BY-SA 4.0",
+    "depicts": [],
+    "url": "https://commons.wikimedia.org/wiki/File:CELUSDesignPlatform1.png",
+    "file": "ui_screenshot_036.png"
+  },
+  "ui_screenshot_037.png": {
+    "status": "ok",
+    "category": "ui_screenshot",
+    "commons_category": "Category:Screenshots of software",
+    "title": "File:Dibujj.png",
+    "description": "Cálculos de Parametros",
+    "license": "CC BY-SA 3.0",
+    "depicts": [],
+    "url": "https://commons.wikimedia.org/wiki/File:Dibujj.png",
+    "file": "ui_screenshot_037.png"
+  },
+  "ui_screenshot_038.png": {
+    "status": "ok",
+    "category": "ui_screenshot",
+    "commons_category": "Category:Screenshots of software",
+    "title": "File:Edit Request Closer-Selected Not Now-screenshot-f1.png",
+    "description": "قابلیت‌هایی که به‌واسطهٔ استفاده از یک اسکریپت به رابط کاربری ویکی‌پدیا اضافه می‌شوند",
+    "license": "CC BY-SA 4.0",
+    "depicts": [],
+    "url": "https://commons.wikimedia.org/wiki/File:Edit_Request_Closer-Selected_Not_Now-screenshot-f1.png",
+    "file": "ui_screenshot_038.png"
+  },
+  "ui_screenshot_039.png": {
+    "status": "ok",
+    "category": "ui_screenshot",
+    "commons_category": "Category:Screenshots of software",
+    "title": "File:FreeCAD start window.png",
+    "description": "Startup window of FreeCAD",
+    "license": "CC BY-SA 4.0",
+    "depicts": [],
+    "url": "https://commons.wikimedia.org/wiki/File:FreeCAD_start_window.png",
+    "file": "ui_screenshot_039.png"
+  },
+  "ui_screenshot_040.png": {
+    "status": "ok",
+    "category": "ui_screenshot",
+    "commons_category": "Category:Screenshots of software",
+    "title": "File:Hirens boot CD Booted.png",
+    "description": "Hiren's boot CD right after booting, showing jo.sys's menu.",
+    "license": "Public domain",
+    "depicts": [],
+    "url": "https://commons.wikimedia.org/wiki/File:Hirens_boot_CD_Booted.png",
+    "file": "ui_screenshot_040.png"
   }
 }

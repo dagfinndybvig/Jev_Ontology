@@ -126,8 +126,12 @@ Essential context for any agent working in this directory.
   (2026-09-23, block lifted): 231 total across all 6 categories
   (statue 40, humanoid_robot 40, book_cover 40, human_photo 40,
   human_illustration 38, ui_screenshot 33) -- 9 short of target, 11
-  downloads lost to HTTP 429s even at 20s spacing; re-run to top up
-  the last 9. DELAY is 20s (5s drew 429s on the top-up).
+  downloads lost to HTTP 429s even at 20s spacing. Complete
+  (2026-09-24): a re-run fetched the last 9 (human_illustration 40,
+  ui_screenshot 40) -- 240 total, 40 per category, 0 errors. Note:
+  a 429-blocked re-run exits 0 and fetches nothing (the script
+  catches and continues); if a run fetches nothing, re-run later.
+  DELAY is 20s (5s drew 429s on the top-up).
 - `measure_library_standin.py` — runs the production path on the
   stand-in corpus: Pixtral describes each image (same prompt as
   `classify_images.py`), Jev answers the five facets (v4 taxonomy,

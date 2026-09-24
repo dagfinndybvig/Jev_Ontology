@@ -2,24 +2,26 @@
 
 > **NEXT STEP (2026-09-24): A real library collection.** Everything
 > else on this list is either done, measured, or blocked on it. The
-> pipeline, taxonomy, and review UX are ready. A stand-in now exists
-> with a first pipeline pass, two completed review passes, and a
-> completed held-out taxonomy revision: 231 Wikimedia Commons images
-> across all 6 categories (`library_standin/`, manifest committed as
-> the ground truth), measured 2026-09-23 -- 231/231, 0 errors, pooled
-> agreement 794/929 (85%) against the category-implied labels -- the
-> routed records reviewed 2026-09-23 and 2026-09-24 (60/60 then
-> 55/55: 75 confirmed, 61 corrected, pooled 55% on the hard cases;
-> confident-band sample 27/27, miss rate 19%), and the first held-out
-> revision adopted: v7 beats v4 on the held-out batch (pooled 89% vs
-> 85%, fixes 10 / breaks 2, android 100%) and matches it on the
-> personal collection (92% vs 91%, inside noise) -- v7 is now the
-> default taxonomy; see RESULTS.md "Held-out taxonomy revision".
-> 136 of 231 records are labeled. Next: re-run the corpus pipeline
-> with v7 when the Wikimedia block lifts (the same session tops up
-> the last 9 images). Depicts annotation is a dead end for this
-> corpus: 0/231 files carry P180 statements. See STATUS.md "Next
-> steps" item 2.
+> pipeline, taxonomy, and review UX are ready. A stand-in now exists,
+> complete at 240 Wikimedia Commons images across all 6 categories
+> (40 per category after the 2026-09-24 top-up; `library_standin/`,
+> manifest committed as the ground truth), with a first pipeline
+> pass, two completed review passes, and a completed held-out
+> taxonomy revision on the 231 measured so far -- 231/231, 0 errors,
+> pooled agreement 794/929 (85%) against the category-implied labels
+> -- the routed records reviewed 2026-09-23 and 2026-09-24 (60/60
+> then 55/55: 75 confirmed, 61 corrected, pooled 55% on the hard
+> cases; confident-band sample 27/27, miss rate 19%), and the first
+> held-out revision adopted: v7 beats v4 on the held-out batch
+> (pooled 89% vs 85%, fixes 10 / breaks 2, android 100%) and matches
+> it on the personal collection (92% vs 91%, inside noise) -- v7 is
+> now the default taxonomy; see RESULTS.md "Held-out taxonomy
+> revision". 136 of the 231 measured records are labeled. Next:
+> re-run the corpus pipeline with v7 -- the Wikimedia block has
+> lifted and the corpus is complete, so nothing blocks it (it also
+> measures the 9 new images). Depicts annotation is a dead end for
+> this corpus: 0/231 files carry P180 statements. See STATUS.md
+> "Next steps" item 2.
 
 The current pipeline (`classify_images.py`) is scaffolding: a vision
 model describes each image, Jev answers one yes/no question. The goal of

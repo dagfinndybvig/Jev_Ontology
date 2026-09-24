@@ -744,6 +744,13 @@ up the last 9. Two fetcher bugs found and fixed on this run:
   the manifest's category remains the only ground truth. Precise
   depicts annotation is a dead end for this corpus.
 
+**Top-up complete (2026-09-24).** A re-run fetched the last 9
+(human_illustration 38 -> 40, ui_screenshot 33 -> 40): the corpus is
+complete at 240 images, 40 per category, 0 errors. The first re-run
+attempt exited 0 and fetched nothing (transient; a second run
+succeeded at the same 20s DELAY). The 9 new images are unmeasured
+and unlabeled -- they join the corpus at the next pipeline re-run.
+
 **Measured, full corpus (2026-09-23, n=231).**
 `measure_library_standin.py` ran the production path on the 82 new
 images (resumable; 231/231 measured, 0 pipeline errors). Pooled

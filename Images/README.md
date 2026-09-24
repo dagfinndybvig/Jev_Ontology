@@ -37,7 +37,7 @@ Two collections, in order of appearance:
   pipeline, taxonomy, and review UX were built and measured
   (85 of 218 records labeled by review). Filenames and descriptions
   are private and never appear in public docs.
-- **A stand-in library corpus (231 Wikimedia Commons images,
+- **A stand-in library corpus (240 Wikimedia Commons images,
   public).** The empirical case for the library use-case: one
   Commons category per taxonomy class (statue, humanoid_robot,
   book_cover, human_photo, human_illustration, ui_screenshot),
@@ -45,7 +45,9 @@ Two collections, in order of appearance:
   (`library_manifest.json`) as the stand-in ground truth. It is
   digitized, catalog-like material -- covers, statues, illustrations,
   screenshots -- the closest available analog to a real library
-  image collection. 136 of 231 records are labeled by review; the
+  image collection. 136 of the 231 records measured so far are
+  labeled by review (the 2026-09-24 top-up added 9 unmeasured
+  images); the
   Commons categories are noisy labels, so review-corrected records,
   not the categories, are the measured ground truth.
 
@@ -212,13 +214,13 @@ representation hedges halved, and both known screenshot-of-text
 false positives caught at the vision layer. The humanoid pilot and
 the sorted verification tree are described in `STATUS.md`.
 
-**Stand-in corpus (2026-09-23/24):** a 231-image Wikimedia Commons
+**Stand-in corpus (2026-09-23/24):** a 240-image Wikimedia Commons
 corpus (`library_standin/`, manifest committed, all 6 categories)
 was run through the pipeline and reviewed: 231/231 measured, 85%
 agreement against the category-implied labels; the routed records
 reviewed in two passes (60/60 then 55/55: 75 confirmed, 61
-corrected, pooled 55% on the hard cases); 136 of 231 records
-labeled. See `RESULTS.md` ("Stand-in library corpus").
+corrected, pooled 55% on the hard cases); 136 of the 231 records
+labeled (the 2026-09-24 top-up added 9 unmeasured images). See `RESULTS.md` ("Stand-in library corpus").
 
 ## Caveats
 
