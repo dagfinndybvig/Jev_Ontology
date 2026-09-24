@@ -55,7 +55,7 @@ labeled material before that arrives.
 
 ## What this directory is
 
-A growing sub-project of the Ontology + Jev work. The task: sort a folder
+A growing sub-project of the Ontology + Jev work. The task that started it all: sort a folder
 of images by whether they contain a human. The pipeline is:
 
 ```
