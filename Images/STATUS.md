@@ -355,6 +355,16 @@ first review pass on 09-23; corpus top-up and second review pass on
     fell out: identical v6 criteria, two runs, same choices, 14 vs 16
     threshold-routed -- confidences drift a few points run to run
     (TODO item 6). See RESULTS.md ("Held-out taxonomy revision").
+29. **v7 re-measured on the personal collection; default switched.**
+    `measure_taxonomy_v7_personal.py` ran v7 on the personal
+    collection's 85 labeled records (Jev calls only): pooled 389/425
+    (92%) vs v4's 388/425 (91%) -- fixes 3, breaks 2, inside noise,
+    no regression; contains_android 100% (was 99%). Combined with the
+    corpus's held-out win, v7 is measured on both collections and is
+    now the default taxonomy (`pilot_humanoid.py`, and
+    `measure_library_standin.py` through it); `TAXONOMY` still
+    selects any version. See RESULTS.md ("Held-out taxonomy
+    revision", Adoption).
 
 ## Where things live
 
@@ -411,12 +421,12 @@ first review pass on 09-23; corpus top-up and second review pass on
    2026-09-23 and 2026-09-24 (60/60 then 55/55: 75 confirmed,
    61 corrected, pooled 55% on the hard cases; the confident-band
    sample 27/27, miss rate 19%). 136 of 231 records are labeled.
-   The first held-out taxonomy revision is done: v7 adopted for the
-   corpus (pooled 89% vs v4's 85% on the held-out batch, android
-   100%; see RESULTS.md "Held-out taxonomy revision"). Next: re-measure
-   v7 on the personal collection's 85 labeled records (Jev calls
-   only) before touching its default, and re-run the corpus pipeline
-   with v7 when the Wikimedia block lifts. Depicts annotation is a
+   The first held-out taxonomy revision is done: v7 adopted and now
+   the default (pooled 89% vs v4's 85% on the corpus's held-out
+   batch, 92% vs 91% on the personal collection, android 100% on
+   both; see RESULTS.md "Held-out taxonomy revision"). Next: re-run
+   the corpus pipeline with v7 when the Wikimedia block lifts (the
+   same session tops up the last 9 images). Depicts annotation is a
    dead end for this corpus: 0/231 files carry P180 statements.
 3. ~~**Measure the edge-case suite.**~~ Done (2026-09-23): 8/8
    measured, pooled agreement 33/36 (92%); see RESULTS.md

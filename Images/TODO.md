@@ -12,11 +12,12 @@
 > 55/55: 75 confirmed, 61 corrected, pooled 55% on the hard cases;
 > confident-band sample 27/27, miss rate 19%), and the first held-out
 > revision adopted: v7 beats v4 on the held-out batch (pooled 89% vs
-> 85%, fixes 10 / breaks 2, android 100%; see RESULTS.md "Held-out
-> taxonomy revision"). 136 of 231 records are labeled. Next: re-measure
-> v7 on the personal collection's 85 labeled records before touching
-> its default, and re-run the corpus pipeline with v7 when the
-> Wikimedia block lifts. Depicts annotation is a dead end for this
+> 85%, fixes 10 / breaks 2, android 100%) and matches it on the
+> personal collection (92% vs 91%, inside noise) -- v7 is now the
+> default taxonomy; see RESULTS.md "Held-out taxonomy revision".
+> 136 of 231 records are labeled. Next: re-run the corpus pipeline
+> with v7 when the Wikimedia block lifts (the same session tops up
+> the last 9 images). Depicts annotation is a dead end for this
 > corpus: 0/231 files carry P180 statements. See STATUS.md "Next
 > steps" item 2.
 

@@ -832,10 +832,16 @@ rule catches 21 of 22 errors, the one silent being a representation
 error (statue_038) in the known vision-limited family. The v3/v5
 failure mode did not materialize: v7's de-hedged records are correct.
 
-**Adoption.** v7 is adopted for the stand-in corpus (corpus runs
-should set `TAXONOMY=humanoid_taxonomy_v7.json`; script defaults stay
-at v4, the personal collection's measured best, where v7 is
-unmeasured). The three v6/v7 criteria changes: sculpted works added to
+**Adoption.** v7 is adopted as the default taxonomy
+(`pilot_humanoid.py`, and `measure_library_standin.py` through it).
+The cross-collection check: re-measured on the personal collection's
+85 labeled records (`measure_taxonomy_v7_personal.py`, Jev calls
+only), v7 pooled 389/425 (92%) vs v4's 388/425 (91%) -- fixes 3,
+breaks 2, inside noise, no regression; contains_android 100% (was
+99%), everything else within a point. Combined with the corpus's
+held-out win (89% vs 85%), v7 is measured on both collections: it
+beats v4 where the corrections motivated it and matches it where they
+did not. The three v6/v7 criteria changes: sculpted works added to
 the depiction media (9 batch 1 statue corrections answered no/none on
 statues of humans -- the v4 medium enumeration omitted sculpting);
 the android boundary sharpened to require a human-passing appearance

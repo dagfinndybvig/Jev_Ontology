@@ -31,7 +31,9 @@ Essential context for any agent working in this directory.
   checks for text first and states the medium), Jev answers
   contains_human. Writes `image_human_results.json`.
 - `pilot_humanoid.py` — one Jev call per *stored* description, five
-  facets from `humanoid_taxonomy_v1.json`. Writes
+  facets from the taxonomy JSON (`TAXONOMY` env var selects the
+  version; default `humanoid_taxonomy_v7.json`, the first
+  held-out-validated revision). Writes
   `humanoid_pilot_results.json`. No vision calls.
 - `sort_humanoids.py` — copies images into
   `PICTURES_DIR\Humanoids\<primary_subject>\<representation>\` plus
@@ -151,7 +153,14 @@ Essential context for any agent working in this directory.
   file (default `taxonomy_v6_batch2_results.json`, private,
   gitignored). Resumable; needs TYPESAFE_API_KEY. Measured: v6 87%
   (text_screenshot narrowing regressed representation 62% -> 49%),
-  v7 89% vs v4's 85% — v7 adopted for the corpus.
+  v7 89% vs v4's 85% — v7 adopted.
+- `measure_taxonomy_v7_personal.py` — re-measures a taxonomy (v7
+  default) on the personal collection's 85 labeled records
+  (`manual_correction` blocks in `humanoid_pilot_results.json`),
+  compared to the manual corrections and v4's stored answers. Writes
+  `taxonomy_v7_personal_results.json` (private, gitignored).
+  Resumable; needs TYPESAFE_API_KEY. Measured: v7 92% vs v4's 91%,
+  fixes 3 / breaks 2, inside noise — v7 became the default.
 - Runs skip records with `status: ok`. Fresh descriptions require
   moving the results JSON aside first. Cost is small but real
   (~$0.0003 per image for the vision step).
