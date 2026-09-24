@@ -233,11 +233,11 @@ the sorted verification tree are described in `STATUS.md`.
 **Stand-in corpus (2026-09-23/24):** a 240-image Wikimedia Commons
 corpus (`library_standin/`, manifest committed, all 6 categories,
 complete at 40 per category after the 2026-09-24 top-up), fully
-re-run with v7: 240/240 measured, 89%
-agreement against the category-implied labels (v4's run: 85%); the routed records
+re-run with v9: 240/240 measured, 94%
+agreement against the category-implied labels (v7's run: 89%); the routed records
 reviewed in four passes (60/60 and 55/55 under v4, 12/12 under v7, then the 72 remaining auto-accepted records confirmed under v7: 172 confirmed, 68
 corrected overall); all 240 records
-labeled (93% facet agreement with the human corrections). See `RESULTS.md` ("Stand-in library corpus").
+labeled (95.1% facet agreement with the human corrections under v9). See `RESULTS.md` ("Stand-in library corpus").
 
 ## Caveats
 

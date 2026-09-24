@@ -1070,6 +1070,61 @@ under v7).
 
 ---
 
+## Production re-run with v9 (2026-09-24): 240/240, 0 errors
+
+`measure_library_standin.py` re-ran the full pipeline (fresh
+descriptions, v9 facets -- the script's taxonomy default follows
+`pilot_humanoid.py`, now v9) on all 240 images. The v7 results were
+moved aside to
+`../Ontology_private_backup/v7_corpus_run_2026-09-24/` (the script
+skips records already in the results file); the 240 manual
+corrections were merged back into the new results file afterwards,
+so the complete ground truth survives the re-run.
+
+**Measured, full corpus (n=240, 0 pipeline errors).** Pooled
+agreement on unambiguous facets: 898/960 (94%), vs v7's 857/960
+(89%). Per facet: contains_human 140/160 (88%, was 86%),
+contains_robot 230/240 (96%, was 95%), contains_android 240/240
+(100%, same), primary_subject 138/160 (86%, same), representation
+150/160 (94%, was 71%) -- the interface broadening and the refined
+statue clause move the weakest facet by 23 points against the
+category-implied labels. Per category: book_cover 80/80 (100%),
+human_photo 200/200 (100%), human_illustration 193/200 (96%, was
+94%), statue 186/200 (93%, was 86%), ui_screenshot 117/120 (98%,
+was 82%), humanoid_robot 122/160 (76%, was 75%).
+
+**Routing.** Full-rule burden 89/240 (37%), down from v7's 106/240
+(44%): ui_screenshot routes 40/40 (36 text-bearing -- the true
+signal -- and 4 low-confidence), humanoid_robot 15/40, statue 12/40,
+book_cover 16/40, human_illustration 5/40, human_photo 1/40.
+
+**Caveat: two variables changed at once** -- taxonomy (v9) and fresh
+descriptions. The split-half measurement already isolated the
+taxonomy effect (96% vs 94% on the measurement half); this run is
+the production confirmation on the whole corpus.
+
+**Against human ground truth (no API calls).** On all 240 labeled
+records: v9's fresh answers agree with the human corrections on
+1141/1200 facets (95.1%) vs v7's 1113/1200 (92.8%). Per facet:
+contains_human 230/240 (96%, was 95%), contains_robot 234/240 (98%,
+was 97%), contains_android 239/240 (100%, was 240/240 -- one new
+android error), primary_subject 226/240 (94%, was 93%),
+representation 212/240 (88%, was 78%).
+
+**Remaining correction families (59 facet changes).** The statue
+family shrank from 22 to 9 (photograph -> statue_or_render); the
+interface family is nearly resolved (other -> text_screenshot: 1,
+down from 16) but the broadening introduced new errors of its own:
+text_screenshot -> other x3, -> photograph x3, -> illustration x2
+(8 records where v9 now over-calls text_screenshot). The
+background-people clause did not fix the 6 remaining contains_human
+no -> yes corrections. These are the signals for a fourth revision:
+the statue clause's residual 9 + 3 reverse breaks, the
+over-calling text_screenshot family (8), and the background-people
+family (6, still unmeasured).
+
+---
+
 ## Files
 
 ```

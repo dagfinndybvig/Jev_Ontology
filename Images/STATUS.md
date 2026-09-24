@@ -5,7 +5,8 @@ routing, edge-case suite, stand-in corpus fetch/measure, and the
 first review pass on 09-23; corpus top-up and second review pass on
 09-23/09-24; corpus complete at 240, the v7 production re-run, and
 the fourth review pass -- ground truth complete at 240/240 -- on
-09-24; taxonomy v9 authored and adopted the same day)
+09-24; taxonomy v9 authored and adopted, then the v9 production
+re-run, the same day)
 **Repo state:** see git; keep in sync with `origin/main` before new work.
 
 ---
@@ -484,6 +485,31 @@ the fourth review pass -- ground truth complete at 240/240 -- on
     to v9). Residuals: the statue clause's 3 breaks (subject-decides
     boundary needs sharpening) and the unmeasured background-people
     clause. See RESULTS.md ("Third held-out revision").
+37. **Production re-run with v9 complete (240/240, 0 errors).**
+    `measure_library_standin.py` re-ran the full pipeline (fresh
+    descriptions, v9 facets -- the taxonomy default follows
+    `pilot_humanoid.py`, now v9) on all 240 images. The v7 results
+    were moved aside to
+    `../Ontology_private_backup/v7_corpus_run_2026-09-24/`; the 240
+    manual corrections were merged back afterwards, so the complete
+    ground truth survives. Pooled agreement vs the category-implied
+    labels: 898/960 (94%) vs v7's 857/960 (89%): representation
+    94% (was 71%), contains_human 88% (was 86%), contains_robot 96%,
+    contains_android 100%, primary_subject 86%. Per category:
+    book_cover and human_photo 100%, human_illustration 96% (was
+    94%), statue 93% (was 86%), ui_screenshot 98% (was 82%),
+    humanoid_robot 76% (was 75%). Routing burden 89/240 (37%, was
+    44%). Against all human ground truth: v9 1141/1200 facets
+    (95.1%) vs v7's 1113/1200 (92.8%); representation 88% (was
+    78%). Remaining families (59 facet changes): statue 9 (was 22)
+    + 3 reverse breaks; the interface broadening over-calls
+    text_screenshot on 8 records (-> other x3, -> photograph x3,
+    -> illustration x2); background-people 6 (still unmeasured).
+    Caveat: taxonomy and fresh descriptions changed at once -- the
+    split-half measurement isolated the taxonomy effect (96% vs
+    94%); this is the production confirmation. Next: the fourth
+    held-out revision from these residuals. See RESULTS.md
+    ("Production re-run with v9").
 
 ## Where things live
 
@@ -555,11 +581,17 @@ the fourth review pass -- ground truth complete at 240/240 -- on
    protocol: pooled 96% vs v7's 94% on the measurement half,
    representation 89% vs 80%, fixes 13 / breaks 4; neutral on the
    personal collection, 91% vs 91%; see RESULTS.md "Third held-out
-   revision"). Next: the fourth held-out revision from v9's residual
-   signals (the statue clause's 3 breaks; the unmeasured
-   background-people clause), or a fresh corpus re-run with v9 as
-   the production confirmation. Depicts annotation is a dead end for
-   this corpus: 0/231 files carry P180 statements.
+   revision"). The v9 production re-run is done (240/240, 0 errors,
+   pooled 898/960 = 94% vs v7's 89%; representation 94% vs 71%;
+   routing burden 37%; v9 agrees with all human corrections on
+   1141/1200 facets, 95.1%; corrections merged into the v9 results;
+   v7's raw answers backed up at
+   `../Ontology_private_backup/v7_corpus_run_2026-09-24/`). Next:
+   the fourth held-out revision from the production residuals (the
+   statue clause's residual 9 + 3 reverse breaks; the interface
+   broadening's 8 over-called text_screenshot records; the
+   unmeasured background-people family of 6). Depicts annotation is
+   a dead end for this corpus: 0/231 files carry P180 statements.
 3. ~~**Measure the edge-case suite.**~~ Done (2026-09-23): 8/8
    measured, pooled agreement 33/36 (92%); see RESULTS.md
    ("Edge-case suite"). Residuals: the AI-generated portrait is

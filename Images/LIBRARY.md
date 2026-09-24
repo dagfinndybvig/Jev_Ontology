@@ -88,8 +88,8 @@ was rate-limited, and completed at 40 per category on 2026-09-24;
 measured 2026-09-23 by
 `measure_library_standin.py` under v4, 231/231, 0 errors, pooled
 agreement 794/929 (85%) against the category-implied labels, then
-fully re-run with v7 on 2026-09-24 (240/240, 0 errors, pooled
-857/960 = 89%, routing burden 44%); routed records reviewed
+fully re-run with v9 on 2026-09-24 (240/240, 0 errors, pooled
+898/960 = 94%, routing burden 37%); routed records reviewed
 2026-09-23 and 2026-09-24 (60/60 then
 55/55: 75 confirmed, 61 corrected, pooled 55% on the hard cases) --
 the corpus now has all 240 records labeled (four review passes: 60/60

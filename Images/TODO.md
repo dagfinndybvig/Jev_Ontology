@@ -1,12 +1,11 @@
 # TODO: Image classification with Jev -- next steps
 
-> **NEXT STEP (2026-09-24): Taxonomy v9 adopted -- production
-> re-run, then the fourth revision.** Ground truth is complete:
-> all 240 stand-in records labeled (172 confirmed, 68 corrected;
-> v7 agreed with all human corrections on 1113/1200 facets, 93%).
-> The third held-out revision ran under a split-half protocol
-> (md5(filename) parity: authoring half 132, measurement half 108;
-> every correction family in both halves): v9 (v8's subject-decides
+> **NEXT STEP (2026-09-24): Fourth held-out revision from v9's
+> production residuals.** Ground truth is complete: all 240
+> stand-in records labeled (172 confirmed, 68 corrected). The third
+> held-out revision ran under a split-half protocol (md5(filename)
+> parity: authoring half 132, measurement half 108; every
+> correction family in both halves): v9 (v8's subject-decides
 > clause refined + text_screenshot extended to software interfaces +
 > contains_human background-people clause) measured pooled 516/540
 > (96%) vs v7's stored 505/540 (94%), representation 89% vs 80%
@@ -15,16 +14,22 @@
 > background-people clause neutral. Personal collection: 91% vs 91%,
 > fixes 11 / breaks 11 -- a wash, no regression. v9 is adopted and
 > is now the default taxonomy (`pilot_humanoid.py` default switched
-> from v7 to v9). Next: (1) a production re-run of the corpus with
-> v9 (fresh descriptions; move the results JSON aside first -- the
-> script skips records already present), the production
-> confirmation the v7 re-run provided; (2) the fourth held-out
-> revision from v9's residuals: the statue clause's 3 breaks (the
-> subject-decides boundary between a depicted statue-subject and a
-> photographed scene containing one) and the unmeasured
-> background-people clause. Depicts annotation is a dead end for
-> this corpus: 0/231 files carry P180 statements. See STATUS.md
-> "Next steps" item 2.
+> from v7 to v9). The v9 production re-run is done (240/240, 0
+> errors, pooled 898/960 = 94% vs v7's 89%; representation 94% vs
+> 71% against the category-implied labels; routing burden 89/240 =
+> 37%, was 44%; v9 agrees with all human corrections on 1141/1200
+> facets = 95.1%, was 92.8% under v7; corrections merged into the
+> v9 results; v7's raw answers backed up at
+> `../Ontology_private_backup/v7_corpus_run_2026-09-24/`).
+> Remaining families (59 facet changes): the statue clause's
+> residual 9 (photograph -> statue_or_render, was 22) + 3 reverse
+> breaks; the interface broadening over-calls text_screenshot on 8
+> records (-> other x3, -> photograph x3, -> illustration x2); the
+> background-people family of 6 (still unmeasured). Next: author
+> v10 from these residuals under the split-half protocol (re-split
+> or use the production corrections as the new labeled set).
+> Depicts annotation is a dead end for this corpus: 0/231 files
+> carry P180 statements. See STATUS.md "Next steps" item 2.
 
 The current pipeline (`classify_images.py`) is scaffolding: a vision
 model describes each image, Jev answers one yes/no question. The goal of
