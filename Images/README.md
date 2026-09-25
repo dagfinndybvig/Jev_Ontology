@@ -53,8 +53,18 @@ Two collections, in order of appearance:
   diminishing returns on it (ten revisions, three adopted), and the
   remaining residuals are not authorable from the descriptions.
 
+- **A fresh replication corpus (160 Smithsonian Open Access images,
+  public).** The generalization test: 4 categories drawn from the
+  institution's own cataloging terms (portrait photographs, paintings,
+  sculpture, graphic design), fetched by `fetch_replication_corpus.py`
+  with a sealed, hand-verified manifest (`replication_manifest.json`).
+  Material that played no role in any revision or authoring decision,
+  run through the frozen pipeline measurement-only (3 identical runs,
+  pre-registered in `REPLICATION_PROTOCOL.md`). See
+  `REPLICATION_RESULTS.md`.
+
 The real target remains an actual library collection with a
-cataloger (see `LIBRARY.md` Phase 0); both stand-ins exist to have
+cataloger (see `LIBRARY.md` Phase 0); the collections exist to have
 labeled material before that arrives.
 
 ## What this directory is
@@ -87,6 +97,12 @@ overall, because it is the only component that knows what it does not
 know. The complete ground truth confirms the pattern at scale: with
 all 240 stand-in records labeled, the production path under v9 agrees
 with the human corrections on 95.1% of facets (representation 88%).
+The fresh-corpus replication confirms it on material the loop never
+saw: the frozen v9 pipeline pools at 97.0-97.5% on 140 hand-verified
+Smithsonian records across three runs, with the auto-accept band's
+miss rate at 7-9% (Wilson 95% CI 4-14%) at a 15-18% routing burden --
+Jev's calibrated confidence is what makes that band trustworthy on
+material that played no role in any revision.
 
 What Jev genuinely adds:
 
