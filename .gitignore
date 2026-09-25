@@ -30,3 +30,5 @@ Images/taxonomy_v10_halfM_results.json
 Images/replication_corpus/
 Images/replication_fetch_log.txt
 Images/replication_run*_log.txt
+Images/backfill_log.txt
+Images/replication_verify_log.txt
