@@ -26,7 +26,9 @@ Note: Once Jev becomes multimodal, we can shorten the pipeline and quite likely 
 
 Also note that while Jev is ridiculously cheap, Pixtral is also low cost, so on the whole the project is already economical as-is.
 
-But being able to do this just with a Jev-like model would certainly be a game-changer, so we are holding our breath for that.
+A multimodal Jev would shorten the pipeline, but the method does not
+depend on it: the taxonomy, the calibration measurement, and the review
+loop all survive the cascade. We are not waiting on a vendor.
 
 ## The empirical case
 
@@ -179,9 +181,10 @@ Where it is thin:
 
 The epistemic summary: accuracy came not from a better judge, but from
 institutionalizing disagreement between a perceiver that verifies and a
-decider that falsifies. Once Jev becomes multimodal, the interface
-disappears -- and the open question is whether the calibration survives
-direct perception as well as it survives the paraphrase.
+decider that falsifies. If Jev ever becomes multimodal, the interface
+disappears -- a welcome simplification, not a dependency -- and the open
+question is whether the calibration survives direct perception as well
+as it survives the paraphrase.
 
 > **From scaffolding to measured system.** The directions listed here
 > when this section was first written are now done and measured: the
