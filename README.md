@@ -185,9 +185,16 @@ Ontology/
   convergence_results.json -- saved results of the 3-iteration run
   heldout_results.json    -- saved results of the held-out test
   heldout_split.json      -- deterministic train/held-out split (seed 42)
-  Images/                 -- sub-project: sorting a photo folder by
-                           "contains a human" via Pixtral + Jev (see
-                           Images/README.md; per-image data is private)
+  Images/                 -- sub-project: classifying digitized image
+                           collections against a revisable taxonomy via
+                           Pixtral + Jev (five facets, calibrated
+                           confidence, review routing); ten taxonomy
+                           versions, a 240-image stand-in corpus with
+                           complete ground truth, and a pre-registered
+                           fresh-corpus replication on Smithsonian
+                           material (97.0-97.5% pooled agreement on 140
+                           hand-verified records; see Images/README.md;
+                           per-image data is private)
 ```
 
 ## The MVP

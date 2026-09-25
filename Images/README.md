@@ -51,7 +51,10 @@ Three collections, in order of appearance:
   labels, so review-corrected records, not the categories, are the
   measured ground truth. The stand-in's potential as a measurement
   corpus is more or less exhausted: the taxonomy loop ran to
-  diminishing returns on it (ten revisions, three adopted), and the
+  diminishing returns on it (ten taxonomy versions, v1-v10: three
+  adopted in the current lineage -- v4, v7, v9, with v2's earlier
+  in-sample adoption superseded by v4 -- and five measured
+  rejections -- v3, v5, v6, v8, v10), and the
   remaining residuals are not authorable from the descriptions.
 
 - **A fresh replication corpus (160 Smithsonian Open Access images,
@@ -115,8 +118,10 @@ What Jev genuinely adds:
 - **Typed, deterministic output.** A structured choice per facet with
   probabilities -- no parsing, no format drift, directly usable in code.
 - **Criteria-as-state.** The decision rules are data
-  (`humanoid_taxonomy_v9.json`), not code. Ten revisions (v1-v10) were
-  authored and measured without touching the pipeline. v7 -- the first
+  (`humanoid_taxonomy_v9.json`), not code. Ten taxonomy versions were
+  authored and measured without touching the pipeline (v1-v10: three
+  adopted -- v4, v7, v9; five measured rejections -- v3, v5, v6, v8,
+  v10). v7 -- the first
   held-out-validated revision (LIBRARY.md Phase 6): authored from one
   review batch, measured on a batch it never saw -- beats v4 on the
   stand-in corpus (89% vs 85%, contains_android 100%) and matches it on
@@ -185,8 +190,10 @@ direct perception as well as it survives the paraphrase.
 > pass is the production path; calibration-driven routing is
 > `routing.py` (threshold + text-bearing signal, wired into the sorter
 > and the review UI); and the criteria-as-ontology loop ran ten
-> times (v1-v10: three adopted -- v4, v7, v9 -- and five measured
-> rejections), producing two held-out-validated revisions (v7, v9). With ground truth complete
+> times across ten taxonomy versions (v1-v10: three adopted in the
+> current lineage -- v4, v7, v9, v2's earlier in-sample adoption
+> superseded by v4 -- and five measured rejections -- v3, v5, v6,
+> v8, v10), producing two held-out-validated revisions (v7, v9). With ground truth complete
 > on the stand-in corpus, v9 agrees with every human correction on
 > 95.1% of facets, and the loop is at diminishing returns: the
 > decision layer is nearly exhausted, and what remains is the
