@@ -44,7 +44,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M980",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_002": {
   "category": "portrait_photo",
@@ -82,7 +84,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M670",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_003": {
   "category": "portrait_photo",
@@ -125,7 +129,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M3326_3",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_004": {
   "category": "portrait_photo",
@@ -162,7 +168,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M3454_2",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_005": {
   "category": "portrait_photo",
@@ -201,7 +209,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M3699_3_inex",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_006": {
   "category": "portrait_photo",
@@ -233,7 +243,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M3717_2",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_007": {
   "category": "portrait_photo",
@@ -276,7 +288,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M3187_2",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_008": {
   "category": "portrait_photo",
@@ -319,7 +333,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_97_102-000002",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_009": {
   "category": "portrait_photo",
@@ -363,7 +379,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M2060",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_010": {
   "category": "portrait_photo",
@@ -413,7 +431,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M2634",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_011": {
   "category": "portrait_photo",
@@ -451,7 +471,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_80_201Hosmer-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_012": {
   "category": "portrait_photo",
@@ -490,7 +512,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M2368",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_013": {
   "category": "portrait_photo",
@@ -521,7 +545,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_76_76Hicks-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_014": {
   "category": "portrait_photo",
@@ -551,7 +577,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_2012_6_4Jackson-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_015": {
   "category": "portrait_photo",
@@ -593,7 +621,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M1539",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_016": {
   "category": "portrait_photo",
@@ -632,7 +662,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M3454_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_017": {
   "category": "portrait_photo",
@@ -678,7 +710,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M1364",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_018": {
   "category": "portrait_photo",
@@ -748,7 +782,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-S_NPG_2007_50_inex",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_020": {
   "category": "portrait_photo",
@@ -782,7 +818,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M824",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_021": {
   "category": "portrait_photo",
@@ -822,7 +860,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-S_NPG_80_65_inex",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_022": {
   "category": "portrait_photo",
@@ -863,7 +903,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M1138",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_023": {
   "category": "portrait_photo",
@@ -915,7 +957,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M3631_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_024": {
   "category": "portrait_photo",
@@ -952,7 +996,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M765",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_025": {
   "category": "portrait_photo",
@@ -990,7 +1036,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M466",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_026": {
   "category": "portrait_photo",
@@ -1034,7 +1082,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-A7000772C",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_027": {
   "category": "portrait_photo",
@@ -1067,7 +1117,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M1184",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_028": {
   "category": "portrait_photo",
@@ -1117,7 +1169,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M1914",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_029": {
   "category": "portrait_photo",
@@ -1159,7 +1213,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M3648_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_030": {
   "category": "portrait_photo",
@@ -1195,7 +1251,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M2899",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_031": {
   "category": "portrait_photo",
@@ -1241,7 +1299,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M1248",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_032": {
   "category": "portrait_photo",
@@ -1280,7 +1340,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M2482",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_033": {
   "category": "portrait_photo",
@@ -1323,7 +1385,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M606",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_034": {
   "category": "portrait_photo",
@@ -1357,7 +1421,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_89_186_ext",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_035": {
   "category": "portrait_photo",
@@ -1402,7 +1468,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M1769",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_036": {
   "category": "portrait_photo",
@@ -1480,7 +1548,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M2834",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_038": {
   "category": "portrait_photo",
@@ -1528,7 +1598,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M1036",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_039": {
   "category": "portrait_photo",
@@ -1571,7 +1643,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M2206",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_040": {
   "category": "portrait_photo",
@@ -1613,7 +1687,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M243",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_041": {
   "category": "portrait_photo",
@@ -1649,7 +1725,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M995",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_042": {
   "category": "portrait_photo",
@@ -1682,7 +1760,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=NPG-NPG_81_M1206",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "portrait_photo",
+  "verified_date": "2026-09-25"
  },
  "portrait_photo_043": {
   "category": "portrait_photo",
@@ -1789,7 +1869,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1985.66.386592R_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_002": {
   "category": "human_painting",
@@ -1812,7 +1894,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1928.1.2_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_003": {
   "category": "human_painting",
@@ -1838,7 +1922,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1992.13.70_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_004": {
   "category": "human_painting",
@@ -1861,7 +1947,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1934.6.2_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_005": {
   "category": "human_painting",
@@ -1884,7 +1972,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1985.66.176_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_006": {
   "category": "human_painting",
@@ -1909,7 +1999,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1980.34.3_2",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_007": {
   "category": "human_painting",
@@ -1932,7 +2024,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1985.66.295540_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_008": {
   "category": "human_painting",
@@ -1955,7 +2049,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1973.130.104_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_009": {
   "category": "human_painting",
@@ -1981,7 +2077,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1972.84.58_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_010": {
   "category": "human_painting",
@@ -2004,7 +2102,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1985.66.386593M_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_011": {
   "category": "human_painting",
@@ -2036,7 +2136,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1971.367.1_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_012": {
   "category": "human_painting",
@@ -2065,7 +2167,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1973.130.73_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_013": {
   "category": "human_painting",
@@ -2088,7 +2192,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1963.4.1_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_014": {
   "category": "human_painting",
@@ -2116,7 +2222,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1996.63.166_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_015": {
   "category": "human_painting",
@@ -2142,7 +2250,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-2019.6.3_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_016": {
   "category": "human_painting",
@@ -2171,7 +2281,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1976.63_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_017": {
   "category": "human_painting",
@@ -2194,7 +2306,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1999.27.18_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_018": {
   "category": "human_painting",
@@ -2219,7 +2333,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1956.11.20_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_019": {
   "category": "human_painting",
@@ -2246,7 +2362,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1923.6.4_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_020": {
   "category": "human_painting",
@@ -2276,7 +2394,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1982.80.4_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_021": {
   "category": "human_painting",
@@ -2299,7 +2419,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1970.285_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_022": {
   "category": "human_painting",
@@ -2325,7 +2447,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1909.7.35_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_023": {
   "category": "human_painting",
@@ -2351,7 +2475,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1985.66.153247_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_024": {
   "category": "human_painting",
@@ -2382,7 +2508,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1996.63.144_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_025": {
   "category": "human_painting",
@@ -2408,7 +2536,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1952.13.128_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_026": {
   "category": "human_painting",
@@ -2438,7 +2568,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1980.124.27_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_027": {
   "category": "human_painting",
@@ -2470,7 +2602,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1914.6.1_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_028": {
   "category": "human_painting",
@@ -2492,7 +2626,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1973.130.58_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_029": {
   "category": "human_painting",
@@ -2524,7 +2660,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1996.63.132_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_030": {
   "category": "human_painting",
@@ -2550,7 +2688,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1917.6.5_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_031": {
   "category": "human_painting",
@@ -2578,7 +2718,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1970.81_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_032": {
   "category": "human_painting",
@@ -2601,7 +2743,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1929.6.46_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_033": {
   "category": "human_painting",
@@ -2626,7 +2770,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1979.33.7_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_034": {
   "category": "human_painting",
@@ -2649,7 +2795,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1979.46.32_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_035": {
   "category": "human_painting",
@@ -2675,7 +2823,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1982.1.31_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_036": {
   "category": "human_painting",
@@ -2706,7 +2856,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1941.6.11_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_037": {
   "category": "human_painting",
@@ -2730,7 +2882,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1986.65.109_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_038": {
   "category": "human_painting",
@@ -2756,7 +2910,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1951.14.86_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_039": {
   "category": "human_painting",
@@ -2780,7 +2936,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1985.66.386594A_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_painting_040": {
   "category": "human_painting",
@@ -2812,7 +2970,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1973.130.2_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_001": {
   "category": "human_sculpture",
@@ -2835,7 +2995,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1969.193_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_002": {
   "category": "human_sculpture",
@@ -2858,7 +3020,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1984.141.8_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_003": {
   "category": "human_sculpture",
@@ -2881,7 +3045,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1968.155.138_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_004": {
   "category": "human_sculpture",
@@ -2906,7 +3072,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1986.65.276_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_005": {
   "category": "human_sculpture",
@@ -2930,7 +3098,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1968.155.150_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_006": {
   "category": "human_sculpture",
@@ -2955,7 +3125,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1972.167.53_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_007": {
   "category": "human_sculpture",
@@ -2982,7 +3154,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1974.88.18_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_008": {
   "category": "human_sculpture",
@@ -3013,7 +3187,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1986.65.75A-G_1-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_009": {
   "category": "human_sculpture",
@@ -3036,7 +3212,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1968.155.154_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_010": {
   "category": "human_sculpture",
@@ -3065,7 +3243,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1986.65.379_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_011": {
   "category": "human_sculpture",
@@ -3090,7 +3270,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1968.155.91_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_012": {
   "category": "human_sculpture",
@@ -3115,7 +3297,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1983.37_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_013": {
   "category": "human_sculpture",
@@ -3144,7 +3328,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1915.5.1_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_014": {
   "category": "human_sculpture",
@@ -3170,7 +3356,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1968.155.57_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_015": {
   "category": "human_sculpture",
@@ -3195,7 +3383,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-2016.38.79_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_016": {
   "category": "human_sculpture",
@@ -3216,7 +3406,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1992.1.1A-B_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_017": {
   "category": "human_sculpture",
@@ -3242,7 +3434,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1996.91.51_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_018": {
   "category": "human_sculpture",
@@ -3266,7 +3460,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1986.65.297_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_019": {
   "category": "human_sculpture",
@@ -3291,7 +3487,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1986.65.5_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_020": {
   "category": "human_sculpture",
@@ -3315,7 +3513,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1986.65.359_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_021": {
   "category": "human_sculpture",
@@ -3338,7 +3538,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1974.88.26_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_022": {
   "category": "human_sculpture",
@@ -3362,7 +3564,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1996.91.58A-B_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_023": {
   "category": "human_sculpture",
@@ -3386,7 +3590,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1968.155.12_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_024": {
   "category": "human_sculpture",
@@ -3409,7 +3615,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1970.335.31_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_025": {
   "category": "human_sculpture",
@@ -3439,7 +3647,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-XX92_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_026": {
   "category": "human_sculpture",
@@ -3463,7 +3673,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1986.65.326_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_027": {
   "category": "human_sculpture",
@@ -3489,7 +3701,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1974.88.11_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_028": {
   "category": "human_sculpture",
@@ -3513,7 +3727,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1976.113.3_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_029": {
   "category": "human_sculpture",
@@ -3540,7 +3756,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-2005.23.2_3",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_030": {
   "category": "human_sculpture",
@@ -3566,7 +3784,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1974.88.30_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_031": {
   "category": "human_sculpture",
@@ -3591,7 +3811,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1986.65.293_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_032": {
   "category": "human_sculpture",
@@ -3614,7 +3836,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1974.88.4_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_033": {
   "category": "human_sculpture",
@@ -3644,7 +3868,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1919.1.1_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_034": {
   "category": "human_sculpture",
@@ -3672,7 +3898,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1972.167.10_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_035": {
   "category": "human_sculpture",
@@ -3695,7 +3923,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1968.155.157_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_036": {
   "category": "human_sculpture",
@@ -3718,7 +3948,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1974.88.5_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_037": {
   "category": "human_sculpture",
@@ -3743,7 +3975,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1986.65.66_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_038": {
   "category": "human_sculpture",
@@ -3766,7 +4000,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1983.90.235_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_039": {
   "category": "human_sculpture",
@@ -3789,7 +4025,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1984.141.7_1",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "human_sculpture_040": {
   "category": "human_sculpture",
@@ -3818,7 +4056,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=SAAM-1986.65.318A-B_2",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "human_sculpture",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_001": {
   "category": "graphic_design",
@@ -3863,7 +4103,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-2016C7F9C2062-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_003": {
   "category": "graphic_design",
@@ -3883,7 +4125,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-CF50CDF623A22-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_004": {
   "category": "graphic_design",
@@ -3903,7 +4147,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-596314B694A62-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_005": {
   "category": "graphic_design",
@@ -3924,7 +4170,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-160503_01-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_006": {
   "category": "graphic_design",
@@ -3944,7 +4192,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-8E5BDC89BB7D2-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_007": {
   "category": "graphic_design",
@@ -3964,7 +4214,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-E96C24E18ABD2-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_008": {
   "category": "graphic_design",
@@ -3986,7 +4238,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-6554DBAE96802-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_009": {
   "category": "graphic_design",
@@ -4008,7 +4262,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-1985-19-58MattFlynn",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_010": {
   "category": "graphic_design",
@@ -4029,7 +4285,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-1E71790A31AF2-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_011": {
   "category": "graphic_design",
@@ -4050,7 +4308,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-1968-111-13MattFlynn",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_012": {
   "category": "graphic_design",
@@ -4070,7 +4330,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-A1579FB78D822-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_013": {
   "category": "graphic_design",
@@ -4090,7 +4352,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-578BFBE941E62-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_014": {
   "category": "graphic_design",
@@ -4111,7 +4375,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-46273EF14A632-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_015": {
   "category": "graphic_design",
@@ -4131,7 +4397,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-BC4D677935562-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_016": {
   "category": "graphic_design",
@@ -4152,7 +4420,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-1961-175-1MattFlynn",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_017": {
   "category": "graphic_design",
@@ -4174,7 +4444,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-9806AE8C6CF62-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_018": {
   "category": "graphic_design",
@@ -4194,7 +4466,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-0C8E3B4E3DB52-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_019": {
   "category": "graphic_design",
@@ -4215,7 +4489,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-1970-26-4-cqMattFlynn",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_020": {
   "category": "graphic_design",
@@ -4235,7 +4511,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-CB66D829F6152-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_021": {
   "category": "graphic_design",
@@ -4257,7 +4535,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-A978BBE611F72-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_022": {
   "category": "graphic_design",
@@ -4278,7 +4558,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-3AED5BA73F1C2-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_023": {
   "category": "graphic_design",
@@ -4299,7 +4581,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-00C30451E0F72-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_024": {
   "category": "graphic_design",
@@ -4319,7 +4603,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-06B1F31967F42-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_025": {
   "category": "graphic_design",
@@ -4339,7 +4625,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-2D938A8A03042-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_026": {
   "category": "graphic_design",
@@ -4360,7 +4648,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-8BFD6E90E43F2-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_027": {
   "category": "graphic_design",
@@ -4380,7 +4670,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-EC8F1503788C2-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_028": {
   "category": "graphic_design",
@@ -4400,7 +4692,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-695D7E7E1BCC2-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_029": {
   "category": "graphic_design",
@@ -4421,7 +4715,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-83735E40AF792-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "exclude",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_030": {
   "category": "graphic_design",
@@ -4441,7 +4737,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-28747_01-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_031": {
   "category": "graphic_design",
@@ -4461,7 +4759,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-849B8FA8F6252-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_032": {
   "category": "graphic_design",
@@ -4482,7 +4782,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-CHP5266",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_033": {
   "category": "graphic_design",
@@ -4503,7 +4805,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-104877_02-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": false,
+  "verified_category": "human_painting",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_034": {
   "category": "graphic_design",
@@ -4523,7 +4827,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-4FCDD17D7D212-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_035": {
   "category": "graphic_design",
@@ -4543,7 +4849,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-34A3D3A07BE22-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_036": {
   "category": "graphic_design",
@@ -4563,7 +4871,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-9393A56BAFC42-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_037": {
   "category": "graphic_design",
@@ -4583,7 +4893,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-26905_02-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_038": {
   "category": "graphic_design",
@@ -4604,7 +4916,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-161575_01-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_039": {
   "category": "graphic_design",
@@ -4625,7 +4939,9 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-161137_01-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "graphic_design_040": {
   "category": "graphic_design",
@@ -4645,12 +4961,25 @@
   "image_url": "https://ids.si.edu/ids/deliveryService?id=CHSDM-F9420C094BD92-000001",
   "status": "ok",
   "file_ext": ".jpg",
-  "verified": null
+  "verified": true,
+  "verified_category": "graphic_design",
+  "verified_date": "2026-09-25"
  },
  "_sampling": {
   "seed": 20260925,
   "pool": 80,
   "per_category": 40,
   "max_files": 60
+ },
+ "_sealing": {
+  "date": "2026-09-25",
+  "note": "Sealed after hand verification (protocol step 5): no additions after this point. Verification decisions are the verified/verified_category/verified_date fields per record.",
+  "decisions": {
+   "correct": 134,
+   "corrected": 6,
+   "excluded": 20,
+   "unverified_dead_links": 4
+  },
+  "effective_ground_truth": 140
  }
 }

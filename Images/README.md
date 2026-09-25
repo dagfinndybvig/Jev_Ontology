@@ -257,11 +257,14 @@ measurement-only replication on 160 images from Smithsonian Open
 Access (4 categories from the institution's own cataloging terms;
 `REPLICATION_PROTOCOL.md` committed before the run). The frozen v9
 pipeline ran 3x: 160/160 each, 0 errors, pooled agreement 93.2% /
-93.1% / 92.9% against the category-implied labels -- above the
-pre-registered 90% bar and above v7's 89% on the Commons stand-in the
-loop was later tuned on. 92% of records have identical five-facet
-answers across all 3 runs. Hand-verification of the labels is still
-open (`verify_replication.py`); see `REPLICATION_RESULTS.md`.
+93.1% / 92.9% against the category-implied labels. All 160 records
+were then hand-verified and the manifest sealed: on the 140 verified
+records the pooled agreement is 97.5% / 97.0% / 97.0% across the three
+runs -- well above the pre-registered 90% bar -- with the auto-accept
+band's miss rate at 7-9% (Wilson 95% CI 4-14%) at a 15-18% routing
+burden. 92% of records have identical five-facet answers across all 3
+runs. Verdict: the loop's result generalizes to fresh institutional
+material without any re-tuning. See `REPLICATION_RESULTS.md`.
 
 ## Caveats
 

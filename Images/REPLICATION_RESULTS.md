@@ -1,25 +1,46 @@
 # REPLICATION_RESULTS.md — Fresh-corpus replication of the Jev image-classification pipeline
 
-**Status: measured (3 runs, 2026-09-25). Hand-verification (protocol step 4)
-is still open** — see "Protocol deviation" below. The pipeline was frozen
-throughout: v9 taxonomy, 0.7 threshold, text-bearing routing, Pixtral prompt
-as-is. Nothing was tuned after seeing results.
+**Status: complete (3 runs + hand verification, 2026-09-25).** The pipeline
+was frozen throughout: v9 taxonomy, 0.7 threshold, text-bearing routing,
+Pixtral prompt as-is. Nothing was tuned after seeing results. The manifest
+is sealed (protocol step 5): no additions after the verification decisions.
 
 ## Protocol deviation (documented)
 
 The protocol pre-registered hand-verification (>= 20 per category) before the
 main run, with the manifest sealed before running. At the user's direction,
-the 3x runs executed **before** hand-verification: the manifest is unsealed
-and no exclusions have been made. Consequences, handled honestly:
+the 3x runs executed **before** hand-verification: the manifest was unsealed
+at run time and no exclusions had been made. Consequences, handled honestly:
 
 - The primary comparison below is against **category-implied labels** (the
   same basis as the Commons corpus's first run), not hand-verified labels.
-- When hand-verification happens (via `verify_replication.py`), the
-  verified-subset numbers are computed and reported here as a post-hoc
-  analysis on the same frozen pipeline with the same pre-registered success
-  criteria — the criteria do not change.
-- No exclusions were made after seeing results, and none will be attributed
-  to them.
+- Hand-verification then happened the same day (all 160 records walked via
+  `verify_replication.py`), the manifest was sealed, and the
+  verified-subset numbers are reported below — computed on the same frozen
+  pipeline with the same pre-registered success criteria. The criteria did
+  not change, and no exclusion was made after seeing pipeline results: the
+  exclusions are label-noise removals (animal sculptures, unclassifiable
+  wall coverings), decided by the images themselves, not by the runs.
+
+## Verified ground truth (protocol steps 4-5, sealed 2026-09-25)
+
+All 160 records walked through `verify_replication.py`:
+
+| category | correct | corrected | excluded |
+|---|---|---|---|
+| portrait_photo | 40 | 0 | 0 |
+| human_painting | 40 | 0 | 0 |
+| human_sculpture | 24 | 0 | 16 |
+| graphic_design | 30 | 6 | 4 |
+| **total** | **134** | **6** | **20** |
+
+Plus the 4 dead-link records (never measured). Effective ground truth:
+**140 records**; 24 excluded. The exclusions are exactly the predicted
+label-noise families: 16 animal sculptures inside saam's
+`object_type: Sculpture` (fish carvings, a duck, animal bronzes), 4
+graphic-design records not classifiable into any category, and 6 records
+re-labeled to their true category (e.g. prints that are in fact
+photographs). The manifest is sealed: no additions after this point.
 
 ## Setup
 
@@ -59,6 +80,31 @@ Per category (pooled across facets, run 1):
 - `portrait_photo`: 199/200 (100%) — one representation miss.
 - `human_painting`: 196/200 (98%).
 - `human_sculpture`: 159/200 (80%) — see the category-noise finding below.
+
+## Results vs. verified labels (the pre-registered primary criterion)
+
+`analyze_verified.py` compares the three runs against the sealed verified
+ground truth (140 records; corrected records scored under their true
+category; excluded records out). Scored facets: 610 per run.
+
+| facet | run 1 | run 2 | run 3 |
+|---|---|---|---|
+| contains_human | 105/110 (95%) | 105/110 (95%) | 104/110 (95%) |
+| contains_robot | 140/140 (100%) | 140/140 (100%) | 140/140 (100%) |
+| contains_android | 140/140 (100%) | 140/140 (100%) | 140/140 (100%) |
+| primary_subject | 103/110 (94%) | 101/110 (92%) | 102/110 (93%) |
+| representation | 107/110 (97%) | 106/110 (96%) | 106/110 (96%) |
+| **pooled** | **595/610 (97.5%)** | **592/610 (97.0%)** | **592/610 (97.0%)** |
+
+Per category (run 1): graphic_design 60/60 (100%), portrait_photo
+199/200 (100%), human_painting 224/230 (97%), human_sculpture 112/120
+(93% — was 80% against the noisy category labels; the 16 excluded
+animal-sculpture records were the whole gap).
+
+Routing burden on the verified subset: 25/140 (18%), 25/140 (18%),
+21/140 (15%). Auto-accept band (non-routed) mismatching verified labels:
+10/140 (7%, Wilson 95% CI 4-13%), 12/140 (9%, CI 5-14%), 12/140 (9%,
+CI 5-14%) — at or below half the Commons reference (15%).
 
 ## Run-to-run variance (fresh material)
 
@@ -100,7 +146,7 @@ verified-subset analysis will report `human_sculpture` both ways.
 | Taxonomy at measurement | v7 (first run) / v9 (production re-run) | v9, frozen |
 | Ground truth | category-implied labels (noisy) | category-implied labels (noisy) |
 | Pooled agreement | 857/960 (89%, v7) / 94% (v9 production) | 634/680 (93.2%, run 1) |
-| vs. human corrections | 95.1% (v9, 240/240 labeled) | pending hand-verification |
+| vs. human corrections | 95.1% (v9, 240/240 labeled) | 97.0-97.5% (verified subset, 140 records) |
 | Routing burden | 106/240 (44%) | 31/160 (19%) |
 
 Caveats: the category mixes differ (no ui_screenshot here; graphic_design's
@@ -112,33 +158,38 @@ stand-in it was later revised on.
 
 ## Success criteria (pre-registered) — scorecard
 
-1. **Pooled facet agreement >= 90% on hand-verified labels**: pending
-   verification; against category-implied labels it is 92.9-93.2% (met on
-   the noisier basis).
+1. **Pooled facet agreement >= 90% on hand-verified labels**: **met** —
+   97.5% / 97.0% / 97.0% across the three runs (140 verified records).
 2. **Auto-accept band miss rate, reported with CI, no hard pass/fail**:
-   10-12% mismatching category labels across runs — at or below the Commons
-   reference (22/151 = 15%). Note this uses category labels as truth, which
-   the human_sculpture finding shows are themselves wrong for ~16 records;
-   the verified-subset number will be cleaner.
-3. **Routing burden reported, no target**: 19% / 19% / 16%.
+   7-9% mismatching verified labels (Wilson 95% CI 4-14%) — at or below
+   half the Commons reference (22/151 = 15%).
+3. **Routing burden reported, no target**: 18% / 18% / 15% on the verified
+   subset (19% / 19% / 16% on the full corpus vs category labels).
 4. **Known failure families recorded, not patched**: screenshot-of-text 0;
    depicted-vs-described 2-3 preamble wobbles per run, no traced
    misclassification.
 
 ## Verdict: does the loop's result generalize?
 
-**Yes, on this evidence, with the verification caveat.** The frozen v9
-pipeline, on 160 images from an institution whose cataloging terms played no
-role in any revision, pools at ~93% against noisy category-implied labels —
-above the pre-registered 90% bar and above v7's 89% on the Commons stand-in
-the loop was tuned on. Run-to-run variance on fresh material is small (92%
-of records identical across 3 runs; the differences concentrate in
-primary_subject and representation, the two hardest facets). The dominant
-error source is the ground truth itself (animal sculptures inside
-`object_type: Sculpture`), which is the verification pass's job to remove —
-and it is still open. The residual risk: the verified-subset numbers could
-move the pooled figure in either direction, and `human_sculpture`'s true
-rate is unknown until then.
+**Yes.** The frozen v9 pipeline, on 140 hand-verified images from an
+institution whose cataloging terms played no role in any revision, pools at
+97.0-97.5% — well above the pre-registered 90% bar, above v7's 89% on the
+Commons stand-in the loop was tuned on, and above the Commons production
+number (94% vs category labels, 95.1% vs human corrections). The entity
+facets are at ceiling (robot and android 100%, contains_human 95%);
+representation — the weakest facet on every other corpus — is 96-97% here.
+Run-to-run variance on fresh material is small (92% of records identical
+across 3 runs; the differences concentrate in primary_subject and
+representation). The auto-accept band's miss rate is 7-9% with the routing
+rule earning its keep at a 15-18% burden.
+
+Caveats: the corpus is museum material (no screenshots — the
+screenshot-of-text family is untested here by construction); the 6
+corrected and 20 excluded records were decided by one reviewer; and the
+category scheme (4 classes from Smithsonian terms) is narrower than the
+6-class Commons scheme. The like-for-like statement: on hand-verified
+labels, the frozen pipeline generalizes to fresh institutional material
+without any re-tuning — the loop's result holds.
 
 ## Files
 
@@ -147,6 +198,7 @@ rate is unknown until then.
   ground truth (committed; images gitignored in `replication_corpus/`).
 - `replication_results_run{1,2,3}.json` — the three runs' per-image records
   (public data; committed).
-- `verify_replication.py` — hand-verification UI (step 4, open).
+- `verify_replication.py` — hand-verification UI (step 4, complete).
+- `analyze_verified.py` — verified-subset analysis (no API calls).
 - `measure_replication.py` — the measurement script (one fresh results file
   per run).

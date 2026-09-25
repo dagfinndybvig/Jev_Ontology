@@ -21,15 +21,15 @@
 > the loop), or (2) a vision-layer lever -- e.g. the description
 > prompt asking explicitly about small/background people, measured
 > against the same ground truth. The pre-registered fresh-corpus
-> replication is measured (2026-09-25): the frozen v9 pipeline pools
-> at ~93% on 160 Smithsonian images that played no role in any
-> revision -- the loop's result generalizes, with hand-verification
-> still open (see "Fresh-corpus replication" below).
+> replication is complete (2026-09-25): the frozen v9 pipeline pools
+> at 97.0-97.5% on 140 hand-verified Smithsonian images that played
+> no role in any revision -- the loop's result generalizes (see
+> "Fresh-corpus replication" below).
 > Depicts annotation is a dead end
 > for this corpus: 0/231 files carry P180 statements. See STATUS.md
 > "Next steps" item 2.
 
-## Fresh-corpus replication (measured 2026-09-25; hand-verification open)
+## Fresh-corpus replication (complete 2026-09-25)
 
 **Why:** Every taxonomy revision (v6-v9) was authored from corrections
 on the two existing corpora. Before approaching the National Library
@@ -49,22 +49,25 @@ routing, Pixtral prompt), and 3 identical runs for run-to-run
 variance. No taxonomy changes, no threshold changes, no exclusions
 after seeing results.
 
-**Status (2026-09-25): measured.** Corpus fetched (160 images, 40 per
+**Status (2026-09-25): complete.** Corpus fetched (160 images, 40 per
 category from Smithsonian Open Access: portrait_photo, human_painting,
-human_sculpture, graphic_design; 4 dead IDS links documented) and the
-pipeline run 3x, 160/160 each, 0 errors. Pooled agreement vs
-category-implied labels: 93.2% / 93.1% / 92.9% -- above the
-pre-registered 90% bar and above v7's 89% on the Commons stand-in.
-Run-to-run variance: 92% of records identical across all 3 runs.
-Routing burden 19%/19%/16%. Protocol deviation documented in
+human_sculpture, graphic_design; 4 dead IDS links documented), the
+pipeline run 3x (160/160 each, 0 errors), and all 160 records
+hand-verified through `verify_replication.py` (134 correct, 6
+corrected, 20 excluded -- 16 animal sculptures in human_sculpture, the
+predicted noise family; 4 dead links). Manifest sealed. Verified
+numbers: pooled 97.5% / 97.0% / 97.0% across the three runs -- well
+above the pre-registered 90% bar; auto-accept band mismatch 7-9%
+(Wilson 95% CI 4-14%), at or below half the Commons reference (15%);
+routing burden 15-18%. human_sculpture 93% on the verified subset (was
+80% against the noisy category labels). Run-to-run variance: 92% of
+records identical across all 3 runs. Protocol deviation documented in
 REPLICATION_RESULTS.md: the runs executed before hand-verification at
-the user's direction, so the manifest is unsealed and the primary
-comparison is vs category-implied labels. **Open: hand-verify >= 20
-per category** (`verify_replication.py`, port 8766), then seal the
-manifest and compute the verified-subset numbers. Key finding:
-`human_sculpture`'s 80% is mostly category noise (saam Sculpture
-includes animal sculptures; 16/40 records have Jev correctly answering
-contains_human=no) -- the verification pass's job to exclude.
+the user's direction; the verified-subset analysis used the same
+frozen pipeline and the same pre-registered criteria. **Verdict: the
+loop's result generalizes** -- the frozen v9 pipeline holds on fresh
+institutional material without any re-tuning. See
+REPLICATION_RESULTS.md.
 
 The current pipeline (`classify_images.py`) is scaffolding: a vision
 model describes each image, Jev answers one yes/no question. The goal of

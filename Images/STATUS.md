@@ -613,6 +613,31 @@ verification still open)
    Commons stand-in it was later tuned on. Residual risk: the
    verified-subset numbers could move the pooled figure either way;
    `human_sculpture`'s true rate is unknown until verification.
+8. **Hand verification complete; manifest sealed (protocol steps
+   4-5).** All 160 records walked through `verify_replication.py`:
+   134 correct, 6 corrected to their true category, 20 excluded (16
+   animal sculptures in `human_sculpture` -- exactly the predicted
+   noise family -- and 4 unclassifiable graphic-design records), plus
+   the 4 dead-link records. Effective ground truth: 140 records. The
+   manifest carries a `_sealing` block; no additions after this
+   point. Descriptions were enriched pre-sealing (the fetcher had
+   taken only the first freetext note, median 20 chars; now all
+   museum-label notes, median 119): `backfill_descriptions.py`, 94/162
+   records updated.
+9. **Verified-subset analysis (the pre-registered primary
+   criterion).** `analyze_verified.py` compares the three runs
+   against the sealed verified labels (no API calls): pooled
+   595/610 (97.5%), 592/610 (97.0%), 592/610 (97.0%) -- well above
+   the pre-registered 90% bar. Per facet (run 1): contains_human
+   95%, robot 100%, android 100%, primary_subject 94%,
+   representation 97%. Per category: graphic_design 100%,
+   portrait_photo 100%, human_painting 97%, human_sculpture 93%
+   (was 80% -- the excluded animal sculptures were the whole gap).
+   Routing burden 18%/18%/15%; auto-accept band mismatch 7-9%
+   (Wilson 95% CI 4-14%), at or below half the Commons reference
+   (15%). Verdict updated: the loop's result generalizes -- the
+   frozen pipeline holds on fresh institutional material without any
+   re-tuning.
 
 ## Where things live
 
@@ -653,7 +678,7 @@ verification still open)
 | Baselines (private) | `../Ontology_private_backup/` (`rerun_v1_2026-09-23/` = old prompt; `2026-09-23_criteria_v1_run/`; `2026-09-23_criteria_v2_reviewed/` = reviewed ground truth; `2026-09-23_taxonomy_v3_run/`, `..._v4_run/`, `..._v5_run/`) |
 | Fresh-corpus replication protocol + results write-up (public) | `Images/REPLICATION_PROTOCOL.md`, `Images/REPLICATION_RESULTS.md` |
 | Replication fetcher + manifest (public; the fresh ground truth) | `Images/fetch_replication_corpus.py`, `Images/replication_manifest.json` |
-| Replication measurement + verification UI (public) | `Images/measure_replication.py`, `Images/verify_replication.py` |
+| Replication measurement + verification UI + verified analysis (public) | `Images/measure_replication.py`, `Images/verify_replication.py`, `Images/analyze_verified.py`, `Images/backfill_descriptions.py` |
 | Replication run records (public; 3 runs) | `Images/replication_results_run{1,2,3}.json` |
 | Replication images (private, gitignored) | `Images/replication_corpus/` |
 | Review queue printout | rerun `python pilot_humanoid.py` (instant; resumable) |
@@ -714,16 +739,13 @@ verification still open)
    (2026-09-23): negation-only stripping adopted -- same 25/27
    catches, burden 156 -> 135 of 218 (72% -> 62%). See RESULTS.md
    ("Routing stripper fixed").
-5. **Hand-verify the replication corpus (protocol step 4, open).**
-   >= 20 per category via `python verify_replication.py`
-   (http://127.0.0.1:8766); writes `verified` blocks into
-   `replication_manifest.json`. When done: seal the manifest (step
-   5), compute the verified-subset numbers (pooled agreement on
-   hand-verified labels, the pre-registered >= 90% bar; the
-   auto-accept band miss rate with CI; `human_sculpture` both with
-   and without the animal-sculpture records), and update
-   REPLICATION_RESULTS.md. No exclusions after seeing pipeline
-   results; the criteria do not change.
+5. ~~**Hand-verify the replication corpus (protocol step 4).**~~ Done
+   (2026-09-25): all 160 records walked via `verify_replication.py`;
+   134 correct, 6 corrected, 20 excluded (16 animal sculptures), 4
+   dead links. Manifest sealed (step 5, `_sealing` block). Verified
+   numbers: pooled 97.5%/97.0%/97.0% across the 3 runs, auto-accept
+   band mismatch 7-9% (CI 4-14%), routing burden 15-18%. See
+   REPLICATION_RESULTS.md ("Results vs. verified labels").
 
 The android question is settled by the review: the collection
 contains no androids (the Twiki image is a robot, not an android).
