@@ -11,7 +11,8 @@ See `LIBRARY.md` for the project plan for the library use-case.
 Since we work in a university library, making a system for auto-classifying images according to some taxonomic scheme is a real use-case for us.
 
 Classifying images with [Jev](https://typesafe.ai/blog/introducing-system-one-models-and-jev),
-TypeSafe AI's "System One" decision model.
+TypeSafe AI's "System One" decision model. (What Jev is, and why a
+decision model rather than an LLM: see the parent README, `../README.md`.)
 
 > **Vision describes, Jev decides.**
 >
@@ -21,7 +22,7 @@ TypeSafe AI's "System One" decision model.
 > same cascade pattern as the ticket ontology, with a vision model as the
 > front-end.
 
-Note: Once Jev becomes multimodal, we can shorten the pipeline and quite likely acheive amazing speed and economy.
+Note: Once Jev becomes multimodal, we can shorten the pipeline and quite likely achieve amazing speed and economy.
 
 Also note that while Jev is ridiculously cheap, Pixtral is also low cost, so on the whole the project is already economical as-is.
 
@@ -184,8 +185,8 @@ direct perception as well as it survives the paraphrase.
 > pass is the production path; calibration-driven routing is
 > `routing.py` (threshold + text-bearing signal, wired into the sorter
 > and the review UI); and the criteria-as-ontology loop ran ten
-> times (v1-v10, six measured rejections), producing two
-> held-out-validated revisions (v7, v9). With ground truth complete
+> times (v1-v10: three adopted -- v4, v7, v9 -- and five measured
+> rejections), producing two held-out-validated revisions (v7, v9). With ground truth complete
 > on the stand-in corpus, v9 agrees with every human correction on
 > 95.1% of facets, and the loop is at diminishing returns: the
 > decision layer is nearly exhausted, and what remains is the
@@ -206,9 +207,22 @@ RESULTS.md                          -- writeup of the run and findings
 LIBRARY.md                          -- project plan for the library use-case
 TODO.md                             -- outline of the fuller multi-question project
 STATUS.md                           -- session pickup notes: where we are, next steps
-humanoid_taxonomy_v1-v3, v5.json    -- pilot taxonomy history (v3 and v5: measured rejections)
-humanoid_taxonomy_v4.json          -- pilot taxonomy v4 (current): depiction in any
-                                     medium counts; robots need a being-like form
+humanoid_taxonomy_v1-v10.json      -- taxonomy history: v4, v7, v9 adopted
+                                     (v9 is the current default); v3, v5, v6,
+                                     v8, v10 measured rejections
+routing.py                         -- routes records to review: 0.7 threshold
+                                     OR a text-bearing description signal
+routing_queue.json (private)       -- the routed queue (gitignored)
+baseline_pixtral_direct.py         -- Phase 2 baseline: Pixtral classifies the
+                                     five facets directly
+baseline_compare.py                -- keyword vs cascade vs Pixtral-direct vs
+                                     structured vision, against ground truth
+structured_vision.py               -- Phase 3: typed vision fields composed
+                                     into the state Jev classifies
+capture_type.py                    -- Option 1 experiment (falsified; kept as
+                                     the measured record)
+author_taxonomy_v6-v10.py,         -- held-out revision authoring and
+measure_taxonomy_v6-v10.py            measurement scripts (public)
 pilot_humanoid.py                  -- re-classifies the stored descriptions
                                      (TAXONOMY env var selects the version)
 sort_humanoids.py                  -- copies images into a sorted Humanoids tree
@@ -220,6 +234,7 @@ edge_cases/ (private)              -- generated edge-case images (gitignored)
 measure_edge_cases.py             -- runs the pipeline on the edge-case suite and
                                      compares to the intended labels
 edge_case_pipeline_results.json (private) -- measurement records (gitignored)
+edge_case_results.json, edge_case_agent.json (private) -- run records
 fetch_library_standin.py          -- fetches a stand-in library corpus from
                                      Wikimedia Commons (categories are data)
 library_manifest.json             -- stand-in ground truth: category, description,
@@ -228,6 +243,24 @@ library_standin/ (private)        -- fetched corpus images (gitignored)
 measure_library_standin.py       -- runs the pipeline on the stand-in
                                      corpus and compares to the manifest
 library_standin_results.json (private) -- measurement records (gitignored)
+
+Fresh-corpus replication (see REPLICATION_RESULTS.md):
+REPLICATION_PROTOCOL.md          -- pre-registration: categories, sampling,
+                                    frozen versions, success criteria
+REPLICATION_RESULTS.md           -- the replication writeup: both bases,
+                                    run-to-run variance, verdict
+fetch_replication_corpus.py      -- fetches the corpus from Smithsonian Open
+                                    Access (categories from the source's terms)
+replication_manifest.json        -- sealed, hand-verified ground truth
+                                    (committed; public CC0 data)
+replication_corpus/ (private)    -- fetched corpus images (gitignored)
+measure_replication.py           -- runs the pipeline on the corpus (one
+                                    fresh results file per run)
+replication_results_run1-3.json  -- the three runs' per-image records (public)
+verify_replication.py            -- hand-verification UI (localhost:8766)
+analyze_verified.py              -- verified-subset analysis (no API calls)
+backfill_descriptions.py         -- re-extracts full descriptions from the
+                                    source metadata into the manifest
 ```
 
 ## Running it
@@ -247,17 +280,23 @@ python generate_edge_cases.py  # generates the edge-case suite into edge_cases/
 
 ## Results
 
-215 images classified: 73 contain a human, 142 do not, 0 errors. 87%
-at 0.9+ confidence. The 13 sub-0.7-confidence cases are all
-illustrations, statues, cartoons, or posters rather than photos of real
-people -- Jev's calibration surfaces the "real human vs. depiction"
-boundary. See `RESULTS.md` for the full writeup.
-
-**Re-run (2026-09-23):** the pipeline was re-run on 218 images with
-the fixed vision prompt: review queue 52/218 (24%, down from 37%),
-representation hedges halved, and both known screenshot-of-text
-false positives caught at the vision layer. The humanoid pilot and
-the sorted verification tree are described in `STATUS.md`.
+**Fresh-corpus replication (2026-09-25):** a pre-registered,
+measurement-only replication on 160 images from Smithsonian Open
+Access (4 categories from the institution's own cataloging terms;
+`REPLICATION_PROTOCOL.md` committed before the run). The frozen v9
+pipeline ran 3x: 160/160 each, 0 errors, pooled agreement 93.2% /
+93.1% / 92.9% against the category-implied labels. All 160 records
+were then hand-verified and the manifest sealed -- the protocol's
+verify-before-run order was reversed at project direction, documented
+in `REPLICATION_RESULTS.md` with both bases reported: on the 140
+verified records the pooled agreement is 97.5% / 97.0% / 97.0% across
+the three runs -- well above the pre-registered 90% bar -- with the
+auto-accept band's miss rate at 7-9% (Wilson 95% CI 4-14%) at a 15-18%
+routing burden. 92% of records have identical five-facet answers
+across all 3 runs (the differing records concentrate in
+primary_subject and representation, the two weakest facets). Verdict:
+the loop's result generalizes to fresh institutional material without
+any re-tuning. See `REPLICATION_RESULTS.md`.
 
 **Stand-in corpus (2026-09-23/24):** a 240-image Wikimedia Commons
 corpus (`library_standin/`, manifest committed, all 6 categories,
@@ -268,19 +307,16 @@ reviewed in four passes (60/60 and 55/55 under v4, 12/12 under v7, then the 72 r
 corrected overall); all 240 records
 labeled (95.1% facet agreement with the human corrections under v9). See `RESULTS.md` ("Stand-in library corpus").
 
-**Fresh-corpus replication (2026-09-25):** a pre-registered,
-measurement-only replication on 160 images from Smithsonian Open
-Access (4 categories from the institution's own cataloging terms;
-`REPLICATION_PROTOCOL.md` committed before the run). The frozen v9
-pipeline ran 3x: 160/160 each, 0 errors, pooled agreement 93.2% /
-93.1% / 92.9% against the category-implied labels. All 160 records
-were then hand-verified and the manifest sealed: on the 140 verified
-records the pooled agreement is 97.5% / 97.0% / 97.0% across the three
-runs -- well above the pre-registered 90% bar -- with the auto-accept
-band's miss rate at 7-9% (Wilson 95% CI 4-14%) at a 15-18% routing
-burden. 92% of records have identical five-facet answers across all 3
-runs. Verdict: the loop's result generalizes to fresh institutional
-material without any re-tuning. See `REPLICATION_RESULTS.md`.
+**The original personal-collection runs (2026-09-22/23):** 215 images
+classified: 73 contain a human, 142 do not, 0 errors. 87% at 0.9+
+confidence. The 13 sub-0.7-confidence cases are all illustrations,
+statues, cartoons, or posters rather than photos of real people --
+Jev's calibration surfaces the "real human vs. depiction" boundary.
+The re-run (2026-09-23) on 218 images with the fixed vision prompt:
+review queue 52/218 (24%, down from 37%), representation hedges
+halved, and both known screenshot-of-text false positives caught at
+the vision layer. See `RESULTS.md` for the full writeup; the humanoid
+pilot and the sorted verification tree are described in `STATUS.md`.
 
 ## Caveats
 
