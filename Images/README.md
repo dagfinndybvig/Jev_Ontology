@@ -64,7 +64,7 @@ Three collections, in order of appearance:
   `REPLICATION_RESULTS.md`.
 
 The real target remains an actual library collection with a
-cataloger (see `LIBRARY.md'); the collections exist to have
+cataloger (see LIBRARY.md); the collections exist to have
 labeled material before that arrives.
 
 ## What this directory is
