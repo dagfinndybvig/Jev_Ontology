@@ -296,3 +296,9 @@ recomputed from the result JSONs, never recalled from memory.
   produced a live run-to-run variance data point as a byproduct:
   identical v6 criteria, two runs, same choices, 14 vs 16
   threshold-routed.)
+- Windows encoding (found in the 2026-09-25 audit): a bare
+  `json.load(open(f))` fails on this machine — the default codec is
+  cp1252 and the JSONs are UTF-8 (`UnicodeDecodeError` on the first
+  non-ASCII byte). Always pass `encoding='utf-8'`. The pipeline
+  scripts already do (all 79 `open()` calls); the trap is ad-hoc
+  one-liner checks and any future code.
