@@ -29,7 +29,7 @@ But being able to do this just with a Jev-like model would certainly be a game-c
 
 ## The empirical case
 
-Two collections, in order of appearance:
+Three collections, in order of appearance:
 
 - **A personal photo collection (218 images, private).** The
   development corpus: real photographs of people, statues, robots,
