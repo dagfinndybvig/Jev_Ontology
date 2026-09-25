@@ -252,6 +252,17 @@ reviewed in four passes (60/60 and 55/55 under v4, 12/12 under v7, then the 72 r
 corrected overall); all 240 records
 labeled (95.1% facet agreement with the human corrections under v9). See `RESULTS.md` ("Stand-in library corpus").
 
+**Fresh-corpus replication (2026-09-25):** a pre-registered,
+measurement-only replication on 160 images from Smithsonian Open
+Access (4 categories from the institution's own cataloging terms;
+`REPLICATION_PROTOCOL.md` committed before the run). The frozen v9
+pipeline ran 3x: 160/160 each, 0 errors, pooled agreement 93.2% /
+93.1% / 92.9% against the category-implied labels -- above the
+pre-registered 90% bar and above v7's 89% on the Commons stand-in the
+loop was later tuned on. 92% of records have identical five-facet
+answers across all 3 runs. Hand-verification of the labels is still
+open (`verify_replication.py`); see `REPLICATION_RESULTS.md`.
+
 ## Caveats
 
 - **Ground truth is human, and complete.** All 240 labeled records

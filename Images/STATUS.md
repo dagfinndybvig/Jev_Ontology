@@ -1,12 +1,14 @@
 # Status: Where We Are, Where to Pick Up
 
-**Last updated:** 2026-09-24 (original run and humanoid pilot 09-22;
+**Last updated:** 2026-09-25 (original run and humanoid pilot 09-22;
 routing, edge-case suite, stand-in corpus fetch/measure, and the
 first review pass on 09-23; corpus top-up and second review pass on
 09-23/09-24; corpus complete at 240, the v7 production re-run, and
 the fourth review pass -- ground truth complete at 240/240 -- on
 09-24; taxonomy v9 authored and adopted, then the v9 production
-re-run, the same day)
+re-run, the same day; the pre-registered fresh-corpus replication
+protocol, corpus fetch, and 3x measurement on 09-25 -- hand
+verification still open)
 **Repo state:** see git; keep in sync with `origin/main` before new work.
 
 ---
@@ -549,6 +551,69 @@ re-run, the same day)
     stale button children otherwise leak between rebuilds);
     `node --check` and `py_compile` clean.
 
+## What happened on 2026-09-25 (fresh-corpus replication)
+
+1. **Protocol pre-registered.** `REPLICATION_PROTOCOL.md` committed
+   before any fetch or run: fresh corpus from Smithsonian Open Access
+   (primary; Met API fallback unused), 4 categories drawn from the
+   institution's own `object_type`/`topic` terms -- `portrait_photo`
+   (npg Photographs+Portraits), `human_painting` (saam
+   Paintings/Graphic arts + Portraits/Figure group), `human_sculpture`
+   (saam Sculpture), `graphic_design` (chndm Prints/Bound print/Wall
+   coverings). The `sil` unit was dropped (3/14,626 records with
+   images); no ui_screenshot analog exists in the source. Measurement
+   only: v9 taxonomy, 0.7 threshold, text-bearing routing, and the
+   Pixtral prompt frozen; no taxonomy revision, no threshold changes,
+   no exclusions after seeing results.
+2. **Corpus fetched.** `fetch_replication_corpus.py`: fixed-seed
+   shuffle (seed 20260925, pool 80 per category), keeps the first 40
+   download successes per category (dead IDS links 404 commonly).
+   160 images, 40 per category, all .jpg; 4 dead IDS links documented
+   as error records. `replication_manifest.json` committed (public
+   CC0 data); images gitignored in `replication_corpus/`.
+3. **Verification UI built.** `verify_replication.py` (port 8766):
+   hand-verify category labels before the run; writes
+   `verified`/`verified_category`/`verified_date` into the manifest.
+   Smoke-tested end to end. **Step 4 is still open -- user labor**:
+   >= 20 per category via `python verify_replication.py`.
+4. **Protocol deviation (documented in REPLICATION_RESULTS.md).** At
+   the user's direction the 3x runs executed **before**
+   hand-verification: the manifest is unsealed, no exclusions made.
+   The primary comparison is against category-implied labels (the
+   same basis as the Commons corpus's first run); the
+   verified-subset analysis follows when verification happens, on
+   the same frozen pipeline and the same pre-registered criteria.
+5. **3x measurement complete (160/160 per run, 0 errors).**
+   `measure_replication.py` ran the production path (Pixtral
+   describe -> Jev v9 five facets) three times, fresh results file
+   per run. Pooled agreement vs category-implied labels: 634/680
+   (93.2%), 633/680 (93.1%), 632/680 (92.9%). Per facet (run 1):
+   contains_human 87%, robot 100%, android 100%, primary_subject
+   84%, representation 91%. Per category (run 1): graphic_design
+   80/80 (only robot/android scored), portrait_photo 199/200,
+   human_painting 196/200, human_sculpture 159/200 (80%).
+   Run-to-run variance: 147/160 (92%) identical five-facet answers
+   across all 3 runs; differences concentrate in primary_subject (9)
+   and representation (6). Routing burden 19%/19%/16%; auto-accept
+   band mismatch 11%/10%/12% (Commons reference: 15%).
+6. **Category-noise finding.** `human_sculpture`'s 80% is mostly
+   label noise, not pipeline error: saam's `object_type: Sculpture`
+   includes animal sculptures -- 16/40 records have Jev correctly
+   answering `contains_human: no` (fish carvings, a duck, animal
+   bronzes) against a category label that implies yes. The same
+   failure the Commons corpus taught; exactly what the
+   hand-verification pass exists to exclude. Failure families:
+   screenshot-of-text 0 (no screenshots in this corpus);
+   depicted-vs-described 2-3 plaque-preamble wobbles per run, no
+   traced misclassification.
+7. **Verdict (REPLICATION_RESULTS.md).** The loop's result
+   generalizes, with the verification caveat: the frozen v9 pipeline
+   pools at ~93% on material that played no role in any revision --
+   above the pre-registered 90% bar and above v7's 89% on the
+   Commons stand-in it was later tuned on. Residual risk: the
+   verified-subset numbers could move the pooled figure either way;
+   `human_sculpture`'s true rate is unknown until verification.
+
 ## Where things live
 
 | Thing | Path |
@@ -586,6 +651,11 @@ re-run, the same day)
 | Original-run results (private, gitignored) | `Images/image_human_results.json` |
 | Confident-band sample (private) | `../Ontology_private_backup/confident_sample_v1.json` |
 | Baselines (private) | `../Ontology_private_backup/` (`rerun_v1_2026-09-23/` = old prompt; `2026-09-23_criteria_v1_run/`; `2026-09-23_criteria_v2_reviewed/` = reviewed ground truth; `2026-09-23_taxonomy_v3_run/`, `..._v4_run/`, `..._v5_run/`) |
+| Fresh-corpus replication protocol + results write-up (public) | `Images/REPLICATION_PROTOCOL.md`, `Images/REPLICATION_RESULTS.md` |
+| Replication fetcher + manifest (public; the fresh ground truth) | `Images/fetch_replication_corpus.py`, `Images/replication_manifest.json` |
+| Replication measurement + verification UI (public) | `Images/measure_replication.py`, `Images/verify_replication.py` |
+| Replication run records (public; 3 runs) | `Images/replication_results_run{1,2,3}.json` |
+| Replication images (private, gitignored) | `Images/replication_corpus/` |
 | Review queue printout | rerun `python pilot_humanoid.py` (instant; resumable) |
 
 ## Next steps, in order
@@ -644,6 +714,16 @@ re-run, the same day)
    (2026-09-23): negation-only stripping adopted -- same 25/27
    catches, burden 156 -> 135 of 218 (72% -> 62%). See RESULTS.md
    ("Routing stripper fixed").
+5. **Hand-verify the replication corpus (protocol step 4, open).**
+   >= 20 per category via `python verify_replication.py`
+   (http://127.0.0.1:8766); writes `verified` blocks into
+   `replication_manifest.json`. When done: seal the manifest (step
+   5), compute the verified-subset numbers (pooled agreement on
+   hand-verified labels, the pre-registered >= 90% bar; the
+   auto-accept band miss rate with CI; `human_sculpture` both with
+   and without the animal-sculpture records), and update
+   REPLICATION_RESULTS.md. No exclusions after seeing pipeline
+   results; the criteria do not change.
 
 The android question is settled by the review: the collection
 contains no androids (the Twiki image is a robot, not an android).
