@@ -136,19 +136,19 @@ def record_fields(rec, cat, img):
     c = rec.get("content", {})
     dnr = c.get("descriptiveNonRepeating", {}) if isinstance(c, dict) else {}
     ins = c.get("indexedStructured", {}) if isinstance(c, dict) else {}
-    notes = ""
+    notes = []
     ft = c.get("freetext") if isinstance(c, dict) else None
     if isinstance(ft, dict):
         for n in as_list(ft.get("notes")):
             if isinstance(n, dict) and n.get("content"):
-                notes = str(n["content"])[:500]
-                break
+                notes.append("%s: %s" % (n.get("label", "Note"), str(n["content"])))
+    description = "\n".join(notes)[:2000]
     return {
         "category": cat,
         "unit": rec.get("unitCode", ""),
         "si_id": img.get("idsId", ""),
         "title": dnr.get("title", rec.get("title", "")),
-        "description": notes,
+        "description": description,
         "object_type": [t for t in as_list(ins.get("object_type")) if isinstance(t, str)],
         "topic": [t for t in as_list(ins.get("topic")) if isinstance(t, str)],
         "license": "CC0",
