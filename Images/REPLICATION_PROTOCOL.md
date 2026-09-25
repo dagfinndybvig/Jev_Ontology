@@ -60,16 +60,39 @@ Probe results (2026-09-25, live):
 Do not reuse the Commons six categories verbatim. Categories come from the
 institution's own vocabulary — this is a dry run of exactly what the
 National Library pilot would do (classify against a real institution's
-cataloging terms). Provisional mapping, to be finalized from source
-metadata during the verification pass:
+cataloging terms).
 
-1. Human portrait photograph (`npg`)
-2. Human depiction in painting/illustration/print (`saam`)
-3. Sculpture/figurine of a human (`saam` or `hmsg`)
-4. Book or graphic-design material: covers, posters (`sil`, `chndm`)
-5. Digitized-text/screen analog — only if the source supports it.
-   Expected: neither candidate source does, so the scheme likely has
-   4 categories. **(amendment)**
+**Final category definitions** (probed 2026-09-25 from source metadata;
+filters are on the source's own `indexedStructured` fields —
+`object_type` and `topic` — not on our vocabulary):
+
+1. `portrait_photo` — unit `npg` (National Portrait Gallery);
+   `object_type` contains "Photographs" AND `topic` contains
+   "Portraits". Measured density: 95 Photographs / 216 Portraits in
+   the first 4 metadata files; 214 of 228 `edanmdm` records carry CC0
+   images.
+2. `human_painting` — unit `saam` (Smithsonian American Art Museum);
+   `object_type` contains "Paintings" OR "Graphic arts", AND `topic`
+   contains "Portraits" OR "Figure group". Measured density: 65
+   Paintings + 63 Graphic arts per 4 files; 189 of 205 records carry
+   CC0 images.
+3. `human_sculpture` — unit `saam`; `object_type` contains
+   "Sculpture". Measured density: 13 per 4 files (~6% of records) —
+   the fetch script scans more files to reach 40; feasible.
+4. `graphic_design` — unit `chndm` (Cooper Hewitt, the design
+   museum); `object_type` contains "Prints" OR "Bound print" OR "Wall
+   coverings" (poster-like and graphic material). Measured density:
+   212 Prints + 38 Bound print + 76 Wall coverings per 4 files; 830
+   of 879 records carry CC0 images.
+
+Dropped during the probe:
+
+- `sil` (Smithsonian Libraries) — **not viable**: 14,626 `edanmdm`
+  records in the first 4 files but only 3 carry images (bibliographic
+  records, not digitized objects). Book-cover material is served by
+  `chndm`'s Bound prints and `saam`'s Graphic arts instead.
+- Digitized-text/screen analog — neither candidate source supports it
+  (as expected); the scheme has 4 categories. **(amendment)**
 
 The five Jev facets (`contains_human`, `contains_robot`,
 `contains_android`, `primary_subject`, `representation`) and their v9
