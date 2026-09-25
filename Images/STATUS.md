@@ -7,8 +7,8 @@ first review pass on 09-23; corpus top-up and second review pass on
 the fourth review pass -- ground truth complete at 240/240 -- on
 09-24; taxonomy v9 authored and adopted, then the v9 production
 re-run, the same day; the pre-registered fresh-corpus replication
-protocol, corpus fetch, and 3x measurement on 09-25 -- hand
-verification still open)
+protocol, corpus fetch, 3x measurement, hand verification, and
+verified-subset analysis on 09-25 -- replication complete)
 **Repo state:** see git; keep in sync with `origin/main` before new work.
 
 ---
@@ -574,8 +574,8 @@ verification still open)
 3. **Verification UI built.** `verify_replication.py` (port 8766):
    hand-verify category labels before the run; writes
    `verified`/`verified_category`/`verified_date` into the manifest.
-   Smoke-tested end to end. **Step 4 is still open -- user labor**:
-   >= 20 per category via `python verify_replication.py`.
+   Smoke-tested end to end. **Step 4 complete (2026-09-25):** all 160
+   records walked via `python verify_replication.py`.
 4. **Protocol deviation (documented in REPLICATION_RESULTS.md).** At
    the user's direction the 3x runs executed **before**
    hand-verification: the manifest is unsealed, no exclusions made.
@@ -651,7 +651,7 @@ verification still open)
 | Taxonomies v1-v3, v5, v6, v8 (history; v3, v5, and v6's text_screenshot narrowing measured rejections; v8's subject-decides clause measured inside noise) | `Images/humanoid_taxonomy_v*.json` |
 | Held-out revision authoring + measurement (public) | `Images/author_taxonomy_v6.py`, `Images/author_taxonomy_v7.py`, `Images/author_taxonomy_v8.py`, `Images/author_taxonomy_v9.py`, `Images/measure_taxonomy_v6.py`, `Images/measure_taxonomy_v9.py` |
 | Held-out revision run records (private, gitignored) | `Images/taxonomy_v6_batch2_results.json`, `Images/taxonomy_v7_batch2_results.json`, `Images/taxonomy_v8_batch23_results.json`, `Images/taxonomy_v9_halfM_results.json`, `Images/taxonomy_v9_personal_results.json` |
-| Pilot script (public; `TAXONOMY` env var selects version, v4 default) | `Images/pilot_humanoid.py` |
+| Pilot script (public; `TAXONOMY` env var selects version, v9 default) | `Images/pilot_humanoid.py` |
 | Sorter (public) | `Images/sort_humanoids.py` |
 | Review UI (public; localhost web app) | `Images/review_ui.py` -> http://localhost:8765 |
 | Phase 2: Pixtral-direct baseline (public) | `Images/baseline_pixtral_direct.py` |

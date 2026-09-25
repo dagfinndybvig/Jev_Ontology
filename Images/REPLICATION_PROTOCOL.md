@@ -1,8 +1,10 @@
 # REPLICATION_PROTOCOL.md — Fresh-corpus replication of the Jev image-classification pipeline
 
-**Status: pre-registered, not yet run.** This file is committed before any
-fetch or pipeline run. Amendments over the original proposal are marked
-**(amendment)**.
+**Status: executed (2026-09-25).** This file was committed before any
+fetch or pipeline run, as the pre-registration. The run is complete and
+the results are in `REPLICATION_RESULTS.md` (both bases reported:
+category-implied and hand-verified). Amendments over the original
+proposal are marked **(amendment)**.
 
 ## Purpose and scope
 

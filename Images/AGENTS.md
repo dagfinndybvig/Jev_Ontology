@@ -55,7 +55,7 @@ Essential context for any agent working in this directory.
   the stand-in corpus instead of the personal collection, run with
   `REVIEW_RESULTS` at `library_standin_results.json`,
   `PICTURES_DIR` at `library_standin/`, `TAXONOMY` at
-  `humanoid_taxonomy_v4.json`, and `REVIEW_SAMPLE` at a temp path
+  `humanoid_taxonomy_v9.json`, and `REVIEW_SAMPLE` at a temp path
   (otherwise the Sample filter overwrites the personal collection's
   persisted sample).
 - `baseline_pixtral_direct.py` — Phase 2 baseline: Pixtral classifies
@@ -152,6 +152,40 @@ Essential context for any agent working in this directory.
   `../Ontology_private_backup/v4_corpus_run_2026-09-24/`; the 136
   manual corrections were merged back into the new results file
   afterwards — corrections are ground truth, not model answers).
+- `REPLICATION_PROTOCOL.md` / `REPLICATION_RESULTS.md` — the
+  pre-registered fresh-corpus replication (measurement-only, frozen
+  v9 pipeline): a generalization test on material that played no role
+  in any revision. Protocol committed before the run; results write-up
+  reports both bases (category-implied and hand-verified) and the
+  run-to-run variance. The protocol's verify-before-run order was
+  reversed at project direction (documented in the write-up).
+- `fetch_replication_corpus.py` — fetches the fresh corpus from
+  Smithsonian Open Access (categories from the institution's own
+  `object_type`/`topic` terms; `CATEGORIES` is data). Fixed-seed
+  shuffle (SEED 20260925, pool 80), keeps the first 40 download
+  successes per category (dead IDS links 404 commonly). Writes
+  `replication_manifest.json` (committed; public CC0 data); images go
+  to `replication_corpus/` (gitignored). Resumable: si_ids with status
+  ok OR error are skipped on re-run.
+- `verify_replication.py` — hand-verification UI (127.0.0.1:8766) for
+  protocol step 4: confirm/correct each image's category label before
+  the run; writes `verified`/`verified_category`/`verified_date` into
+  the manifest. All 160 records verified (134 correct, 6 corrected,
+  20 excluded — 16 animal sculptures in `human_sculpture`, the
+  predicted noise family; 4 dead links). The manifest is sealed
+  (`_sealing` block): no additions after this point.
+- `measure_replication.py` — runs the production path on the fresh
+  corpus (Pixtral describe -> Jev v9 five facets), one fresh results
+  file per run (`replication_results_runN.json`; the v6 resume trap —
+  skip records with status ok). 3 runs: 160/160 each, 0 errors.
+- `analyze_verified.py` — verified-subset analysis (no API calls):
+  compares the three runs against the sealed verified labels. Pooled
+  595/610 (97.5%), 592/610 (97.0%), 592/610 (97.0%); auto-accept band
+  mismatch 7-9% (Wilson 95% CI 4-14%); routing burden 15-18%.
+- `backfill_descriptions.py` — re-extracts full descriptions from the
+  source metadata into the manifest (the fetcher took only the first
+  freetext note, median 20 chars; now all museum-label notes, median
+  119). Metadata only; run pre-sealing.
 - `author_taxonomy_v6.py` / `author_taxonomy_v7.py` — build the
   held-out revision taxonomies from v4/v6 JSON (criterion text is
   data; the scripts patch and bump `_meta`). v6 was authored from

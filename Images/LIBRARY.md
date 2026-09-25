@@ -10,6 +10,16 @@ This document turns the library use-case into a concrete project. It
 is grounded in what the `Images/` sub-project has already
 demonstrated -- and in what it has already shown does **not** work.
 
+> **De-risking step complete (2026-09-25).** The pre-registered
+> fresh-corpus replication (`REPLICATION_PROTOCOL.md`,
+> `REPLICATION_RESULTS.md`) ran the frozen pipeline on 140
+> hand-verified Smithsonian images that played no role in any
+> revision: pooled agreement 97.0-97.5% across three runs, auto-accept
+> band miss rate 7-9% (Wilson 95% CI 4-14%) at a 15-18% routing
+> burden. The methodology generalizes to fresh institutional material
+> without re-tuning -- the case for the library pilot is now measured,
+> not asserted.
+
 ---
 
 ## The setting
