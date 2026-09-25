@@ -20,9 +20,39 @@
 > labels. Next: (1) a real library collection (new labeled data for
 > the loop), or (2) a vision-layer lever -- e.g. the description
 > prompt asking explicitly about small/background people, measured
-> against the same ground truth. Depicts annotation is a dead end
+> against the same ground truth, or (3) the pre-registered
+> fresh-corpus replication (see "Fresh-corpus replication" below).
+> Depicts annotation is a dead end
 > for this corpus: 0/231 files carry P180 statements. See STATUS.md
 > "Next steps" item 2.
+
+## Fresh-corpus replication (pre-registered, not yet run)
+
+**Why:** Every taxonomy revision (v6-v9) was authored from corrections
+on the two existing corpora. Before approaching the National Library
+of Norway, the methodology needs a replication on material that played
+no role in any revision or authoring decision -- a fresh corpus
+through the frozen pipeline, measurement-only. This tests whether the
+loop's result generalizes; it is the de-risked version of lever (1)
+above.
+
+**What:** `REPLICATION_PROTOCOL.md` (committed before the run) holds
+the full pre-registration: fresh corpus from Smithsonian Open Access
+(primary; Met API fallback), 4-5 categories drawn from the
+institution's own terms (not ours), 40 images per category, >= 20
+hand-verified per category before the run, sealed manifest (no
+top-ups), frozen v9 pipeline (taxonomy, 0.7 threshold, text-bearing
+routing, Pixtral prompt), and 3 identical runs for run-to-run
+variance. No taxonomy changes, no threshold changes, no exclusions
+after seeing results.
+
+**Status:** protocol drafted 2026-09-25 with four amendments over the
+original proposal (miss-rate bar reported with CI against measured
+references -- Commons 22/151 = 15%, personal 7/30 = 23%; comparison
+table restricted to shared categories since no source supports
+ui_screenshot; parquet mirror out-of-repo only; hand-verification
+cost stated up front). Success criteria are pre-registered in the
+protocol. Not yet fetched, not yet run.
 
 The current pipeline (`classify_images.py`) is scaffolding: a vision
 model describes each image, Jev answers one yes/no question. The goal of
