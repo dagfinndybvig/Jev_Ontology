@@ -181,7 +181,7 @@ class Handler(BaseHTTPRequestHandler):
             rec["verified_category"] = rec["category"]
         elif verdict == "wrong":
             if not corrected:
-                self._send(400, b"pick what it is".encode("utf-8"))
+                self._send(400, b"pick what it is")
                 return
             rec["verified"] = False
             rec["verified_category"] = corrected
