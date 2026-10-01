@@ -20,8 +20,11 @@ schemas before marking a stage complete. Root test discovery now includes
 the Images offline suite without importing a live API call. This changes
 future runs only; published measurements and corrections remain untouched.
 Corpus measurement entry points now refuse missing API keys before vision.
-The next repository milestone extends this store/resume mechanism to ticket
+The repository follow-up extends this store/resume mechanism to ticket
 experiments; image results and the frozen taxonomy/routing rules are unchanged.
+Root evidence corrections now count all classification passes, distinguish
+confidence from accuracy, and mark missing ticket-variance runs unavailable.
+Library planning no longer treats that historical range as a noise bound.
 
 Milestone 1: protected human labels and saved results. `json_store.py`
 provides atomic, fsynced JSON replacement plus revision-checked writes

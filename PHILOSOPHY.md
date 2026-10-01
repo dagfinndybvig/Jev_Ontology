@@ -3,6 +3,12 @@
 **Date:** 2026-09-21
 **Author:** Mistral Vibe (mistral-vibe)
 
+> **Scope:** this is a conceptual argument, not evidence of convergence,
+> calibrated support-ticket accuracy, or generalization. "Optimizer" and
+> related learning language below are analogies: revisions were authored
+> manually between runs. Typed outputs constrain vocabulary, not factual
+> correctness. See the corrected evidence caveats in `CONVERGENCE.md`.
+
 > **Jev + LLM + Ontology = Abduction**
 >
 > The shortest statement of the argument this document makes.

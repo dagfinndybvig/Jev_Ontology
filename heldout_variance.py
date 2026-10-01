@@ -8,8 +8,9 @@ branch (Stripe IntegrationProblem) got slightly worse. That pattern suggests
 the +0.004 is Jev's sampling variance, not real generalization.
 
 This script classifies the SAME held-out set against the SAME ontology
-(v2.0) N times and reports the spread of mean confidence, establishing the
-noise floor.
+(v2.0) N times and retains the raw paths plus descriptive variance.
+An observed range is not a statistical noise bound or an accuracy measure.
+The original reported repeats were not retained; new runs are new evidence.
 
 Requires TYPESAFE_API_KEY.
 """

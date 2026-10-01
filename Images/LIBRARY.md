@@ -86,12 +86,12 @@ From the 215-image run (`RESULTS.md`):
 Do not build the library project on assumptions this repo has
 already falsified:
 
-1. **The feedback loop does not generalize (yet).** On held-out
-   items, ontology revision improved mean confidence by +0.004 --
-   inside Jev's run-to-run noise floor (spread 0.0045). Revision
-   driven by classification signals fits the training batch; treat
-   "Jev improves the taxonomy" as unproven until a held-out test
-   says otherwise.
+1. **The ticket experiment did not establish generalization.** Its
+   held-out mean-confidence change was +0.003825, versus +0.012494
+   on train. The reported variance runs were not retained, so the
+   historical noise-floor comparison is unverified. This was not a
+   labeled-accuracy test. Independent image evaluations are needed;
+   neither improved taxonomy accuracy nor its impossibility follows.
 2. **The vision model is the bottleneck.** Jev only sees a 25-word
    description. It inherited a real failure: a screenshot of *text
    describing* a photo was classified as containing a human. In a
@@ -259,9 +259,9 @@ taxonomy JSON, and `manual_correction` blocks that accumulate as the
 ground-truth seed.
 
 Route on the **review-burden curve** chosen in Phase 2, not on an
-arbitrary threshold. Re-check the curve against the noise floor
-(~0.005 on 16-item means) before treating small confidence changes
-as signal.
+arbitrary threshold. Measure uncertainty on the actual image cohort before
+treating small changes as signal. Do not borrow the unverified historical
+ticket variance range as an image-review threshold or noise bound.
 
 **Success:** a cataloger clears the queue faster than manual
 cataloging of the same images, and trusts the flag list.
@@ -274,8 +274,8 @@ cataloging of the same images, and trusts the flag list.
 back into taxonomy revisions -- but evaluate every revision
 **held-out**: revise using signals from one batch, measure on a
 labeled batch the revision never saw. This is the protocol the
-ticket experiments learned the hard way (in-sample +0.013, held-out
-+0.004, inside noise).
+ticket experiment motivates (train confidence +0.012494, holdout +0.003825,
+with no verified uncertainty estimate or demonstrated accuracy gain).
 
 **Why:** the loop is the project's interesting bet, but it is
 currently a classifier-tuning mechanism, not a learning mechanism.

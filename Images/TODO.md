@@ -7,6 +7,8 @@
 - [x] Check both API keys before corpus runs spend on vision.
 - [x] Support reuse of the storage/resume helpers by the root experiments
   without changing image data, taxonomy, or routing.
+- [x] Remove reliance on the unverified historical ticket-variance range
+  from library planning; retain the actual image evidence and pilot caveats.
 - [x] Protect results and human corrections with atomic revision-checked
   writes; fix review defaults, independent flags, and keyboard editing.
 - [x] Correct auto-accept analysis, calibration/error-capture metrics,

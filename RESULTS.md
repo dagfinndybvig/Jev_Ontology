@@ -10,6 +10,12 @@
 
 ## Summary
 
+> **Evidence caveat (repository audit):** this is a historical exploratory
+> account, not a calibrated-accuracy evaluation. Confidence, probability
+> distributions, and correctness are distinct. The later variance figures
+> have no retained raw artifact; the follow-up below qualifies the original
+> conclusion. No historical model answers were rewritten during repairs.
+
 The experiment tested whether an LLM-authored ontology can be used as
 state for TypeSafe's Jev decision model, with Jev classifying items
 through recursive descent down the ontology tree. The cascade was
@@ -39,13 +45,14 @@ committed fully. Examples:
 | Can you explain the tax line item on my latest invoice? | InvoiceQuestion | 1.000 |
 | I need to change the email address on my account. | AccountManagement | 1.000 |
 
-These tickets each hit a single leaf class cleanly. No human review needed,
-no escalation, no cost beyond the Jev call itself (~$0.00002 per ticket).
+These tickets received confident single-leaf assignments. That alone does
+not establish that human review is unnecessary. The historical Jev-call
+estimate was approximately $0.00002 per ticket, excluding authoring/review.
 
 ### 2. Ambiguity is detected, not hidden
 
 This is the most important finding. When a ticket genuinely spans two
-branches of the ontology, Jev's calibrated probabilities surface the
+branches of the ontology, Jev's reported probabilities can surface the
 ambiguity rather than forcing a confident-but-wrong answer.
 
 **The compound ticket:**
@@ -193,7 +200,8 @@ sharpening sibling definitions. Re-running the same 8 tickets against
 v3.0, all three hedged tickets improved from 0.56-0.68 to 1.000
 confidence. Mean confidence on the hedged tickets improved by +0.377.
 The previously clean tickets stayed clean (one dropped 0.04, within
-noise). Total cost of the closed loop: $0.0004.
+the observed single-run variation, not a verified noise bound). Recorded
+Jev-call cost of the closed loop: $0.0004.
 
 The full cycle is now demonstrated: **LLM authors -> Jev filters ->
 feedback signals -> LLM revises -> Jev re-filters -> confidence improves.**
@@ -235,7 +243,8 @@ descent worked on all 26 tickets.
 
 The experiment validates the core hypothesis: an LLM-authored ontology
 can serve as state for Jev, and Jev can classify items against it with
-calibrated confidence that is useful for routing and feedback. The
+confidence signals that may be useful for routing and feedback. Calibration
+on labeled support tickets remains unmeasured. The
 cascade is not theoretical -- it runs, it costs $0.001 for 26 tickets,
 and it produces signals that a human or an LLM can act on.
 
@@ -266,11 +275,12 @@ test was run to check whether the loop generalizes: split the 52 tickets
 into 36 train / 16 held-out, revise the ontology from train signals
 only, then re-evaluate the held-out set.
 
-Result: train mean confidence improved +0.013, but held-out improved
-only +0.004 -- which is inside Jev's run-to-run noise floor (spread
-0.0045 over 5 runs on the same set and ontology). The loop does not
-generalize; the improvement is in-sample fitting. See CONVERGENCE.md for
-the full writeup.
+Recomputed from the stored means: train confidence changed by +0.012494
+and holdout by +0.003825. These are not accuracy gains. The historical
+five-run spread/std figures are unverified because those runs are absent
+from the retained artifacts and Git history. Neither a reliable noise
+bound nor "the loop does not generalize" follows from the available
+evidence. Generalization remains unestablished; see CONVERGENCE.md.
 
 ---
 

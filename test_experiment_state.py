@@ -14,6 +14,7 @@ from experiment_state import run_experiment, save_summary
 from Images.json_store import WriteConflict, load_json, save_json
 import heldout_experiment as heldout
 
+CANONICAL_SPLIT = Path(heldout.__file__).with_name("heldout_split.json")
 TREE = {"id": "root", "label": "Root", "definition": "Root",
         "children": [{"id": "leaf", "label": "Leaf", "definition": "Leaf"}]}
 
@@ -137,12 +138,14 @@ class ExperimentStateTests(unittest.TestCase):
 
 class SplitTests(unittest.TestCase):
     def test_historical_split_is_read_only_and_exactly_bound(self):
-        path = Path(heldout.SPLIT_PATH)
+        path = CANONICAL_SPLIT
         before = path.read_bytes()
-        split = heldout.get_split()
+        with patch.object(heldout, "SPLIT_PATH", str(path)):
+            split = heldout.get_split()
         self.assertEqual((len(split["train"]), len(split["holdout"])), (36, 16))
         self.assertEqual(path.read_bytes(), before)
-        with patch.object(heldout, "TICKETS", list(reversed(heldout.TICKETS))), self.assertRaises(ValueError):
+        with patch.object(heldout, "SPLIT_PATH", str(path)), \
+                patch.object(heldout, "TICKETS", list(reversed(heldout.TICKETS))), self.assertRaises(ValueError):
             heldout.get_split()
 
     def test_new_split_rejects_overlap_duplicates_bool_and_changed_corpus(self):
@@ -182,6 +185,7 @@ class EntryPointTests(unittest.TestCase):
                 key_module = module.ce if name.startswith("run_iter") else module
                 output = Path(td) / "run.results.json"
                 with patch.dict(os.environ, {"RESULTS_OUT": str(output)}), \
+                        patch.object(heldout, "SPLIT_PATH", str(CANONICAL_SPLIT)), \
                         patch.object(sys, "argv", [name, *args]), \
                         patch.object(key_module, "API_KEY", "test"), \
                         patch("urllib.request.urlopen", side_effect=response) as network, \

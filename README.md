@@ -25,10 +25,10 @@ TypeSafe AI's "System One" decision model, with ontologies.
 > This is an active research project, not a finished result. The
 > convergence findings below are **tentative and in-sample**: they
 > describe what the loop does on the tickets that drove the revisions.
-> A held-out generalization test (see `CONVERGENCE.md`) shows the
-> improvement does not transfer to unseen tickets beyond Jev's
-> run-to-run noise. Treat the claims here as observations about a fixed
-> dataset, not as general properties of the mechanism.
+> A small held-out test (see `CONVERGENCE.md`) does not establish
+> generalization. Its reported variance runs were not retained, so the
+> historical noise-floor comparison cannot be independently verified.
+> Treat these observations as exploratory, not as production guarantees.
 >
 > Comments and suggestions are welcome -- open an issue or a PR.
 
@@ -40,39 +40,38 @@ root and Images suites. `python test_jev_api.py` is an explicit **paid/live**
 smoke check; missing keys, HTTP failures, and invalid answers fail nonzero.
 Alternate MVP ontologies must supply their own version metadata. Experiment
 storage is now incremental, atomic, and provenance-checked. Existing
-historical JSONs are read-only; evidence-claim corrections are the final
-audit milestone.
+historical JSONs are read-only. The evidence corrections below distinguish
+classification passes, model confidence, and measured accuracy.
 
-We built a working MVP that pairs an LLM-authored ontology with Jev's
-calibrated classification, tested it against the live Jev API on 78 unique
-tickets across 5 sessions (86 classifications -- Session 4 re-runs Session
-2's eight tickets), closed the feedback loop, and ran a 3-iteration
-convergence experiment. Total cost: $0.0085.
+We built a working MVP pairing an LLM-authored ontology with Jev and tested
+78 unique synthetic tickets across five session groups: **190 classification
+passes and 380 Jev calls**, including all three convergence iterations.
+The recorded input-token estimate was $0.0085 at the historical rate; this
+excludes ontology-authoring costs and the later held-out/variance work.
 
-**1. The feedback loop converges.** Jev's low-confidence signals
+**1. Targeted revisions changed confidence on the authoring examples.** Jev's low-confidence signals
 identified a genuine gap in the billing sub-tree. The LLM revised the
 ontology (added a WrongfulCharge class). Re-running the same tickets,
 all three hedged tickets improved from 0.56-0.68 to 1.000 confidence.
-One iteration, one revision, real improvement. No clean ticket got
-meaningfully worse.
+This is an in-sample confidence change, not a measured gain in general
+classification accuracy. Other examples showed small confidence declines.
 
-**2. Jev's calibration is a diagnostic tool, not just a classifier.**
+**2. Confidence can suggest boundaries worth inspecting.**
 The 0.14 probability on RefundRequest for a duplicate-charge ticket
-wasn't noise -- it pointed at a real semantic gap. Adding the class
-that gap implied eliminated the hedging. The probabilities are a map of
-where the ontology is incomplete.
+suggested a semantic gap. Adding a class reduced the hedging. This is a
+useful hypothesis-generation signal, not evidence that support-ticket
+confidence is calibrated or that every uncertain answer reveals a schema gap.
 
 **3. Perfect confidence is a double-edged signal.** The jump from 0.560
 to 1.000 after one revision is large enough that the new class may be
-slightly too broad. A 3% side effect on the "unrecognized charge"
-ticket confirms this. Perfect confidence on a too-broad class hides
-ambiguity instead of surfacing it.
+slightly too broad. On the "unrecognized charge" ticket, 3% probability
+went to WrongfulCharge while returned confidence fell from 1.000 to 0.960.
+These observations motivate inspection; they do not establish the cause.
 
-**4. The full cycle costs effectively nothing.** Authoring the ontology,
-classifying 86 ticket classifications (78 unique tickets), detecting the
-billing triangle, revising, and
-re-running: $0.0085 total. The feedback loop can run on every batch
-without budget as a constraint.
+**4. The recorded classification calls were inexpensive.** The five session
+groups used 204,325 input tokens for 190 classification passes, approximately
+$0.0085 at the recorded rate. Authoring, human review, operations, and
+current provider pricing are not covered by that estimate.
 
 **5. Convergence tested (3 iterations, 52 tickets).** The feedback
 loop produces monotonically improving mean confidence (0.940 ->
@@ -82,24 +81,19 @@ class across two ontology revisions. But the system has a floor
 (genuinely compound tickets that need multi-label, not better
 definitions) and revisions have side effects (fixing one gap
 opened a new one on a previously clean ticket). The loop converges
-in a weak sense -- diminishing returns, not perfect confidence.
+in a descriptive sense only -- diminishing confidence changes, not a convergence proof.
 See `CONVERGENCE.md`.
 
-**6. The shape of convergence.** The system approaches a steady state
-where further revisions trade improvements against regressions. It
-does not converge on perfect confidence. It converges on the best
-categories this revision mechanism can find for this dataset. The
-gap between "best achievable" and "perfect" is the irreducible
-residue of compound cases and side effects -- which is exactly what
-the philosophical framing predicted.
+**6. Convergence remains a hypothesis.** Three iterations show diminishing
+changes on this dataset, not proof of a steady state, an optimum, or an
+irreducible error floor. The held-out mean-confidence change was +0.003825,
+versus +0.012494 on train. Accuracy and statistical significance were not
+established; the historical repeat-run evidence is unavailable.
 
-**The biggest takeaway:** the cascade is not just a pipeline, it's a
-learning loop. Jev's calibrated probabilities are the error signal, the
-LLM is the optimizer, and the ontology is the model being trained. We
-ran three gradient steps. The first worked dramatically. The later ones
-showed diminishing returns and side effects. The process converges in
-a weak sense, not a strong one -- which is more honest, and more
-interesting, than either "it works perfectly" or "it doesn't work."
+**The biggest takeaway:** this is a working classifier-tuning pilot.
+Humans/LLMs authored revisions between runs; there is no automated optimizer
+or gradient-training step. Independent labeled data and retained repeated
+runs are needed before making stronger learning or deployment claims.
 
 See `RESULTS.md` for the full assessment, `CONVERGENCE.md` for the
 3-iteration experiment, `LOOP.md` for the first closed-loop experiment,
@@ -112,22 +106,25 @@ See `RESULTS.md` for the full assessment, `CONVERGENCE.md` for the
 
 Jev is a model, named after William Stanley Jevons, that returns **typed, probabilistic decisions** instead of
 generating text. You send it a *state* (the context to evaluate) and a set of
-typed *questions* (Choice, Score, or Noul), and it returns calibrated answers
-with probabilities in a single parallel pass.
+typed *questions* (Choice, Score, or Noul), and it returns decisions with
+confidence and probability fields. Calibration must be measured for the
+actual task; it was not established for these support tickets.
+
+The following performance/pricing details are historical assumptions from
+the original experiment, not current provider guarantees.
 
 | Property | Value |
 |---|---|
 | Endpoint | `POST https://api.typesafe.ai/v1/systemone` |
-| Model | `jev-latest` (currently `jev-1.13.0`) |
+| Model | `jev-latest` (historical transcripts report `jev-1.13.0`; alias not pinned) |
 | Speed | 70-500ms end-to-end (~256ms median) |
 | Cost | $0.042 per million input tokens, output free |
 | Question types | Choice (pick one of N, up to 255), Score (rate on a 2-10 scale), Noul (yes/no probability) |
 | Key env var | `TYPESAFE_API_KEY` |
 
-Because Jev returns probabilities rather than text, it cannot hallucinate or
-produce type errors -- it only returns values you defined in the question
-schema. That makes it a good fit for repetitive classification against a
-fixed ontology.
+Typed choices constrain the output vocabulary; they do **not** prevent
+confidently wrong classifications, malformed responses, or transport errors.
+The runners validate response shapes and values before accepting a result.
 
 ## The core idea
 
@@ -182,13 +179,15 @@ Ontology/
                            generalization test (from v2.0 train signals)
   mvp_jev_ontology.py    -- working MVP of the cascade
   convergence_experiment.py -- 3-iteration convergence test on 52 tickets
-  close_loop.py          -- re-runs Session 2 tickets against v2.0 and v3.0
+  close_loop.py          -- runs v3.0 against a rounded historical v2.0 baseline
   generate_sessions.py   -- runs the three session batches against the
                            real Jev API and prints results
   test_jev_api.py        -- standalone smoke test for the Jev API
   heldout_experiment.py  -- held-out generalization test (36 train / 16
                            held-out; revision authored from train signals)
-  heldout_variance.py    -- measures Jev's run-to-run noise floor
+  heldout_variance.py    -- retains repeated runs and descriptive variance
+  experiment_state.py   -- provenance-checked, atomic ticket checkpoints
+  test_images.py / test_* -- offline discovery and regression coverage
   run_iter1.py / run_iter2.py -- single-iteration signal dumps used to
                            author the v4.0 / v5.0 revisions
   convergence_results.json -- saved results of the 3-iteration run
@@ -203,7 +202,8 @@ Ontology/
                            fresh-corpus replication on Smithsonian
                            material (97.0-97.5% pooled agreement on 140
                            hand-verified records; see Images/README.md;
-                           per-image data is private)
+                           personal-image data is private; public
+                           replication manifests/results are committed)
 ```
 
 ## The MVP
@@ -222,9 +222,10 @@ Ontology/
    the child class definitions as criteria. The winner is descended into,
    and the process repeats until a leaf is reached.
 
-3. **Confidence tracking** -- each level's probability multiplies into a
-   cumulative confidence. Low overall confidence flags tickets that span
-   multiple sub-trees.
+3. **Confidence tracking** -- each level's returned `confidence` field
+   multiplies into a cumulative score. This is not the same field as the
+   choice distribution, nor a proven calibrated probability of leaf accuracy.
+   The score is used as an exploratory review signal.
 
 4. **Feedback loop** -- after all tickets are classified, the pipeline
    reports:
@@ -242,13 +243,14 @@ Ontology/
 
 ### Running it
 
-```bash
+```powershell
 # With a real Jev API key (uses the live TypeSafe API):
-set TYPESAFE_API_KEY=your-key-here
+$env:TYPESAFE_API_KEY = 'your-key-here'
 python mvp_jev_ontology.py
 
 # Without a key (falls back to a keyword-based mock that returns the
 # same data shape, so the pipeline logic still runs):
+Remove-Item Env:TYPESAFE_API_KEY -ErrorAction SilentlyContinue
 python mvp_jev_ontology.py
 ```
 
@@ -296,7 +298,8 @@ reported model-version changes within a run are rejected, but an unchanged
 identifier is not proof of immutable remote weights. Missing response model
 identifiers are retained as unknown, not replaced with a claimed version.
 `close_loop.py` compares against a rounded historical v2 transcript, not a
-fresh v2 run.
+fresh v2 run. The single-iteration wrappers retain full flagged-ticket and
+low-margin signal dumps, including when reporting a completed checkpoint.
 
 ### What the output looks like
 
@@ -316,7 +319,7 @@ class.
 ## Results
 
 `SESSIONS.md` contains authentic session logs from five real Jev API runs
-(86 classifications of 78 unique tickets, 380 Jev calls,
+(190 classification passes over 78 unique tickets, 380 Jev calls,
 ~204K input tokens, $0.0085 cost):
 
 - **Session 1: Mixed batch** (12 tickets) -- 11 at 0.99+ confidence,
@@ -334,8 +337,10 @@ class.
 See also `RESULTS.md` for the signed assessment and `LOOP.md` for the
 first closed-loop experiment.
 
-To reproduce: `python generate_sessions.py` and
-`python convergence_experiment.py` (require `TYPESAFE_API_KEY`).
+To run the workflows again: `python generate_sessions.py`,
+`python close_loop.py`, and `python convergence_experiment.py` (new work
+requires `TYPESAFE_API_KEY`). Fresh runs may differ from the historical
+transcripts; use the output/resume rules above.
 
 ## Caveats
 

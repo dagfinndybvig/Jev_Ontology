@@ -51,6 +51,8 @@ Existing measurements and human labels have not been rewritten.
 Corpus measurements also check both API keys before spending on vision.
 The root ticket experiments now reuse this JSON store and resume helper;
 their separate `*.results.json` outputs do not alter image measurements.
+The root ticket pilot's historical variance artifact is missing; its quoted
+range must not be used as an image-review noise bound (see `LIBRARY.md`).
 
 JSON writers now use `json_store.py`: same-directory temporary files,
 flush/fsync and atomic replacement. Read/modify/write documents carry a

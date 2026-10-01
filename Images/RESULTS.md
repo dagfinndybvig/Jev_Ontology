@@ -18,6 +18,8 @@
 > Corpus runs also stop before paid vision if either API key is missing.
 > The shared storage helpers now also support root ticket experiments;
 > this does not rerun or modify the image evidence.
+> The root ticket pilot's missing variance runs are now marked unavailable.
+> This correction does not replace or revise the retained image measurements.
 
 The task was to sort the images in a personal photo folder by whether they
 contain a human, using Jev. The result: 73 images contain a human, 142

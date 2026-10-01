@@ -9,6 +9,12 @@
 
 ## What was tested
 
+> **Scope caveat:** this is an in-sample confidence comparison, not an
+> independently labeled accuracy or calibration evaluation. The v2 baseline
+> survives as rounded transcript values; the current runner does not re-run
+> v2 or claim full historical response/model provenance. Cost figures cover
+> recorded classification calls, not ontology authoring or human review.
+
 Session 2 revealed a "billing triangle": three tickets that hedged between
 RefundRequest, PaymentFailure, and SubscriptionChange, all involving
 charges that should not have happened:

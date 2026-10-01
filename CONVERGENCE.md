@@ -271,7 +271,8 @@ have side effects on individual tickets.
    individual tickets can regress.
 
 3. **Diminishing returns.** The mean confidence improvement
-   shrank each iteration: +0.005, then +0.003. The flagged
+   shrank each iteration: +0.004337, then +0.003217 (computed before
+   rounding the displayed means). The flagged
    count plateaued at 2 after iteration 2. The easy fixes are
    exhausted quickly; the remaining low-confidence tickets are
    either genuinely compound or require increasingly precise
@@ -322,9 +323,10 @@ running 10 iterations would cost roughly $0.025 -- still negligible.
 
 The findings below are **tentative and in-sample**. They describe what
 the loop does on the 52 tickets that drove the revisions. The held-out
-test (next section) shows these gains do not transfer to unseen tickets
-beyond noise, so treat them as observations about a fixed dataset, not
-as general properties of the mechanism.
+test (next section) does not establish a transferable accuracy gain.
+Its historical variance evidence is unavailable, so no verified noise-floor
+comparison can be made. These are observations about a fixed dataset, not
+general properties of the mechanism.
 
 **Tentative conclusions (in-sample):**
 - The feedback loop produces monotonically improving aggregate
@@ -354,9 +356,8 @@ as general properties of the mechanism.
 - Generalization to a different domain. The ontology is for
   SaaS support tickets. A legal ontology (FOLIO) or a clinical
   ontology (SNOMED) might behave differently.
-- Generalization to held-out tickets. Tested 2026-09-22 (see the
-  held-out test below): the loop's improvement does not transfer to
-  unseen tickets beyond run-to-run noise.
+- Generalization to held-out tickets. The small 2026-09-22 comparison below
+  measured confidence, not labeled accuracy, and does not establish it.
 
 ---
 
@@ -383,39 +384,48 @@ held-out test that fixes that.
 
 | | Train (36) | Holdout (16) |
 |---|---|---|
-| v2.0 baseline | mean 0.901 | mean 0.928 |
-| heldout_v1 (train-only revision) | mean 0.914 | mean 0.932 |
-| Δ | **+0.013** | **+0.004** |
+| v2.0 baseline | mean 0.9014 | mean 0.9280 |
+| heldout_v1 (train-only revision) | mean 0.9139 | mean 0.9318 |
+| Δ (from unrounded stored means) | **+0.0125** | **+0.0038** |
 
-The train set improved by +0.013. The held-out set improved by +0.004.
+The exact stored mean-confidence changes are +0.0124944444 on train and
++0.003825 on holdout. Neither quantity is an accuracy change. Earlier
+text subtracted the rounded means to obtain +0.013; the corrected delta
+is computed before rounding.
 
-### The noise floor
+### Historical variance claim: evidence unavailable
 
-To interpret the +0.004, I re-ran the **same** held-out set against the
-**same** `v2.0` ontology five times to measure Jev's run-to-run
-variance:
+The original account reports five repeat runs on the same v2.0 holdout:
 
 ```
 mean confidence: 0.9279 -> 0.9324, spread = 0.0045, std = 0.0015
 ```
 
-The +0.004 holdout "improvement" is entirely inside the ±0.0045 noise
-floor. It is not signal.
+**These figures are unverified.** The committed `heldout_results.json`
+contains only the baseline and revision, with no variance-run entry.
+Its Git history contains no retained repeat-run artifact either. The
+current script saves future repeats, but adding that code does not recover
+the historical observations. No paid rerun was substituted for missing data.
 
-The per-ticket detail makes this unambiguous. The tickets that improved
+A five-run observed range is also not a plus/minus noise bound or a
+significance test. Repeated baseline and candidate runs, retained raw
+outputs, and labeled accuracy are needed to estimate uncertainty in an
+effect. The historical comparison cannot establish "no generalization."
+
+The retained per-ticket detail motivates caution. Tickets with higher confidence
 on holdout were in branches the revision never touched (billing: the
 $49 charge 0.750 -> 0.790, the "charged for pro plan" 0.330 -> 0.400).
 The one ticket in the branch the revision *did* touch -- the Stripe
 IntegrationProblem -- actually got **worse** (0.768 -> 0.739). The
-revision changed nothing in billing, so those "improvements" are pure
-sampling variance.
+revision changed nothing in billing. Sampling variation is a plausible
+explanation, not an experimentally isolated cause in the retained evidence.
 
 ### Verdict
 
-**The loop does not generalize.** The train improvement (+0.013) is real
-but in-sample -- the ontology is fitting the tickets that generated its
-revision signals. On held-out data the effect is indistinguishable from
-noise. This is the overfitting signature.
+**Generalization is not established.** Train mean confidence increased more
+than holdout mean confidence, consistent with in-sample fitting, but not
+proof of it. There is no verified uncertainty estimate for the difference
+and no complete labeled-accuracy comparison.
 
 Two reinforcing observations:
 
@@ -424,22 +434,19 @@ Two reinforcing observations:
   FeatureRequest at 0.447) -- the "fix one gap, open another" pattern.
 - **The convergence numbers are suspect.** The headline 0.940 -> 0.945
   -> 0.948 (+0.008) was measured in-sample on the same tickets that
-  drove the revisions. Given a noise floor of ~0.0045 on just 16
-  tickets, and that the convergence set was in-sample, that +0.008 is
-  not strong evidence of convergence.
+  drove the revisions. These are in-sample confidence measurements, not
+  independently demonstrated convergence or generalization.
 
 ### What this means for the convergence claim
 
-The in-sample experiment showed the loop improves the ontology on the
-tickets it sees. The held-out test shows that improvement does not
-transfer to unseen tickets beyond noise. The loop is a reasonable
-*classifier-tuning* mechanism for a fixed dataset, but it is not yet
-demonstrated to be a *learning* mechanism that produces a better
-ontology in general.
+The in-sample experiment showed changes in classifications and confidence
+on the authoring examples. The held-out test is exploratory and does not
+establish better accuracy on unseen tickets. The loop is a candidate
+*classifier-tuning* mechanism, not a demonstrated general learning method.
 
 The single clean step in the original work (billing triangle ->
 WrongfulCharge -> 1.000) was one in-sample revision; the held-out test
-shows that kind of gain does not transfer.
+does not establish transfer of that gain.
 
 ---
 

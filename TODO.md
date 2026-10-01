@@ -8,10 +8,10 @@ motivates it.
 - [x] Guard imports and live smoke checks; run root and Images tests offline.
 - [x] Validate model outputs and bind MVP results to the supplied ontology version.
 - [x] Save ticket experiments atomically after each record, preserve full
-  responses used by classification, reject stale writers and changed resumes.
+  classification paths, reject stale writers and changed resumes.
 - [x] Bind held-out splits to corpus content; default authoring runs to train only.
-- [ ] Reconcile evidence counts and qualify unsupported historical noise-floor
-  and generalization claims (final documentation milestone).
+- [x] Reconcile evidence counts and qualify unsupported historical noise-floor
+  and generalization claims. Missing history is marked unavailable, not fabricated.
 
 ---
 
@@ -38,10 +38,12 @@ just descend. The output format changes from single-leaf to a list of
 
 ### 2. Run-to-run variance measurement
 
-**Status: Done (2026-09-22).** `heldout_variance.py` re-ran the 16-ticket
-held-out set 5 times against the same ontology (v2.0). Result: mean
-confidence spread 0.0045, std 0.0015. Jev is not deterministic, but the
-noise floor is small (~0.005 on a 16-ticket mean).
+**Status: historical run reported, evidence unavailable.** The 2026-09-22
+account reports spread 0.0045 and std 0.0015 over five repeats, but no raw
+variance artifact was retained. These numbers are not independently
+verified and are not a formal noise bound. `heldout_variance.py` now saves
+full per-ticket repeat results for future runs. A fresh, separately labeled
+measurement is still needed; it cannot retroactively recover the old run.
 
 **Why:** Every result in this project is from a single Jev call per
 ticket per level. We do not know whether Jev is deterministic. If the
@@ -63,10 +65,10 @@ each 10 times against the same ontology (v5.0). Measure:
 **Status: Done (2026-09-22).** `heldout_experiment.py` split the 52
 tickets 36 train / 16 held-out (seed 42, saved to
 `heldout_split.json`), authored `ontology_heldout_v1.json` from train
-signals only, and re-evaluated. Result: train mean confidence +0.013,
-holdout +0.004 -- inside the noise floor. The improvement is in-sample
-fitting, not generalization. See CONVERGENCE.md ("Held-out
-generalization test").
+signals only, and re-evaluated. Recomputed mean-confidence changes:
+train +0.012494, holdout +0.003825. Accuracy and statistical significance
+were not established; the historical variance comparison is unverified.
+See CONVERGENCE.md ("Held-out generalization test").
 
 **Why:** The convergence experiment revised the ontology on the same
 tickets it measured on. Improvement could be overfitting to those

@@ -1,10 +1,19 @@
 # Session Log: Real Jev API Runs
 
 All results below are **authentic** -- captured from live Jev API calls
-(`jev-latest` / `jev-1.13.0`) on 2026-09-21 using the LLM-authored ontology
-in `ontology.json` (v2.0). No responses were fabricated or edited.
+(`jev-latest` / `jev-1.13.0`) on 2026-09-21 using the ontology versions
+listed per session. No responses were fabricated or edited.
 
-To regenerate: `python generate_sessions.py` (requires `TYPESAFE_API_KEY`).
+This is a historical transcript, not a guarantee of repeatability or
+calibration. Sessions 1-3 used v2.0, Session 4 used v3.0, and Session 5
+used v3.0/v4.0/v5.0. Confidence is not accuracy. In console excerpts,
+`p=` labels the returned confidence field, which can differ from the
+choice distribution shown alongside it.
+
+To run the workflows again: `python generate_sessions.py` (Sessions 1-3),
+`python close_loop.py` (Session 4 candidate), and
+`python convergence_experiment.py` (Session 5). New work requires
+`TYPESAFE_API_KEY`; use fresh `RESULTS_OUT` files for independent repeats.
 
 ---
 
@@ -245,7 +254,7 @@ does not force a confident answer when the ticket spans two branches.
 ### What the sessions demonstrate
 
 1. **Clear tickets are cheap and fast.** 17 of 26 tickets classified at
-   0.97+ confidence. No human review needed.
+   0.97+ confidence. This does not establish that human review is unnecessary.
 
 2. **Ambiguity is detected, not hidden.** Jev's calibrated probabilities
    surface genuine cross-domain ambiguity (the compound ticket, the
@@ -458,7 +467,8 @@ consistent with approaching a steady state.
 
 | Metric | S1 | S2 | S3 | S4 | S5 |
 |---|---|---|---|---|---|
-| Tickets | 12 | 8 | 6 | 8 | 52 |
+| Tickets per batch | 12 | 8 | 6 | 8 | 52 |
+| Classification passes | 12 | 8 | 6 | 8 | 156 |
 | Jev calls | 24 | 16 | 12 | 16 | 312 |
 | Input tokens | 11,566 | 7,688 | 5,817 | 9,024 | 170,230 |
 | Cost | $0.0005 | $0.0003 | $0.0002 | $0.0004 | $0.0071 |
@@ -468,4 +478,7 @@ consistent with approaching a steady state.
 | Adversarial | -- | -- | Yes | -- | -- |
 | Closed loop | -- | -- | -- | Yes | Yes (3 iter) |
 
-**Total cost for all 86 tickets: $0.0085** (204,325 input tokens).
+**Five-session total: 190 classification passes over 78 unique tickets,
+380 Jev calls, 204,325 input tokens, approximately $0.0085 at the historical
+rate.** The former 86 count omitted 104 repeat passes in Session 5.
+This excludes later held-out/variance runs, ontology authoring, and review.
