@@ -24,7 +24,8 @@ import sys
 from datetime import date
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs, urlparse
-from json_store import load_json, save_json
+from json_store import WriteConflict, fingerprint, load_json, save_json
+from corpus_state import SealedManifestError, require_unsealed
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MANIFEST = os.environ.get("REPLICATION_MANIFEST") or os.path.join(HERE, "replication_manifest.json")
@@ -59,6 +60,7 @@ RECORD = """<div class="rec">
 <div class="meta">{title}<br>{description}<br>object_type: {otypes} &middot; topic: {topics}</div>
 <form method="post" action="/verify">
 <input type="hidden" name="fname" value="{fname}">
+<input type="hidden" name="revision" value="{revision}">
 <button name="verdict" value="correct">Category correct</button>
 <select name="corrected">
   <option value="">-- wrong: pick what it is --</option>
@@ -75,6 +77,7 @@ def load_manifest():
 
 
 def save_manifest(m):
+    require_unsealed(m)
     save_json(MANIFEST, m, indent=1)
 
 
@@ -92,6 +95,9 @@ def image_path(fname):
 
 def render(filter_cat):
     m = load_manifest()
+    if "_sealing" in m:
+        return PAGE.format(filters="", status="Manifest sealed: verification is read-only.",
+                           records="")
     recs = records_only(m)
     unverified = {k: v for k, v in recs.items() if v.get("verified") is None
                   and v.get("status") == "ok"}
@@ -117,7 +123,7 @@ def render(filter_cat):
         opts = "".join('<option value="%s">%s</option>' % (c, c)
                        for c in CATEGORIES if c != v["category"])
         parts.append(RECORD.format(
-            fname=fname, category=v["category"],
+            fname=fname, category=v["category"], revision=fingerprint(v),
             ext=v.get("file_ext", ".jpg"), title=v.get("title", ""),
             description=(v.get("description") or "")[:300],
             otypes=", ".join(v.get("object_type", [])),
@@ -161,6 +167,14 @@ class Handler(BaseHTTPRequestHandler):
             self._send(404, b"not found")
 
     def do_POST(self):
+        try:
+            self._post()
+        except (SealedManifestError, WriteConflict) as exc:
+            self._send(409, str(exc).encode("utf-8"), "text/plain; charset=utf-8")
+        except (OSError, ValueError) as exc:
+            self._send(400, str(exc).encode("utf-8"), "text/plain; charset=utf-8")
+
+    def _post(self):
         if urlparse(self.path).path != "/verify":
             self._send(404, b"not found")
             return
@@ -170,17 +184,20 @@ class Handler(BaseHTTPRequestHandler):
         verdict = (form.get("verdict") or [""])[0]
         corrected = (form.get("corrected") or [""])[0]
         m = load_manifest()
+        require_unsealed(m)
         recs = records_only(m)
         if fname not in recs:
             self._send(400, b"unknown record")
             return
         rec = recs[fname]
+        if (form.get("revision") or [""])[0] != fingerprint(rec):
+            raise WriteConflict("Record changed; reload before verifying")
         if verdict == "correct":
             rec["verified"] = True
             rec["verified_category"] = rec["category"]
         elif verdict == "wrong":
-            if not corrected:
-                self._send(400, b"pick what it is")
+            if corrected not in CATEGORIES + ["exclude"]:
+                self._send(400, b"pick a valid category")
                 return
             rec["verified"] = False
             rec["verified_category"] = corrected

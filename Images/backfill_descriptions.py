@@ -17,9 +17,10 @@ import json
 import os
 import urllib.request
 from json_store import load_json, save_json
+from corpus_state import require_unsealed
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-MANIFEST = os.path.join(HERE, "replication_manifest.json")
+MANIFEST = os.environ.get("REPLICATION_MANIFEST") or os.path.join(HERE, "replication_manifest.json")
 BASE = "https://smithsonian-open-access.s3-us-west-2.amazonaws.com/metadata/edan/"
 UA = {"User-Agent": "JevOntology-corpus-fetcher/1.0 (academic image-classification research)"}
 MAX_FILES = 60  # same bound as fetch_replication_corpus.py
@@ -50,6 +51,7 @@ def description_of(rec):
 
 def main():
     m = load_json(MANIFEST)
+    require_unsealed(m)
     recs = {k: v for k, v in m.items() if isinstance(v, dict) and "category" in v}
     by_si = {}
     for k, v in recs.items():

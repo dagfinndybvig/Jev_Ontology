@@ -134,6 +134,14 @@ REPLICATION_RESULTS.md.
 
 ## Frozen configuration
 
+**Operational enforcement added 2026-10-01 (not a protocol change):**
+fetch/backfill/verification reject `_sealing`; measurement requires a
+sealed, verified manifest and checks the v9 taxonomy, vision model/prompt
+and routing fingerprints. New runs save input/configuration fingerprints;
+the historical three runs remain untouched, readable for analysis, and
+cannot be silently resumed as new runs. `jev-latest` is a requested
+provider alias, not a guarantee that vendor-side weights never change.
+
 - Taxonomy: `humanoid_taxonomy_v9.json` (v9, adopted; derived from v7).
 - Vision: Pixtral, model `pixtral-12b-2409` (`classify_images.py`
   `VISION_MODEL` default), prompt as-is (check-text-first).

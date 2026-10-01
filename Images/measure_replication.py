@@ -26,6 +26,12 @@ import os
 import sys
 import time
 from json_store import load_json, save_json
+from json_store import fingerprint
+from run_state import file_digest, source_digest, prepare_run, require_complete
+from corpus_state import require_sealed
+import classify_images
+import pilot_humanoid
+import routing
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, SCRIPT_DIR)
@@ -34,7 +40,7 @@ from classify_images import describe_image  # same vision prompt as the pipeline
 from pilot_humanoid import jev_classify_facets, TAXONOMY  # v9 by default
 from routing import route_reason  # the adopted rule: threshold OR text signal
 
-MANIFEST = os.path.join(SCRIPT_DIR, "replication_manifest.json")
+MANIFEST = os.environ.get("REPLICATION_MANIFEST") or os.path.join(SCRIPT_DIR, "replication_manifest.json")
 IMAGES_DIR = os.environ.get("REPLICATION_DIR") or os.path.join(SCRIPT_DIR, "replication_corpus")
 
 DELAY = 0.4
@@ -66,7 +72,21 @@ FACETS = ["contains_human", "contains_robot", "contains_android",
 
 
 def results_path(run):
-    return os.path.join(SCRIPT_DIR, "replication_results_run%s.json" % run)
+    if not run.isdecimal() or int(run) < 1:
+        raise ValueError("Run must be a positive integer")
+    return os.environ.get("RESULTS_OUT") or os.path.join(
+        SCRIPT_DIR, "replication_results_run%s.json" % run)
+
+
+def require_frozen(tax):
+    if fingerprint(tax) != "b645f980bb7d331b357cfcf13ceb6afeac96a7ec343d7f5b009a98098cb4002d":
+        raise ValueError("Replication requires the frozen v9 taxonomy")
+    if classify_images.VISION_MODEL != "pixtral-12b-2409":
+        raise ValueError("Replication requires the frozen Pixtral model")
+    if fingerprint(classify_images.VISION_PROMPT) != "b300585e3035a3c4bdc92175514b4e6826f782af3c1165348c520628107b5858":
+        raise ValueError("Replication vision prompt has changed")
+    if source_digest(routing.__file__) != "2eab8c958fc32ad361ea2b906dfcbd2eaac636df8468e7f64c515ce473284872":
+        raise ValueError("Replication routing implementation has changed")
 
 
 def load_results(path):
@@ -86,22 +106,31 @@ def main():
 
     with open(TAXONOMY, "r", encoding="utf-8") as f:
         tax = json.load(f)
+    require_frozen(tax)
     facets = tax["facets"]
 
     with open(MANIFEST, "r", encoding="utf-8") as f:
         manifest = json.load(f)
+    manifest_id = require_sealed(manifest)
     items = [(k, v) for k, v in manifest.items()
              if isinstance(v, dict) and v.get("status") == "ok" and "category" in v]
     print("Corpus images: %d (run %s -> %s)" % (len(items), run, os.path.basename(RESULTS)))
 
     results = load_results(RESULTS)
+    stamps = prepare_run(
+        results, {"manifest": manifest_id, "taxonomy": tax,
+                  "vision_model": classify_images.VISION_MODEL, "decision_model": "jev-latest"},
+        {name: {"image": file_digest(os.path.join(IMAGES_DIR, name + rec.get("file_ext", ".jpg"))),
+                "category": rec["category"]} for name, rec in items},
+        __file__, classify_images.__file__, pilot_humanoid.__file__, routing.__file__)
     done = {k for k, r in results.items() if r.get("status") == "ok"}
     todo = [(k, v) for k, v in items if k not in done]
     print("Already done: %d, to process: %d" % (len(done), len(todo)))
 
     for i, (fname, rec) in enumerate(todo, 1):
         path = os.path.join(IMAGES_DIR, fname + rec.get("file_ext", ".jpg"))
-        out = {"category": rec["category"], "title": rec.get("title", ""), "status": "error"}
+        out = {"category": rec["category"], "title": rec.get("title", ""), "status": "error",
+               "_provenance": stamps[fname]}
         try:
             desc = describe_image(path)
             out["description"] = desc
@@ -126,6 +155,7 @@ def main():
         time.sleep(DELAY)
 
     ok = {k: r for k, r in results.items() if r.get("status") == "ok"}
+    require_complete(results)
     if not ok:
         print("\nNothing measured.")
         return

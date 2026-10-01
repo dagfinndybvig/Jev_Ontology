@@ -19,10 +19,10 @@ import os
 import math
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-CASCADE_RESULTS = os.path.join(HERE, "humanoid_pilot_results.json")
-DIRECT_RESULTS = os.path.join(HERE, "baseline_pixtral_direct_results.json")
-STRUCTURED_RESULTS = os.path.join(HERE, "structured_vision_results.json")
-CAPTURE_RESULTS = os.path.join(HERE, "capture_type_results.json")
+CASCADE_RESULTS = os.environ.get("SOURCE_RESULTS") or os.path.join(HERE, "humanoid_pilot_results.json")
+DIRECT_RESULTS = os.environ.get("DIRECT_RESULTS") or os.path.join(HERE, "baseline_pixtral_direct_results.json")
+STRUCTURED_RESULTS = os.environ.get("STRUCTURED_RESULTS") or os.path.join(HERE, "structured_vision_results.json")
+CAPTURE_RESULTS = os.environ.get("CAPTURE_RESULTS") or os.path.join(HERE, "capture_type_results.json")
 FACETS = ["contains_human", "contains_robot", "contains_android", "primary_subject", "representation"]
 THRESHOLD = 0.7
 BINS = [(0.0, 0.5), (0.5, 0.7), (0.7, 0.9), (0.9, 1.0001)]

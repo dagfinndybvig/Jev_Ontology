@@ -232,6 +232,8 @@ def main():
     for cls in sorted(by_cat):
         print(f"  {cls}: {by_cat[cls]}")
     print(f"Manifest: {MANIFEST}")
+    if any(by_cat.get(cls, 0) < PER_CATEGORY for cls in cats):
+        raise SystemExit("Corpus target not reached; saved progress can be resumed")
 
 
 if __name__ == "__main__":

@@ -129,8 +129,9 @@ Essential context for any agent working in this directory.
   downloads lost to HTTP 429s even at 20s spacing. Complete
   (2026-09-24): a re-run fetched the last 9 (human_illustration 40,
   ui_screenshot 40) -- 240 total, 40 per category, 0 errors. Note:
-  a 429-blocked re-run exits 0 and fetches nothing (the script
-  catches and continues); if a run fetches nothing, re-run later.
+  historically a 429-blocked re-run exited 0 and fetched nothing.
+  Since the 2026-10-01 audit fix, an incomplete target exits nonzero
+  after saving progress; resume later rather than pushing through.
   DELAY is 20s (5s drew 429s on the top-up).
 - `measure_library_standin.py` — runs the production path on the
   stand-in corpus: Pixtral describes each image (same prompt as
@@ -241,8 +242,13 @@ Essential context for any agent working in this directory.
   RESULTS_OUT=taxonomy_v9_personal_results.json`: v9 91% vs v4's
   91%, fixes 11 / breaks 11 — a wash, no regression (part of v9's
   adoption).
-- Runs skip records with `status: ok`. Fresh descriptions require
-  moving the results JSON aside first. Cost is small but real
+- Runs skip `status: ok` only when `_provenance` fingerprints match
+  current inputs, taxonomy/model configuration and implementation. Legacy
+  unversioned outputs and changed inputs/configuration fail before API
+  calls; preserve them and select a fresh `RESULTS_OUT` (use the gitignored
+  `*.results.json` suffix or an outside-repo path). Taxonomy scripts support
+  `--report-only` with an explicit `BASELINE_RESULTS` snapshot and no API
+  calls. Cost is small but real
   (~$0.0003 per image for the vision step).
 
 ## Conventions
@@ -260,13 +266,20 @@ Essential context for any agent working in this directory.
   preserved results snapshot. Each system is routed using its own
   confidences; new answers use the baseline descriptions. ECE uses
   observed bin-mean confidence and error capture is record-wide.
+- Replication `_sealing` is enforced by fetch/backfill/verification;
+  measurement requires sealed verification and frozen configuration.
+  Do not remove the seal to top up or edit the published corpus.
+- Sorters delete only obsolete byte-identical copies under known managed
+  destinations. Edited copies and out-of-tree paths cause explicit errors.
+  `SORT_RESULTS` selects alternate results; originals are never removed.
 
 - Manual corrections never overwrite raw Jev answers: add a
   `manual_correction` block (`date`, `correct`, `reason`,
   `raw_jev_preserved`) and leave the facet answers exactly as the
   model gave them.
 - Corrections are documented as dated blockquotes in `RESULTS.md`.
-- The review queue is defined as: any facet confidence < 0.7.
+- The review queue uses `routing.route_reason`: any facet confidence < 0.7
+  OR a text-bearing description signal.
 - Taxonomy and decision criteria are data
   (`humanoid_taxonomy_v1.json`); changing them is a JSON edit, not a
   code change.
@@ -340,7 +353,9 @@ recomputed from the result JSONs, never recalled from memory.
   file with the wrong version's answers, and the corrected re-run
   then skips everything as "already done" — identical answers, exit
   0, no error. If a version's answers look suspiciously identical to
-  a previous run's, delete the results file and re-run. (This
+  a   previous run's, preserve the results and use a fresh output. The
+  2026-10-01 provenance guard now rejects such mismatches (and legacy
+  unversioned resumes) before any API call. (This
   produced a live run-to-run variance data point as a byproduct:
   identical v6 criteria, two runs, same choices, 14 vs 16
   threshold-routed.)

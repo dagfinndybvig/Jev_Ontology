@@ -2,9 +2,11 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+import subprocess
+import sys
 from unittest.mock import patch
 
-from json_store import WriteConflict, load_json, save_json
+from json_store import WriteConflict, file_lock, load_json, save_json
 
 
 class JsonStoreTests(unittest.TestCase):
@@ -59,6 +61,19 @@ class JsonStoreTests(unittest.TestCase):
         doc = load_json(self.path)
         with self.assertRaises(WriteConflict):
             save_json(self.path.parent / "other.json", doc)
+
+    def test_os_lock_excludes_a_second_process(self):
+        code = (
+            "import sys; from json_store import file_lock, WriteConflict\n"
+            "try:\n"
+            "    with file_lock(sys.argv[1], timeout=0.1): pass\n"
+            "except WriteConflict:\n"
+            "    sys.exit(2)\n"
+        )
+        with file_lock(self.path):
+            result = subprocess.run([sys.executable, "-B", "-c", code, str(self.path)],
+                                    cwd=Path(__file__).parent, capture_output=True, text=True)
+        self.assertEqual(result.returncode, 2, result.stderr)
 
 
 if __name__ == "__main__":

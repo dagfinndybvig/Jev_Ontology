@@ -22,10 +22,11 @@ import time
 import urllib.request
 from json_store import load_json, save_json
 from measurement import load_baseline
+from run_state import prepare_run, require_complete
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 TAXONOMY = os.path.join(SCRIPT_DIR, os.environ.get("TAXONOMY", "humanoid_taxonomy_v7.json"))
-SOURCE = os.path.join(SCRIPT_DIR, "humanoid_pilot_results.json")
+SOURCE = os.environ.get("SOURCE_RESULTS") or os.path.join(SCRIPT_DIR, "humanoid_pilot_results.json")
 RESULTS = os.path.join(SCRIPT_DIR, os.environ.get(
     "RESULTS_OUT", "taxonomy_v7_personal_results.json"))
 
@@ -71,14 +72,15 @@ def save_results(results):
 
 
 def main():
-    if not API_KEY:
+    report_only = "--report-only" in sys.argv
+    if not API_KEY and not report_only:
         print("Missing TYPESAFE_API_KEY")
         sys.exit(1)
 
     with open(TAXONOMY, encoding="utf-8") as f:
         tax = json.load(f)
     facets = tax["facets"]
-    version = tax["_meta"]["version"]
+    version = "stored candidate (report-only)" if report_only else tax["_meta"]["version"]
     print(f"Measuring {version} on the personal collection's labeled records")
 
     with open(SOURCE, encoding="utf-8") as f:
@@ -89,8 +91,11 @@ def main():
     baseline = load_baseline(SOURCE, [name for name, _ in items])
 
     results = load_results()
+    stamps = {} if report_only else prepare_run(
+        results, {"taxonomy": tax, "decision_model": "jev-latest"},
+        {name: baseline[name] for name, _ in items}, __file__)
     done = {n for n, r in results.items() if r.get("status") == "ok"}
-    todo = [(n, r) for n, r in items if n not in done]
+    todo = [] if report_only else [(n, r) for n, r in items if n not in done]
     print(f"Already done: {len(done)}, to process: {len(todo)}")
 
     for i, (name, rec) in enumerate(todo, 1):
@@ -100,7 +105,7 @@ def main():
             f"\"{desc}\"\n\n"
             f"Classify the depicted content according to the questions."
         )
-        out_rec = {"file": name, "status": "error"}
+        out_rec = {"file": name, "status": "error", "_provenance": stamps[name]}
         try:
             out_rec.update(jev_classify_facets(state, facets))
             out_rec["status"] = "ok"
@@ -118,6 +123,7 @@ def main():
 
     # Comparison: this version's answers vs manual corrections, v4's
     # stored answers vs manual corrections, on the same records.
+    require_complete(results)
     selected = {name for name, _ in items}
     ok = {n: r for n, r in results.items() if r.get("status") == "ok" and n in selected}
     if not ok:

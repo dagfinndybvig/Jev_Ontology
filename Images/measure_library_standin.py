@@ -19,6 +19,9 @@ import os
 import sys
 import time
 from json_store import load_json, save_json
+from run_state import file_digest, prepare_run, require_complete
+import classify_images
+import pilot_humanoid
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, SCRIPT_DIR)
@@ -28,7 +31,7 @@ from pilot_humanoid import jev_classify_facets, TAXONOMY  # v4 by default
 from routing import route_reason  # the adopted rule: threshold OR text signal
 
 MANIFEST = os.path.join(SCRIPT_DIR, "library_manifest.json")
-RESULTS = os.path.join(SCRIPT_DIR, "library_standin_results.json")
+RESULTS = os.path.join(SCRIPT_DIR, os.environ.get("RESULTS_OUT", "library_standin_results.json"))
 IMAGES_DIR = os.environ.get("LIBRARY_STANDIN_DIR") or os.path.join(SCRIPT_DIR, "library_standin")
 
 DELAY = 0.4
@@ -88,13 +91,20 @@ def main():
     print(f"Corpus images: {len(items)}")
 
     results = load_results()
+    stamps = prepare_run(
+        results, {"taxonomy": tax, "vision_model": classify_images.VISION_MODEL,
+                  "decision_model": "jev-latest"},
+        {name: {"image": file_digest(os.path.join(IMAGES_DIR, rec["file"])),
+                "category": rec["category"]} for name, rec in items},
+        __file__, classify_images.__file__, pilot_humanoid.__file__)
     done = {k for k, r in results.items() if r.get("status") == "ok"}
     todo = [(k, v) for k, v in items if k not in done]
     print(f"Already done: {len(done)}, to process: {len(todo)}")
 
     for i, (fname, rec) in enumerate(todo, 1):
         path = os.path.join(IMAGES_DIR, rec["file"])
-        out = {"category": rec["category"], "title": rec["title"], "status": "error"}
+        out = {"category": rec["category"], "title": rec["title"], "status": "error",
+               "_provenance": stamps[fname]}
         try:
             desc = describe_image(path)
             out["description"] = desc
@@ -119,6 +129,7 @@ def main():
 
     # Comparison against the category-implied labels
     ok = {k: r for k, r in results.items() if r.get("status") == "ok"}
+    require_complete(results)
     if not ok:
         print("\nNothing measured.")
         return

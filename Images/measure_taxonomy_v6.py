@@ -23,10 +23,11 @@ import time
 import urllib.request
 from json_store import load_json, save_json
 from measurement import load_baseline, threshold_summary
+from run_state import prepare_run, require_complete
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 TAXONOMY = os.path.join(SCRIPT_DIR, os.environ.get("TAXONOMY", "humanoid_taxonomy_v6.json"))
-SOURCE = os.path.join(SCRIPT_DIR, "library_standin_results.json")
+SOURCE = os.environ.get("SOURCE_RESULTS") or os.path.join(SCRIPT_DIR, "library_standin_results.json")
 RESULTS = os.path.join(SCRIPT_DIR, os.environ.get(
     "RESULTS_OUT", "taxonomy_v6_batch2_results.json"))
 HELD_OUT_DATE = "2026-09-24"
@@ -73,7 +74,8 @@ def save_results(results):
 
 
 def main():
-    if not API_KEY:
+    report_only = "--report-only" in sys.argv
+    if not API_KEY and not report_only:
         print("Missing TYPESAFE_API_KEY")
         sys.exit(1)
 
@@ -91,8 +93,11 @@ def main():
     print(f"Held-out batch ({HELD_OUT_DATE}): {len(items)} labeled records")
 
     results = load_results()
+    stamps = {} if report_only else prepare_run(
+        results, {"taxonomy": tax, "decision_model": "jev-latest"},
+        {name: baseline[name] for name, _ in items}, __file__)
     done = {n for n, r in results.items() if r.get("status") == "ok"}
-    todo = [(n, r) for n, r in items if n not in done]
+    todo = [] if report_only else [(n, r) for n, r in items if n not in done]
     print(f"Already done: {len(done)}, to process: {len(todo)}")
 
     for i, (name, rec) in enumerate(todo, 1):
@@ -102,7 +107,8 @@ def main():
             f"\"{desc}\"\n\n"
             f"Classify the depicted content according to the questions."
         )
-        out_rec = {"file": name, "category": rec["category"], "status": "error"}
+        out_rec = {"file": name, "category": rec["category"], "status": "error",
+                   "_provenance": stamps[name]}
         try:
             out_rec.update(jev_classify_facets(state, facets))
             out_rec["status"] = "ok"
@@ -120,6 +126,7 @@ def main():
 
     # Comparison: v6 answers vs manual corrections, v4 stored answers vs
     # manual corrections, on the same records.
+    require_complete(results)
     selected = {name for name, _ in items}
     ok = {n: r for n, r in results.items() if r.get("status") == "ok" and n in selected}
     if not ok:
@@ -146,7 +153,7 @@ def main():
     v6 = lambda name, rec: {q: rec[q]["choice"] for q in FACETS}
     v4 = lambda name, rec: {q: baseline[name][q]["choice"] for q in FACETS}
 
-    version = tax["_meta"]["version"]
+    version = "stored candidate (report-only)" if report_only else tax["_meta"]["version"]
     for label, pick in ((version, v6), ("baseline (explicit snapshot)", v4)):
         per_facet, pa, pn = score(pick)
         print(f"\n{label}: pooled {pa}/{pn} ({100 * pa / pn:.0f}%)")

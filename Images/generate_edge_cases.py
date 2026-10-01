@@ -18,11 +18,12 @@ import sys
 import time
 import urllib.request
 from json_store import load_json, save_json
+from run_state import file_digest, prepare_run, require_complete
 
 API = "https://api.mistral.ai/v1"
 HERE = os.path.dirname(os.path.abspath(__file__))
-RESULTS = os.path.join(HERE, "edge_case_results.json")
-AGENT_CACHE = os.path.join(HERE, "edge_case_agent.json")
+RESULTS = os.path.join(HERE, os.environ.get("RESULTS_OUT", "edge_case_results.json"))
+AGENT_CACHE = os.environ.get("AGENT_CACHE") or os.path.join(HERE, "edge_case_agent.json")
 IMAGES_DIR = os.environ.get("EDGE_CASES_DIR") or os.path.join(HERE, "edge_cases")
 PROMPTS_FILE = os.environ.get("EDGE_CASE_PROMPTS")  # optional JSON override
 
@@ -135,7 +136,10 @@ def sniff_ext(data):
 def load_agent():
     if os.path.exists(AGENT_CACHE):
         with open(AGENT_CACHE, "r", encoding="utf-8") as f:
-            return json.load(f).get("agent_id", "")
+            agent = json.load(f)
+        if agent.get("model") != AGENT_MODEL:
+            raise ValueError("Cached agent model changed; preserve the cache and use a new AGENT_CACHE")
+        return agent.get("agent_id", "")
     return ""
 
 
@@ -195,6 +199,13 @@ def main():
         sys.exit(1)
 
     prompts = load_prompts()
+    results = load_results()
+    stamps = prepare_run(results, {"agent_model": AGENT_MODEL},
+                         {p["id"]: p["prompt"] for p in prompts}, __file__)
+    for rec in results.values():
+        if rec.get("status") == "ok":
+            if rec.get("image_sha256") != file_digest(os.path.join(IMAGES_DIR, rec["file"])):
+                raise ValueError("Generated image changed; preserve the run and select fresh output")
     only = set(sys.argv[1:])
     if only:
         prompts = [p for p in prompts if p["id"] in only]
@@ -204,7 +215,6 @@ def main():
             sys.exit(1)
 
     os.makedirs(IMAGES_DIR, exist_ok=True)
-    results = load_results()
     done = {k for k, r in results.items() if r.get("status") == "ok"}
     todo = [p for p in prompts if p["id"] not in done]
     print(f"Total prompts: {len(prompts)}, already done: {len(prompts) - len(todo)}, to generate: {len(todo)}")
@@ -216,7 +226,7 @@ def main():
 
     for i, p in enumerate(todo, 1):
         pid = p["id"]
-        rec = {"prompt": p["prompt"], "status": "error"}
+        rec = {"prompt": p["prompt"], "status": "error", "_provenance": stamps[pid]}
         try:
             file_id, file_name, usage = generate_one(agent_id, p["prompt"])
             data = download_file(file_id)
@@ -240,6 +250,8 @@ def main():
                     rec["error"] = str(e2)
             else:
                 rec["error"] = str(e)
+        if rec["status"] == "ok":
+            rec["image_sha256"] = file_digest(dest)
         results[pid] = rec
         save_results(results)
         if rec["status"] == "ok":
@@ -250,6 +262,7 @@ def main():
 
     ok = [r for r in results.values() if r.get("status") == "ok"]
     print(f"\nDone. OK={len(ok)}, errors={len(results) - len(ok)}, images in {IMAGES_DIR}")
+    require_complete({p["id"]: results[p["id"]] for p in prompts})
 
 
 if __name__ == "__main__":

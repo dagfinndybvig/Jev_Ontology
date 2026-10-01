@@ -27,11 +27,12 @@ import sys
 import time
 import urllib.request
 from json_store import load_json, save_json
+from corpus_state import require_unsealed
 
 BASE = "https://smithsonian-open-access.s3-us-west-2.amazonaws.com/metadata/edan/"
 HERE = os.path.dirname(os.path.abspath(__file__))
 IMAGES_DIR = os.environ.get("REPLICATION_DIR") or os.path.join(HERE, "replication_corpus")
-MANIFEST = os.path.join(HERE, "replication_manifest.json")
+MANIFEST = os.environ.get("REPLICATION_MANIFEST") or os.path.join(HERE, "replication_manifest.json")
 UA = {"User-Agent": "JevOntology-corpus-fetcher/1.0 (academic image-classification research)"}
 
 # Category definitions are data (REPLICATION_PROTOCOL.md, "Final category
@@ -190,14 +191,21 @@ def download(img_url, path):
 
 
 def main():
-    named = [a for a in sys.argv[1:] if a in CATEGORIES]
+    named = sys.argv[1:]
+    if any(a not in CATEGORIES for a in named):
+        raise SystemExit("Unknown category; no corpus changes made")
     cats = named or list(CATEGORIES)
-    os.makedirs(IMAGES_DIR, exist_ok=True)
     manifest = load_json(MANIFEST, missing_ok=True)
+    require_unsealed(manifest)
+    os.makedirs(IMAGES_DIR, exist_ok=True)
 
     # Group categories by unit so each unit's metadata is scanned once.
     by_unit = {}
     for cat in cats:
+        have = sum(v.get("status") == "ok" and v.get("category") == cat
+                   for v in manifest.values() if isinstance(v, dict))
+        if have >= PER_CATEGORY:
+            continue
         by_unit.setdefault(CATEGORIES[cat]["unit"], []).append(cat)
 
     rng = random.Random(SEED)
@@ -229,12 +237,12 @@ def main():
             existing = [k for k, v in manifest.items()
                         if isinstance(v, dict) and v.get("category") == cat]
             seq = len(existing)
-            done = 0
+            done = sum(v.get("status") == "ok" and v.get("category") == cat
+                       for v in manifest.values() if isinstance(v, dict))
             for rec, img in order:
                 if done >= PER_CATEGORY:
                     break
                 if img.get("idsId") in existing_ids:
-                    done += 1
                     continue
                 seq += 1
                 fname = "%s_%03d" % (cat, seq)
@@ -249,6 +257,7 @@ def main():
                     fields["verified"] = None
                     done += 1
                 manifest[fname] = fields
+                existing_ids.add(img.get("idsId"))
                 save_json(MANIFEST, manifest, indent=1)
                 time.sleep(DELAY)
             print("  %s: %d/%d downloaded" % (cat, done, PER_CATEGORY))
@@ -259,6 +268,9 @@ def main():
     total = sum(1 for v in manifest.values()
                 if isinstance(v, dict) and v.get("status") == "ok")
     print("manifest: %d ok records" % total)
+    if any(sum(v.get("status") == "ok" and v.get("category") == cat
+               for v in manifest.values() if isinstance(v, dict)) < PER_CATEGORY for cat in cats):
+        raise SystemExit("Corpus target not reached; saved progress can be resumed")
 
 
 if __name__ == "__main__":

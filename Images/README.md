@@ -31,6 +31,52 @@ preserve the intended baseline before running. The chosen snapshot
 supplies both baseline confidences and the descriptions for new answers.
 Scripts do not guess a historical version from the live production file.
 
+All producers now fingerprint inputs (image bytes or stored descriptions),
+taxonomy/model configuration, and implementation. Matching runs still
+resume incrementally; changed inputs/configuration, removed inputs, or
+legacy results without `_provenance` stop **before API calls or writes**.
+Preserve old results and select a fresh `RESULTS_OUT` instead of deleting
+them. New `*.results.json` files are gitignored; use that suffix or keep
+new outputs outside the repo. Existing labels are not automatically copied
+into a fresh output or inferred again from model answers.
+
+For example, a fresh pilot on the existing stored descriptions:
+
+```powershell
+$env:RESULTS_OUT = "fresh_humanoids.results.json"
+python pilot_humanoid.py
+$env:REVIEW_RESULTS = Join-Path $PWD $env:RESULTS_OUT
+$env:SORT_RESULTS = $env:REVIEW_RESULTS
+Remove-Item Env:\RESULTS_OUT
+```
+
+`SOURCE_RESULTS` selects alternate descriptions for the pilot or alternate
+ground-truth results for baseline/structured/capture/taxonomy experiments.
+`STRUCTURED_RESULTS` selects capture's input; comparison also accepts
+`DIRECT_RESULTS` and `CAPTURE_RESULTS`. `SORT_RESULTS` selects the sorter
+input. Set/clear these variables deliberately between experiments.
+Legacy results remain readable by the review UI, `baseline_compare.py`,
+`analyze_verified.py`, and taxonomy measurements with `--report-only`
+(still requires `BASELINE_RESULTS`, but no API key or classification).
+Report-only scores against the selected `SOURCE_RESULTS` ground truth;
+later human-label revisions can therefore change a historical run's score
+without any change to its raw answers. Preserve the ground-truth snapshot
+as well as the baseline when reproducing a dated measurement.
+
+Replication fetch/backfill/verification refuse sealed manifests; the
+verification page becomes read-only. Measurement requires a sealed,
+verified manifest and rejects overrides to the frozen v9 taxonomy, vision
+model/prompt, or routing code. `REPLICATION_MANIFEST` and `REPLICATION_DIR`
+select a separate new corpus; never unseal the published one. Requested
+model aliases are pinned, but provider-side changes to `jev-latest` cannot
+be prevented locally.
+
+Fetch quotas count successful images only, and incomplete fetches/runs
+exit nonzero while retaining progress. Re-sorting removes obsolete
+byte-identical copies from known classification/review paths, leaving
+originals untouched. Modified copies or paths outside the managed tree
+cause an explicit error rather than deletion.
+
 Offline regression checks: `python -B -m unittest discover -p "test_*.py"`
 (the embedded-browser checks also require Node.js; no API calls).
 

@@ -16,6 +16,9 @@ import os
 import sys
 import time
 from json_store import load_json, save_json
+from run_state import file_digest, prepare_run, require_complete
+import classify_images
+import pilot_humanoid
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, SCRIPT_DIR)
@@ -24,7 +27,7 @@ from classify_images import describe_image  # same vision prompt as the pipeline
 from pilot_humanoid import jev_classify_facets, TAXONOMY  # v4 by default
 from routing import route_reason  # the adopted rule: threshold OR text signal
 
-RESULTS = os.path.join(SCRIPT_DIR, "edge_case_pipeline_results.json")
+RESULTS = os.path.join(SCRIPT_DIR, os.environ.get("RESULTS_OUT", "edge_case_pipeline_results.json"))
 GENERATED = os.path.join(SCRIPT_DIR, "edge_case_results.json")
 IMAGES_DIR = os.environ.get("EDGE_CASES_DIR") or os.path.join(SCRIPT_DIR, "edge_cases")
 
@@ -99,13 +102,20 @@ def main():
     print(f"Generated images: {len(items)}")
 
     results = load_results()
+    stamps = prepare_run(
+        results, {"taxonomy": tax, "vision_model": classify_images.VISION_MODEL,
+                  "decision_model": "jev-latest"},
+        {name: {"image": file_digest(os.path.join(IMAGES_DIR, rec["file"])),
+                "prompt": rec["prompt"]} for name, rec in items},
+        __file__, classify_images.__file__, pilot_humanoid.__file__)
     done = {k for k, r in results.items() if r.get("status") == "ok"}
     todo = [(pid, rec) for pid, rec in items if pid not in done]
     print(f"Already done: {len(done)}, to process: {len(todo)}")
 
     for i, (pid, rec) in enumerate(todo, 1):
         path = os.path.join(IMAGES_DIR, rec["file"])
-        out = {"file": rec["file"], "prompt": rec["prompt"], "status": "error"}
+        out = {"file": rec["file"], "prompt": rec["prompt"], "status": "error",
+               "_provenance": stamps[pid]}
         try:
             desc = describe_image(path)
             out["description"] = desc
@@ -130,6 +140,7 @@ def main():
 
     # Comparison against the intended labels
     ok = {k: r for k, r in results.items() if r.get("status") == "ok"}
+    require_complete(results)
     if not ok:
         print("\nNothing measured.")
         return

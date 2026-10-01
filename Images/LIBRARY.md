@@ -31,6 +31,14 @@ criteria, preserves independent facet labels, and reports conflicts rather
 than silently overwriting corrections. Existing labels are not inferred
 again from primary subjects; any relabeling still requires human review.
 
+**Audit completion (2026-10-01).** Evaluation uses actual confidence-bin
+means and record-wide error capture; the corrected replication auto-accept
+cohort excludes routed images. New runs bind to source and configuration
+fingerprints; historical results stay readable but cannot silently resume
+under a new taxonomy. Sealed replication manifests are read-only to
+fetching, backfill, and verification tools. Sorting reconciles only
+byte-identical managed copies and refuses to delete modified files.
+
 A university library holds digitized image collections: photographs,
 posters, illustrations, scanned book pages, archival material.
 Cataloging them by subject is manual, slow, and backlogged. The

@@ -1222,3 +1222,21 @@ image_human_summary.txt  -- clean sorted list
 > and confidences, not mutable production answers. Batch-2 membership
 > comes from the archived review dates, not later production reviews.
 > See `REPLICATION_RESULTS.md` for the corrected intervals.
+
+> Milestone 3 hardens operation without a new model run: input/configuration
+> fingerprints prevent mixed-version resumes; legacy JSONs stay unchanged
+> and support read-only analysis. Sealed manifests reject edits and
+> measurement rejects non-frozen configuration. Fetch quotas count only
+> successful images, and incomplete work returns a nonzero exit status.
+> Sorters remove obsolete byte-identical managed copies, never originals
+> or modified files. No old human labels were automatically "repaired";
+> deciding that a historical correction was wrong still requires an image
+> review, not inference from the old or new model.
+
+> **Replay basis:** the archived batch-2 v4 ground truth differs from
+> today's library corrections on 3 records. With archived truth, retained
+> v6/v7/baseline answers score 238/275, 246/275, 235/275; with today's
+> truth they score 237/275, 245/275, 234/275. These were recomputed without
+> API calls. The dated historical accuracy claims retain their original
+> ground-truth basis; `--report-only` explicitly uses the selected source
+> ground truth rather than pretending later corrections never happened.

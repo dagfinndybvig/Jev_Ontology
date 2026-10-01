@@ -25,11 +25,12 @@ import sys
 import time
 import urllib.request
 from json_store import load_json, save_json
+from run_state import prepare_run, require_complete
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 TAXONOMY = os.path.join(SCRIPT_DIR, os.environ.get("TAXONOMY", "humanoid_taxonomy_v9.json"))
-SOURCE = os.path.join(SCRIPT_DIR, "image_human_results.json")
-RESULTS = os.path.join(SCRIPT_DIR, "humanoid_pilot_results.json")
+SOURCE = os.environ.get("SOURCE_RESULTS") or os.path.join(SCRIPT_DIR, "image_human_results.json")
+RESULTS = os.path.join(SCRIPT_DIR, os.environ.get("RESULTS_OUT", "humanoid_pilot_results.json"))
 
 API_KEY = os.environ.get("TYPESAFE_API_KEY", "")
 ENDPOINT = "https://api.typesafe.ai/v1/systemone"
@@ -85,6 +86,8 @@ def main():
     print(f"Source descriptions: {len(items)}")
 
     results = load_results()
+    stamps = prepare_run(results, {"taxonomy": tax, "decision_model": "jev-latest"},
+                         {name: rec["description"] for name, rec in items}, __file__)
     done = {n for n, r in results.items() if r.get("status") == "ok"}
     todo = [(n, r) for n, r in items if n not in done]
     print(f"Already done: {len(done)}, to process: {len(todo)}")
@@ -96,7 +99,8 @@ def main():
             f"\"{desc}\"\n\n"
             f"Classify the depicted content according to the questions."
         )
-        out_rec = {"file": name, "description": desc, "status": "error"}
+        out_rec = {"file": name, "description": desc, "status": "error",
+                   "_provenance": stamps[name]}
         try:
             out_rec.update(jev_classify_facets(state, facets))
             out_rec["status"] = "ok"
@@ -147,6 +151,7 @@ def main():
     for minconf, name, weak in queue:
         details = ", ".join(f"{q}:{c}({cf})" for q, c, cf in weak)
         print(f"  {minconf:.3f}  {name}  [{details}]")
+    require_complete(results)
 
 
 if __name__ == "__main__":

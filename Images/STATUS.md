@@ -35,9 +35,26 @@ Structured v3's raw run was not retained: corrected ECE/capture figures
 are explicitly unavailable. No API calls or changes to ground truth.
 
 Taxonomy measurement scripts require an explicit `BASELINE_RESULTS`
-snapshot and use each system's own confidences. Resume/corpus/sorting
-repairs remain the next milestone. Tests are `test_*.py` plus the embedded
-browser harness; synthetic fixtures only.
+snapshot and use each system's own confidences.
+
+Milestone 3: all producers bind resumes to input/configuration/source-code
+fingerprints. Legacy records are preserved and readable, but cannot resume
+without provenance; choose a fresh `RESULTS_OUT` (`*.results.json` is
+gitignored). Taxonomy scripts have a no-API `--report-only` mode for old
+runs. No stored result or human label was migrated or rewritten.
+Replication writers enforce sealing; measurement requires verification
+and the frozen v9 configuration. Fetchers count successes, not skipped
+errors, and exit nonzero when short. Sorters reconcile obsolete
+byte-identical copies, reject edited/out-of-tree files, and preserve
+originals. README documents the new output/input environment variables.
+
+Tests are `test_*.py` plus the embedded browser harness. They cover
+cross-process locks, interrupted writes, stale browser saves, metrics,
+all producers' fresh/resume/legacy-refusal paths, sealing, fetch quotas
+and sorting with synthetic fixtures and mocked APIs.
+Historical replay also confirmed ground-truth drift: 3 batch-2 labels
+differ between the v4 archive and the current library file. RESULTS.md
+reports both score bases; no label was altered during this repair.
 
 ## What happened on 2026-09-23 (this session)
 
@@ -709,7 +726,7 @@ browser harness; synthetic fixtures only.
 | Replication measurement + verification UI + verified analysis (public) | `Images/measure_replication.py`, `Images/verify_replication.py`, `Images/analyze_verified.py`, `Images/backfill_descriptions.py` |
 | Replication run records (public; 3 runs) | `Images/replication_results_run{1,2,3}.json` |
 | Replication images (private, gitignored) | `Images/replication_corpus/` |
-| Review queue printout | rerun `python pilot_humanoid.py` (instant; resumable) |
+| Review queue printout | `python routing.py` (no API calls); legacy pilot results are analysis-only, not resumable |
 
 ## Next steps, in order
 

@@ -16,11 +16,12 @@ import sys
 import time
 import urllib.request
 from json_store import load_json, save_json
+from run_state import file_digest, prepare_run, require_complete
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PICTURES = os.environ.get("PICTURES_DIR", "")
-RESULTS = os.path.join(HERE, "baseline_pixtral_direct_results.json")
-CASCADE_RESULTS = os.path.join(HERE, "humanoid_pilot_results.json")
+RESULTS = os.path.join(HERE, os.environ.get("RESULTS_OUT", "baseline_pixtral_direct_results.json"))
+CASCADE_RESULTS = os.environ.get("SOURCE_RESULTS") or os.path.join(HERE, "humanoid_pilot_results.json")
 TAXONOMY = os.path.join(HERE, "humanoid_taxonomy_v4.json")
 EXTS = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".avif", ".tiff", ".tif", ".jfif"}
 
@@ -117,12 +118,15 @@ def main():
 
     prompt = build_prompt(taxonomy)
     results = load_results()
+    stamps = prepare_run(
+        results, {"taxonomy": taxonomy, "vision_model": VISION_MODEL},
+        {name: file_digest(os.path.join(PICTURES, name)) for name in labeled}, __file__)
     todo = [n for n in sorted(labeled) if results.get(n, {}).get("status") != "ok"]
     print(f"Already done: {len(labeled) - len(todo)}, to process: {len(todo)}")
 
     for i, name in enumerate(todo, 1):
         path = os.path.join(PICTURES, name)
-        rec = {"file": name, "status": "error"}
+        rec = {"file": name, "status": "error", "_provenance": stamps[name]}
         if not os.path.isfile(path) or os.path.splitext(name)[1].lower() not in EXTS:
             rec["error"] = "image not found or unsupported extension"
         else:
@@ -145,6 +149,7 @@ def main():
 
     ok = [r for r in results.values() if r.get("status") == "ok"]
     print(f"\nDone. OK={len(ok)}, errors={len(results) - len(ok)}")
+    require_complete(results)
 
 
 if __name__ == "__main__":

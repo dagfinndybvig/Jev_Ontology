@@ -200,6 +200,12 @@ without any re-tuning — the loop's result holds.
 
 ## Files
 
+**Operational audit (2026-10-01):** the published manifest and three raw
+runs were not changed. Writers now enforce the seal, and measurement
+enforces frozen configuration and provenance-checked resumes. Use
+`analyze_verified.py` for the retained runs; a new run needs a new output
+file, not reuse of an unversioned historical result.
+
 - `REPLICATION_PROTOCOL.md` — pre-registration (committed before the run).
 - `fetch_replication_corpus.py` + `replication_manifest.json` — corpus and
   ground truth (committed; images gitignored in `replication_corpus/`).

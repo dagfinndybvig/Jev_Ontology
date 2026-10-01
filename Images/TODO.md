@@ -6,13 +6,16 @@
   writes; fix review defaults, independent flags, and keyboard editing.
 - [x] Correct auto-accept analysis, calibration/error-capture metrics,
   and historical baseline comparisons; recompute affected documentation.
-- [ ] Validate resume identity, enforce sealed manifests, fix fetch quotas,
+- [x] Validate resume identity, enforce sealed manifests, fix fetch quotas,
   and reconcile stale sorted copies.
 
 Each milestone includes offline regression coverage and documentation.
 Milestone 2 recomputed retained-run metrics without API calls. The old
 structured-v3 run lacks raw results, so its corrected ECE/capture metrics
 are marked unavailable rather than reconstructed.
+Milestone 3 preserves legacy results, refuses unverifiable resumes, and
+provides `--report-only` for historical taxonomy measurements. The
+published sealed corpus and all existing human labels remain unchanged.
 
 > **NEXT STEP (2026-09-24): New labeled data or a vision-layer
 > lever -- the taxonomy loop is at diminishing returns on this

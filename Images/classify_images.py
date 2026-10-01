@@ -12,14 +12,24 @@ import sys
 import time
 import urllib.request
 from json_store import load_json, save_json
+from run_state import file_digest, prepare_run, require_complete
 
 PICTURES = os.environ.get("PICTURES_DIR", "")  # folder of images to classify
-RESULTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "image_human_results.json")
+RESULTS = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                       os.environ.get("RESULTS_OUT", "image_human_results.json"))
 EXTS = {".jpg", ".jpeg", ".png", ".gif", ".bmp", ".webp", ".avif", ".tiff", ".tif", ".jfif"}
 
 MISTRAL_KEY = os.environ.get("MISTRAL_API_KEY", "")
 TYPESAFE_KEY = os.environ.get("TYPESAFE_API_KEY", "")
 VISION_MODEL = os.environ.get("VISION_MODEL", "pixtral-12b-2409")
+VISION_PROMPT = (
+    "First, check: does this image consist of text, code, or a "
+    "terminal screenshot? Then describe the image in one short "
+    "sentence (max 25 words), starting with the medium: photograph, "
+    "illustration, render, screenshot, or text. If it is text or a "
+    "screenshot, describe what the text says -- never a scene the "
+    "text merely mentions. Do not mention the filename."
+)
 
 DELAY = 0.4  # seconds between images, to be polite to the APIs
 
@@ -39,14 +49,7 @@ def describe_image(path, model=VISION_MODEL):
                 "content": [
                     {
                         "type": "text",
-                        "text": (
-                            "First, check: does this image consist of text, code, or a "
-                            "terminal screenshot? Then describe the image in one short "
-                            "sentence (max 25 words), starting with the medium: photograph, "
-                            "illustration, render, screenshot, or text. If it is text or a "
-                            "screenshot, describe what the text says -- never a scene the "
-                            "text merely mentions. Do not mention the filename."
-                        ),
+                        "text": VISION_PROMPT,
                     },
                     {"type": "image_url", "image_url": f"data:{mime};base64,{b64}"},
                 ],
@@ -119,13 +122,16 @@ def main():
     print(f"Total images: {len(files)}")
 
     results = load_results()
+    stamps = prepare_run(results, {"vision_model": VISION_MODEL, "decision_model": "jev-latest"},
+                         {name: file_digest(os.path.join(PICTURES, name)) for name in files},
+                         __file__)
     done = {name for name, rec in results.items() if rec.get("status") == "ok"}
     todo = [n for n in files if n not in done]
     print(f"Already done: {len(done)}, to process: {len(todo)}")
 
     for i, name in enumerate(todo, 1):
         path = os.path.join(PICTURES, name)
-        rec = {"file": name, "status": "error"}
+        rec = {"file": name, "status": "error", "_provenance": stamps[name]}
         try:
             desc = describe_image(path)
             rec["description"] = desc
@@ -146,6 +152,7 @@ def main():
     yes = [r for r in ok if r["choice"] == "yes"]
     no = [r for r in ok if r["choice"] == "no"]
     print(f"\nDone. OK={len(ok)}, human={len(yes)}, no-human={len(no)}, errors={len(results)-len(ok)}")
+    require_complete(results)
 
 
 if __name__ == "__main__":
