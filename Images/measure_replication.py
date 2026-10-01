@@ -98,6 +98,8 @@ def save_results(path, results):
 
 
 def main():
+    if not classify_images.MISTRAL_KEY or not pilot_humanoid.API_KEY:
+        raise SystemExit("Missing MISTRAL_API_KEY or TYPESAFE_API_KEY")
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
 

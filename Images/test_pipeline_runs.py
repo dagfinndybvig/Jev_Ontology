@@ -64,6 +64,9 @@ class PipelineRunTests(unittest.TestCase):
                                                 if name == "measure_replication" else [name]))
                 stack.enter_context(patch("urllib.request.urlopen", side_effect=AssertionError("Network forbidden")))
                 stack.enter_context(patch("time.sleep"))
+                if hasattr(module, "classify_images"):
+                    stack.enter_context(patch.object(module.classify_images, "MISTRAL_KEY", "test"))
+                    stack.enter_context(patch.object(module.pilot_humanoid, "API_KEY", "test"))
                 if hasattr(module, "side"):
                     stack.enter_context(patch.object(module, "side", return_value="M"))
                 if name == "measure_replication":

@@ -17,6 +17,7 @@ import json
 import os
 import urllib.request
 from collections import Counter
+from mvp_jev_ontology import validate_choice
 
 API_KEY = os.environ.get("TYPESAFE_API_KEY", "")
 ENDPOINT = "https://api.typesafe.ai/v1/systemone"
@@ -57,6 +58,7 @@ def jev_choice(item_text, children, parent):
     with urllib.request.urlopen(req, timeout=30) as resp:
         data = json.loads(resp.read().decode("utf-8"))
     answer = data["answers"]["classify"]
+    validate_choice(answer, criteria)
     return {
         "choice": answer["choice"],
         "confidence": answer["confidence"],
@@ -255,6 +257,8 @@ TICKETS = [
 
 
 def main():
+    if not API_KEY:
+        raise SystemExit("Missing TYPESAFE_API_KEY")
     print(f"Jev model: jev-latest")
     print(f"Tickets: {len(TICKETS)}")
 

@@ -11,6 +11,12 @@
 
 ## Summary
 
+> **Repository audit follow-up:** direct/structured vision now validates
+> complete response schemas before saving success. Invalid responses remain
+> retryable errors. No model calls, existing results, or manual labels were
+> changed by this repair; historical measurements below are not new runs.
+> Corpus runs also stop before paid vision if either API key is missing.
+
 The task was to sort the images in a personal photo folder by whether they
 contain a human, using Jev. The result: 73 images contain a human, 142
 do not, with 0 errors. 188 of 215 (87%) were classified at 0.9+

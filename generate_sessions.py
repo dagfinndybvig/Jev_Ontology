@@ -3,6 +3,7 @@ import json
 import os
 import urllib.request
 from collections import Counter
+from mvp_jev_ontology import validate_choice
 
 # Load ontology
 ONTOLOGY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ontology.json")
@@ -41,6 +42,7 @@ def jev_choice(item_text, children, parent):
     with urllib.request.urlopen(req, timeout=30) as resp:
         data = json.loads(resp.read().decode("utf-8"))
     answer = data["answers"]["classify"]
+    validate_choice(answer, criteria)
     return {
         "choice": answer["choice"],
         "confidence": answer["confidence"],
@@ -155,9 +157,15 @@ s3_tickets = [
     "The reports page is extremely slow and sometimes throws a 500 error.",
 ]
 
-print(f"Ontology version: {ONTOLOGY_VERSION}")
-print(f"Jev model: jev-latest (jev-1.13.0)")
+def main():
+    if not API_KEY:
+        raise SystemExit("Missing TYPESAFE_API_KEY")
+    print(f"Ontology version: {ONTOLOGY_VERSION}")
+    print("Requested Jev model: jev-latest (provider alias, not a pinned version)")
+    run_session("Session 1 - Standard mixed batch (12 tickets)", s1_tickets)
+    run_session("Session 2 - Billing-heavy batch (8 tickets)", s2_tickets)
+    run_session("Session 3 - Edge cases and adversarial (6 tickets)", s3_tickets)
 
-run_session("Session 1 - Standard mixed batch (12 tickets)", s1_tickets)
-run_session("Session 2 - Billing-heavy batch (8 tickets)", s2_tickets)
-run_session("Session 3 - Edge cases and adversarial (6 tickets)", s3_tickets)
+
+if __name__ == "__main__":
+    main()

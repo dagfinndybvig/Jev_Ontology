@@ -92,6 +92,8 @@ def save_results(results):
 
 
 def main():
+    if not classify_images.MISTRAL_KEY or not pilot_humanoid.API_KEY:
+        raise SystemExit("Missing MISTRAL_API_KEY or TYPESAFE_API_KEY")
     with open(TAXONOMY, "r", encoding="utf-8") as f:
         tax = json.load(f)
     facets = tax["facets"]

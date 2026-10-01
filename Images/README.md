@@ -43,6 +43,13 @@ measurements, and `STATUS.md` for the current state and remaining work.
 
 ## Reliability update (2026-10-01)
 
+The repository-wide follow-up also validates direct-vision answers against
+every requested facet and structured-vision fields against their schema.
+Empty, incomplete, or invalid responses remain errors, never completed
+records. Raw-newline and unescaped-quote repair support remains available.
+Existing measurements and human labels have not been rewritten.
+Corpus measurements also check both API keys before spending on vision.
+
 JSON writers now use `json_store.py`: same-directory temporary files,
 flush/fsync and atomic replacement. Read/modify/write documents carry a
 revision; a stale writer stops rather than overwriting another process's

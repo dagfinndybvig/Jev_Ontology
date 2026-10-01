@@ -14,6 +14,7 @@ Run:  python mvp_jev_ontology.py
 """
 
 import json
+import math
 import os
 import random
 import urllib.request
@@ -59,6 +60,22 @@ ENDPOINT = "https://api.typesafe.ai/v1/systemone"
 USE_REAL_JEV = bool(API_KEY)
 
 
+def validate_choice(answer, criteria):
+    if not isinstance(answer, dict) or answer.get("choice") not in criteria:
+        raise ValueError("Jev returned an unknown choice")
+    confidence = answer.get("confidence")
+    probabilities = answer.get("probabilities")
+    values = [confidence]
+    if not isinstance(probabilities, dict) or set(probabilities) != set(criteria):
+        raise ValueError("Jev returned an incomplete choice distribution")
+    values.extend(probabilities.values())
+    if any(isinstance(v, bool) or not isinstance(v, (int, float))
+           or not math.isfinite(v) or not 0 <= v <= 1 for v in values):
+        raise ValueError("Jev confidence and probabilities must be finite numbers in [0, 1]")
+    if not math.isclose(sum(probabilities.values()), 1, abs_tol=0.02):
+        raise ValueError("Jev probabilities do not sum to one")
+
+
 def jev_choice(item_text, children, parent):
     """Call the real Jev API with a Choice question over the node's children."""
     criteria = {c["id"]: c["definition"] for c in children}
@@ -93,6 +110,7 @@ def jev_choice(item_text, children, parent):
         data = json.loads(resp.read().decode("utf-8"))
 
     answer = data["answers"]["classify"]
+    validate_choice(answer, criteria)
     return {
         "choice": answer["choice"],
         "confidence": answer["confidence"],
@@ -145,13 +163,18 @@ def mock_jev_choice(item_text, children):
 # Step 3: Recursive classifier with greedy descent
 # --------------------------------------------------------------------------- #
 
-def classify_item(item_text, ontology):
+def classify_item(item_text, ontology, ontology_version=None):
     """
     Walk the ontology tree top-down.
     At each node, ask Jev Choice over children. Descend the winner.
     Always continues to a leaf, accumulating confidence along the path.
     Returns the path, leaf, and cumulative confidence.
     """
+    version = ontology_version or ontology.get("_meta", {}).get("version")
+    if not version:
+        if ontology is not ONTOLOGY:
+            raise ValueError("An alternate ontology requires metadata or an explicit ontology_version")
+        version = ONTOLOGY_VERSION
     path = []
     current = ontology
     confidence = 1.0
@@ -176,7 +199,7 @@ def classify_item(item_text, ontology):
         "path": path,
         "leaf": leaf,
         "overall_confidence": confidence,
-        "ontology_version": ONTOLOGY_VERSION,
+        "ontology_version": version,
     }
 
 

@@ -80,15 +80,21 @@ def classify_image(path, prompt):
     return text, usage
 
 
-def parse_answer(text):
+def parse_answer(text, facets):
     m = re.search(r"\{.*\}", text, re.DOTALL)
     if not m:
         raise ValueError(f"no JSON in answer: {text[:120]}")
     obj = json.loads(m.group(0))
+    if not isinstance(obj, dict) or set(obj) != set(facets):
+        raise ValueError("Vision answer must contain exactly the requested facets")
     out = {}
     for facet, ans in obj.items():
-        if isinstance(ans, dict) and "choice" in ans:
-            out[facet] = {"choice": ans["choice"], "confidence": float(ans.get("confidence", 0.0))}
+        if not isinstance(ans, dict) or ans.get("choice") not in facets[facet]["criteria"]:
+            raise ValueError(f"Invalid choice for {facet}")
+        confidence = ans.get("confidence")
+        if isinstance(confidence, bool) or not isinstance(confidence, (int, float)) or not 0 <= confidence <= 1:
+            raise ValueError(f"Invalid or missing confidence for {facet}")
+        out[facet] = {"choice": ans["choice"], "confidence": confidence}
     return out
 
 
@@ -132,7 +138,7 @@ def main():
         else:
             try:
                 text, usage = classify_image(path, prompt)
-                rec["answer"] = parse_answer(text)
+                rec["answer"] = parse_answer(text, taxonomy["facets"])
                 rec["raw_answer"] = text
                 rec["usage"] = usage
                 rec["status"] = "ok"

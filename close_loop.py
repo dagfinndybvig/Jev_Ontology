@@ -4,6 +4,7 @@ hedging."""
 import json
 import os
 import urllib.request
+from mvp_jev_ontology import validate_choice
 
 API_KEY = os.environ.get("TYPESAFE_API_KEY", "")
 ENDPOINT = "https://api.typesafe.ai/v1/systemone"
@@ -45,6 +46,7 @@ def jev_choice(item_text, children, parent):
     with urllib.request.urlopen(req, timeout=30) as resp:
         data = json.loads(resp.read().decode("utf-8"))
     answer = data["answers"]["classify"]
+    validate_choice(answer, criteria)
     return {
         "choice": answer["choice"],
         "confidence": answer["confidence"],
@@ -108,6 +110,8 @@ V2_RESULTS = {
 
 
 def main():
+    if not API_KEY:
+        raise SystemExit("Missing TYPESAFE_API_KEY")
     onto_v2, ver_v2 = load_ontology("ontology.json")
     onto_v3, ver_v3 = load_ontology("ontology_v3.json")
 

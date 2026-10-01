@@ -15,6 +15,12 @@ verified-subset analysis on 09-25 -- replication complete)
 
 ## Audit repairs (2026-10-01)
 
+Repository-wide follow-up: direct and structured vision reject malformed
+schemas before marking a stage complete. Root test discovery now includes
+the Images offline suite without importing a live API call. This changes
+future runs only; published measurements and corrections remain untouched.
+Corpus measurement entry points now refuse missing API keys before vision.
+
 Milestone 1: protected human labels and saved results. `json_store.py`
 provides atomic, fsynced JSON replacement plus revision-checked writes
 under an OS file lock. All JSON writers use it; readers that subsequently

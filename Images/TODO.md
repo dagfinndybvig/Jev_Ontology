@@ -2,6 +2,9 @@
 
 ## Audit repairs (2026-10-01, priority order)
 
+- [x] Repository-wide follow-up: reject invalid direct/structured vision
+  responses and include Images in safe root-level offline test discovery.
+- [x] Check both API keys before corpus runs spend on vision.
 - [x] Protect results and human corrections with atomic revision-checked
   writes; fix review defaults, independent flags, and keyboard editing.
 - [x] Correct auto-accept analysis, calibration/error-capture metrics,

@@ -10,6 +10,11 @@ This document turns the library use-case into a concrete project. It
 is grounded in what the `Images/` sub-project has already
 demonstrated -- and in what it has already shown does **not** work.
 
+Operational follow-up: direct and structured vision validate response
+schemas before accepting success. This closes an invalid-output resume
+trap; it does not add evidence of cataloging accuracy or change old labels.
+Corpus runs check both credentials before starting the paid vision stage.
+
 > **De-risking step complete (2026-09-25).** The pre-registered
 > fresh-corpus replication (`REPLICATION_PROTOCOL.md`,
 > `REPLICATION_RESULTS.md`) ran the frozen pipeline on 140

@@ -62,6 +62,7 @@ TEXT_TRUNCATE = 120
 
 
 def compose_state(fields):
+    validate_fields(fields)
     text = fields.get("text_in_image", "none")
     if text and text.lower() != "none":
         text = text[:TEXT_TRUNCATE] + ('..."' if len(text) > TEXT_TRUNCATE else '"')
@@ -103,6 +104,42 @@ def repair_fields(text):
     return fields
 
 
+def validate_fields(fields):
+    if not isinstance(fields, dict) or set(fields) != set(FIELD_KEYS):
+        raise ValueError("Vision answer must contain all structured fields")
+    if any(not isinstance(value, str) for value in fields.values()):
+        raise ValueError("Structured fields must be strings")
+    allowed = {
+        "medium": {"photograph", "illustration", "statue_or_render", "text_screenshot", "other"},
+        "setting": {"indoor", "outdoor", "studio", "archival page", "screen", "other"},
+        "people": {"none", "individuals", "group"},
+    }
+    for key, choices in allowed.items():
+        if fields[key] not in choices:
+            raise ValueError(f"Invalid structured field: {key}")
+    if not fields["text_in_image"]:
+        raise ValueError("text_in_image must contain text or the string none")
+
+
+def parse_fields(raw):
+    m = re.search(r"\{.*\}", raw, re.DOTALL)
+    if not m:
+        raise ValueError("No JSON object in vision answer")
+    try:
+        fields = json.loads(m.group(0), strict=False)
+    except json.JSONDecodeError:
+        fields = repair_fields(raw)
+    if isinstance(fields, dict):
+        fields = dict(fields)
+        for key, value in fields.items():
+            if isinstance(value, list) and key == "subjects" and all(isinstance(v, str) for v in value):
+                fields[key] = "; ".join(v.strip() for v in value)
+            elif isinstance(value, str):
+                fields[key] = value.strip()
+    validate_fields(fields)
+    return fields
+
+
 def extract_fields(path):
     with open(path, "rb") as f:
         b64 = base64.b64encode(f.read()).decode("utf-8")
@@ -132,24 +169,7 @@ def extract_fields(path):
     with urllib.request.urlopen(req, timeout=90) as resp:
         data = json.loads(resp.read().decode("utf-8"))
     raw = data["choices"][0]["message"]["content"].strip()
-    # strict=False: Pixtral emits raw newlines inside string values.
-    try:
-        m = re.search(r"\{.*\}", raw, re.DOTALL)
-        if not m:
-            raise ValueError("no JSON object in answer")
-        obj = json.loads(m.group(0), strict=False)
-
-        def norm(v):
-            if isinstance(v, list):
-                return "; ".join(str(x).strip() for x in v)
-            return str(v).strip()
-
-        fields = {k: norm(obj.get(k, "")) for k in FIELD_KEYS}
-    except (ValueError, json.JSONDecodeError):
-        fields = repair_fields(raw)
-        missing = [k for k in FIELD_KEYS if not fields.get(k)]
-        if len(missing) > 2:
-            raise ValueError(f"unparseable answer: {raw[:120]}")
+    fields = parse_fields(raw)
     return fields, raw, data.get("usage", {})
 
 

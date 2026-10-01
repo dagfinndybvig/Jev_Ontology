@@ -34,6 +34,13 @@ TypeSafe AI's "System One" decision model, with ontologies.
 
 ## TL;DR -- what we learned
 
+**Repository reliability update:** root entry points are import-safe. Run
+`python -B -m unittest discover` from the repository root for the offline
+root and Images suites. `python test_jev_api.py` is an explicit **paid/live**
+smoke check; missing keys, HTTP failures, and invalid answers fail nonzero.
+Alternate MVP ontologies must supply their own version metadata. Experiment
+storage and evidence-claim repairs are the next audit milestones.
+
 We built a working MVP that pairs an LLM-authored ontology with Jev's
 calibrated classification, tested it against the live Jev API on 78 unique
 tickets across 5 sessions (86 classifications -- Session 4 re-runs Session
