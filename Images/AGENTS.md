@@ -181,7 +181,7 @@ Essential context for any agent working in this directory.
 - `analyze_verified.py` — verified-subset analysis (no API calls):
   compares the three runs against the sealed verified labels. Pooled
   595/610 (97.5%), 592/610 (97.0%), 592/610 (97.0%); auto-accept band
-  mismatch 7-9% (Wilson 95% CI 4-14%); routing burden 15-18%.
+  mismatch 3.48-4.20% (Wilson 95% CI 1.36-9.46%); routing burden 15-18%.
 - `backfill_descriptions.py` — re-extracts full descriptions from the
   source metadata into the manifest (the fetcher took only the first
   freetext note, median 20 chars; now all museum-label notes, median
@@ -256,6 +256,10 @@ Essential context for any agent working in this directory.
   HTTP 409 means reload and reapply the edit, never silently overwrite.
 - Offline checks: `python -B -m unittest discover -p "test_*.py"`.
   Browser-script tests need Node.js. Fixtures are synthetic; no API calls.
+- Taxonomy measurements require `BASELINE_RESULTS` to select a separate
+  preserved results snapshot. Each system is routed using its own
+  confidences; new answers use the baseline descriptions. ECE uses
+  observed bin-mean confidence and error capture is record-wide.
 
 - Manual corrections never overwrite raw Jev answers: add a
   `manual_correction` block (`date`, `correct`, `reason`,

@@ -12,7 +12,8 @@ the baseline is v4's stored answers, the answers the review judged.
 Results are saved incrementally to taxonomy_v7_personal_results.json
 (private, gitignored); records with status ok are skipped on re-run.
 
-Requires TYPESAFE_API_KEY.
+Requires TYPESAFE_API_KEY and BASELINE_RESULTS pointing to a preserved
+personal baseline snapshot, separate from the live ground-truth file.
 """
 import json
 import os
@@ -20,6 +21,7 @@ import sys
 import time
 import urllib.request
 from json_store import load_json, save_json
+from measurement import load_baseline
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 TAXONOMY = os.path.join(SCRIPT_DIR, os.environ.get("TAXONOMY", "humanoid_taxonomy_v7.json"))
@@ -84,6 +86,7 @@ def main():
     items = [(name, rec) for name, rec in source.items()
              if "manual_correction" in rec]
     print(f"Labeled records: {len(items)}")
+    baseline = load_baseline(SOURCE, [name for name, _ in items])
 
     results = load_results()
     done = {n for n, r in results.items() if r.get("status") == "ok"}
@@ -91,7 +94,7 @@ def main():
     print(f"Already done: {len(done)}, to process: {len(todo)}")
 
     for i, (name, rec) in enumerate(todo, 1):
-        desc = rec["description"]
+        desc = baseline[name]["description"]
         state = (
             f"Image description (written by a vision model that examined the image):\n"
             f"\"{desc}\"\n\n"
@@ -115,7 +118,10 @@ def main():
 
     # Comparison: this version's answers vs manual corrections, v4's
     # stored answers vs manual corrections, on the same records.
-    ok = {n: r for n, r in results.items() if r.get("status") == "ok"}
+    selected = {name for name, _ in items}
+    ok = {n: r for n, r in results.items() if r.get("status") == "ok" and n in selected}
+    if not ok:
+        raise ValueError("No successful measurements in the selected cohort")
     print(f"\nMeasured: {len(ok)}/{len(items)}")
 
     def report(label, choice_of, conf_of):
@@ -147,13 +153,13 @@ def main():
 
     new_choice = lambda n: {q: ok[n][q]["choice"] for q in FACETS}
     new_conf = lambda n: {q: ok[n][q]["confidence"] for q in FACETS}
-    v4_choice = lambda n: {q: source[n][q]["choice"] for q in FACETS}
-    v4_conf = lambda n: {q: source[n][q]["confidence"] for q in FACETS}
+    v4_choice = lambda n: {q: baseline[n][q]["choice"] for q in FACETS}
+    v4_conf = lambda n: {q: baseline[n][q]["confidence"] for q in FACETS}
 
     w_new = report(version, new_choice, new_conf)
-    w_v4 = report("v4 (stored)", v4_choice, v4_conf)
-    print(f"\n{version} fixes (v4 wrong, new right): {len(w_v4 - w_new)}")
-    print(f"{version} breaks (v4 right, new wrong): {len(w_new - w_v4)}")
+    w_v4 = report("baseline (explicit snapshot)", v4_choice, v4_conf)
+    print(f"\n{version} fixes (baseline wrong, new right): {len(w_v4 - w_new)}")
+    print(f"{version} breaks (baseline right, new wrong): {len(w_new - w_v4)}")
 
 
 if __name__ == "__main__":

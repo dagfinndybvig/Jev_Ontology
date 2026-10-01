@@ -16,6 +16,7 @@ and errors caught at the threshold.
 """
 import json
 import os
+import math
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CASCADE_RESULTS = os.path.join(HERE, "humanoid_pilot_results.json")
@@ -138,14 +139,22 @@ def load_capture(labeled):
 
 def evaluate(name, answers, labeled):
     """answers: {filename: {facet: {choice, confidence}}}"""
+    if not labeled:
+        raise ValueError("No labeled records to evaluate")
+    evaluated = {k: v for k, v in labeled.items() if k in answers}
+    if not evaluated:
+        raise ValueError(f"No predictions to evaluate for {name}")
     per_facet = {f: [0, 0] for f in FACETS}
     pooled = []  # (confidence, correct)
-    for fname, rec in labeled.items():
+    for fname, rec in evaluated.items():
         truth = rec["truth"]
         ans = answers.get(fname, {})
         for f in FACETS:
-            if f not in ans:
-                continue
+            if f not in ans or f not in truth:
+                raise ValueError(f"Incomplete facets in {name}")
+            confidence = ans[f]["confidence"]
+            if not isinstance(confidence, (float, int)) or not math.isfinite(confidence) or not 0 <= confidence <= 1:
+                raise ValueError(f"Invalid confidence in {name}")
             correct = ans[f]["choice"] == truth[f]
             per_facet[f][1] += 1
             per_facet[f][0] += correct
@@ -158,20 +167,21 @@ def evaluate(name, answers, labeled):
         lo, hi = b / 10, (b + 1) / 10
         inb = [(c, ok) for c, ok in pooled if lo <= c < hi or (b == 9 and c == 1.0)]
         if inb:
-            ece += len(inb) / n * abs(sum(ok for _, ok in inb) / len(inb) - (lo + hi) / 2)
+            ece += len(inb) / n * abs(
+                sum(ok for _, ok in inb) / len(inb) - sum(c for c, _ in inb) / len(inb))
     # routing at the threshold
     flagged = wrong = caught = confident_wrong = 0
-    for fname, rec in labeled.items():
+    for fname, rec in evaluated.items():
         truth = rec["truth"]
         ans = answers.get(fname, {})
         confs = [ans[f]["confidence"] for f in FACETS if f in ans]
         any_wrong = any(f in ans and ans[f]["choice"] != truth[f] for f in FACETS)
-        if any(c < THRESHOLD for c in confs):
+        is_flagged = any(c < THRESHOLD for c in confs)
+        if is_flagged:
             flagged += 1
         if any_wrong:
             wrong += 1
-            if any(f in ans and ans[f]["choice"] != truth[f] and ans[f]["confidence"] < THRESHOLD
-                   for f in FACETS):
+            if is_flagged:
                 caught += 1
             else:
                 confident_wrong += 1
@@ -182,11 +192,12 @@ def evaluate(name, answers, labeled):
             bin_table.append((f"{lo:.1f}-{hi:.1f}", sum(ok for _, ok in inb), len(inb)))
     return {
         "name": name,
-        "n_records": len(answers),
+        "n_records": len(evaluated),
+        "n_labeled": len(labeled),
         "per_facet": {f: tuple(v) for f, v in per_facet.items()},
         "pooled_acc": acc,
         "ece": ece,
-        "flag_rate": flagged / len(labeled),
+        "flag_rate": flagged / len(evaluated),
         "wrong_records": wrong,
         "caught": caught,
         "confident_wrong": confident_wrong,
@@ -195,7 +206,7 @@ def evaluate(name, answers, labeled):
 
 
 def report(ev):
-    print(f"\n=== {ev['name']} (n={ev['n_records']} labeled records) ===")
+    print(f"\n=== {ev['name']} (coverage={ev['n_records']}/{ev['n_labeled']} labeled records) ===")
     print("Per-facet accuracy:")
     for f in FACETS:
         ok, n = ev["per_facet"][f]
@@ -237,7 +248,7 @@ def main():
     for ev in systems:
         report(ev)
 
-    print("\n=== Head-to-head ===")
+    print("\n=== Summary (compare like-for-like only when coverage matches) ===")
     hdr = f"{'system':45} {'acc':>5} {'ECE':>6} {'burden':>7} {'wrong':>6} {'caught':>7} {'silent':>7}"
     print(hdr)
     for ev in systems:

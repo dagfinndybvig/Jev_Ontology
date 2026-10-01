@@ -13,8 +13,9 @@ measure_taxonomy_v9.py. No vision calls. Results are saved
 incrementally to taxonomy_v10_halfM_results.json (private,
 gitignored); records with status ok are skipped on re-run.
 
-The comparison baseline is v9's stored answers in
-library_standin_results.json (the answers the review judged).
+Set BASELINE_RESULTS to a preserved v9 corpus snapshot, separate from
+the live library_standin_results.json ground truth. Baseline confidences
+and input descriptions come from that explicit snapshot.
 
 Requires TYPESAFE_API_KEY.
 """
@@ -25,6 +26,7 @@ import sys
 import time
 import urllib.request
 from json_store import load_json, save_json
+from measurement import load_baseline, threshold_summary
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 TAXONOMY = os.path.join(SCRIPT_DIR, os.environ.get("TAXONOMY", "humanoid_taxonomy_v10.json"))
@@ -92,6 +94,7 @@ def main():
     items = [(name, rec) for name, rec in source.items()
              if rec.get("manual_correction") and side(name) == "M"]
     print(f"Measurement half (side M): {len(items)} labeled records")
+    baseline = load_baseline(SOURCE, [name for name, _ in items])
 
     results = load_results()
     done = {n for n, r in results.items() if r.get("status") == "ok"}
@@ -99,7 +102,7 @@ def main():
     print(f"Already done: {len(done)}, to process: {len(todo)}")
 
     for i, (name, rec) in enumerate(todo, 1):
-        desc = rec["description"]
+        desc = baseline[name]["description"]
         state = (
             f"Image description (written by a vision model that examined the image):\n"
             f"\"{desc}\"\n\n"
@@ -123,7 +126,10 @@ def main():
 
     # Comparison: v10 answers vs manual corrections, v9 stored answers vs
     # manual corrections, on the same records.
-    ok = {n: r for n, r in results.items() if r.get("status") == "ok"}
+    selected = {name for name, _ in items}
+    ok = {n: r for n, r in results.items() if r.get("status") == "ok" and n in selected}
+    if not ok:
+        raise ValueError("No successful measurements in the selected cohort")
     print(f"\nMeasured: {len(ok)}/{len(items)}")
 
     def score(pick):
@@ -144,10 +150,10 @@ def main():
         return per_facet, pooled_a, pooled_n
 
     v10 = lambda name, rec: {q: rec[q]["choice"] for q in FACETS}
-    v9 = lambda name, rec: {q: source[name][q]["choice"] for q in FACETS}
+    v9 = lambda name, rec: {q: baseline[name][q]["choice"] for q in FACETS}
 
     version = tax["_meta"]["version"]
-    for label, pick in ((version, v10), ("v9 (stored)", v9)):
+    for label, pick in ((version, v10), ("baseline (explicit snapshot)", v9)):
         per_facet, pa, pn = score(pick)
         print(f"\n{label}: pooled {pa}/{pn} ({100 * pa / pn:.0f}%)")
         for facet, (a, n) in per_facet.items():
@@ -166,17 +172,13 @@ def main():
             fixes += 1
         elif v10_wrong and not v9_wrong:
             breaks += 1
-    print(f"\nPer-record: v10 fixes {fixes} / breaks {breaks} (vs v9 stored)")
+    print(f"\nPer-record: {version} fixes {fixes} / breaks {breaks} (vs baseline snapshot)")
 
     # Errors (records with at least one wrong facet) and burden.
-    for label, pick in ((version, v10), ("v9 (stored)", v9)):
-        errors = [name for name, rec in ok.items()
-                  if any(pick(name, rec)[q] != source[name]["manual_correction"]["correct"].get(q)
-                         for q in FACETS
-                         if source[name]["manual_correction"]["correct"].get(q) is not None)]
-        routed = [name for name, rec in ok.items()
-                  if any(rec[q]["confidence"] < REVIEW_THRESHOLD for q in FACETS)]
-        caught = [name for name in errors if name in set(routed)]
+    truth = {name: source[name]["manual_correction"]["correct"] for name in ok}
+    for label, answers in ((version, ok), ("baseline (explicit snapshot)",
+                                          {n: baseline[n] for n in ok})):
+        errors, routed, caught = threshold_summary(answers, truth)
         print(f"{label}: {len(errors)} wrong records, {len(routed)} routed "
               f"({100 * len(routed) / len(ok):.0f}% burden), {len(caught)} caught")
 

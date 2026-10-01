@@ -18,6 +18,19 @@ selection preserves edits and notes; save failures are shown explicitly.
 On a conflict, reload the page and reapply the intended correction.
 Existing human labels are preserved, not automatically reinterpreted.
 
+The audit also corrected evaluation: ECE uses each bin's mean confidence,
+wrong records are caught by any routed facet, and the replication
+auto-accept band excludes routed records. Updated metrics below are
+recomputed from stored JSONs, not new model runs.
+
+Taxonomy measurement scripts require `BASELINE_RESULTS` pointing at an
+explicit preserved snapshot outside the repo, separate from the production
+results. For v6/v7 batch comparisons use the archived v4 corpus snapshot;
+for v9 use the archived v7 snapshot. For v10 or personal comparisons,
+preserve the intended baseline before running. The chosen snapshot
+supplies both baseline confidences and the descriptions for new answers.
+Scripts do not guess a historical version from the live production file.
+
 Offline regression checks: `python -B -m unittest discover -p "test_*.py"`
 (the embedded-browser checks also require Node.js; no API calls).
 
@@ -113,8 +126,8 @@ Jev's role here is the **calibrated decision layer, not perception**. The
 vision model does the perceptual work; Jev decides with a probability.
 The Phase 2 baseline measured this directly on 85 labeled records
 (`baseline_compare.py`): the cascade (Pixtral + Jev) reaches 91% pooled
-accuracy with ECE 0.038 and catches 16/27 errors; Pixtral answering the
-same five facets directly reaches 80% with ECE 0.150 and catches 0/45 --
+accuracy with ECE 0.051 and catches 18/27 errors; Pixtral answering the
+same five facets directly reaches 80% with ECE 0.193 and catches 0/45 --
 it reports >= 0.9 confidence on everything, right or wrong. Jev is less
 accurate than the vision model on any single answer and more trustworthy
 overall, because it is the only component that knows what it does not
@@ -124,7 +137,7 @@ with the human corrections on 95.1% of facets (representation 88%).
 The fresh-corpus replication confirms it on material the loop never
 saw: the frozen v9 pipeline pools at 97.0-97.5% on 140 hand-verified
 Smithsonian records across three runs, with the auto-accept band's
-miss rate at 7-9% (Wilson 95% CI 4-14%) at a 15-18% routing burden --
+miss rate at 3.48-4.20% (Wilson 95% CI 1.36-9.46%) at a 15-18% routing burden --
 Jev's calibrated confidence is what makes that band trustworthy on
 material that played no role in any revision.
 
@@ -133,7 +146,7 @@ What Jev genuinely adds:
 - **Calibrated confidence.** Pixtral returns free text; Jev returns a
   probability. That probability is what makes routing possible: the 0.7
   threshold plus a text-bearing signal (`routing.py`) catches 25/27
-  errors at a ~50% review burden, where the vision model's own
+  errors at a 62% full-collection review burden, where the vision model's own
   confidence catches none.
 - **Typed, deterministic output.** A structured choice per facet with
   probabilities -- no parsing, no format drift, directly usable in code.
@@ -319,7 +332,7 @@ verify-before-run order was reversed at project direction, documented
 in `REPLICATION_RESULTS.md` with both bases reported: on the 140
 verified records the pooled agreement is 97.5% / 97.0% / 97.0% across
 the three runs -- well above the pre-registered 90% bar -- with the
-auto-accept band's miss rate at 7-9% (Wilson 95% CI 4-14%) at a 15-18%
+auto-accept band's miss rate at 3.48-4.20% (Wilson 95% CI 1.36-9.46%) at a 15-18%
 routing burden. 92% of records have identical five-facet answers
 across all 3 runs (the differing records concentrate in
 primary_subject and representation, the two weakest facets). Verdict:
@@ -362,7 +375,7 @@ pilot and the sorted verification tree are described in `STATUS.md`.
 - **Baselines exist, but not a pixel-level one.** Phase 2 compared
   keyword, Pixtral-direct, and cascade baselines against the manual
   corrections -- the cascade wins every measure (91% accuracy, ECE
-  0.038). A CLIP-style pixel classifier remains unmeasured.
+  0.051). A CLIP-style pixel classifier remains unmeasured.
 
 ## Privacy
 

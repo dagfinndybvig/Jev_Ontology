@@ -343,9 +343,9 @@ Head-to-head on the 85 labeled records:
 
 | System | Pooled accuracy | ECE | Wrong records | Caught at 0.7 | Silent errors |
 |---|---|---|---|---|---|
-| Keyword baseline | 78% | 0.166 | 49 | 0/49 | 49 |
-| Cascade (Pixtral+Jev) | **91%** | **0.038** | 27 | 16/27 | 11 |
-| Pixtral asked directly | 80% | 0.150 | 45 | 0/45 | 45 |
+| Keyword baseline | 78% | 0.216 | 49 | 0/49 | 49 |
+| Cascade (Pixtral+Jev) | **91%** | **0.051** | 27 | 18/27 | 9 |
+| Pixtral asked directly | 80% | 0.193 | 45 | 0/45 | 45 |
 
 Per-facet accuracy:
 
@@ -372,7 +372,7 @@ Findings:
 1. **The cascade wins on every measure that matters.** +11 points
    pooled accuracy over Pixtral-direct, 4x lower calibration error,
    and it is the only system whose 0.7 threshold catches errors
-   (16/27). Both alternatives answer everything at 0.9+ confidence,
+   (18/27). Both alternatives answer everything at 0.9+ confidence,
    so all 45-49 of their wrong records are silent.
 2. **Pixtral-direct ignores the calibration instruction.** Asked for
    calibrated probabilities, it reports >= 0.9 on all 425 facet
@@ -390,7 +390,7 @@ Findings:
 4. **The burden number needs care.** On the labeled subset the
    cascade flags 52% -- but that subset is queue-heavy by
    construction (50 of 85 are queue records). The collection-wide
-   burden remains 50/218 (23%).
+   threshold-only burden is 44/218 (20%; recomputed 2026-10-01).
 
 ---
 
@@ -407,10 +407,18 @@ preserved -- only its measured numbers):
 
 | System | Pooled accuracy | ECE | representation | Burden at 0.7 | Wrong | Caught | Silent |
 |---|---|---|---|---|---|---|---|
-| Cascade (production) | 91% | 0.038 | 79% | 52% | 27 | 16/27 | 11 |
-| Structured v1 (rich medium: poster, diagram, render) | 88% | 0.047 | 67% | 22% | 34 | 11/34 | 23 |
-| Structured v2 (medium aligned to the representation classes) | **90%** | 0.048 | **76%** | 22% | 25 | 5/25 | 20 |
-| Structured v3 (physical-context clause) | 88% | 0.047 | 69% | 20% | 31 | 9/31 | 22 |
+| Cascade (production) | 91% | 0.051 | 79% | 52% | 27 | 18/27 | 9 |
+| Structured v1 (rich medium: poster, diagram, render) | 88% | 0.085 | 67% | 22% | 34 | 15/34 | 19 |
+| Structured v2 (medium aligned to the representation classes) | **90%** | 0.089 | **76%** | 22% | 25 | 8/25 | 17 |
+| Structured v3 (physical-context clause) | 88% | unavailable | 69% | 20% | 31 | unavailable | unavailable |
+
+> **Audit correction (2026-10-01).** ECE now compares each bin's
+> accuracy with its actual mean confidence, not its midpoint. A wrong
+> record is caught when any facet routes it to review. Phase 2 and
+> Phase 3 tables were recomputed from retained JSONs (v1 from the
+> private archive). v3 raw results were not retained, so its corrected
+> ECE/caught/silent metrics cannot be recovered; its other figures remain
+> historical observations, not newly recomputed measurements.
 
 Findings:
 
@@ -446,7 +454,7 @@ Findings:
 5. **On the errors-caught-per-burden metric, the structured state is
    still a measured negative against the cascade**: it flags less
    (22% vs 52% on this subset) but converts more errors into
-   confident ones (20 silent vs 11). The cascade remains the
+   confident ones (17 silent vs 9). The cascade remains the
    production path.
 6. **The structured state is the right diagnostic instrument.** It
    separates vision errors from Jev errors cleanly: Jev is now
@@ -470,8 +478,8 @@ text_screenshot and clears subjects. Run on the 85 labeled records:
 
 | System | Pooled accuracy | ECE | representation | Burden at 0.7 | Wrong | Caught | Silent |
 |---|---|---|---|---|---|---|---|
-| Structured v2 (no capture question) | 90% | 0.048 | 76% | 22% | 25 | 5/25 | 20 |
-| Capture-type override | 89% | 0.033 | 74% | 26% | 27 | 11/27 | 16 |
+| Structured v2 (no capture question) | 90% | 0.089 | 76% | 22% | 25 | 8/25 | 17 |
+| Capture-type override | 89% | 0.071 | 74% | 26% | 27 | 12/27 | 15 |
 
 **Rejected -- and the reason is more important than the numbers.**
 The capture question itself does not perceive the distinction: it
@@ -977,8 +985,9 @@ variance. The criterion-attributable effect: 4 representation records
 toward truth (statue_035, statue_040, human_illustration_035,
 humanoid_robot_026 -- the statue family fixed where targeted), 2 away
 (humanoid_robot_029, statue_032 -- the clause's word "model"
-over-applies to photographed robots). Routing: 12 caught, burden 25/67
--- identical to v7's.
+over-applies to photographed robots). Threshold routing (corrected
+2026-10-01 from each run's own confidences): v8 catches 14/27 wrong
+records at burden 25/67, versus v7's 16/29 at 28/67.
 
 **Verdict: inside noise, not adopted.** v7's adoption bar was fixes
 10 / breaks 2 (sign test ~p=0.04); v8's 5/3 does not clear it, and the
@@ -1046,9 +1055,11 @@ identical at 96%) -- neutral, kept as harmless wording. Criterion-
 attributable net: 13 toward, 5 away (sign test ~p=0.05, at the edge
 but consistent with v7's adoption bar of fixes 10 / breaks 2).
 
-**Errors and burden.** v9 leaves 16 wrong records vs v7's 25 on the
-same half; routing burden identical (18 routed, 17%), caught 10/16
-(63%) vs 13/25 (52%) -- a better catch rate at the same burden.
+**Errors and burden (audit-corrected 2026-10-01).** v9 leaves 16 wrong
+records vs v7's 25 on the same half. Using each run's own confidences:
+v9 threshold-routes 18/108 (17%), catching 10/16 (63%); the archived
+v7 baseline routes 28/108 (26%), catching 16/25 (64%). The earlier
+equal-burden claim incorrectly used v9 confidences for both systems.
 
 **Personal collection (85 labeled records, no split needed).** v9
 pooled 388/425 (91%) vs v4's stored 388/425 (91%) -- identical
@@ -1164,8 +1175,9 @@ exclusion fixed book_cover_033 and _036 but broke book_cover_039
 (whose truth is text_screenshot); the costume/display clause fixed
 humanoid_robot_008.jpeg and broke humanoid_robot_008.jpg; the
 image-content-screenshot exclusion fixed ui_screenshot_036 (a v9
-break). Errors 15 vs v9's 14 at identical burden (15 routed, 14%),
-caught 7 vs 6.
+break). Errors 15 vs v9's 14. Threshold burden is 15/108 (14%) for
+v10 versus 18/108 (17%) for v9, catching 7/15 versus 9/14 respectively
+(audit-corrected 2026-10-01 using each run's own confidences).
 
 **Verdict: inside noise, not adopted.** The adoption bar is fixes
 10 / breaks 2 (v7) or 13 / 4 (v9); v10's 2/3 does not approach it.
@@ -1191,7 +1203,8 @@ image_human_summary.txt  -- clean sorted list
 ---
 
 *Signed: Mistral Vibe (mistral-vibe), 2026-09-22*
-# Audit repair note (2026-10-01)
+
+## Audit repair notes (2026-10-01)
 
 > Milestone 1 changes persistence and review behavior, not model answers.
 > JSON writes are atomic and revision-checked; concurrent edits fail
@@ -1199,5 +1212,13 @@ image_human_summary.txt  -- clean sorted list
 > preserves each raw contains-flag when initializing a correction.
 > Subject/representation shortcuts now retain the selected values.
 > Existing manual corrections remain ground truth; no labels were
-> retroactively changed from model answers. Evaluation corrections from
-> the audit are pending the next milestone.
+> retroactively changed from model answers.
+
+> Milestone 2 corrects evaluation only. ECE uses observed bin-mean
+> confidence; threshold capture is record-wide. The replication
+> auto-accept cohort excludes routed records (4/115, 4/115, 5/119
+> mismatches). Taxonomy comparisons require `BASELINE_RESULTS` pointing
+> at a separate preserved snapshot and use that snapshot's descriptions
+> and confidences, not mutable production answers. Batch-2 membership
+> comes from the archived review dates, not later production reviews.
+> See `REPLICATION_RESULTS.md` for the corrected intervals.

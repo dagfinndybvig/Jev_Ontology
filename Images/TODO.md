@@ -4,12 +4,15 @@
 
 - [x] Protect results and human corrections with atomic revision-checked
   writes; fix review defaults, independent flags, and keyboard editing.
-- [ ] Correct auto-accept analysis, calibration/error-capture metrics,
+- [x] Correct auto-accept analysis, calibration/error-capture metrics,
   and historical baseline comparisons; recompute affected documentation.
 - [ ] Validate resume identity, enforce sealed manifests, fix fetch quotas,
   and reconcile stale sorted copies.
 
 Each milestone includes offline regression coverage and documentation.
+Milestone 2 recomputed retained-run metrics without API calls. The old
+structured-v3 run lacks raw results, so its corrected ECE/capture metrics
+are marked unavailable rather than reconstructed.
 
 > **NEXT STEP (2026-09-24): New labeled data or a vision-layer
 > lever -- the taxonomy loop is at diminishing returns on this
@@ -68,8 +71,8 @@ hand-verified through `verify_replication.py` (134 correct, 6
 corrected, 20 excluded -- 16 animal sculptures in human_sculpture, the
 predicted noise family; 4 dead links). Manifest sealed. Verified
 numbers: pooled 97.5% / 97.0% / 97.0% across the three runs -- well
-above the pre-registered 90% bar; auto-accept band mismatch 7-9%
-(Wilson 95% CI 4-14%), at or below half the Commons reference (15%);
+above the pre-registered 90% bar; auto-accept band mismatch 3.48-4.20%
+(Wilson 95% CI 1.36-9.46%), at or below half the Commons reference (15%);
 routing burden 15-18%. human_sculpture 93% on the verified subset (was
 80% against the noisy category labels). Run-to-run variance: 92% of
 records identical across all 3 runs. Protocol deviation documented in
@@ -146,7 +149,7 @@ setting, people) composed into the state Jev classifies. v1 (rich
 medium vocabulary) regressed on representation (67%) -- vocabulary
 mismatch with the taxonomy. v2 (medium aligned to the representation
 classes): pooled 90%, representation 76%, burden 22% -- still a
-measured negative vs the cascade (91%, 79%, 16/27 caught vs 5/25).
+measured negative vs the cascade (91%, 79%, 18/27 caught vs 8/25).
 v3 (physical-context clause) was rejected: it fixed 1 record and
 broke 7 (representation 69%). Option 1 (an isolated binary
 capture-type question with a deterministic medium override,
@@ -283,10 +286,10 @@ latency.
 **Update (2026-09-23):** Phase 2 complete on the 85 labeled records.
 `baseline_compare.py` measures accuracy, ECE, flag rate at 0.7, and
 errors caught per system. Keyword baseline (trivial, always
-confident): 78% pooled accuracy, ECE 0.166, 0/49 errors caught.
-Pixtral-direct: 80%, ECE 0.150, 0/45 caught -- it reports >= 0.9
+confident): 78% pooled accuracy, ECE 0.216, 0/49 errors caught.
+Pixtral-direct: 80%, ECE 0.193, 0/45 caught -- it reports >= 0.9
 confidence on everything despite being wrong a fifth of the time.
-Cascade (Pixtral+Jev): 91%, ECE 0.038, 16/27 caught. The cascade
+Cascade (Pixtral+Jev): 91%, ECE 0.051, 18/27 caught. The cascade
 wins on every measure; Jev supplies the calibrated probability that
 makes routing possible. A CLIP-style pixel-level baseline remains
 unmeasured.

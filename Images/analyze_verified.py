@@ -55,7 +55,7 @@ FACETS = ["contains_human", "contains_robot", "contains_android",
 
 def wilson(k, n, z=1.96):
     if n == 0:
-        return (0.0, 0.0)
+        raise ValueError("Wilson interval needs a non-empty cohort")
     p = k / n
     d = 1 + z * z / n
     c = p + z * z / (2 * n)
@@ -84,6 +84,8 @@ def main():
             if vc == "exclude":
                 excluded.add(k)
             else:
+                if vc not in INTENDED:
+                    raise ValueError("Invalid verified category in manifest")
                 effective[k] = vc
         else:
             excluded.add(k)
@@ -108,6 +110,8 @@ def main():
             results = json.load(f)
         ok = {k: r for k, r in results.items()
               if r.get("status") == "ok" and k in effective}
+        if set(ok) != set(effective) or not ok:
+            raise ValueError(f"Run {run} is incomplete on the verified cohort")
 
         match = {q: 0 for q in FACETS}
         scored = {q: 0 for q in FACETS}
@@ -118,7 +122,7 @@ def main():
             want = INTENDED[effective[fname]]
             c = per_cat.setdefault(effective[fname], {"n": 0, "match": 0, "scored": 0})
             c["n"] += 1
-            is_routed = False
+            is_routed = route_reason(rec) is not None
             for q in FACETS:
                 exp = want[q]
                 if exp == "ambiguous":
@@ -128,7 +132,7 @@ def main():
                 if rec[q]["choice"] == exp:
                     match[q] += 1
                     c["match"] += 1
-            if route_reason(rec):
+            if is_routed:
                 routed += 1
             if not is_routed:
                 band_n += 1
@@ -150,9 +154,12 @@ def main():
             pct = ("%.0f%%" % (c["match"] / c["scored"] * 100)) if c["scored"] else "n/a"
             print("  %s: %d/%d (%s) of %d images" % (cat, c["match"], c["scored"], pct, c["n"]))
         print("  routing burden: %d/%d (%.0f%%)" % (routed, len(ok), routed / len(ok) * 100))
-        lo, hi = wilson(band_miss, band_n)
-        print("  auto-accept band: %d/%d mismatch (%.0f%%, Wilson 95%% CI %.0f-%.0f%%)"
-              % (band_miss, band_n, band_miss / band_n * 100, lo, hi))
+        if band_n:
+            lo, hi = wilson(band_miss, band_n)
+            print("  auto-accept band: %d/%d mismatch (%.2f%%, Wilson 95%% CI %.2f-%.2f%%)"
+                  % (band_miss, band_n, band_miss / band_n * 100, lo, hi))
+        else:
+            print("  auto-accept band: empty; mismatch rate and CI undefined")
 
     # human_sculpture both ways (run 1)
     with open(os.path.join(SCRIPT_DIR, "replication_results_run1.json"), encoding="utf-8") as f:

@@ -103,8 +103,15 @@ animal-sculpture records were the whole gap).
 
 Routing burden on the verified subset: 25/140 (18%), 25/140 (18%),
 21/140 (15%). Auto-accept band (non-routed) mismatching verified labels:
-10/140 (7%, Wilson 95% CI 4-13%), 12/140 (9%, CI 5-14%), 12/140 (9%,
-CI 5-14%) — at or below half the Commons reference (15%).
+4/115 (3.48%, Wilson 95% CI 1.36-8.60%), 4/115 (3.48%, CI 1.36-8.60%),
+5/119 (4.20%, CI 1.81-9.46%) — below the Commons reference (15%).
+
+> **Audit correction (2026-10-01).** The old analysis never updated
+> `is_routed`, so its purported auto-accept numerator and denominator
+> included routed records. The figures above were recomputed from the
+> unchanged three result JSONs and sealed manifest, excluding routed
+> records. Pooled agreement and routing burden are unchanged. No new
+> classification or ground-truth decision was made.
 
 ## Run-to-run variance (fresh material)
 
@@ -161,7 +168,7 @@ stand-in it was later revised on.
 1. **Pooled facet agreement >= 90% on hand-verified labels**: **met** —
    97.5% / 97.0% / 97.0% across the three runs (140 verified records).
 2. **Auto-accept band miss rate, reported with CI, no hard pass/fail**:
-   7-9% mismatching verified labels (Wilson 95% CI 4-14%) — at or below
+   3.48-4.20% mismatching verified labels (Wilson 95% CI 1.36-9.46%) — at or below
    half the Commons reference (22/151 = 15%).
 3. **Routing burden reported, no target**: 18% / 18% / 15% on the verified
    subset (19% / 19% / 16% on the full corpus vs category labels).
@@ -180,7 +187,7 @@ facets are at ceiling (robot and android 100%, contains_human 95%);
 representation — the weakest facet on every other corpus — is 96-97% here.
 Run-to-run variance on fresh material is small (92% of records identical
 across 3 runs; the differences concentrate in primary_subject and
-representation). The auto-accept band's miss rate is 7-9% with the routing
+representation). The auto-accept band's miss rate is 3.48-4.20% with the routing
 rule earning its keep at a 15-18% burden.
 
 Caveats: the corpus is museum material (no screenshots — the

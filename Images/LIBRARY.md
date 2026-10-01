@@ -15,7 +15,7 @@ demonstrated -- and in what it has already shown does **not** work.
 > `REPLICATION_RESULTS.md`) ran the frozen pipeline on 140
 > hand-verified Smithsonian images that played no role in any
 > revision: pooled agreement 97.0-97.5% across three runs, auto-accept
-> band miss rate 7-9% (Wilson 95% CI 4-14%) at a 15-18% routing
+> band miss rate 3.48-4.20% (Wilson 95% CI 1.36-9.46%) at a 15-18% routing
 > burden. The methodology generalizes to fresh institutional material
 > without re-tuning -- the case for the library pilot is now measured,
 > not asserted.

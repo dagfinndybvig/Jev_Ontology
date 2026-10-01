@@ -25,10 +25,19 @@ Its taxonomy default is v9; independent contains-flags are initialized from
 raw answers, and keyboard choices no longer reset themselves or notes.
 No existing classifications or manual corrections were modified.
 
-The audit also identified evaluation errors and resume/corpus/sorting
-issues. Those are the next milestones; historical metrics below have not
-yet been corrected. Tests live in `test_json_store.py`,
-`test_review_ui.py`, and `test_review_ui.js` and use synthetic data only.
+Milestone 2: corrected the replication auto-accept cohort (4/115, 4/115,
+5/119 mismatches; 3.48-4.20%, Wilson interval envelope 1.36-9.46%),
+ECE bin means, and record-wide threshold error capture. Current cascade
+ECE is 0.051, catches 18/27; direct ECE 0.193, catches 0/45; structured
+v2 ECE 0.089, catches 8/25. Documentation was recomputed from retained
+JSONs, including archived structured v1 and v4/v7 corpus baselines.
+Structured v3's raw run was not retained: corrected ECE/capture figures
+are explicitly unavailable. No API calls or changes to ground truth.
+
+Taxonomy measurement scripts require an explicit `BASELINE_RESULTS`
+snapshot and use each system's own confidences. Resume/corpus/sorting
+repairs remain the next milestone. Tests are `test_*.py` plus the embedded
+browser harness; synthetic fixtures only.
 
 ## What happened on 2026-09-23 (this session)
 
@@ -134,11 +143,11 @@ yet been corrected. Tests live in `test_json_store.py`,
     `baseline_compare.py` measures accuracy, ECE, flag rate at 0.7,
     and errors caught against the 85 reviewed records. Keyword
     baseline (trivial, always confident): 78% pooled accuracy, ECE
-    0.166, 0/49 errors caught. Pixtral-direct (85/85 after the
-    account was topped up): 80%, ECE 0.150, 0/45 caught -- it
+    0.216, 0/49 errors caught. Pixtral-direct (85/85 after the
+    account was topped up): 80%, ECE 0.193, 0/45 caught -- it
     reports >= 0.9 confidence on everything, ignoring the
-    calibration instruction. Cascade (Pixtral+Jev): 91%, ECE 0.038,
-    16/27 caught. The cascade wins on every measure; Jev supplies
+    calibration instruction. Cascade (Pixtral+Jev): 91%, ECE 0.051,
+    18/27 caught. The cascade wins on every measure; Jev supplies
     the calibrated probability that makes routing possible. See
     RESULTS.md ("Phase 2 baseline").
 15. **Phase 3: structured vision state (two iterations).**
@@ -148,7 +157,7 @@ yet been corrected. Tests live in `test_json_store.py`,
     (67%) -- vocabulary mismatch with the taxonomy. v2 (medium
     aligned to the representation classes): pooled 90%, representation
     76%, burden 22% -- still a measured negative vs the cascade
-    (91%, 79%, 16/27 caught vs 5/25). The decisive finding: 19 of 20
+    (91%, 79%, 18/27 caught vs 8/25). The decisive finding: 19 of 20
     remaining representation errors have a wrong vision `medium`
     field -- the bottleneck moved into the vision model, and the
     screenshot-of-text failure mode is eliminated where the medium
@@ -447,7 +456,8 @@ yet been corrected. Tests live in `test_json_store.py`,
     fixes 5 / breaks 3, but 3 of the 8 changes are on unchanged
     criteria (run-to-run variance). Criterion-attributable: 4 toward
     truth, 2 away (the clause's "model" over-applies to photographed
-    robots). Routing identical (12 caught, burden 25/67). Inside
+    robots). Corrected threshold routing: v8 catches 14/27 at burden
+    25/67; v7 catches 16/29 at 28/67 (2026-10-01 audit). Inside
     noise -- v7's adoption bar was fixes 10 / breaks 2. v7 stays the
     default; v8 kept as the measured record. Open gap documented, not
     revised: the 13 `other` -> text_screenshot interface-screenshot
@@ -498,8 +508,9 @@ yet been corrected. Tests live in `test_json_store.py`,
     criteria, 2 pure variance). Attribution: interface family 7
     fixes / 1 break; statue clause 6 toward / 3 away;
     background-people clause no measured effect (neutral). Errors 16
-    vs v7's 25 at identical burden (18 routed, 17%), catch rate 63%
-    vs 52%. Personal collection (85 labeled): 91% vs 91%, fixes 11 /
+    vs v7's 25. Corrected threshold burdens are 18/108 (17%) vs
+    28/108 (26%), catch rates 63% vs 64% (2026-10-01 audit).
+    Personal collection (85 labeled): 91% vs 91%, fixes 11 /
     breaks 11 -- a wash, no regression. Adopted: v9 is now the
     default taxonomy (`pilot_humanoid.py` default switched from v7
     to v9). Residuals: the statue clause's 3 breaks (subject-decides
@@ -650,8 +661,8 @@ yet been corrected. Tests live in `test_json_store.py`,
    representation 97%. Per category: graphic_design 100%,
    portrait_photo 100%, human_painting 97%, human_sculpture 93%
    (was 80% -- the excluded animal sculptures were the whole gap).
-   Routing burden 18%/18%/15%; auto-accept band mismatch 7-9%
-   (Wilson 95% CI 4-14%), at or below half the Commons reference
+   Routing burden 18%/18%/15%; auto-accept band mismatch 3.48-4.20%
+   (Wilson 95% CI 1.36-9.46%), at or below half the Commons reference
    (15%). Verdict updated: the loop's result generalizes -- the
    frozen pipeline holds on fresh institutional material without any
    re-tuning.
@@ -761,7 +772,7 @@ yet been corrected. Tests live in `test_json_store.py`,
    134 correct, 6 corrected, 20 excluded (16 animal sculptures), 4
    dead links. Manifest sealed (step 5, `_sealing` block). Verified
    numbers: pooled 97.5%/97.0%/97.0% across the 3 runs, auto-accept
-   band mismatch 7-9% (CI 4-14%), routing burden 15-18%. See
+   band mismatch 3.48-4.20% (CI 1.36-9.46%), routing burden 15-18%. See
    REPLICATION_RESULTS.md ("Results vs. verified labels").
 
 The android question is settled by the review: the collection

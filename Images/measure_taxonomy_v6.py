@@ -10,8 +10,9 @@ measure_library_standin.py. No vision calls. Results are saved
 incrementally to taxonomy_v6_batch2_results.json (private, gitignored);
 records with status ok are skipped on re-run.
 
-The comparison baseline is v4's stored answers in
-library_standin_results.json (the answers the batch 2 review judged).
+Set BASELINE_RESULTS to the archived v4 corpus results, separate from
+the live library_standin_results.json ground truth. Cohort review dates,
+baseline confidences and input descriptions come from that snapshot.
 
 Requires TYPESAFE_API_KEY.
 """
@@ -21,6 +22,7 @@ import sys
 import time
 import urllib.request
 from json_store import load_json, save_json
+from measurement import load_baseline, threshold_summary
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 TAXONOMY = os.path.join(SCRIPT_DIR, os.environ.get("TAXONOMY", "humanoid_taxonomy_v6.json"))
@@ -81,8 +83,11 @@ def main():
 
     with open(SOURCE, encoding="utf-8") as f:
         source = json.load(f)
-    items = [(name, rec) for name, rec in source.items()
-             if rec.get("manual_correction", {}).get("date") == HELD_OUT_DATE]
+    baseline = load_baseline(SOURCE, [])
+    items = [(name, source[name]) for name, rec in baseline.items()
+             if rec.get("manual_correction", {}).get("date") == HELD_OUT_DATE
+             and name in source and source[name].get("manual_correction")]
+    load_baseline(SOURCE, [name for name, _ in items])
     print(f"Held-out batch ({HELD_OUT_DATE}): {len(items)} labeled records")
 
     results = load_results()
@@ -91,7 +96,7 @@ def main():
     print(f"Already done: {len(done)}, to process: {len(todo)}")
 
     for i, (name, rec) in enumerate(todo, 1):
-        desc = rec["description"]
+        desc = baseline[name]["description"]
         state = (
             f"Image description (written by a vision model that examined the image):\n"
             f"\"{desc}\"\n\n"
@@ -115,7 +120,10 @@ def main():
 
     # Comparison: v6 answers vs manual corrections, v4 stored answers vs
     # manual corrections, on the same records.
-    ok = {n: r for n, r in results.items() if r.get("status") == "ok"}
+    selected = {name for name, _ in items}
+    ok = {n: r for n, r in results.items() if r.get("status") == "ok" and n in selected}
+    if not ok:
+        raise ValueError("No successful measurements in the selected cohort")
     print(f"\nMeasured: {len(ok)}/{len(items)}")
 
     def score(pick):
@@ -136,24 +144,20 @@ def main():
         return per_facet, pooled_a, pooled_n
 
     v6 = lambda name, rec: {q: rec[q]["choice"] for q in FACETS}
-    v4 = lambda name, rec: {q: source[name][q]["choice"] for q in FACETS}
+    v4 = lambda name, rec: {q: baseline[name][q]["choice"] for q in FACETS}
 
     version = tax["_meta"]["version"]
-    for label, pick in ((version, v6), ("v4 (stored)", v4)):
+    for label, pick in ((version, v6), ("baseline (explicit snapshot)", v4)):
         per_facet, pa, pn = score(pick)
         print(f"\n{label}: pooled {pa}/{pn} ({100 * pa / pn:.0f}%)")
         for facet, (a, n) in per_facet.items():
             print(f"  {facet}: {a}/{n} ({100 * a / n:.0f}%)")
 
     # Errors (records with at least one wrong facet) and burden.
-    for label, pick in ((version, v6), ("v4 (stored)", v4)):
-        errors = [name for name, rec in ok.items()
-                  if any(pick(name, rec)[q] != source[name]["manual_correction"]["correct"].get(q)
-                         for q in FACETS
-                         if source[name]["manual_correction"]["correct"].get(q) is not None)]
-        routed = [name for name, rec in ok.items()
-                  if any(rec[q]["confidence"] < REVIEW_THRESHOLD for q in FACETS)]
-        caught = [name for name in errors if name in set(routed)]
+    truth = {name: source[name]["manual_correction"]["correct"] for name in ok}
+    for label, answers in ((version, ok), ("baseline (explicit snapshot)",
+                                          {n: baseline[n] for n in ok})):
+        errors, routed, caught = threshold_summary(answers, truth)
         print(f"\n{label}: {len(errors)} wrong records, {len(routed)} routed "
               f"({100 * len(routed) / len(ok):.0f}% burden), {len(caught)} caught")
 
