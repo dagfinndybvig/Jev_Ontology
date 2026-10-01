@@ -13,7 +13,8 @@ measure whether mean confidence on the HELD-OUT set improves -- the real test
 of generalization.
 
 Usage:
-    python heldout_experiment.py <ontology_file> [--save <key>]
+    python heldout_experiment.py <ontology_file> [--stage train|holdout|both]
+    RESULTS_OUT selects a fresh *.results.json file; --save labels the run.
 
 The split is deterministic (seed 42) and persisted to heldout_split.json so
 the same tickets stay in train/holdout across runs.
@@ -22,17 +23,22 @@ Requires TYPESAFE_API_KEY.
 """
 
 import json
+import argparse
 import os
 import random
 import sys
 import urllib.request
 from collections import Counter
 from mvp_jev_ontology import validate_choice
+from experiment_state import run_experiment, save_summary
+from Images.json_store import fingerprint, load_json, save_json
 
 API_KEY = os.environ.get("TYPESAFE_API_KEY", "")
 ENDPOINT = "https://api.typesafe.ai/v1/systemone"
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-SPLIT_PATH = os.path.join(SCRIPT_DIR, "heldout_split.json")
+SPLIT_PATH = os.environ.get("SPLIT_PATH") or os.path.join(SCRIPT_DIR, "heldout_split.json")
+LEGACY_CORPUS = "848bb7c6bf3f145004b686d1da79378876e5a836f606c0ab558f2fd1ccd1d346"
+LEGACY_SPLIT = "09af96d6b2dfcefd57bfd8b356e7533e4126c4a2ecd0f678074265edf2a0bd5d"
 
 # --------------------------------------------------------------------------- #
 # Tickets (same 52 as convergence_experiment.py)
@@ -152,6 +158,7 @@ def jev_choice(item_text, children, parent):
         "confidence": answer["confidence"],
         "distribution": answer["probabilities"],
         "usage": data.get("usage", {}),
+        "model": data.get("model"),
     }
 
 
@@ -179,6 +186,7 @@ def classify_item(item_text, ontology):
             "node": top_id,
             "confidence": result["confidence"],
             "distribution": result["distribution"],
+            "model": result["model"],
         })
         current = child_node
     leaf = path[-1]["node"] if path else ontology["id"]
@@ -190,16 +198,34 @@ def classify_item(item_text, ontology):
 # --------------------------------------------------------------------------- #
 
 def get_split():
-    if os.path.exists(SPLIT_PATH):
-        with open(SPLIT_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
-    rng = random.Random(42)
-    idx = list(range(len(TICKETS)))
-    rng.shuffle(idx)
-    n_train = int(len(TICKETS) * 0.70)
-    split = {"train": idx[:n_train], "holdout": idx[n_train:]}
-    with open(SPLIT_PATH, "w", encoding="utf-8") as f:
-        json.dump(split, f, indent=2)
+    if (any(not isinstance(ticket, str) or not ticket.strip() for ticket in TICKETS)
+            or len(set(TICKETS)) != len(TICKETS)):
+        raise ValueError("Held-out corpus requires distinct, nonempty ticket texts")
+    split = load_json(SPLIT_PATH, missing_ok=True)
+    corpus = fingerprint(TICKETS)
+    is_new = split.revision is None
+    if is_new:
+        rng = random.Random(42)
+        idx = list(range(len(TICKETS)))
+        rng.shuffle(idx)
+        n_train = int(len(TICKETS) * 0.70)
+        split.update(train=idx[:n_train], holdout=idx[n_train:],
+                     _meta={"schema": 1, "seed": 42, "corpus_sha256": corpus})
+    train, holdout = split.get("train"), split.get("holdout")
+    if (not isinstance(train, list) or not isinstance(holdout, list)
+            or not train or not holdout
+            or any(type(i) is not int for i in train + holdout)
+            or len(set(train + holdout)) != len(train + holdout)
+            or set(train + holdout) != set(range(len(TICKETS)))):
+        raise ValueError("Split must be two nonempty, disjoint partitions covering the corpus exactly")
+    meta = split.get("_meta")
+    if meta is None:
+        if corpus != LEGACY_CORPUS or fingerprint(split) != LEGACY_SPLIT:
+            raise ValueError("Unbound legacy split; use a fresh SPLIT_PATH")
+    elif not isinstance(meta, dict) or meta.get("schema") != 1 or meta.get("corpus_sha256") != corpus:
+        raise ValueError("Split corpus changed; use a fresh SPLIT_PATH")
+    if is_new:
+        save_json(SPLIT_PATH, split)
     return split
 
 
@@ -219,6 +245,8 @@ def classify_set(tickets, ontology):
 
 
 def summarize(results):
+    if not results:
+        raise ValueError("Cannot summarize an empty cohort")
     confs = [r["overall_confidence"] for r in results]
     return {
         "n": len(results),
@@ -260,75 +288,36 @@ def collect_signals(results, ontology):
 
 
 def main():
-    if not API_KEY:
-        raise SystemExit("Missing TYPESAFE_API_KEY")
-    if len(sys.argv) < 2:
-        print("usage: python heldout_experiment.py <ontology_file> [--save <key>]")
-        sys.exit(1)
-    onto_file = sys.argv[1]
-    save_key = None
-    if "--save" in sys.argv:
-        save_key = sys.argv[sys.argv.index("--save") + 1]
-
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("ontology_file")
+    parser.add_argument("--stage", choices=("train", "holdout", "both"), default="train",
+                        help="Default train never evaluates or displays holdout results")
+    parser.add_argument("--save", help="Run label (RESULTS_OUT selects the file)")
+    args = parser.parse_args()
     split = get_split()
-    train = [TICKETS[i] for i in split["train"]]
-    holdout = [TICKETS[i] for i in split["holdout"]]
-
-    ontology, ver = load_ontology(onto_file)
-
-    print(f"Ontology: {onto_file} (version {ver})")
-    print(f"Train: {len(train)} tickets | Holdout: {len(holdout)} tickets")
-    print("=" * 78)
-
-    train_res, train_tokens = classify_set(train, ontology)
-    hold_res, hold_tokens = classify_set(holdout, ontology)
-
-    ts = summarize(train_res)
-    hs = summarize(hold_res)
-    print(f"\nTRAIN   ({ts['n']}): mean={ts['mean']:.3f}  high(>=0.9)={ts['high_ge_0.9']}  "
-          f"flagged(<0.5)={ts['flagged_lt_0.5']}  min={ts['min']:.3f}")
-    print(f"HOLDOUT ({hs['n']}): mean={hs['mean']:.3f}  high(>=0.9)={hs['high_ge_0.9']}  "
-          f"flagged(<0.5)={hs['flagged_lt_0.5']}  min={hs['min']:.3f}")
-    print(f"Tokens: train={train_tokens} holdout={hold_tokens} "
-          f"cost=${(train_tokens + hold_tokens) * 0.042 / 1_000_000:.4f}")
-
-    # Signals from TRAIN only (this is what the LLM revision step sees)
-    sig = collect_signals(train_res, ontology)
-    print("\n" + "=" * 78)
-    print("TRAIN FEEDBACK SIGNALS (what the LLM revision step sees)")
-    print("=" * 78)
-    print(f"\nZero-traffic leaves: {sig['zero_traffic']}")
-    print(f"\nLeaf distribution (train):")
-    for leaf_id in sorted(sig["leaf_counts"]):
-        print(f"  {leaf_id}: {sig['leaf_counts'][leaf_id]}")
-    print(f"\nLow-confidence (<0.5) train tickets:")
-    for lc in sig["low_conf"]:
-        print(f"  [{lc['leaf']} conf={lc['conf']:.3f}] {lc['ticket'][:70]}")
-    print(f"\nLow-margin (top-2 within 0.15) train decisions:")
-    for lm in sig["low_margin"]:
-        print(f"  {lm['top']}({lm['top_p']:.2f}) vs {lm['second']}({lm['second_p']:.2f}) at {lm['node']}")
-        print(f"    {lm['ticket'][:65]}")
-
-    # Save for comparison
-    out_path = os.path.join(SCRIPT_DIR, "heldout_results.json")
-    results_store = {}
-    if os.path.exists(out_path):
-        with open(out_path, "r", encoding="utf-8") as f:
-            results_store = json.load(f)
-    results_store[save_key or ver] = {
-        "ontology_file": onto_file,
-        "version": ver,
-        "train": ts,
-        "holdout": hs,
-        "train_tokens": train_tokens,
-        "holdout_tokens": hold_tokens,
-        "signals": sig,
-        "holdout_detail": [{"ticket": r["ticket"], "leaf": r["leaf"], "conf": round(r["overall_confidence"], 3)}
-                           for r in hold_res],
-    }
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(results_store, f, indent=2, ensure_ascii=False)
-    print(f"\nSaved to {out_path}")
+    ontology, ver = load_ontology(args.ontology_file)
+    cohorts = ("train", "holdout") if args.stage == "both" else (args.stage,)
+    batches = {name: {"tickets": [TICKETS[i] for i in split[name]],
+                      "ontology": ontology, "version": ver} for name in cohorts}
+    groups, document = run_experiment(
+        f"heldout.{args.stage}.results.json", batches, classify_item, API_KEY, __file__,
+        config={"split": dict(split), "label": args.save or ver, "stage": args.stage})
+    summary = {"version": ver}
+    print(f"Ontology: {args.ontology_file} (version {ver})")
+    for name, results in groups.items():
+        stats = summarize(results)
+        summary[name] = stats
+        summary[f"{name}_tokens"] = sum(r["tokens"] for r in results)
+        print(f"{name.upper()} ({stats['n']}): mean={stats['mean']:.3f} "
+              f"high(>=0.9)={stats['high_ge_0.9']} flagged(<0.5)={stats['flagged_lt_0.5']} "
+              f"min={stats['min']:.3f}")
+    if "train" in groups:
+        summary["signals"] = collect_signals(groups["train"], ontology)
+        print("\nTRAIN FEEDBACK SIGNALS (train records only)")
+        print(json.dumps(summary["signals"], indent=2, ensure_ascii=False))
+    print("Jev calls represented:", sum(len(r["path"]) for rows in groups.values() for r in rows))
+    save_summary(document, summary)
+    print(f"\nSaved to {document.path}")
 
 
 if __name__ == "__main__":

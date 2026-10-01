@@ -1,10 +1,13 @@
-"""Close the loop: re-run Session 2 billing tickets against ontology v2.0
-and v3.0, then compare confidence to see if the revised definitions reduced
-hedging."""
+"""Compare a fresh/resumed v3 run with the rounded historical v2 transcript.
+
+Confidence changes are not measurements of accuracy. The v2 baseline is
+not re-run and has no retained full response/model provenance.
+"""
 import json
 import os
 import urllib.request
 from mvp_jev_ontology import validate_choice
+from experiment_state import run_experiment, save_summary
 
 API_KEY = os.environ.get("TYPESAFE_API_KEY", "")
 ENDPOINT = "https://api.typesafe.ai/v1/systemone"
@@ -52,6 +55,7 @@ def jev_choice(item_text, children, parent):
         "confidence": answer["confidence"],
         "distribution": answer["probabilities"],
         "usage": data.get("usage", {}),
+        "model": data.get("model"),
     }
 
 
@@ -71,6 +75,7 @@ def classify_item(item_text, ontology):
             "node": top_id,
             "confidence": result["confidence"],
             "distribution": result["distribution"],
+            "model": result["model"],
         })
         current = child_node
     leaf = path[-1]["node"] if path else ontology["id"]
@@ -110,14 +115,17 @@ V2_RESULTS = {
 
 
 def main():
-    if not API_KEY:
-        raise SystemExit("Missing TYPESAFE_API_KEY")
-    onto_v2, ver_v2 = load_ontology("ontology.json")
     onto_v3, ver_v3 = load_ontology("ontology_v3.json")
+    groups, document = run_experiment(
+        "closed_loop.results.json",
+        {"candidate": {"tickets": SESSION2_TICKETS, "ontology": onto_v3, "version": ver_v3}},
+        classify_item, API_KEY, __file__,
+        config={"baseline_source": "Rounded Session 2 transcript, not a fresh v2 run",
+                "baseline": V2_RESULTS})
 
     print("=" * 78)
     print("CLOSED LOOP: Ontology v2.0 -> v3.0 comparison on Session 2 billing tickets")
-    print(f"v2.0 ontology: {ver_v2}")
+    print("v2.0 baseline: rounded historical Session 2 transcript; not re-run")
     print(f"v3.0 ontology: {ver_v3}")
     print("=" * 78)
 
@@ -125,8 +133,7 @@ def main():
     print("\n--- Re-running all 8 tickets against v3.0 ---\n")
     v3_results = {}
     total_tokens = 0
-    for ticket in SESSION2_TICKETS:
-        r = classify_item(ticket, onto_v3)
+    for ticket, r in zip(SESSION2_TICKETS, groups["candidate"]):
         v3_results[ticket] = {"leaf": r["leaf"], "conf": r["overall_confidence"], "path": r["path"]}
         total_tokens += r["tokens"]
         print(f"Ticket: {ticket}")
@@ -158,7 +165,7 @@ def main():
         v2 = V2_RESULTS[ticket]
         v3 = v3_results[ticket]
         delta = v3["conf"] - v2["conf"]
-        improved = "IMPROVED" if delta > 0.05 else ("WORSE" if delta < -0.05 else "FLAT")
+        improved = "CONFIDENCE UP" if delta > 0.05 else ("CONFIDENCE DOWN" if delta < -0.05 else "FLAT")
         print(f"\n  '{ticket[:60]}'")
         print(f"  v2.0: {v2['leaf']} (conf={v2['conf']:.3f})")
         print(f"  v3.0: {v3['leaf']} (conf={v3['conf']:.3f})")
@@ -179,8 +186,11 @@ def main():
     print(f"\n3 hedged tickets only:")
     print(f"  v2.0 mean confidence: {sum(v2_hedged)/len(v2_hedged):.3f}")
     print(f"  v3.0 mean confidence: {sum(v3_hedged)/len(v3_hedged):.3f}")
-    print(f"  Improvement: {sum(v3_hedged)/len(v3_hedged) - sum(v2_hedged)/len(v2_hedged):+.3f}")
+    print(f"  Confidence change: {sum(v3_hedged)/len(v3_hedged) - sum(v2_hedged)/len(v2_hedged):+.3f}")
     print(f"\nv3.0 cost: {total_tokens} input tokens = ${total_tokens * 0.042 / 1_000_000:.4f}")
+    save_summary(document, {"baseline": V2_RESULTS, "candidate": v3_results,
+                            "candidate_tokens": total_tokens})
+    print(f"\nSaved to {document.path}")
 
 
 if __name__ == "__main__":

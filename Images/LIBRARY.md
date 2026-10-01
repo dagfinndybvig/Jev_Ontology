@@ -14,6 +14,8 @@ Operational follow-up: direct and structured vision validate response
 schemas before accepting success. This closes an invalid-output resume
 trap; it does not add evidence of cataloging accuracy or change old labels.
 Corpus runs check both credentials before starting the paid vision stage.
+Root ticket experiments reuse the same persistence primitives, with separate
+outputs; this is infrastructure reuse, not another library evaluation.
 
 > **De-risking step complete (2026-09-25).** The pre-registered
 > fresh-corpus replication (`REPLICATION_PROTOCOL.md`,

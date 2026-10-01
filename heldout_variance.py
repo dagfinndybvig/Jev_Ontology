@@ -15,58 +15,57 @@ Requires TYPESAFE_API_KEY.
 """
 
 import json
+import argparse
 import os
+import statistics
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from heldout_experiment import API_KEY, TICKETS, load_ontology, classify_item, get_split
+import heldout_experiment
+from experiment_state import run_experiment, save_summary
 
 
 def main():
-    N = int(sys.argv[1]) if len(sys.argv) > 1 else 5
-    onto_file = sys.argv[2] if len(sys.argv) > 2 else "ontology.json"
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("runs", type=int, nargs="?", default=5)
+    parser.add_argument("ontology_file", nargs="?", default="ontology.json")
+    args = parser.parse_args()
+    N = args.runs
     if N < 1:
-        raise SystemExit("Run count must be positive")
-    if not API_KEY:
-        raise SystemExit("Missing TYPESAFE_API_KEY")
-
+        parser.error("Run count must be positive")
     split = get_split()
     holdout = [TICKETS[i] for i in split["holdout"]]
-    ontology, ver = load_ontology(onto_file)
+    ontology, ver = load_ontology(args.ontology_file)
+    groups, document = run_experiment(
+        "variance.results.json",
+        {f"run_{i + 1}": {"tickets": holdout, "ontology": ontology, "version": ver} for i in range(N)},
+        classify_item, API_KEY, __file__, heldout_experiment.__file__,
+        config={"split": dict(split), "runs": N})
 
     means = []
     mins = []
-    for run in range(N):
-        confs = []
-        for t in holdout:
-            r = classify_item(t, ontology)
-            confs.append(r["overall_confidence"])
+    for run, results in enumerate(groups.values()):
+        confs = [r["overall_confidence"] for r in results]
         means.append(sum(confs) / len(confs))
         mins.append(min(confs))
         print(f"run {run+1}: mean={means[-1]:.4f}  min={mins[-1]:.4f}")
 
     print(f"\nOntology {ver}, {N} runs, {len(holdout)} holdout tickets")
     print(f"mean confidence: min={min(means):.4f} max={max(means):.4f} "
-          f"spread={max(means)-min(means):.4f} std={__import__('statistics').pstdev(means):.4f}")
-
-    out_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "heldout_results.json")
-    results_store = {}
-    if os.path.exists(out_path):
-        with open(out_path, "r", encoding="utf-8") as f:
-            results_store = json.load(f)
-    results_store[f"variance_{ver}_{N}runs"] = {
-        "ontology_file": onto_file,
+          f"spread={max(means)-min(means):.4f} std={statistics.pstdev(means):.4f}")
+    summary = {
+        "ontology_file": args.ontology_file,
         "version": ver,
         "runs": N,
         "holdout_n": len(holdout),
-        "means": [round(m, 4) for m in means],
-        "mins": [round(m, 4) for m in mins],
-        "spread": round(max(means) - min(means), 4),
-        "std": round(__import__("statistics").pstdev(means), 4),
+        "means": means,
+        "mins": mins,
+        "spread": max(means) - min(means),
+        "std": statistics.pstdev(means),
     }
-    with open(out_path, "w", encoding="utf-8") as f:
-        json.dump(results_store, f, indent=2, ensure_ascii=False)
-    print(f"\nSaved to {out_path}")
+    save_summary(document, summary)
+    print(f"\nSaved to {document.path}")
 
 
 if __name__ == "__main__":

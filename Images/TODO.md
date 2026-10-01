@@ -5,6 +5,8 @@
 - [x] Repository-wide follow-up: reject invalid direct/structured vision
   responses and include Images in safe root-level offline test discovery.
 - [x] Check both API keys before corpus runs spend on vision.
+- [x] Support reuse of the storage/resume helpers by the root experiments
+  without changing image data, taxonomy, or routing.
 - [x] Protect results and human corrections with atomic revision-checked
   writes; fix review defaults, independent flags, and keyboard editing.
 - [x] Correct auto-accept analysis, calibration/error-capture metrics,

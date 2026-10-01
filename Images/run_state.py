@@ -3,7 +3,10 @@ import hashlib
 import ast
 from pathlib import Path
 
-from json_store import fingerprint
+if __package__:
+    from .json_store import fingerprint
+else:
+    from json_store import fingerprint
 
 
 def file_digest(path):

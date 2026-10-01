@@ -4,6 +4,7 @@ import os
 import urllib.request
 from collections import Counter
 from mvp_jev_ontology import validate_choice
+from experiment_state import run_experiment, save_summary
 
 # Load ontology
 ONTOLOGY_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ontology.json")
@@ -48,6 +49,7 @@ def jev_choice(item_text, children, parent):
         "confidence": answer["confidence"],
         "distribution": answer["probabilities"],
         "usage": data.get("usage", {}),
+        "model": data.get("model"),
     }
 
 
@@ -71,22 +73,19 @@ def classify_item(item_text):
         top_id = result["choice"]
         confidence *= result["confidence"]
         child_node = next(c for c in children if c["id"] == top_id)
-        path.append({"node": top_id, "confidence": result["confidence"], "distribution": result["distribution"]})
+        path.append({"node": top_id, "confidence": result["confidence"],
+                     "distribution": result["distribution"], "model": result["model"]})
         current = child_node
     leaf = path[-1]["node"] if path else ONTOLOGY["id"]
     return {"path": path, "leaf": leaf, "overall_confidence": confidence, "tokens": total_tokens}
 
 
-def run_session(label, tickets):
+def run_session(label, tickets, results):
     print(f"\n{'='*72}")
     print(f"SESSION: {label}")
     print(f"{'='*72}")
-    results = []
     total_tokens = 0
-    for ticket in tickets:
-        r = classify_item(ticket)
-        r["ticket"] = ticket
-        results.append(r)
+    for ticket, r in zip(tickets, results):
         total_tokens += r["tokens"]
         print(f"\nTicket: {ticket}")
         print(f"  Leaf: {r['leaf']}  (confidence {r['overall_confidence']:.3f})")
@@ -158,13 +157,20 @@ s3_tickets = [
 ]
 
 def main():
-    if not API_KEY:
-        raise SystemExit("Missing TYPESAFE_API_KEY")
+    batches = {name: {"tickets": tickets, "ontology": ONTOLOGY, "version": ONTOLOGY_VERSION}
+               for name, tickets in (("session1", s1_tickets), ("session2", s2_tickets),
+                                     ("session3", s3_tickets))}
+    groups, document = run_experiment(
+        "sessions.results.json", batches, lambda ticket, ontology: classify_item(ticket),
+        API_KEY, __file__)
     print(f"Ontology version: {ONTOLOGY_VERSION}")
     print("Requested Jev model: jev-latest (provider alias, not a pinned version)")
-    run_session("Session 1 - Standard mixed batch (12 tickets)", s1_tickets)
-    run_session("Session 2 - Billing-heavy batch (8 tickets)", s2_tickets)
-    run_session("Session 3 - Edge cases and adversarial (6 tickets)", s3_tickets)
+    run_session("Session 1 - Standard mixed batch (12 tickets)", s1_tickets, groups["session1"])
+    run_session("Session 2 - Billing-heavy batch (8 tickets)", s2_tickets, groups["session2"])
+    run_session("Session 3 - Edge cases and adversarial (6 tickets)", s3_tickets, groups["session3"])
+    save_summary(document, {name: {"tickets": len(rows), "tokens": sum(r["tokens"] for r in rows)}
+                            for name, rows in groups.items()})
+    print(f"\nSaved to {document.path}")
 
 
 if __name__ == "__main__":

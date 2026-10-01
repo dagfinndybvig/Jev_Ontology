@@ -3,6 +3,16 @@
 Items are grouped by priority. Each references the finding that
 motivates it.
 
+## Repository audit repairs
+
+- [x] Guard imports and live smoke checks; run root and Images tests offline.
+- [x] Validate model outputs and bind MVP results to the supplied ontology version.
+- [x] Save ticket experiments atomically after each record, preserve full
+  responses used by classification, reject stale writers and changed resumes.
+- [x] Bind held-out splits to corpus content; default authoring runs to train only.
+- [ ] Reconcile evidence counts and qualify unsupported historical noise-floor
+  and generalization claims (final documentation milestone).
+
 ---
 
 ## High priority -- fill the known gaps

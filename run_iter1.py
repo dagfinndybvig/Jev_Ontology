@@ -3,8 +3,6 @@ import convergence_experiment as ce
 
 TICKETS = ce.TICKETS
 def main():
-    if not ce.API_KEY:
-        raise SystemExit("Missing TYPESAFE_API_KEY")
     ce.run_iteration("Iteration 1 (baseline)", TICKETS, "ontology_v3.json")
 
 

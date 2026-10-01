@@ -16,6 +16,8 @@
 > retryable errors. No model calls, existing results, or manual labels were
 > changed by this repair; historical measurements below are not new runs.
 > Corpus runs also stop before paid vision if either API key is missing.
+> The shared storage helpers now also support root ticket experiments;
+> this does not rerun or modify the image evidence.
 
 The task was to sort the images in a personal photo folder by whether they
 contain a human, using Jev. The result: 73 images contain a human, 142

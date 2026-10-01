@@ -1,5 +1,8 @@
 __pycache__/
 *.pyc
+*.results.json
+*.json.lock
+*.json.*.tmp
 
 # Private data: per-image filenames and descriptions of a personal
 # photo collection. See Images/README.md ("Privacy").

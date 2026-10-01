@@ -14,6 +14,13 @@ vague descriptions, compound issues, wrong customer framing)
 
 ## The question
 
+**Runner reliability update:** new runs save per-ticket checkpoints to
+`*.results.json`, with ontology/input snapshots and resume identity checks.
+Historical artifacts below are preserved. `heldout_experiment.py` now
+defaults to train only; evaluate the frozen revision with `--stage holdout`.
+Use a fresh `RESULTS_OUT` for each independent repeat or changed revision.
+See the root README for the complete run and resume contract.
+
 Does the LLM-Jev feedback loop converge? When Jev detects
 category misfits and the LLM revises the ontology, does the next
 classification improve? Does the process stabilize, or does it

@@ -49,6 +49,8 @@ Empty, incomplete, or invalid responses remain errors, never completed
 records. Raw-newline and unescaped-quote repair support remains available.
 Existing measurements and human labels have not been rewritten.
 Corpus measurements also check both API keys before spending on vision.
+The root ticket experiments now reuse this JSON store and resume helper;
+their separate `*.results.json` outputs do not alter image measurements.
 
 JSON writers now use `json_store.py`: same-directory temporary files,
 flush/fsync and atomic replacement. Read/modify/write documents carry a

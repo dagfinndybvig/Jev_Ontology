@@ -39,7 +39,9 @@ TypeSafe AI's "System One" decision model, with ontologies.
 root and Images suites. `python test_jev_api.py` is an explicit **paid/live**
 smoke check; missing keys, HTTP failures, and invalid answers fail nonzero.
 Alternate MVP ontologies must supply their own version metadata. Experiment
-storage and evidence-claim repairs are the next audit milestones.
+storage is now incremental, atomic, and provenance-checked. Existing
+historical JSONs are read-only; evidence-claim corrections are the final
+audit milestone.
 
 We built a working MVP that pairs an LLM-authored ontology with Jev's
 calibrated classification, tested it against the live Jev API on 78 unique
@@ -251,6 +253,50 @@ python mvp_jev_ontology.py
 ```
 
 Python 3.10+. No dependencies beyond the standard library.
+
+### Safe experiment runs
+
+Ticket experiments use `experiment_state.py` with the same atomic,
+revision-checked JSON store as Images. Each completed ticket is saved with
+its full path, distributions, confidence, token count, and response model
+identifier when provided. The output also retains the ontology and input
+snapshots. A failed ticket is saved as an error and stops the run; restarting
+retries it without reclassifying completed tickets.
+
+Defaults are `convergence.results.json`, `heldout.train.results.json`,
+`heldout.holdout.results.json`, `heldout.both.results.json`,
+`variance.results.json`, `sessions.results.json`, `closed_loop.results.json`,
+and `iteration.<version>.results.json`. These files are gitignored.
+`RESULTS_OUT` selects a different **`*.results.json`** file, relative to the
+repository root or absolute. Use a fresh filename for an independent repeat,
+changed corpus, changed ontology, or changed implementation. A matching
+completed run can be reported again without an API key or new calls.
+Reported tokens/cost represent the whole stored run, including resumed work.
+
+The held-out runner defaults to **train only**:
+
+```powershell
+python heldout_experiment.py ontology.json
+# Author and freeze a revision using only the training signals.
+$env:RESULTS_OUT = 'revision.holdout.results.json'
+python heldout_experiment.py ontology_heldout_v1.json --stage holdout
+Remove-Item Env:RESULTS_OUT
+```
+
+`--stage both` is explicit opt-in evaluation, not a train-only authoring
+workflow. `--save` labels a run; it does not select its output file.
+`SPLIT_PATH` selects a separate split for a new corpus. Splits must cover
+distinct ticket texts exactly once, with no overlap, and are bound to the
+ordered corpus. The original index-only split is accepted only with its
+exact historical corpus and partition fingerprints; it is not rewritten.
+
+Legacy `convergence_results.json` and `heldout_results.json` are never
+overwritten or automatically relabeled. `jev-latest` is a provider alias:
+reported model-version changes within a run are rejected, but an unchanged
+identifier is not proof of immutable remote weights. Missing response model
+identifiers are retained as unknown, not replaced with a claimed version.
+`close_loop.py` compares against a rounded historical v2 transcript, not a
+fresh v2 run.
 
 ### What the output looks like
 

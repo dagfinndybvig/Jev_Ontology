@@ -18,6 +18,7 @@ import os
 import urllib.request
 from collections import Counter
 from mvp_jev_ontology import validate_choice
+from experiment_state import run_experiment, save_summary
 
 API_KEY = os.environ.get("TYPESAFE_API_KEY", "")
 ENDPOINT = "https://api.typesafe.ai/v1/systemone"
@@ -64,6 +65,7 @@ def jev_choice(item_text, children, parent):
         "confidence": answer["confidence"],
         "distribution": answer["probabilities"],
         "usage": data.get("usage", {}),
+        "model": data.get("model"),
     }
 
 
@@ -91,25 +93,26 @@ def classify_item(item_text, ontology):
             "node": top_id,
             "confidence": result["confidence"],
             "distribution": result["distribution"],
+            "model": result["model"],
         })
         current = child_node
     leaf = path[-1]["node"] if path else ontology["id"]
     return {"path": path, "leaf": leaf, "overall_confidence": confidence, "tokens": total_tokens}
 
 
-def run_iteration(label, tickets, ontology_file):
+def run_iteration(label, tickets, ontology_file, results=None):
     onto, ver = load_ontology(ontology_file)
     print(f"\n{'='*78}")
     print(f"ITERATION: {label} (ontology {ver})")
     print(f"{'='*78}")
 
-    results = []
-    total_tokens = 0
-    for i, ticket in enumerate(tickets):
-        r = classify_item(ticket, onto)
-        r["ticket"] = ticket
-        results.append(r)
-        total_tokens += r["tokens"]
+    if results is None:
+        groups, _ = run_experiment(
+            f"iteration.{ver}.results.json",
+            {"iteration": {"tickets": tickets, "ontology": onto, "version": ver}},
+            classify_item, API_KEY, __file__)
+        results = groups["iteration"]
+    total_tokens = sum(r["tokens"] for r in results)
 
     # Summary stats
     confs = [r["overall_confidence"] for r in results]
@@ -136,7 +139,7 @@ def run_iteration(label, tickets, ontology_file):
     zero_traffic = sorted(all_leaves - set(leaf_counts.keys()))
 
     print(f"\nTickets: {len(tickets)}")
-    print(f"Jev calls: {len(tickets) * 2} (2 levels each)")
+    print(f"Jev calls represented: {sum(len(r['path']) for r in results)}")
     print(f"Input tokens: {total_tokens}")
     print(f"Cost: ${total_tokens * 0.042 / 1_000_000:.4f}")
     print(f"Mean confidence: {sum(confs)/len(confs):.3f}")
@@ -257,15 +260,18 @@ TICKETS = [
 
 
 def main():
-    if not API_KEY:
-        raise SystemExit("Missing TYPESAFE_API_KEY")
     print(f"Jev model: jev-latest")
     print(f"Tickets: {len(TICKETS)}")
 
-    # Run 3 iterations against pre-authored ontology versions
-    iter1 = run_iteration("Iteration 1", TICKETS, "ontology_v3.json")
-    iter2 = run_iteration("Iteration 2", TICKETS, "ontology_v4.json")
-    iter3 = run_iteration("Iteration 3", TICKETS, "ontology_v5.json")
+    batches = {}
+    for name in ("v3", "v4", "v5"):
+        ontology, version = load_ontology(f"ontology_{name}.json")
+        batches[name] = {"ontology": ontology, "version": version, "tickets": TICKETS}
+    groups, document = run_experiment(
+        "convergence.results.json", batches, classify_item, API_KEY, __file__)
+    iter1 = run_iteration("Iteration 1", TICKETS, "ontology_v3.json", groups["v3"])
+    iter2 = run_iteration("Iteration 2", TICKETS, "ontology_v4.json", groups["v4"])
+    iter3 = run_iteration("Iteration 3", TICKETS, "ontology_v5.json", groups["v5"])
 
     # Convergence analysis
     print(f"\n{'='*78}")
@@ -391,9 +397,8 @@ def main():
         "leaf_changes_1to3": leaf_changes_1to3,
         "total_cost": total_cost,
     }
-    with open(os.path.join(SCRIPT_DIR, "convergence_results.json"), "w", encoding="utf-8") as f:
-        json.dump(output, f, indent=2, ensure_ascii=False)
-    print(f"\nResults saved to convergence_results.json")
+    save_summary(document, output)
+    print(f"\nResults saved to {document.path}")
 
 
 if __name__ == "__main__":
