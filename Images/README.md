@@ -1,3 +1,40 @@
+> **RESEARCH PILOT -- WORK IN PROGRESS**
+>
+> This is an experimental image-classification and human-review workflow,
+> **not a production-ready library cataloging service**. The results are
+> encouraging within the material tested; they do not establish reliable,
+> unattended classification of arbitrary collections.
+
+**Please read the results with these limitations in mind:**
+
+- **Limited validation scope.** Evaluation uses a personal collection and
+  public Commons/Smithsonian stand-ins, not a deployed library workflow.
+  The category mixes differ, and the fresh replication contains no
+  screenshots, leaving that known failure family untested there.
+- **Accuracy is not a guarantee.** Pooled facet agreement is not the
+  percentage of images classified correctly on every facet. Some facets
+  are excluded where category labels cannot determine the answer.
+  Confidence and review thresholds do not eliminate silent errors.
+- **Human labels have limitations too.** The replication used one reviewer,
+  with verification performed after the runs rather than in the
+  pre-registered order. Historical labels were preserved, not independently
+  re-reviewed after fixing the review UI. Some older raw results were not
+  retained, so not every historical metric can be reconstructed.
+- **Vision remains a bottleneck.** Jev classifies a model-written
+  description, not the image itself. Missing people, misread text, or a
+  mistaken medium can produce confident wrong answers. Human oversight
+  remains necessary.
+- **Deployment needs separate assessment.** The workflow sends images
+  and/or descriptions to external APIs, incurs usage costs, and depends on
+  provider behavior. Institutional privacy, licensing, operational, and
+  cataloging requirements must be assessed before using real collections.
+  Recent reliability fixes are not a production-readiness certification.
+
+See `REPLICATION_RESULTS.md` for the protocol deviation and corrected
+measurements, and `STATUS.md` for the current state and remaining work.
+
+---
+
 <img width="1900" height="1139" alt="Twiki and Buck" src="https://github.com/user-attachments/assets/0be69cb5-437b-4d33-b283-10360b4fdd15" />
 "A visual ontology, Twiki. That is where we are going!"<br>
 "Yes, Buck, and Jev is going to help us get there."<br><br>
