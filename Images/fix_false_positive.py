@@ -7,6 +7,7 @@ manual override never destroys the model's actual answer. Idempotent: safe to
 re-run; a record that is already corrected is left untouched.
 """
 import json
+from json_store import load_json, save_json
 import os
 import sys
 
@@ -30,8 +31,7 @@ else:
     print("PICTURES_DIR not set; skipping Humans folder cleanup")
 
 # 2. Correct the record, preserving the raw Jev output.
-with open(RESULTS, "r", encoding="utf-8") as f:
-    data = json.load(f)
+data = load_json(RESULTS)
 
 if TARGET not in data:
     print(f"{TARGET} not found in results JSON")
@@ -49,8 +49,7 @@ else:
             "Manual correction: the image does not contain a human. "
             "Jev's raw answer is preserved under 'jev'."
         )
-        with open(RESULTS, "w", encoding="utf-8") as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
+        save_json(RESULTS, data)
         print(f"Corrected record for {TARGET} (raw Jev output preserved under 'jev')")
 
 # 3. Report new counts.

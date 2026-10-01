@@ -34,6 +34,7 @@ statue-reverse 2/1, text_screenshot over-call 5/3, background-people
 """
 import hashlib
 import json
+from json_store import save_json
 import os
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -140,6 +141,5 @@ tax["facets"]["representation"]["criteria"]["other"] = (
     "grid of images)"
 )
 
-with open(DST, "w", encoding="utf-8") as f:
-    json.dump(tax, f, indent=2, ensure_ascii=False)
+save_json(DST, tax)
 print("wrote", DST)

@@ -24,6 +24,7 @@ import sys
 from datetime import date
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from urllib.parse import parse_qs, urlparse
+from json_store import load_json, save_json
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MANIFEST = os.environ.get("REPLICATION_MANIFEST") or os.path.join(HERE, "replication_manifest.json")
@@ -70,13 +71,11 @@ RECORD = """<div class="rec">
 
 
 def load_manifest():
-    with open(MANIFEST, encoding="utf-8") as f:
-        return json.load(f)
+    return load_json(MANIFEST)
 
 
 def save_manifest(m):
-    with open(MANIFEST, "w", encoding="utf-8") as f:
-        json.dump(m, f, indent=1, ensure_ascii=False)
+    save_json(MANIFEST, m, indent=1)
 
 
 def records_only(m):

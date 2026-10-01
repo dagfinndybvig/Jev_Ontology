@@ -27,6 +27,7 @@ Requires nothing but the results file; no API calls.
 """
 import hashlib
 import json
+from json_store import save_json
 import os
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -143,6 +144,5 @@ tax["facets"]["representation"]["criteria"]["other"] = (
     "None of the above: a diagram, chart, map, or abstract image"
 )
 
-with open(DST, "w", encoding="utf-8") as f:
-    json.dump(tax, f, indent=2, ensure_ascii=False)
+save_json(DST, tax)
 print("wrote", DST)

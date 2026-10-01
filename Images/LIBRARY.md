@@ -24,6 +24,13 @@ demonstrated -- and in what it has already shown does **not** work.
 
 ## The setting
 
+**Operational prerequisite (2026-10-01 audit, milestone 1).** Human labels
+must survive interrupted saves and concurrent tools. The shared JSON store
+now replaces files atomically and rejects stale writes. Review presents v9
+criteria, preserves independent facet labels, and reports conflicts rather
+than silently overwriting corrections. Existing labels are not inferred
+again from primary subjects; any relabeling still requires human review.
+
 A university library holds digitized image collections: photographs,
 posters, illustrations, scanned book pages, archival material.
 Cataloging them by subject is manual, slow, and backlogged. The

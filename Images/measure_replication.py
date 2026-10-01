@@ -25,6 +25,7 @@ import json
 import os
 import sys
 import time
+from json_store import load_json, save_json
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, SCRIPT_DIR)
@@ -69,15 +70,11 @@ def results_path(run):
 
 
 def load_results(path):
-    if os.path.exists(path):
-        with open(path, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
+    return load_json(path, missing_ok=True)
 
 
 def save_results(path, results):
-    with open(path, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
+    save_json(path, results)
 
 
 def main():

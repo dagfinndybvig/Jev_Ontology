@@ -26,6 +26,7 @@ import random
 import sys
 import time
 import urllib.request
+from json_store import load_json, save_json
 
 BASE = "https://smithsonian-open-access.s3-us-west-2.amazonaws.com/metadata/edan/"
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -192,10 +193,7 @@ def main():
     named = [a for a in sys.argv[1:] if a in CATEGORIES]
     cats = named or list(CATEGORIES)
     os.makedirs(IMAGES_DIR, exist_ok=True)
-    manifest = {}
-    if os.path.exists(MANIFEST):
-        with open(MANIFEST, encoding="utf-8") as f:
-            manifest = json.load(f)
+    manifest = load_json(MANIFEST, missing_ok=True)
 
     # Group categories by unit so each unit's metadata is scanned once.
     by_unit = {}
@@ -251,15 +249,13 @@ def main():
                     fields["verified"] = None
                     done += 1
                 manifest[fname] = fields
-                with open(MANIFEST, "w", encoding="utf-8") as f:
-                    json.dump(manifest, f, indent=1, ensure_ascii=False)
+                save_json(MANIFEST, manifest, indent=1)
                 time.sleep(DELAY)
             print("  %s: %d/%d downloaded" % (cat, done, PER_CATEGORY))
 
     manifest["_sampling"] = {"seed": SEED, "pool": POOL,
                              "per_category": PER_CATEGORY, "max_files": MAX_FILES}
-    with open(MANIFEST, "w", encoding="utf-8") as f:
-        json.dump(manifest, f, indent=1, ensure_ascii=False)
+    save_json(MANIFEST, manifest, indent=1)
     total = sum(1 for v in manifest.values()
                 if isinstance(v, dict) and v.get("status") == "ok")
     print("manifest: %d ok records" % total)

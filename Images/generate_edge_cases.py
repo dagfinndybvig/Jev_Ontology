@@ -17,6 +17,7 @@ import os
 import sys
 import time
 import urllib.request
+from json_store import load_json, save_json
 
 API = "https://api.mistral.ai/v1"
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -139,8 +140,7 @@ def load_agent():
 
 
 def save_agent(agent_id):
-    with open(AGENT_CACHE, "w", encoding="utf-8") as f:
-        json.dump({"agent_id": agent_id, "model": AGENT_MODEL}, f, indent=2)
+    save_json(AGENT_CACHE, {"agent_id": agent_id, "model": AGENT_MODEL})
 
 
 def create_agent():
@@ -182,15 +182,11 @@ def generate_one(agent_id, prompt):
 
 
 def load_results():
-    if os.path.exists(RESULTS):
-        with open(RESULTS, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
+    return load_json(RESULTS, missing_ok=True)
 
 
 def save_results(results):
-    with open(RESULTS, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
+    save_json(RESULTS, results)
 
 
 def main():

@@ -21,6 +21,7 @@ import sys
 import time
 import urllib.parse
 import urllib.request
+from json_store import load_json, save_json
 
 API = "https://commons.wikimedia.org/w/api.php"
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -138,15 +139,11 @@ def download(url, dest):
 
 
 def load_manifest():
-    if os.path.exists(MANIFEST):
-        with open(MANIFEST, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
+    return load_json(MANIFEST, missing_ok=True)
 
 
 def save_manifest(manifest):
-    with open(MANIFEST, "w", encoding="utf-8") as f:
-        json.dump(manifest, f, indent=2, ensure_ascii=False)
+    save_json(MANIFEST, manifest)
 
 
 def main():

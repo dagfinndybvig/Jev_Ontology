@@ -24,6 +24,7 @@ import json
 import os
 import re
 import sys
+from json_store import save_json
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CASCADE_RESULTS = os.path.join(HERE, "humanoid_pilot_results.json")
@@ -90,8 +91,7 @@ def main():
                 "text_signal": reason == "text_bearing",
             })
 
-    with open(OUT, "w", encoding="utf-8") as f:
-        json.dump(queue, f, indent=2, ensure_ascii=False)
+    save_json(OUT, queue)
 
     low = sum(1 for q in queue if q["reason"] == "low_confidence")
     text = sum(1 for q in queue if q["reason"] == "text_bearing")

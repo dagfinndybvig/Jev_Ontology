@@ -247,6 +247,16 @@ Essential context for any agent working in this directory.
 
 ## Conventions
 
+- JSON writes use `json_store.save_json` (atomic replacement, fsync,
+  OS-level sidecar lock). Read/modify/write results and manifests use
+  `load_json` to retain the disk revision; stale writes raise
+  `WriteConflict`. Do not turn a loaded document into a plain dict before
+  saving it back, since that discards concurrency protection.
+- `review_ui.py` defaults to v9. Corrections submit a record revision;
+  HTTP 409 means reload and reapply the edit, never silently overwrite.
+- Offline checks: `python -B -m unittest discover -p "test_*.py"`.
+  Browser-script tests need Node.js. Fixtures are synthetic; no API calls.
+
 - Manual corrections never overwrite raw Jev answers: add a
   `manual_correction` block (`date`, `correct`, `reason`,
   `raw_jev_preserved`) and leave the facet answers exactly as the

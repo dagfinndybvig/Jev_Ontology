@@ -19,6 +19,7 @@ import os
 import sys
 import time
 import urllib.request
+from json_store import load_json, save_json
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 TAXONOMY = os.path.join(SCRIPT_DIR, os.environ.get("TAXONOMY", "humanoid_taxonomy_v7.json"))
@@ -60,15 +61,11 @@ def jev_classify_facets(state, facets):
 
 
 def load_results():
-    if os.path.exists(RESULTS):
-        with open(RESULTS, encoding="utf-8") as f:
-            return json.load(f)
-    return {}
+    return load_json(RESULTS, missing_ok=True)
 
 
 def save_results(results):
-    with open(RESULTS, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
+    save_json(RESULTS, results)
 
 
 def main():

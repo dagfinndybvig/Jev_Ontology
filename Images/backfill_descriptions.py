@@ -16,6 +16,7 @@ Usage:
 import json
 import os
 import urllib.request
+from json_store import load_json, save_json
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MANIFEST = os.path.join(HERE, "replication_manifest.json")
@@ -48,8 +49,7 @@ def description_of(rec):
 
 
 def main():
-    with open(MANIFEST, encoding="utf-8") as f:
-        m = json.load(f)
+    m = load_json(MANIFEST)
     recs = {k: v for k, v in m.items() if isinstance(v, dict) and "category" in v}
     by_si = {}
     for k, v in recs.items():
@@ -94,8 +94,7 @@ def main():
         if recs[k].get("description") != d:
             recs[k]["description"] = d
             changed += 1
-    with open(MANIFEST, "w", encoding="utf-8") as f:
-        json.dump(m, f, indent=1, ensure_ascii=False)
+    save_json(MANIFEST, m, indent=1)
     lens = sorted(len(v.get("description") or "") for v in recs.values())
     print("updated %d descriptions; new lengths min %d / median %d / max %d"
           % (changed, lens[0], lens[len(lens) // 2], lens[-1]))

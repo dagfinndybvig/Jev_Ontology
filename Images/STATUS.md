@@ -1,6 +1,6 @@
 # Status: Where We Are, Where to Pick Up
 
-**Last updated:** 2026-09-25 (original run and humanoid pilot 09-22;
+**Last updated:** 2026-10-01 (audit repair milestones below; original run and humanoid pilot 09-22;
 routing, edge-case suite, stand-in corpus fetch/measure, and the
 first review pass on 09-23; corpus top-up and second review pass on
 09-23/09-24; corpus complete at 240, the v7 production re-run, and
@@ -12,6 +12,23 @@ verified-subset analysis on 09-25 -- replication complete)
 **Repo state:** see git; keep in sync with `origin/main` before new work.
 
 ---
+
+## Audit repairs (2026-10-01)
+
+Milestone 1: protected human labels and saved results. `json_store.py`
+provides atomic, fsynced JSON replacement plus revision-checked writes
+under an OS file lock. All JSON writers use it; readers that subsequently
+modify results/manifests retain a revision and reject concurrent changes.
+The review UI no longer caches the entire file, checks each submitted
+record revision, validates choices, and returns explicit save errors.
+Its taxonomy default is v9; independent contains-flags are initialized from
+raw answers, and keyboard choices no longer reset themselves or notes.
+No existing classifications or manual corrections were modified.
+
+The audit also identified evaluation errors and resume/corpus/sorting
+issues. Those are the next milestones; historical metrics below have not
+yet been corrected. Tests live in `test_json_store.py`,
+`test_review_ui.py`, and `test_review_ui.js` and use synthetic data only.
 
 ## What happened on 2026-09-23 (this session)
 

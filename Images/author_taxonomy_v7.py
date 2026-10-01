@@ -12,6 +12,7 @@ are measured negatives). v7 keeps the entity changes and reverts
 representation to v4's wording, to be re-measured held-out.
 """
 import json
+from json_store import save_json
 import os
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -61,6 +62,5 @@ tax["_meta"] = {
 # Restore v4's representation facet verbatim.
 tax["facets"]["representation"] = v4["facets"]["representation"]
 
-with open(DST, "w", encoding="utf-8") as f:
-    json.dump(tax, f, indent=2, ensure_ascii=False)
+save_json(DST, tax)
 print("wrote", DST)

@@ -1,5 +1,16 @@
 # TODO: Image classification with Jev -- next steps
 
+## Audit repairs (2026-10-01, priority order)
+
+- [x] Protect results and human corrections with atomic revision-checked
+  writes; fix review defaults, independent flags, and keyboard editing.
+- [ ] Correct auto-accept analysis, calibration/error-capture metrics,
+  and historical baseline comparisons; recompute affected documentation.
+- [ ] Validate resume identity, enforce sealed manifests, fix fetch quotas,
+  and reconcile stale sorted copies.
+
+Each milestone includes offline regression coverage and documentation.
+
 > **NEXT STEP (2026-09-24): New labeled data or a vision-layer
 > lever -- the taxonomy loop is at diminishing returns on this
 > corpus.** Ground truth is complete: all 240 stand-in records

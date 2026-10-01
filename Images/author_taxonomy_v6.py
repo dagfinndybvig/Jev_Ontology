@@ -25,6 +25,7 @@ depicted subject) stay documented, not revised: n=1 synthetic
 evidence each, and the v3/v5 lesson applies.
 """
 import json
+from json_store import save_json
 import os
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -128,6 +129,5 @@ f["representation"]["criteria"]["text_screenshot"] = (
     "even though it carries words"
 )
 
-with open(DST, "w", encoding="utf-8") as f_out:
-    json.dump(tax, f_out, indent=2, ensure_ascii=False)
+save_json(DST, tax)
 print("wrote", DST)

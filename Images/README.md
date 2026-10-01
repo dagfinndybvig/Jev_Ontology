@@ -3,6 +3,24 @@
 "Yes, Buck, and Jev is going to help us get there."<br><br>
 
 # Images + Jev
+
+## Reliability update (2026-10-01)
+
+JSON writers now use `json_store.py`: same-directory temporary files,
+flush/fsync and atomic replacement. Read/modify/write documents carry a
+revision; a stale writer stops rather than overwriting another process's
+work. Lock and temporary files are gitignored.
+
+The review UI reloads results for each request, rejects stale browser saves
+with HTTP 409, and defaults to v9. Contains-flags start from the actual
+facet answers and remain independent of the primary subject. Keyboard
+selection preserves edits and notes; save failures are shown explicitly.
+On a conflict, reload the page and reapply the intended correction.
+Existing human labels are preserved, not automatically reinterpreted.
+
+Offline regression checks: `python -B -m unittest discover -p "test_*.py"`
+(the embedded-browser checks also require Node.js; no API calls).
+
 Goal: a pipeline that auto-classifies digitized image collections
 against a revisable taxonomy, routing uncertain items to human review.
 

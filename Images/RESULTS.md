@@ -1191,3 +1191,13 @@ image_human_summary.txt  -- clean sorted list
 ---
 
 *Signed: Mistral Vibe (mistral-vibe), 2026-09-22*
+# Audit repair note (2026-10-01)
+
+> Milestone 1 changes persistence and review behavior, not model answers.
+> JSON writes are atomic and revision-checked; concurrent edits fail
+> explicitly rather than overwriting results. Review defaults to v9 and
+> preserves each raw contains-flag when initializing a correction.
+> Subject/representation shortcuts now retain the selected values.
+> Existing manual corrections remain ground truth; no labels were
+> retroactively changed from model answers. Evaluation corrections from
+> the audit are pending the next milestone.

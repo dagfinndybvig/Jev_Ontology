@@ -19,6 +19,7 @@ collection; the 13 records are real, but the fix direction needs a
 designed experiment, not a criterion edit. Documented as an open gap.
 """
 import json
+from json_store import save_json
 import os
 
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
@@ -74,6 +75,5 @@ tax["facets"]["representation"]["criteria"]["illustration"] = (
     "statue, sculpture, or model, it is statue_or_render"
 )
 
-with open(DST, "w", encoding="utf-8") as f:
-    json.dump(tax, f, indent=2, ensure_ascii=False)
+save_json(DST, tax)
 print("wrote", DST)

@@ -15,6 +15,7 @@ import re
 import sys
 import time
 import urllib.request
+from json_store import load_json, save_json
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 PICTURES = os.environ.get("PICTURES_DIR", "")
@@ -91,15 +92,11 @@ def parse_answer(text):
 
 
 def load_results():
-    if os.path.exists(RESULTS):
-        with open(RESULTS, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
+    return load_json(RESULTS, missing_ok=True)
 
 
 def save_results(results):
-    with open(RESULTS, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
+    save_json(RESULTS, results)
 
 
 def main():

@@ -11,6 +11,7 @@ import os
 import sys
 import time
 import urllib.request
+from json_store import load_json, save_json
 
 PICTURES = os.environ.get("PICTURES_DIR", "")  # folder of images to classify
 RESULTS = os.path.join(os.path.dirname(os.path.abspath(__file__)), "image_human_results.json")
@@ -94,15 +95,11 @@ def jev_classify(state):
 
 
 def load_results():
-    if os.path.exists(RESULTS):
-        with open(RESULTS, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return {}
+    return load_json(RESULTS, missing_ok=True)
 
 
 def save_results(results):
-    with open(RESULTS, "w", encoding="utf-8") as f:
-        json.dump(results, f, indent=2, ensure_ascii=False)
+    save_json(RESULTS, results)
 
 
 def main():

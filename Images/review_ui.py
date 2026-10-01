@@ -16,7 +16,7 @@ Usage:
 
 Environment:
     PICTURES_DIR          image folder (required)
-    TAXONOMY              taxonomy filename in this dir (v2 default)
+    TAXONOMY              taxonomy filename in this dir (v9 default)
     REVIEW_RESULTS        results JSON path (default: pilot results;
                           set to a copy for testing)
 """
@@ -33,8 +33,9 @@ from urllib.parse import unquote, urlparse
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, SCRIPT_DIR)
 from routing import route_reason
+from json_store import WriteConflict, fingerprint, load_json, save_json
 
-TAXONOMY = os.path.join(SCRIPT_DIR, os.environ.get("TAXONOMY", "humanoid_taxonomy_v2.json"))
+TAXONOMY = os.path.join(SCRIPT_DIR, os.environ.get("TAXONOMY", "humanoid_taxonomy_v9.json"))
 RESULTS = os.environ.get(
     "REVIEW_RESULTS",
     os.path.join(SCRIPT_DIR, "humanoid_pilot_results.json"),
@@ -76,22 +77,12 @@ def tiff_as_png(path, name):
         return f.read(), "image/png"
 
 _lock = threading.Lock()
-_results = None
-
-
 def load_results():
-    global _results
-    if _results is None:
-        if not os.path.exists(RESULTS):
-            sys.exit(f"Results file not found: {RESULTS}")
-        with open(RESULTS, "r", encoding="utf-8") as f:
-            _results = json.load(f)
-    return _results
+    return load_json(RESULTS)
 
 
-def save_results():
-    with open(RESULTS, "w", encoding="utf-8") as f:
-        json.dump(_results, f, indent=2, ensure_ascii=False)
+def save_results(results):
+    save_json(RESULTS, results)
 
 
 def taxonomy_choices():
@@ -111,6 +102,7 @@ def record_view(name, r):
     reason = route_reason(r)
     return {
         "file": name,
+        "revision": fingerprint(r),
         "description": r.get("description", ""),
         "facets": {f: {"choice": r[f]["choice"], "confidence": r[f]["confidence"]}
                    for f in FACETS if f in r},
@@ -171,10 +163,8 @@ def confident_sample(res):
             i += 1
 
     files = sorted(picked)
-    os.makedirs(os.path.dirname(SAMPLE_PATH), exist_ok=True)
-    with open(SAMPLE_PATH, "w", encoding="utf-8") as f:
-        json.dump({"date": datetime.date.today().isoformat(),
-                   "files": files}, f, indent=1, ensure_ascii=False)
+    save_json(SAMPLE_PATH, {"date": datetime.date.today().isoformat(),
+                           "files": files}, indent=1)
     return files
 
 
@@ -238,12 +228,6 @@ let records = [], defs = {}, order = [], idx = 0;
 let filter = 'queue', pendingOnly = true, sampleFiles = [];
 let pick = {subject: null, rep: null, flags: {contains_human: false, contains_robot: false, contains_android: false}};
 const SUBKEYS = ['contains_human','contains_robot','contains_android'];
-
-function subjectDefaults(s) {
-  return { contains_human: s === 'human' || s === 'multiple',
-           contains_robot: s === 'robot' || s === 'multiple',
-           contains_android: s === 'android' };
-}
 
 async function init() {
   try {
@@ -373,11 +357,12 @@ function render() {
   const corr = r.correction && r.correction.correct;
   if (corr) { pick.subject = corr.primary_subject; pick.rep = corr.representation;
               pick.flags = {contains_human: corr.contains_human === 'yes', contains_robot: corr.contains_robot === 'yes', contains_android: corr.contains_android === 'yes'}; }
-  else pick.flags = subjectDefaults(pick.subject);
+  else pick.flags = Object.fromEntries(SUBKEYS.map(k => [k, r.facets[k].choice === 'yes']));
 
   drawChoices('subj', 'subject', defs.primary_subject);
   drawChoices('rep', 'rep', defs.representation);
   drawFlags();
+  document.getElementById('note').value = r.correction ? (r.correction.reason || '') : '';
 
   document.getElementById('save').onclick = save;
   document.getElementById('skip').onclick = () => { idx = Math.min(idx + 1, order.length - 1); render(); };
@@ -395,7 +380,7 @@ function drawChoices(elId, kind, d) {
     b.innerHTML = c + '<small>' + (kind === 'subject' ? (i + 1) : 'QWERT'[i]) + ' &middot; ' + esc(d[c]).slice(0, 60) + '</small>';
     b.className = (kind === 'subject' ? pick.subject : pick.rep) === c ? 'sel' : '';
     b.onclick = () => {
-      if (kind === 'subject') { pick.subject = c; pick.flags = subjectDefaults(c); }
+      if (kind === 'subject') pick.subject = c;
       else pick.rep = c;
       drawChoices('subj', 'subject', defs.primary_subject);
       drawChoices('rep', 'rep', defs.representation);
@@ -421,9 +406,11 @@ function drawFlags() {
 }
 
 async function save() {
+  if (saving) return;
   const r = records.find(x => x.file === order[idx]);
   if (!pick.subject || !pick.rep) { document.getElementById('status').textContent = 'Pick both a subject and a representation first.'; return; }
   const body = {
+    revision: r.revision,
     correct: {
       primary_subject: pick.subject,
       representation: pick.rep,
@@ -433,22 +420,36 @@ async function save() {
     },
     note: document.getElementById('note').value.trim(),
   };
+  saving = true;
+  try {
   const resp = await fetch('/api/correct/' + encodeURIComponent(r.file), {
     method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(body)});
   const out = await resp.json();
   document.getElementById('status').textContent = out.ok ? 'Saved.' : ('Error: ' + out.error);
-  if (out.ok) { r.reviewed = true; r.correction = out.correction;
-    setTimeout(() => {
+  if (out.ok) { r.reviewed = true; r.correction = out.correction; r.revision = out.revision;
       if ((filter === 'queue' || filter === 'sample') && pendingOnly) rebuild();
       else { idx = Math.min(idx + 1, order.length - 1); render(); }
-    }, 250); }
+    }
+  } catch (e) {
+    document.getElementById('status').textContent = 'Save failed: ' + String(e);
+  } finally { saving = false; }
 }
 
+let saving = false;
 async function uncorrect() {
+  if (saving) return;
   const r = records.find(x => x.file === order[idx]);
-  const resp = await fetch('/api/uncorrect/' + encodeURIComponent(r.file), {method: 'POST'});
+  saving = true;
+  try {
+  const resp = await fetch('/api/uncorrect/' + encodeURIComponent(r.file), {
+    method: 'POST', headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({revision: r.revision})});
   const out = await resp.json();
-  if (out.ok) { r.reviewed = false; r.correction = null; rebuild(); }
+  if (out.ok) { r.reviewed = false; r.correction = null; r.revision = out.revision; rebuild(); }
+  else document.getElementById('status').textContent = 'Error: ' + out.error;
+  } catch (e) {
+    document.getElementById('status').textContent = 'Save failed: ' + String(e);
+  } finally { saving = false; }
 }
 
 document.addEventListener('keydown', e => {
@@ -456,8 +457,9 @@ document.addEventListener('keydown', e => {
   const r = records.find(x => x.file === order[idx]);
   if (!r) return;
   const subs = Object.keys(defs.primary_subject), reps = Object.keys(defs.representation);
-  if (e.key >= '1' && e.key <= '5' && subs[+e.key - 1]) { pick.subject = subs[+e.key - 1]; pick.flags = subjectDefaults(pick.subject); render(); }
-  else if ('QWERT'.includes(e.key) && e.key.length === 1) { const i = 'QWERT'.indexOf(e.key.toUpperCase()); if (reps[i]) { pick.rep = reps[i]; render(); } }
+  if (saving) return;
+  if (e.key >= '1' && e.key <= '5' && subs[+e.key - 1]) { pick.subject = subs[+e.key - 1]; drawChoices('subj', 'subject', defs.primary_subject); }
+  else if ('QWERT'.includes(e.key.toUpperCase()) && e.key.length === 1) { const i = 'QWERT'.indexOf(e.key.toUpperCase()); if (reps[i]) { pick.rep = reps[i]; drawChoices('rep', 'rep', defs.representation); } }
   else if (e.key === 'Enter') { e.preventDefault(); save(); }
   else if (e.key === 'ArrowRight') { idx = Math.min(idx + 1, order.length - 1); render(); }
   else if (e.key === 'ArrowLeft') { idx = Math.max(idx - 1, 0); render(); }
@@ -531,6 +533,14 @@ class Handler(BaseHTTPRequestHandler):
             self._send(404, b"not found", "text/plain")
 
     def do_POST(self):
+        try:
+            self._post()
+        except WriteConflict as exc:
+            self._json({"ok": False, "error": str(exc)}, 409)
+        except (OSError, ValueError) as exc:
+            self._json({"ok": False, "error": str(exc)}, 500)
+
+    def _post(self):
         path = urlparse(self.path).path
         name = unquote(path[path.rfind("/") + 1:])
         with _lock:
@@ -538,12 +548,27 @@ class Handler(BaseHTTPRequestHandler):
             if name not in res or res[name].get("status") != "ok":
                 self._json({"ok": False, "error": "unknown record"}, 404)
                 return
-            if path.startswith("/api/correct/"):
+            try:
                 length = int(self.headers.get("Content-Length", 0))
+                body = json.loads(self.rfile.read(length).decode("utf-8"))
+                if not isinstance(body, dict):
+                    raise ValueError("expected an object")
+            except (ValueError, UnicodeError) as exc:
+                self._json({"ok": False, "error": f"bad body: {exc}"}, 400)
+                return
+            if body.get("revision") != fingerprint(res[name]):
+                raise WriteConflict("Record changed; reload the page before saving")
+            if path.startswith("/api/correct/"):
                 try:
-                    body = json.loads(self.rfile.read(length).decode("utf-8"))
                     correct = {f: body["correct"][f] for f in FACETS}
-                except Exception as e:
+                    choices = taxonomy_choices()
+                    for facet, value in correct.items():
+                        allowed = choices.get(facet, ["yes", "no"])
+                        if value not in allowed:
+                            raise ValueError(f"invalid choice for {facet}")
+                    if not isinstance(body.get("note", ""), str):
+                        raise ValueError("note must be text")
+                except (KeyError, TypeError, ValueError) as e:
                     self._json({"ok": False, "error": f"bad body: {e}"}, 400)
                     return
                 r = res[name]
@@ -555,13 +580,14 @@ class Handler(BaseHTTPRequestHandler):
                     "reason": body.get("note") or kind + " (review_ui)",
                     "raw_jev_preserved": True,
                 }
-                save_results()
-                self._json({"ok": True, "correction": r["manual_correction"]})
+                save_results(res)
+                self._json({"ok": True, "correction": r["manual_correction"],
+                            "revision": fingerprint(r)})
             elif path.startswith("/api/uncorrect/"):
                 if "manual_correction" in res[name]:
                     del res[name]["manual_correction"]
-                    save_results()
-                self._json({"ok": True})
+                    save_results(res)
+                self._json({"ok": True, "revision": fingerprint(res[name])})
             else:
                 self._json({"ok": False, "error": "unknown endpoint"}, 404)
 
