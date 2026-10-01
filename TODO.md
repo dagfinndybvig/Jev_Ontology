@@ -1,9 +1,29 @@
 # TODO: Next Steps
 
-Items are grouped by priority. Each references the finding that
-motivates it.
+**Updated: 2026-10-01.** Audit repairs are complete. The active application
+track is the image/library pilot; the numbered ticket backlog below is
+research work, not unfinished audit fixes.
+
+## Next actions, in order
+
+1. **Prepare a controlled real-library pilot.** Follow `Images/TODO.md`:
+   agree scope, permissions, human-review responsibilities, and acceptance
+   criteria before sending collection material to external APIs.
+2. **Strengthen independent labels and evaluation.** Re-review a sample of
+   historical image labels after the UI fixes. For any renewed ticket
+   study, obtain ground truth and a genuinely held-out evaluation before
+   treating confidence changes as accuracy gains (items 3, 10, 11).
+3. **Retain new repeat-run evidence if ticket research resumes.** The old
+   variance artifact is unavailable; a new run is new evidence, not a
+   reconstruction (item 2).
+4. **Defer architecture experiments until an evaluated need justifies
+   them.** Multi-label traversal, beam search, automated authoring, and
+   alternative primitives remain proposals, not prerequisites for the pilot.
 
 ## Repository audit repairs
+
+Completed and pushed: `1af7c5e` (execution/validation), `9d4c9b1`
+(persistence/splits), and `d2da580` (evidence/documentation).
 
 - [x] Guard imports and live smoke checks; run root and Images tests offline.
 - [x] Validate model outputs and bind MVP results to the supplied ontology version.
@@ -15,22 +35,22 @@ motivates it.
 
 ---
 
-## High priority -- fill the known gaps
+## Ticket backlog -- stable item numbers
 
 ### 1. Multi-label path for compound tickets
 
-**Why:** The convergence experiment hit a floor at ~0.33 confidence on
-the triple compound ticket (wrongful charge + login + 2FA). Three
-iterations of definition sharpening could not fix it because the ticket
-genuinely belongs to three classes simultaneously. The feedback loop
-correctly flagged it as unresolvable, but the system has no mechanism
-to act on that signal beyond reporting it.
+**Status: proposed; defer until labeled evaluation justifies it.**
+
+**Why:** The compound ticket remained low-confidence across the measured
+revisions. That motivates testing multi-label handling; it does not prove
+an irreducible confidence floor or that every such ticket is unresolvable.
 
 **What:** Add a multi-label classification path. When Jev's level-1
 distribution is split (e.g., AccountAndAccess 0.54 vs
 BillingAndPayments 0.46), descend both branches in parallel and
 return multiple leaf assignments with their respective confidences.
-Threshold: if the runner-up probability is above 0.35, descend it too.
+An initial experimental threshold could be a runner-up probability above
+0.35; evaluate it rather than treating it as an established routing rule.
 
 **Effort:** Moderate. The recursive classifier needs to branch, not
 just descend. The output format changes from single-leaf to a list of
@@ -45,24 +65,24 @@ verified and are not a formal noise bound. `heldout_variance.py` now saves
 full per-ticket repeat results for future runs. A fresh, separately labeled
 measurement is still needed; it cannot retroactively recover the old run.
 
-**Why:** Every result in this project is from a single Jev call per
-ticket per level. We do not know whether Jev is deterministic. If the
-same ticket produces 1.000 on one call and 0.70 on the next, the
-confidence thresholds are less meaningful than they appear. This was
-the single most important unrun experiment.
+**Why:** The retained ticket evidence does not establish repeatability or
+uncertainty in the baseline-versus-revision difference. The image
+replication has its own retained repeats; it does not fill this ticket gap.
 
-**What:** Pick 10 tickets (mix of high-confidence and flagged). Classify
-each 10 times against the same ontology (v5.0). Measure:
+**What:** Predeclare the repeat protocol and use `heldout_variance.py` for
+both a frozen baseline and candidate on the same held-out cohort. Select
+separate, fresh `RESULTS_OUT` files; retain all raw paths. Measure:
 - Mean and standard deviation of confidence per ticket
 - Whether the leaf assignment ever changes across runs
 - Whether the level-1 distribution is stable
 
-**Effort:** Small. A single script that loops the existing
-`jev_choice` function.
+**Effort:** The runner exists. New measurements require API calls and
+analysis; no new run was performed during the audit repairs.
 
 ### 3. Held-out evaluation
 
-**Status: Done (2026-09-22).** `heldout_experiment.py` split the 52
+**Status: historical confidence comparison complete; accuracy validation
+still open.** `heldout_experiment.py` split the 52
 tickets 36 train / 16 held-out (seed 42, saved to
 `heldout_split.json`), authored `ontology_heldout_v1.json` from train
 signals only, and re-evaluated. Recomputed mean-confidence changes:
@@ -75,16 +95,18 @@ tickets it measured on. Improvement could be overfitting to those
 specific tickets rather than genuine ontology improvement. We need
 to know if the v5.0 ontology generalizes to tickets it has never seen.
 
-**What:** Split the 52-ticket set into 40 training / 12 held-out. Run
-the feedback loop on the 40 training tickets (v3.0 -> v4.0 -> v5.0).
-Then classify the 12 held-out tickets against v3.0 and v5.0. Compare:
-does the v5.0 ontology classify the unseen tickets better than v3.0?
+**What remains:** Preserve the existing split; do not replace it with the
+superseded 40/12 proposal. For a new generalization claim, use fresh labeled
+material, author from training signals only, freeze the candidate, then
+evaluate with `--stage holdout`. Report accuracy and uncertainty, not just
+mean confidence. Already-inspected tickets are not a fresh holdout.
 
-**Effort:** Small. Reuse `convergence_experiment.py` with a split.
+**Effort:** Evaluation infrastructure exists; independent labels and a
+predeclared protocol are the main work.
 
 ---
 
-## Medium priority -- extend the system
+## Optional architecture and robustness experiments
 
 ### 4. Beam search
 
@@ -156,7 +178,7 @@ manual). Automating step 5 would make this scalable.
 
 ---
 
-## Lower priority -- broaden the experiment
+## Additional ticket evidence and domain experiments
 
 ### 8. Real-world dataset
 
@@ -173,22 +195,22 @@ confidence distributions and flag rates against the synthetic tickets.
 
 ### 9. Different ontology domain
 
-**Why:** Everything is tested on SaaS support tickets. The mechanism
-should be domain-agnostic, but different domains have different
-ontology structures. A legal ontology (FOLIO) or a clinical ontology
-(SNOMED CT) would test whether the cascade generalizes.
+**Status: image-domain extension implemented and evaluated in `Images/`.**
+Other domains remain optional; a real-library workflow is the active next
+application step, not another synthetic ticket demonstration.
 
-**What:** Author an ontology for a different domain. Run a set of
-domain-specific items through the pipeline. Compare convergence
-behavior.
+**What remains:** Evaluate the library pilot under actual cataloging
+conditions. Any further domain needs its own labels, criteria, and held-out
+evaluation; image results do not establish transfer to arbitrary domains.
 
 **Effort:** Moderate. Needs domain knowledge for ontology authoring
 and item authoring.
 
 ### 10. Comparison baseline
 
-**Why:** We have no baseline. Jev classifies well, but we don't know
-if it classifies better than cheaper alternatives. The right comparison
+**Why:** The ticket study has no competing-system accuracy baseline.
+Images has keyword and direct-vision comparisons, but these do not establish
+ticket performance. The right comparison
 (per the Pydantic docs) is "Jev vs the cheapest acceptable system for
 this decision."
 
@@ -202,10 +224,9 @@ labels for the tickets.
 
 ### 11. Calibration error measurement
 
-**Why:** Jev returns "calibrated probabilities," but we have not
-measured whether they are actually calibrated. If Jev says 0.80
-confidence, does it get the answer right 80% of the time? We assume
-calibration but haven't verified it.
+**Why:** Support-ticket calibration is unmeasured. If Jev says 0.80
+confidence, does it get the answer right 80% of the time? The image
+calibration measurements are separate evidence, not a substitute.
 
 **What:** Label the 52 tickets with ground-truth leaf classes. Run
 them through Jev. Compute the Expected Calibration Error (ECE): bin
@@ -235,19 +256,22 @@ call.
 
 ---
 
-## Summary
+## Ticket-backlog status
 
-| # | Item | Priority | Effort | Motivated by |
-|---|---|---|---|---|
-| 1 | Multi-label path for compound tickets | High | Moderate | Convergence floor |
-| 2 | Run-to-run variance measurement (done) | High | Small | Unknown determinism |
-| 3 | Held-out evaluation (done) | High | Small | Possible overfitting |
-| 4 | Beam search | Medium | Moderate | Greedy descent risk |
-| 5 | Live LLM call for ontology revision | Medium | Moderate | Manual revision bottleneck |
-| 6 | Adversarial robustness suite | Medium | Small | One-ticket anecdote |
-| 7 | Larger dataset and more iterations | Medium | Moderate | 3 iterations insufficient |
-| 8 | Real-world dataset | Low | Small | All tickets synthetic |
-| 9 | Different ontology domain | Low | Moderate | Single domain tested |
-| 10 | Comparison baseline | Low | Moderate | No baseline |
-| 11 | Calibration error measurement | Low | Small | Calibration assumed, not measured |
-| 12 | Jev's Score and Noul primitives | Low | Small | Only Choice tested |
+Priorities below apply if ticket research resumes; the library pilot is
+the repository's active application track.
+
+| # | Item | Current status | Priority |
+|---|---|---|---|
+| 1 | Multi-label path | Proposed; evaluate need first | Deferred |
+| 2 | Retained repeat-run evidence | Open; historical raw runs unavailable | High |
+| 3 | Held-out evaluation | Confidence comparison done; labeled accuracy open | High |
+| 4 | Beam search | Proposed | Deferred |
+| 5 | Automated ontology authoring | Manual revisions only; automation proposed | Deferred |
+| 6 | Adversarial robustness suite | Open for tickets | Medium |
+| 7 | Larger dataset and more iterations | Open; establish labels/protocol first | Medium |
+| 8 | Real-world ticket dataset | Open | Medium |
+| 9 | Different domain | Images implemented; real-library pilot pending | Active in Images |
+| 10 | Competing-system baseline | Open for tickets | High |
+| 11 | Calibration measurement | Open for tickets; needs ground truth | High |
+| 12 | Score and Noul experiments | Proposed | Deferred |

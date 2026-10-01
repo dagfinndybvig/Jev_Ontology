@@ -1,5 +1,32 @@
 # TODO: Image classification with Jev -- next steps
 
+**Updated: 2026-10-01.** This remains a research pilot, not a
+production-ready cataloging service. Audit repairs are complete; the
+open priorities below concern stronger evidence and a controlled deployment
+trial, not more in-sample taxonomy tuning.
+
+## Current next actions, in order
+
+- [ ] Scope a real-library pilot: agree collection permissions, external-API
+  privacy/licensing requirements, cataloger responsibilities, and acceptance
+  criteria before processing new material.
+- [ ] Independently re-review a sample of historical labels after the review
+  UI fixes. Preserve raw model answers and record disagreements explicitly;
+  the repairs did not retroactively validate existing human corrections.
+- [ ] Build a representative, independently labeled pilot cohort, including
+  text-heavy/screenshots and small or background people. Separate authoring
+  from held-out measurement and verify labels before the new evaluation.
+- [ ] Measure cataloger time, review burden, auto-accepted errors, and
+  whole-image as well as per-facet accuracy. Retain repeated-run outputs and
+  report uncertainty; confidence alone is not an acceptance criterion.
+- [ ] If a vision change is justified, test it as a separate candidate
+  against frozen v9 on held-out material. Do not modify the sealed
+  replication corpus or silently replace historical runs.
+
+Optional later experiments: multi-band routing, a pixel-level baseline,
+a hierarchical alternative to facets, and Score/Noul primitives. These are
+not prerequisites established by the current evidence.
+
 ## Audit repairs (2026-10-01, priority order)
 
 - [x] Repository-wide follow-up: reject invalid direct/structured vision
@@ -24,7 +51,13 @@ Milestone 3 preserves legacy results, refuses unverifiable resumes, and
 provides `--report-only` for historical taxonomy measurements. The
 published sealed corpus and all existing human labels remain unchanged.
 
-> **NEXT STEP (2026-09-24): New labeled data or a vision-layer
+## Historical planning and measurement record
+
+The dated notes below preserve earlier proposals and results. They are not
+the current action queue; use the priorities above and the status table at
+the end of this document.
+
+> **Planning update (2026-09-24, supplemented 09-25): New labeled data or a vision-layer
 > lever -- the taxonomy loop is at diminishing returns on this
 > corpus.** Ground truth is complete: all 240 stand-in records
 > labeled (172 confirmed, 68 corrected). The taxonomy loop ran four
@@ -47,7 +80,7 @@ published sealed corpus and all existing human labels remain unchanged.
 > against the same ground truth. The pre-registered fresh-corpus
 > replication is complete (2026-09-25): the frozen v9 pipeline pools
 > at 97.0-97.5% on 140 hand-verified Smithsonian images that played
-> no role in any revision -- the loop's result generalizes (see
+> no role in any revision -- evidence of transfer to this corpus (see
 > "Fresh-corpus replication" below).
 > Depicts annotation is a dead end
 > for this corpus: 0/231 files carry P180 statements. See STATUS.md
@@ -88,25 +121,23 @@ routing burden 15-18%. human_sculpture 93% on the verified subset (was
 records identical across all 3 runs. Protocol deviation documented in
 REPLICATION_RESULTS.md: the runs executed before hand-verification at
 the user's direction; the verified-subset analysis used the same
-frozen pipeline and the same pre-registered criteria. **Verdict: the
-loop's result generalizes** -- the frozen v9 pipeline holds on fresh
-institutional material without any re-tuning. See
+frozen pipeline and the same pre-registered criteria. **Verdict: evidence
+of transfer to this institutional corpus**, without re-tuning; not proof
+of reliable unattended cataloging across arbitrary collections. See
 REPLICATION_RESULTS.md.
 
-The current pipeline (`classify_images.py`) is scaffolding: a vision
-model describes each image, Jev answers one yes/no question. The goal of
-this project is to **increase Jev's contribution** -- to make Jev do
-more of the meaningful decision work, not just a thin yes/no on a vision
-description.
-
-Items are grouped by priority. Each references the finding that
-motivates it.
+The original `classify_images.py` scaffold asked one yes/no question.
+The adopted humanoid pilot now uses five facets through
+`pilot_humanoid.py`; the original motivations below describe the earlier
+state. Stable item numbers are retained for links from other documents.
 
 ---
 
 ## High priority -- make Jev do real classification work
 
 ### 1. Multi-class taxonomy
+
+**Current status: implemented through the adopted facet taxonomy.**
 
 **Why:** The single yes/no "contains human" question underuses Jev. It
 asks Jev to make a trivial binary decision on a description that already
@@ -122,6 +153,9 @@ one per image. This is a drop-in change to the `criteria` in
 is reusable.
 
 ### 2. Hierarchical image ontology
+
+**Current status: deferred alternative.** The adopted design uses facets,
+not recursive image-tree traversal.
 
 **Why:** The ticket project's core insight is that Jev classifies well
 against a *hierarchy* via recursive descent, and its calibrated
@@ -139,6 +173,10 @@ increase Jev's contribution.
 MVP; the ontology authoring and prompt design are the main work.
 
 ### 3. Multiple questions in one pass
+
+**Current status: implemented.** Multi-facet classification is adopted;
+the structured-vision variants below were experiments, not replacements
+for the adopted cascade.
 
 **Why:** Jev supports several questions in a single call (Choice, Score,
 Noul). The current pipeline asks one. Asking several per image -- e.g.
@@ -191,6 +229,9 @@ interpretation logic is the new work.
 
 ### 4. Calibration-driven routing
 
+**Current status: initial routing policy implemented; multi-band escalation
+remains optional.** Validate any new policy on held-out pilot data.
+
 **Why:** We currently use a fixed 0.7 threshold to flag ambiguous cases.
 Jev's confidence is a richer signal than a threshold -- it can drive
 routing (auto-classify vs. human review) and prioritization.
@@ -213,6 +254,9 @@ edge-case suite): same 25/27 catches, burden 156 -> 135 of 218
 remains open.
 
 ### 5. Criteria as the ontology -- close the feedback loop
+
+**Current status: manual revision and held-out measurement implemented.**
+v9 remains adopted; automated authoring is not implemented.
 
 **Why:** The ticket project's most interesting result is the feedback
 loop: Jev's low-confidence signals reveal where the ontology is
@@ -239,6 +283,10 @@ re-run harness.
 
 ### 6. Run-to-run variance
 
+**Current status: retained replication repeats exist.** Broader
+repeatability and uncertainty on real-library material remain to be measured;
+the original single-run motivation below is historical.
+
 **Why:** Every result here is from a single Jev call per image. We do
 not know whether Jev is deterministic on image descriptions. If the same
 description yields 1.000 on one call and 0.70 on the next, the
@@ -263,6 +311,10 @@ points run to run, which moves records across the 0.7 boundary.
 
 ### 7. Ground truth and accuracy
 
+**Current status: labeled personal/stand-in and verified replication
+evaluations exist.** Independent re-review and real-library labels remain
+open; the UI fixes did not revalidate old labels.
+
 **Why:** We have no ground truth. The 73/142 split is Jev's judgment,
 not a verified answer. Accuracy is unmeasured, so we cannot say whether
 the pipeline is right, only that it is confident.
@@ -283,6 +335,9 @@ Phase 5 (LIBRARY.md) describes.
 ## Lower priority -- broaden and harden
 
 ### 8. Baseline comparison
+
+**Current status: keyword and direct-vision comparisons complete.**
+A pixel-level baseline remains optional and unmeasured.
 
 **Why:** We have no baseline. The right comparison is "Jev + vision
 description vs. the cheapest acceptable image classifier" -- e.g. a
@@ -307,6 +362,9 @@ unmeasured.
 **Effort:** Moderate. Needs a baseline model and ground-truth labels.
 
 ### 9. Adversarial and edge cases
+
+**Current status: initial generated suite measured.** Broader real-world
+coverage, especially screenshots and background people, remains open.
 
 **Why:** One image showed a real failure mode: a screenshot
 of text describing a person was classified as containing a person,
@@ -338,6 +396,8 @@ depicted subject).
 
 ### 10. Jev's Score and Noul primitives
 
+**Current status: deferred experiment, not an adopted pipeline change.**
+
 **Why:** The pipeline uses only Jev's Choice primitive. Jev also has
 Score (rate on a 2-10 scale) and Noul (yes/no probability). These could
 help: Noul as a pre-filter ("is this image relevant to the 'human'
@@ -350,6 +410,9 @@ confidence supplement. Compare to the Choice-only pipeline.
 
 ### 11. Larger dataset and different domains
 
+**Current status: Commons stand-in and Smithsonian replication complete.**
+A controlled real-library pilot remains the next application step.
+
 **Why:** The pipeline ran on 215 images from one folder. Scaling to a
 larger, more varied collection (and different domains, e.g. medical or
 satellite imagery) would test whether the approach generalizes.
@@ -361,18 +424,18 @@ confidence distributions and flag rates.
 
 ---
 
-## Summary
+## Current status by original item
 
-| # | Item | Priority | Effort | Motivated by |
-|---|---|---|---|---|
-| 1 | Multi-class taxonomy | High | Small | Single yes/no underuses Jev |
-| 2 | Hierarchical image ontology | High | Moderate | Flat pipeline; ticket analog |
-| 3 | Multiple questions in one pass | High | Small | Richer decision per image |
-| 4 | Calibration-driven routing | Medium | Small | Fixed threshold is crude |
-| 5 | Criteria as ontology / feedback loop | Medium | Moderate | No loop; ticket analog |
-| 6 | Run-to-run variance | Medium | Small | Unknown determinism |
-| 7 | Ground truth and accuracy | Medium | Small | No ground truth |
-| 8 | Baseline comparison | Low | Moderate | No baseline |
-| 9 | Adversarial and edge cases | Low | Small | Screenshot-of-text failure |
-| 10 | Jev's Score and Noul primitives | Low | Small | Only Choice tested |
-| 11 | Larger dataset and different domains | Low | Small | Single folder tested |
+| # | Item | Completed | Remaining |
+|---|---|---|---|
+| 1 | Multi-class taxonomy | Adopted facet taxonomy | Validate on pilot material |
+| 2 | Hierarchical image ontology | Facets adopted instead | Optional tree comparison |
+| 3 | Multiple questions | Multi-facet calls | No implementation gap |
+| 4 | Review routing | Threshold plus text signal | Pilot validation; optional multi-band policy |
+| 5 | Criteria revision | Manual loop and held-out measurement | New evidence before more tuning |
+| 6 | Repeatability | Retained replication runs | Repeatability on pilot cohort |
+| 7 | Labels and accuracy | Existing corpus evaluations | Independent re-review and pilot labels |
+| 8 | Baselines | Keyword/direct-vision comparisons | Optional pixel-level baseline |
+| 9 | Edge cases | Initial generated suite | Representative real-world coverage |
+| 10 | Score/Noul primitives | Not adopted | Deferred experiment |
+| 11 | Broader corpus | Commons and Smithsonian studies | Real-library pilot |
